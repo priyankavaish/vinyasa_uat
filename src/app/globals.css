@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f3f1ea;
+  --surface: #fbf9f3;
+  --foreground: #2b2620;
+  --foreground-soft: #6b6255;
+  --muted: #a49a86;
+  --line: #e4ddc9;
+  --accent: #b5643b;
+  --accent-ink: #fdf6f0;
+  --secondary: #6b7a5e;
+  --secondary-surface: #eef0e4;
+  --secondary-ink: #2f3a26;
+  --clay-surface: #f3e6d8;
+  --clay-ink: #6b3f22;
+  --dusk-surface: #e9e7ef;
+  --dusk-ink: #3f3f5c;
+  --focus: #b5643b;
+}
+
+@theme inline {
+  --font-display: var(--font-fraunces);
+  --font-script: var(--font-mrs-saint);
+  --font-sans: var(--font-archivo);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-foreground-soft: var(--foreground-soft);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-secondary: var(--secondary);
+  --color-secondary-surface: var(--secondary-surface);
+  --color-secondary-ink: var(--secondary-ink);
+  --color-clay-surface: var(--clay-surface);
+  --color-clay-ink: var(--clay-ink);
+  --color-dusk-surface: var(--dusk-surface);
+  --color-dusk-ink: var(--dusk-ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* Faint handmade-paper grain — keeps flat colour blocks from reading as
+   slick/digital. Fixed so it doesn't scroll or repeat visibly. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.eyebrow {
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.font-script {
+  font-family: var(--font-script), cursive;
+}
+
+/* Sharp-cornered, outline-first buttons — matches the reference sites
+   (era-residence, villaskamezi), which use bordered/solid rectangles with
+   tracked uppercase text, never filled rounded pills. */
+.btn {
+  display: inline-block;
+  padding: 0.95rem 1.85rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  border-radius: 0;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-outline {
+  border: 1px solid currentColor;
+  background: transparent;
+}
+
+.btn-outline-light {
+  border: 1px solid rgba(251, 249, 243, 0.55);
+  color: var(--surface);
+  background: transparent;
+}
+.btn-outline-light:hover {
+  background: var(--surface);
+  color: var(--foreground);
+  border-color: var(--surface);
+}
+
+.btn-solid {
+  background: var(--foreground);
+  color: var(--background);
+  border: 1px solid var(--foreground);
+}
+.btn-solid:hover {
+  background: transparent;
+  color: var(--foreground);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 1px solid var(--accent);
+}
+.btn-accent:hover {
+  background: transparent;
+  color: var(--accent);
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-surface);
+  border: 1px solid var(--secondary);
+}
+.btn-secondary:hover {
+  background: transparent;
+  color: var(--secondary);
+}
+
+/* A soft, continuous vertical bob — gives the "earth" accent a bit of life
+   instead of sitting dead-still under the moving video. */
+@keyframes gentle-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-0.08em); }
+}
+
+/* Slow hue-cycle through earthy tones — terracotta, marigold, sage, clay,
+   indigo — for the "earth" script accent in the hero. */
+@keyframes earth-cycle {
+  0%   { color: #c9713f; } /* terracotta */
+  20%  { color: #d99a2b; } /* marigold   */
+  40%  { color: #7c8f5a; } /* sage       */
+  60%  { color: #b5643b; } /* clay       */
+  80%  { color: #6b7a9e; } /* dusty indigo */
+  100% { color: #c9713f; }
+}
+.text-earth-cycle {
+  animation: earth-cycle 10s ease-in-out infinite;
+}
+
+/* Hanging vines swaying on a breeze — rotates + drifts from the top edge,
+   like a canopy pinned overhead rather than a flat image panning. */
+@keyframes sway {
+  0%   { transform: rotate(-1.1deg) translateX(-10px); }
+  50%  { transform: rotate(1.1deg) translateX(10px); }
+  100% { transform: rotate(-1.1deg) translateX(-10px); }
+}
+.animate-sway {
+  transform-origin: top center;
+  animation: sway 7s ease-in-out infinite;
+}
+
+/* Slow-drifting earthy gradient — used as the nav's edge once it goes
+   solid on scroll, instead of a flat grey hairline. */
+@keyframes earth-drift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.earth-edge {
+  height: 2px;
+  background-image: linear-gradient(
+    90deg,
+    #c9713f, #d99a2b, #7c8f5a, #6b7a9e, #b5643b, #c9713f
+  );
+  background-size: 200% 100%;
+  animation: earth-drift 14s linear infinite;
+}
+
+/* "earth" typewriter — blinking caret while typing, then a slow breathing
+   pulse once the word settles. */
+@keyframes earth-caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes earth-breathe {
+  0%, 100% { transform: scale(1); filter: brightness(1.1) saturate(1.35); }
+  50% { transform: scale(1.035); filter: brightness(1.22) saturate(1.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
