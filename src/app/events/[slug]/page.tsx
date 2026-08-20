@@ -49,7 +49,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           </div>
           <div className="border border-line bg-surface p-6">
             <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft">From</p>
-            <p className="mt-1 font-display italic text-3xl">₹{event.priceFrom.toLocaleString("en-IN")}</p>
+            <p className="mt-1 font-sans text-3xl font-bold tracking-tight tabular-nums">₹{event.priceFrom.toLocaleString("en-IN")}</p>
             {event.placeholder && <p className="mt-1 text-xs text-muted">(placeholder, confirm)</p>}
             <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent mt-5 block text-center">
               Reserve a spot

@@ -31,7 +31,7 @@ export default function HomePage() {
           <div>
             <SectionEyebrow icon="home-outline">The Cottages</SectionEyebrow>
             <h2 className="mt-3 max-w-[22ch] font-display italic text-4xl leading-tight">
-              Six rooms, each with its own hand-built character
+              Six cottages. Each made by hand.
             </h2>
           </div>
           <Link href="/stays" className="text-xs tracking-[0.08em] uppercase text-accent underline">
@@ -51,7 +51,7 @@ export default function HomePage() {
             <div>
               <SectionEyebrow icon="calendar-outline">Events &amp; Retreats</SectionEyebrow>
               <h2 className="mt-3 max-w-[24ch] font-display italic text-4xl leading-tight">
-                Residencies, retreats, and workshops for makers
+                Time and space to make what matters
               </h2>
             </div>
             <Link href="/events" className="text-xs tracking-[0.08em] uppercase text-accent underline">

@@ -57,7 +57,7 @@ export default async function CottageDetailPage({ params }: { params: Promise<{ 
 
           <div className="border border-line bg-surface p-6">
             <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft">From</p>
-            <p className="mt-1 font-display italic text-3xl">
+            <p className="mt-1 font-sans text-3xl font-bold tracking-tight tabular-nums">
               ₹{cottage.pricePerNight.toLocaleString("en-IN")}
               <span className="text-sm font-sans not-italic text-foreground-soft"> / night</span>
             </p>

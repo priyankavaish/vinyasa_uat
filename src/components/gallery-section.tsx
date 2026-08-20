@@ -11,7 +11,7 @@ export default function GallerySection() {
         <div>
           <SectionEyebrow icon="camera-outline">From the community</SectionEyebrow>
           <h2 className="mt-3 max-w-[26ch] font-display italic text-4xl leading-tight">
-            Life at Vinyasa Earth, as it happens
+            Days at Vinyasa Earth
           </h2>
         </div>
         <a

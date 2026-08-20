@@ -74,12 +74,6 @@ export default function SiteHeader() {
         </ul>
 
         <div className="flex items-center gap-4">
-          <Link
-            href="/book"
-            className="header-booking btn btn-book-stay"
-          >
-            Book a Stay
-          </Link>
           <button
             type="button"
             aria-expanded={open}

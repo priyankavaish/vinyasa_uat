@@ -84,11 +84,8 @@ export function HomeHero() {
           Slow down, create, and meet the people shaping what&apos;s next.
         </p>
         <div className="hero-actions mt-9 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/book" className="btn btn-book-stay hero-book-button">
+          <Link href="/book" className="btn btn-outline-light hero-book-button">
             Book your stay <span aria-hidden>↗</span>
-          </Link>
-          <Link href="/events/artist-escape" className="btn btn-outline-light hero-secondary-action">
-            Explore Artist Residencies
           </Link>
         </div>
       </div>

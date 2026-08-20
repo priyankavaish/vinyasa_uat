@@ -160,29 +160,34 @@ a {
 .btn-book-stay {
   position: relative;
   align-items: center;
-  gap: .7rem;
-  overflow: hidden;
-  border: 1px solid #f1c36f;
-  border-radius: 2.5rem 2.5rem .35rem 2.5rem;
-  background: #d9823d;
-  color: #21170e;
-  font-weight: 800;
-  box-shadow: 0 .45rem 0 #5f321f, 0 1rem 2.5rem rgba(21, 14, 8, .26);
-  transform: translateY(-.2rem) rotate(-1deg);
-  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+  gap: .75rem;
+  overflow: visible;
+  padding: .55rem 0 .5rem;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  background: transparent;
+  color: var(--foreground);
+  font-weight: 700;
+  box-shadow: none;
+  transform: none;
+  backdrop-filter: none;
+  transition: color .25s ease, gap .25s ease;
 }
 .btn-book-stay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.35) 48%, transparent 64%);
-  transform: translateX(-130%);
-  animation: button-shine 4s ease-in-out infinite;
+  display: none;
 }
-.btn-book-stay:hover { background: #f0a04f; transform: translateY(-.35rem) rotate(1deg) scale(1.03); box-shadow: 0 .6rem 0 #5f321f, 0 1.2rem 3rem rgba(21,14,8,.3); }
-.btn-book-stay span { font-size: 1.05rem; transition: transform .25s ease; }
+.btn-book-stay:hover { background: transparent; color: var(--accent); transform: none; box-shadow: none; gap: 1rem; }
+.btn-book-stay span {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  font-size: 1rem;
+  transition: transform .3s ease;
+}
 .btn-book-stay:hover span { transform: translate(.2rem, -.2rem); }
-@keyframes button-shine { 0%, 68% { transform: translateX(-130%); } 88%, 100% { transform: translateX(130%); } }
 
 /* Clear hero branding: a calm solid-glass clearing over the moving film. */
 .hero-brand {
@@ -252,7 +257,7 @@ a {
 /* Price as a small editorial seal instead of a line of metadata. */
 .price-seal { display: inline-grid; width: fit-content; min-width: 12rem; padding: .9rem 1.25rem; border: 1px solid var(--accent); border-radius: 50% 48% 45% 52%; background: var(--clay-surface); transform: rotate(-2deg); box-shadow: .3rem .35rem 0 rgba(181,100,59,.18); }
 .price-from { display: block; font-size: .62rem; font-weight: 700; letter-spacing: .18em; line-height: 1; text-transform: uppercase; color: var(--accent); }
-.price-value { display: block; margin-top: .18rem; font-family: var(--font-display), Georgia, serif; font-size: 1.8rem; font-style: italic; font-weight: 700; line-height: 1; }
+.price-value { display: block; margin-top: .18rem; font-family: var(--font-sans), Arial, sans-serif; font-size: 1.8rem; font-style: normal; font-weight: 700; line-height: 1; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
 .price-unit { display: block; margin-top: .3rem; font-size: .66rem; color: var(--foreground-soft); }
 .event-price { display: grid; justify-items: end; padding: .55rem .75rem; border: 1px solid var(--accent); border-radius: 3rem 3rem .3rem 3rem; background: var(--clay-surface); transform: rotate(2deg); }
 .event-price .price-value { font-size: 1.35rem; }
@@ -291,7 +296,7 @@ a {
   font-size: .68rem;
   font-weight: 700;
   letter-spacing: .32em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 .hero-brand-vinyasa {
   font-size: clamp(3.7rem, 9.4vw, 8.2rem);
@@ -299,6 +304,7 @@ a {
   line-height: .9;
   letter-spacing: -.055em;
   white-space: nowrap;
+  text-transform: uppercase;
 }
 .hero-brand-rule { width: min(25rem, 62%); height: 1px; margin: 1.65rem 0 1.1rem; background: linear-gradient(90deg, transparent, #d88b50, transparent); }
 .hero-brand-earth {
@@ -362,9 +368,6 @@ a {
 }
 
 /* Mobile shell and hero polish */
-.header-booking { display: none; }
-@media (min-width: 640px) { .header-booking { display: inline-flex; } }
-
 .site-header-inner {
   padding-top: max(1rem, env(safe-area-inset-top));
   padding-right: max(1.25rem, env(safe-area-inset-right));
@@ -403,11 +406,17 @@ a {
   .hero-brand + p { max-width: 22rem; margin-top: 1.35rem; font-size: .98rem; line-height: 1.5; text-wrap: balance; }
   .hero-actions { width: 100%; margin-top: 1.65rem; flex-direction: column; gap: .8rem; }
   .hero-book-button {
+    display: inline-flex;
     width: auto;
-    min-width: 13.5rem;
-    padding: .9rem 1.4rem;
-    border-radius: 999px;
-    box-shadow: 0 .25rem 0 #5f321f, 0 .7rem 1.7rem rgba(21,14,8,.22);
+    min-width: 12.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: .65rem;
+    padding: .9rem 1.25rem;
+    border: 1px solid rgba(251,249,243,.65);
+    border-radius: 0;
+    color: var(--surface);
+    box-shadow: none;
     transform: none;
     font-size: .7rem;
   }
@@ -425,9 +434,26 @@ a {
   .organic-connect, .organic-events { padding-block: 4.5rem; }
   .organic-connect { margin-top: 0; clip-path: none; border-radius: 3.5rem 3.5rem 0 0; }
   .marquee-strip { min-height: 3.25rem; align-items: center; }
-  .marquee-strip + .organic-connect { position: relative; z-index: 1; }
+.marquee-strip + .organic-connect { position: relative; z-index: 1; }
   .organic-stays { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   .connect-tile, .stay-card, .event-card { max-width: 100%; }
+}
+
+.marquee-track {
+  animation: marquee-move 28s linear infinite;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+@keyframes marquee-move {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (max-width: 639px) {
+  .marquee-track { animation-duration: 18s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation-duration: 60s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -469,6 +495,36 @@ a {
   0%, 58%, 100% { opacity: 0; transform: translateY(.3rem) rotate(0deg) scale(.5); }
   70% { opacity: 1; transform: translateY(-.2rem) rotate(90deg) scale(1); }
   84% { opacity: 0; transform: translateY(-.75rem) rotate(180deg) scale(.7); }
+}
+
+.music-toggle {
+  position: fixed;
+  left: max(1.25rem, env(safe-area-inset-left));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  z-index: 30;
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(251, 249, 243, .35);
+  border-radius: 999px;
+  background: rgba(35, 31, 25, .78);
+  color: #fbf9f3;
+  box-shadow: 0 .5rem 1.8rem rgba(25, 20, 14, .2);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: background .25s ease, transform .25s ease;
+}
+.music-toggle:hover { background: rgba(181, 100, 59, .92); transform: translateY(-2px); }
+.music-note { color: #edb678; font-size: 1.15rem; line-height: 1; transition: transform .25s ease; }
+.music-toggle.is-playing .music-note { animation: music-note-pulse 1.6s ease-in-out infinite; }
+.music-slash { position: absolute; width: 1.35rem; height: 1px; background: #fbf9f3; transform: rotate(-45deg); box-shadow: 0 0 0 2px rgba(35,31,25,.35); }
+@keyframes music-note-pulse { 0%, 100% { transform: scale(.92); } 50% { transform: scale(1.12); } }
+
+@media (max-width: 639px) {
+  .music-toggle { width: 2.75rem; height: 2.75rem; }
 }
 
 /* A soft, continuous vertical bob — gives the "earth" accent a bit of life

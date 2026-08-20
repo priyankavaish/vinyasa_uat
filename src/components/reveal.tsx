@@ -58,6 +58,12 @@ export function Reveal({
       return;
     }
 
+    // Progressive enhancement: content is visible in SSR and without JS.
+    // Apply the entrance state only after hydration, so a slow script/audio
+    // load can never leave the rest of the page blank.
+    Object.assign(el.style, hidden);
+    el.style.transition = transition;
+
     const show = () => {
       el.style.opacity = "1";
       el.style.transform = "none";
@@ -84,9 +90,5 @@ export function Reveal({
     };
   }, [delay]);
 
-  return (
-    <div ref={ref} className={className} style={{ ...hidden, transition }}>
-      {children}
-    </div>
-  );
+  return <div ref={ref} className={className}>{children}</div>;
 }

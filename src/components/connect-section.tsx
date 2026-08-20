@@ -64,11 +64,11 @@ export default function ConnectSection() {
         <Reveal variant="fade" className="mb-12 max-w-2xl">
           <SectionEyebrow tone="secondary" icon="compass-outline">Self-discovery</SectionEyebrow>
           <h2 className="mt-3 font-display italic text-5xl leading-[1.02] sm:text-6xl">
-            Come for space. Leave with people.
+            A place to arrive. People to build with.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-foreground-soft">
-            Rest, build, and share unhurried time with artists, founders, and curious minds.
-            Vinyasa Earth is designed for the conversations that rarely fit inside a calendar.
+            Stay among artists, founders, and curious minds. Make something, exchange ideas,
+            or meet the person who changes what you build next.
           </p>
         </Reveal>
 
