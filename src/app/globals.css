@@ -361,6 +361,83 @@ a {
   .price-panel .price-value { font-size: 2.15rem; }
 }
 
+/* Mobile shell and hero polish */
+.header-booking { display: none; }
+@media (min-width: 640px) { .header-booking { display: inline-flex; } }
+
+.site-header-inner {
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+}
+.mobile-nav {
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+}
+.menu-toggle { flex: 0 0 auto; backdrop-filter: blur(8px); }
+
+@media (max-width: 639px) {
+  html, body { max-width: 100%; overflow-x: clip; }
+  main > * { max-width: 100%; }
+  .site-header-inner { min-height: calc(4.75rem + env(safe-area-inset-top)); padding-bottom: .75rem; }
+  .site-logo img { width: 2.75rem; height: 2.75rem; }
+  .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: rgba(255,255,255,.48); background: rgba(20,25,18,.18); }
+
+  .home-hero { min-height: 100svh; }
+  .hero-content {
+    justify-content: center;
+    min-height: 100svh;
+    padding-top: calc(5.75rem + env(safe-area-inset-top));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+  }
+  .hero-content > p:first-child { margin-bottom: .75rem; font-size: .64rem; letter-spacing: .24em; }
+  .hero-content > p:first-child > span { width: 1.25rem; }
+  .hero-brand { width: 100%; padding: 1.35rem 0 1.5rem; }
+  .hero-brand-kicker { margin-bottom: .85rem; font-size: .56rem; letter-spacing: .23em; }
+  .hero-brand-vinyasa { font-size: clamp(3rem, 14vw, 4.15rem); line-height: .92; white-space: nowrap; }
+  .hero-brand-rule { width: 72%; margin: 1.05rem 0 .8rem; }
+  .hero-brand-earth { font-size: .57rem; letter-spacing: .2em; }
+  .hero-brand + p { max-width: 22rem; margin-top: 1.35rem; font-size: .98rem; line-height: 1.5; text-wrap: balance; }
+  .hero-actions { width: 100%; margin-top: 1.65rem; flex-direction: column; gap: .8rem; }
+  .hero-book-button {
+    width: auto;
+    min-width: 13.5rem;
+    padding: .9rem 1.4rem;
+    border-radius: 999px;
+    box-shadow: 0 .25rem 0 #5f321f, 0 .7rem 1.7rem rgba(21,14,8,.22);
+    transform: none;
+    font-size: .7rem;
+  }
+  .hero-secondary-action {
+    padding: .55rem .2rem .35rem;
+    border: 0;
+    border-bottom: 1px solid rgba(251,249,243,.58);
+    font-size: .64rem;
+  }
+  .hero-secondary-action:hover { color: var(--surface); background: transparent; }
+  .hero-video { object-position: 52% center; }
+
+  .organic-section { overflow: clip; }
+  .organic-section h2 { font-size: clamp(2.25rem, 10vw, 3rem); text-wrap: balance; }
+  .organic-connect, .organic-events { padding-block: 4.5rem; }
+  .organic-stays { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+  .connect-tile, .stay-card, .event-card { max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video { animation: none !important; }
+}
+
+.place-carousel-slide { flex-basis: min(82vw, 22rem); }
+.place-carousel-slide:nth-child(even) button { border-radius: 7rem 7rem .75rem .75rem; }
+.place-carousel-slide:nth-child(3n) button { border-radius: .75rem 6rem .75rem .75rem; }
+.place-carousel-track { backface-visibility: hidden; }
+@media (min-width: 640px) { .place-carousel-slide { flex-basis: 44%; } }
+@media (min-width: 1024px) { .place-carousel-slide { flex-basis: 32%; } }
+
 /* A soft, continuous vertical bob — gives the "earth" accent a bit of life
    instead of sitting dead-still under the moving video. */
 @keyframes gentle-bob {

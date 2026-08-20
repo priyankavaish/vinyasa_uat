@@ -47,9 +47,9 @@ export default function SiteHeader() {
           : "bg-background/75 shadow-[0_10px_30px_-18px_rgba(43,38,32,0.35)] backdrop-blur-lg"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
-          <Image src="/images/logo.png" alt="Vinyasa Earth" width={38} height={38} className="rounded-full" />
+      <div className="site-header-inner mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
+        <Link href="/" className="site-logo flex items-center gap-2.5" aria-label="Vinyasa Earth home">
+          <Image src="/images/logo.png" alt="" width={42} height={42} className="rounded-full" />
         </Link>
 
         <ul
@@ -74,7 +74,7 @@ export default function SiteHeader() {
         <div className="flex items-center gap-4">
           <Link
             href="/book"
-            className="btn btn-book-stay hidden sm:inline-flex"
+            className="header-booking btn btn-book-stay"
           >
             Book a Stay
           </Link>
@@ -82,7 +82,7 @@ export default function SiteHeader() {
             type="button"
             aria-expanded={open}
             aria-label="Toggle menu"
-            className={`grid h-9 w-9 place-items-center border lg:hidden ${
+            className={`menu-toggle grid h-10 w-10 place-items-center rounded-full border lg:hidden ${
               transparent ? "border-background/50" : "border-line"
             }`}
             onClick={() => setOpen((v) => !v)}
@@ -96,7 +96,7 @@ export default function SiteHeader() {
       {!transparent && <div className="earth-edge" aria-hidden />}
 
       {open && (
-        <nav className="border-t border-line bg-background px-5 py-4 lg:hidden">
+        <nav className="mobile-nav border-t border-line bg-background px-5 py-4 lg:hidden">
           <ul className="flex flex-col gap-4 text-sm tracking-[0.08em] uppercase text-foreground-soft">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>

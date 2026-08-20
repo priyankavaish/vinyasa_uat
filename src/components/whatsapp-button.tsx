@@ -23,7 +23,7 @@ export default function WhatsappButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
-      className="fixed bottom-5 right-5 z-50 grid h-11 w-11 place-items-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:-translate-y-0.5"
+      className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1.25rem,env(safe-area-inset-right))] z-30 grid h-11 w-11 place-items-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:-translate-y-0.5"
     >
       <Icon name="logo-whatsapp" size={22} />
     </a>

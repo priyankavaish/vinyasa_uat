@@ -1,16 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ParallaxHeroImage } from "./parallax";
 
 export function HomeHero() {
   const contentRef = useRef<HTMLDivElement>(null);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    void video.play().catch(() => {
+      // iOS Low Power Mode may still choose the poster; keeping it is the
+      // graceful fallback while normal mobile browsers autoplay the film.
+    });
   }, []);
 
   useEffect(() => {
@@ -40,35 +46,27 @@ export function HomeHero() {
   }, []);
 
   return (
-    <section className="relative flex min-h-[100vh] flex-col overflow-hidden text-background">
+    <section className="home-hero relative flex min-h-[100svh] flex-col overflow-hidden text-background">
       <ParallaxHeroImage>
-        {reducedMotion ? (
-          <Image
-            src="/images/hero-video-poster.jpg"
-            alt="Sunrise over the fields at Vinyasa Earth"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        ) : (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/images/hero-video-poster.jpg"
-            className="absolute inset-0 h-full w-full object-cover"
-          >
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
-        )}
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          disablePictureInPicture
+          poster="/images/hero-video-poster.jpg"
+          className="hero-video absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
       </ParallaxHeroImage>
       <div className="absolute inset-0 bg-gradient-to-b from-[#15120b]/55 via-[#1c2418]/35 to-[#171108]/70" />
 
       <div
         ref={contentRef}
-        className="relative z-10 flex w-full flex-1 flex-col items-center justify-center px-5 pt-24 text-center sm:px-8"
+        className="hero-content relative z-10 flex w-full flex-1 flex-col items-center justify-center px-5 text-center sm:px-8"
       >
         <p className="mb-2 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-background/80">
           <span className="h-px w-6 bg-background/50" aria-hidden />
@@ -85,11 +83,11 @@ export function HomeHero() {
         <p className="mt-7 max-w-[44ch] text-base leading-relaxed text-background/90">
           Slow down, create, and meet the people shaping what&apos;s next.
         </p>
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/book" className="btn btn-book-stay">
+        <div className="hero-actions mt-9 flex flex-wrap items-center justify-center gap-4">
+          <Link href="/book" className="btn btn-book-stay hero-book-button">
             Book your stay <span aria-hidden>↗</span>
           </Link>
-          <Link href="/events/artist-escape" className="btn btn-outline-light">
+          <Link href="/events/artist-escape" className="btn btn-outline-light hero-secondary-action">
             Explore Artist Residencies
           </Link>
         </div>
