@@ -24,7 +24,7 @@ export default function HomePage() {
       <MarqueeBar />
       <ConnectSection />
 
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+      <section className="organic-section organic-stays mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <SectionEyebrow icon="home-outline">The Cottages</SectionEyebrow>
@@ -43,7 +43,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-clay-surface py-20">
+      <section className="organic-section organic-events bg-clay-surface py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="left" className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>

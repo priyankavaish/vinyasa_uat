@@ -15,7 +15,7 @@ export default function EventCard({ event, index = 0 }: { event: EventProgram; i
     <Reveal variant={index % 2 === 0 ? "left" : "right"} delay={(index % 3) * 90}>
       <Link
         href={`/events/${event.slug}`}
-        className="group flex h-full flex-col overflow-hidden border border-line bg-surface transition-shadow hover:shadow-md"
+        className={`event-card event-card-${(index % 3) + 1} group flex h-full flex-col overflow-hidden border border-line bg-surface transition-all hover:shadow-xl`}
       >
         <div className="relative h-44 shrink-0">
           <Image
@@ -33,9 +33,10 @@ export default function EventCard({ event, index = 0 }: { event: EventProgram; i
           <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-foreground-soft">{event.description}</p>
           <div className="mt-auto flex items-center justify-between gap-3 pt-4">
             <span className="text-xs text-muted">{event.durationLabel}</span>
-            <span className="tabular-nums text-foreground">
-              <span className="text-xs font-medium uppercase tracking-[0.04em] text-foreground-soft">from </span>
-              <span className="text-lg font-semibold">₹{event.priceFrom.toLocaleString("en-IN")}</span>
+            <span className="event-price tabular-nums text-foreground">
+              <span className="price-from">from</span>
+              <span className="price-value">₹{event.priceFrom.toLocaleString("en-IN")}</span>
+              <span className="price-unit">full experience</span>
               {event.placeholder && <span className="text-xs text-muted"> (placeholder)</span>}
             </span>
           </div>

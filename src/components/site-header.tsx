@@ -74,7 +74,7 @@ export default function SiteHeader() {
         <div className="flex items-center gap-4">
           <Link
             href="/book"
-            className={`btn hidden sm:inline-block ${transparent ? "btn-outline-light" : "btn-solid"}`}
+            className="btn btn-book-stay hidden sm:inline-flex"
           >
             Book a Stay
           </Link>
@@ -106,7 +106,7 @@ export default function SiteHeader() {
               </li>
             ))}
             <li>
-              <Link href="/book" onClick={() => setOpen(false)} className="btn btn-solid inline-block">
+              <Link href="/book" onClick={() => setOpen(false)} className="btn btn-book-stay inline-flex">
                 Book a Stay
               </Link>
             </li>

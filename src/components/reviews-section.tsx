@@ -1,74 +1,88 @@
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
-import { Icon } from "./icon";
+import { Icon, type IconName } from "./icon";
 import { GOOGLE_RATING, GOOGLE_MAPS_LINK } from "@/lib/site";
 
 function Stars({ score }: { score: number }) {
   const full = Math.round(score);
   return (
-    <span aria-hidden className="flex items-center gap-0.5">
+    <span aria-hidden className="flex items-center justify-center gap-0.5">
       {Array.from({ length: 5 }, (_, i) => (
-        <Icon key={i} name={i < full ? "star" : "star-outline"} size={16} className={i < full ? "text-accent" : "text-line"} />
+        <Icon key={i} name={i < full ? "star" : "star-outline"} size={15} className={i < full ? "text-accent" : "text-line"} />
       ))}
     </span>
   );
 }
 
-// Break the long review summary into short standalone lines instead of one
-// dense paragraph — each sentence gets room to breathe.
-const fragments = GOOGLE_RATING.summary.split(/(?<=\.)\s+/);
-const fragmentIndent = ["", "sm:pl-10", "sm:pl-20"];
+// One icon + accent per topic instead of a plain text pill — the palette
+// matches the hero's earth-cycle tones so it reads as one system.
+const TOPIC_STYLE: Record<string, { icon: IconName; accent: string }> = {
+  "Peaceful atmosphere": { icon: "moon-outline", accent: "#6b7a9e" },
+  Sustainability: { icon: "leaf-outline", accent: "#7c8f5a" },
+  "Dance studio": { icon: "musical-notes-outline", accent: "#c9713f" },
+  "Outside amphitheatre": { icon: "sunny-outline", accent: "#d99a2b" },
+};
+const TILT = ["-rotate-2", "rotate-1", "-rotate-1", "rotate-2"];
+
+// Just the single strongest line, not the full review — everything else
+// (topics, rating) carries the rest visually instead of in prose.
+const pullQuote = GOOGLE_RATING.summary.split(/(?<=\.)\s+/)[0]!.replace(/\.$/, "");
 
 export default function ReviewsSection() {
   return (
     <section className="relative overflow-hidden bg-surface py-24">
       <span
-        className="pointer-events-none absolute -left-6 -top-16 font-display text-[16rem] italic leading-none text-foreground/[0.04] select-none"
+        className="pointer-events-none absolute -left-8 -top-20 font-display text-[18rem] italic leading-none text-foreground/[0.035] select-none"
         aria-hidden
       >
         &ldquo;
       </span>
 
-      <div className="relative mx-auto max-w-5xl px-5 sm:px-8">
-        <Reveal variant="fade" className="mb-14 flex justify-center sm:justify-start">
-          <SectionEyebrow icon="trophy-outline">Verified on Google</SectionEyebrow>
+      <div className="relative mx-auto max-w-4xl px-5 text-center sm:px-8">
+        <Reveal variant="fade" className="flex justify-center">
+          <SectionEyebrow icon="ribbon-outline">Verified on Google</SectionEyebrow>
         </Reveal>
 
-        <div className="grid gap-10 text-center sm:grid-cols-[auto_1fr] sm:items-start sm:gap-16 sm:text-left">
-          <Reveal variant="scale" className="flex flex-col items-center gap-3 sm:items-start">
-            <span className="font-display text-7xl italic leading-none">{GOOGLE_RATING.score}</span>
-            <Stars score={GOOGLE_RATING.score} />
-            <a
-              href={GOOGLE_MAPS_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs tracking-[0.06em] uppercase text-foreground-soft underline"
-            >
-              {GOOGLE_RATING.count} Google reviews
-            </a>
-          </Reveal>
-
-          <div className="space-y-7">
-            {fragments.map((line, i) => (
-              <Reveal
-                key={line}
-                variant={i % 2 === 0 ? "left" : "right"}
-                delay={i * 130}
-                className={fragmentIndent[i % fragmentIndent.length]}
-              >
-                <p className="max-w-[42ch] font-display text-2xl italic leading-snug sm:text-3xl">{line}</p>
-              </Reveal>
-            ))}
+        <Reveal variant="scale" delay={80} className="mx-auto mt-9 flex w-fit flex-col items-center">
+          <div>
+            <span className="font-display text-8xl italic leading-none sm:text-9xl">{GOOGLE_RATING.score}</span>
           </div>
-        </div>
-
-        <Reveal variant="fade" delay={260} className="mt-16 flex flex-wrap justify-center gap-2 sm:justify-start">
-          {GOOGLE_RATING.topics.map((topic) => (
-            <span key={topic} className="border border-line px-3 py-1.5 text-xs tracking-[0.04em] text-foreground-soft">
-              {topic}
-            </span>
-          ))}
+          <div className="mt-3">
+            <Stars score={GOOGLE_RATING.score} />
+          </div>
+          <a
+            href={GOOGLE_MAPS_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 text-xs tracking-[0.06em] uppercase text-foreground-soft underline underline-offset-4"
+          >
+            {GOOGLE_RATING.count} Google reviews
+          </a>
         </Reveal>
+
+        <Reveal variant="up" delay={180}>
+          <p className="mx-auto mt-12 max-w-[30ch] font-display text-3xl italic leading-snug sm:text-4xl">
+            &ldquo;{pullQuote}&rdquo;
+          </p>
+        </Reveal>
+
+        <div className="mt-16 flex flex-wrap justify-center gap-5">
+          {GOOGLE_RATING.topics.map((topic, i) => {
+            const style = TOPIC_STYLE[topic] ?? { icon: "sparkles-outline" as IconName, accent: "#b5643b" };
+            return (
+              <Reveal key={topic} variant={i % 2 === 0 ? "left" : "right"} delay={260 + i * 90}>
+                <div
+                  className={`flex w-32 flex-col items-center gap-2 border border-line bg-surface px-4 py-5 shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:rotate-0 ${TILT[i % TILT.length]}`}
+                >
+                  <span style={{ color: style.accent }}>
+                    <Icon name={style.icon} size={24} />
+                  </span>
+                  <span className="text-xs font-medium leading-tight text-foreground-soft">{topic}</span>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

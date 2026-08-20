@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ParallaxHeroImage } from "./parallax";
-import MaskedHeading from "./MaskedHeading";
-import EarthTypewriter from "./EarthTypewriter";
 
 export function HomeHero() {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -66,7 +64,7 @@ export function HomeHero() {
           </video>
         )}
       </ParallaxHeroImage>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#241c10]/45 via-[#2f3a26]/15 to-[#1a1408]/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#15120b]/55 via-[#1c2418]/35 to-[#171108]/70" />
 
       <div
         ref={contentRef}
@@ -77,43 +75,19 @@ export function HomeHero() {
           Amer, Jaipur
           <span className="h-px w-6 bg-background/50" aria-hidden />
         </p>
-        <MaskedHeading
-          text="Vinyasa"
-          mediaType="video"
-          src="/videos/hero.mp4"
-          poster="/images/hero-video-poster.jpg"
-          fillScale={1.15}
-          parallax={14}
-          reveal="rise"
-          trigger="view"
-          duration={1.3}
-          stagger={0.08}
-          align="center"
-          weight={600}
-          tracking={-0.02}
-          lineHeight={0.95}
-          textScale={0.105}
-          brightness={1.15}
-          saturation={1.2}
-          className="max-w-full"
-        />
-        <EarthTypewriter className="mt-3 text-[9vw] font-normal leading-[0.9] tracking-[-0.02em] sm:text-5xl lg:text-6xl" />
-
-        <div className="mt-10 flex w-full max-w-4xl items-center justify-between gap-6 text-xs font-semibold uppercase tracking-[0.22em] max-sm:hidden">
-          <span className="text-[#e8a15c]">A home</span>
-          <span className="h-px flex-1 bg-background/30" />
-          <span className="text-[#9db388]">Grown from the earth</span>
-          <span className="h-px flex-1 bg-background/30" />
-          <span className="text-[#e0b0d0]">You return to</span>
+        <div className="hero-brand" aria-label="Vinyasa Earth">
+          <span className="hero-brand-kicker">A retreat for curious minds</span>
+          <span className="hero-brand-vinyasa">Vinyasa Earth</span>
+          <span className="hero-brand-rule" aria-hidden />
+          <span className="hero-brand-earth">Stay · Create · Connect</span>
         </div>
 
-        <p className="mt-8 max-w-[38ch] text-base leading-relaxed text-background/85">
-          Yoga. Earth. One community.
-          Live, create, belong.
+        <p className="mt-7 max-w-[44ch] text-base leading-relaxed text-background/90">
+          Slow down, create, and meet the people shaping what&apos;s next.
         </p>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/book" className="btn btn-outline-light">
-            Check Availability
+          <Link href="/book" className="btn btn-book-stay">
+            Book your stay <span aria-hidden>↗</span>
           </Link>
           <Link href="/events/artist-escape" className="btn btn-outline-light">
             Explore Artist Residencies
@@ -121,10 +95,6 @@ export function HomeHero() {
         </div>
       </div>
 
-      <div className="relative z-10 flex items-center justify-center gap-2 pb-8 text-[10px] font-semibold uppercase tracking-[0.3em] text-background/60">
-        <span className="h-8 w-px animate-pulse bg-background/40" aria-hidden />
-        Scroll
-      </div>
     </section>
   );
 }

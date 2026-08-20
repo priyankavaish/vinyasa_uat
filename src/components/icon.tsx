@@ -17,7 +17,11 @@ export type IconName =
   | "people-outline"
   | "location-outline"
   | "trophy-outline"
-  | "compass-outline";
+  | "compass-outline"
+  | "ribbon-outline"
+  | "moon-outline"
+  | "musical-notes-outline"
+  | "sunny-outline";
 
 const PATHS: Record<IconName, React.ReactNode> = {
   "leaf-outline": (
@@ -262,6 +266,71 @@ const PATHS: Record<IconName, React.ReactNode> = {
         fill="currentColor"
         d="M350.67,150.93l-117.2,46.88a64,64,0,0,0-35.66,35.66l-46.88,117.2a8,8,0,0,0,10.4,10.4l117.2-46.88a64,64,0,0,0,35.66-35.66l46.88-117.2A8,8,0,0,0,350.67,150.93ZM256,280a24,24,0,1,1,24-24A24,24,0,0,1,256,280Z"
       />
+    </>
+  ),
+  "ribbon-outline": (
+    <>
+      <circle cx="256" cy="160" r="128" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+      <path
+        d="M143.65,227.82,48,400l86.86-.42a16,16,0,0,1,13.82,7.8L192,480l88.33-194.32"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+      <path
+        d="M366.54,224,464,400l-86.86-.42a16,16,0,0,0-13.82,7.8L320,480,256,339.2"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+      <circle cx="256" cy="160" r="64" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+    </>
+  ),
+  "moon-outline": (
+    <path
+      d="M160,136c0-30.62,4.51-61.61,16-88C99.57,81.27,48,159.32,48,248c0,119.29,96.71,216,216,216,88.68,0,166.73-51.57,200-128-26.39,11.49-57.38,16-88,16C256.71,352,160,255.29,160,136Z"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="32"
+    />
+  ),
+  "musical-notes-outline": (
+    <>
+      <path
+        d="M192,218v-6c0-14.84,10-27,24.24-30.59l174.59-46.68A20,20,0,0,1,416,154V176"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+      <path
+        d="M416,295.94v80c0,13.91-8.93,25.59-22,30l-22,8c-25.9,8.72-52-10.42-52-38h0a33.37,33.37,0,0,1,23-32l51-18.15c13.07-4.4,22-15.94,22-29.85V58a10,10,0,0,0-12.6-9.61L204,102a16.48,16.48,0,0,0-12,16v226c0,13.91-8.93,25.6-22,30l-52,18c-13.88,4.68-22,17.22-22,32h0c0,27.58,26.52,46.55,52,38l22-8c13.07-4.4,22-16.08,22-30v-80"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+    </>
+  ),
+  "sunny-outline": (
+    <>
+      {[
+        [256, 48, 256, 96], [256, 416, 256, 464],
+        [403.08, 108.92, 369.14, 142.86], [142.86, 369.14, 108.92, 403.08],
+        [464, 256, 416, 256], [96, 256, 48, 256],
+        [403.08, 403.08, 369.14, 369.14], [142.86, 142.86, 108.92, 108.92],
+      ].map(([x1, y1, x2, y2]) => (
+        <line key={`${x1}-${y1}`} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeLinecap="round" strokeWidth="32" />
+      ))}
+      <circle cx="256" cy="256" r="80" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="32" />
     </>
   ),
 };

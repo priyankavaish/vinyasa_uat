@@ -49,7 +49,7 @@ const WAYS = [
     title: "Founder's Place",
     href: "/about",
     image: "/images/amer-fort-lake.jpg",
-    blurb: "The story, and the person, behind Vinyasa Earth.",
+    blurb: "Stay among founders, trade ideas by the fire, and perhaps meet your next CTO or collaborator.",
     accent: "#6b7a9e",
     span: "sm:col-span-3 sm:row-span-1",
   },
@@ -59,16 +59,16 @@ const REVEAL_VARIANTS = ["scale", "up", "fade", "left", "right"] as const;
 
 export default function ConnectSection() {
   return (
-    <section className="bg-background py-24 text-foreground">
+    <section className="organic-section organic-connect bg-background py-24 text-foreground">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal variant="fade" className="mb-12 max-w-2xl">
           <SectionEyebrow tone="secondary" icon="compass-outline">Self-discovery</SectionEyebrow>
           <h2 className="mt-3 font-display italic text-5xl leading-[1.02] sm:text-6xl">
-            Ways to connect with yourself
+            Come for space. Leave with people.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-foreground-soft">
-            Explore our curated experiences that cater to meaningful conversations with self,
-            with an aim towards self growth.
+            Rest, build, and share unhurried time with artists, founders, and curious minds.
+            Vinyasa Earth is designed for the conversations that rarely fit inside a calendar.
           </p>
         </Reveal>
 
@@ -82,7 +82,7 @@ export default function ConnectSection() {
             >
               <Link
                 href={way.href}
-                className="group relative block h-full min-h-[220px] overflow-hidden border border-line"
+                className={`connect-tile connect-tile-${i + 1} group relative block h-full min-h-[220px] overflow-hidden border border-line`}
               >
                 <Image
                   src={way.image}

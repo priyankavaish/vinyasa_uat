@@ -23,7 +23,7 @@ export default function CottageCard({
     <Reveal variant="scale" delay={(index % 3) * 90} className={featured ? "sm:col-span-2" : ""}>
       <Link
         href={`/stays/${cottage.slug}`}
-        className="group block overflow-hidden border border-line bg-surface transition-shadow hover:shadow-md"
+        className={`stay-card stay-card-${(index % 3) + 1} group block overflow-hidden border border-line bg-surface transition-all hover:shadow-xl`}
       >
         <div className={`relative ${featured ? "h-80" : "h-56"}`}>
           <Image
@@ -38,13 +38,20 @@ export default function CottageCard({
             {cottage.tagline}
           </span>
         </div>
-        <div className="p-5">
-          <h3 className="font-display italic text-xl">{cottage.name}</h3>
+        <div className="p-5 sm:p-6">
+          <div className="flex items-start justify-between gap-5">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-[.18em] text-accent">Earth cottage</span>
+              <h3 className="mt-1 font-display italic text-2xl">{cottage.name}</h3>
+            </div>
+            <span className="text-xl text-accent" aria-hidden>↗</span>
+          </div>
           <p className="mt-2 text-sm text-foreground-soft leading-relaxed">{cottage.description}</p>
-          <p className="mt-3 tabular-nums text-foreground">
-            <span className="text-xs font-medium uppercase tracking-[0.04em] text-foreground-soft">from </span>
-            <span className="text-lg font-semibold">₹{cottage.pricePerNight.toLocaleString("en-IN")}</span>
-            <span className="text-xs text-foreground-soft"> / night</span>
+          <p className="price-panel mt-6 tabular-nums text-foreground">
+            <span className="price-from">From</span>
+            <span className="price-value">₹{cottage.pricePerNight.toLocaleString("en-IN")}</span>
+            <span className="price-unit">per night</span>
+            <span className="price-includes">Breakfast included</span>
             {cottage.placeholder && <span className="text-xs text-muted"> (placeholder)</span>}
           </p>
         </div>
