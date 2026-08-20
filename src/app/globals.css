@@ -300,11 +300,11 @@ a {
 }
 .hero-brand-vinyasa {
   font-size: clamp(3.7rem, 9.4vw, 8.2rem);
-  font-weight: 550;
+  font-weight: 400;
   line-height: .9;
   letter-spacing: -.055em;
   white-space: nowrap;
-  text-transform: uppercase;
+  text-transform: none;
 }
 .hero-brand-rule { width: min(25rem, 62%); height: 1px; margin: 1.65rem 0 1.1rem; background: linear-gradient(90deg, transparent, #d88b50, transparent); }
 .hero-brand-earth {
