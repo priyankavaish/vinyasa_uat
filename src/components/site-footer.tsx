@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Icon } from "./icon";
 import { ADDRESS, CONTACT_EMAIL, CONTACT_PHONE_DISPLAY } from "@/lib/site";
 
 export default function SiteFooter() {
@@ -32,13 +31,10 @@ export default function SiteFooter() {
           <span>© {new Date().getFullYear()} Vinyasa Earth</span>
           <span>Instagram · @vinyasa.earth</span>
         </div>
-        <p className="pt-3 text-center text-xs text-background/40 sm:text-left">
-          <Icon name="sparkles-outline" size={12} className="mr-1 inline-block align-[-1px]" />
-          Managed with a heart, a headstand, and zero drama by{" "}
-          <a href="https://lexabiz.in" target="_blank" rel="noopener noreferrer" className="underline">
-            LexaBiz.in
+        <p className="pt-4 text-center sm:text-left">
+          <a href="https://lexabiz.in" target="_blank" rel="noopener noreferrer" className="lexabiz-credit">
+            Crafted by Lexabiz.in
           </a>
-          . One earth, one community, infinite chai refills.
         </p>
       </div>
     </footer>

@@ -423,6 +423,9 @@ a {
   .organic-section { overflow: clip; }
   .organic-section h2 { font-size: clamp(2.25rem, 10vw, 3rem); text-wrap: balance; }
   .organic-connect, .organic-events { padding-block: 4.5rem; }
+  .organic-connect { margin-top: 0; clip-path: none; border-radius: 3.5rem 3.5rem 0 0; }
+  .marquee-strip { min-height: 3.25rem; align-items: center; }
+  .marquee-strip + .organic-connect { position: relative; z-index: 1; }
   .organic-stays { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   .connect-tile, .stay-card, .event-card { max-width: 100%; }
 }
@@ -437,6 +440,36 @@ a {
 .place-carousel-track { backface-visibility: hidden; }
 @media (min-width: 640px) { .place-carousel-slide { flex-basis: 44%; } }
 @media (min-width: 1024px) { .place-carousel-slide { flex-basis: 32%; } }
+
+.lexabiz-credit {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+  color: rgba(251, 249, 243, .48);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .35s ease, letter-spacing .35s ease;
+}
+.lexabiz-credit::before,
+.lexabiz-credit::after {
+  position: absolute;
+  color: #e6a85d;
+  content: "✦";
+  opacity: 0;
+  pointer-events: none;
+  animation: lexabiz-magic 3.8s ease-in-out infinite;
+}
+.lexabiz-credit::before { left: -.9rem; top: -.45rem; font-size: .55rem; }
+.lexabiz-credit::after { right: -.85rem; bottom: -.35rem; font-size: .38rem; animation-delay: 1.15s; }
+.lexabiz-credit:hover { color: #f3c783; letter-spacing: .15em; }
+@keyframes lexabiz-magic {
+  0%, 58%, 100% { opacity: 0; transform: translateY(.3rem) rotate(0deg) scale(.5); }
+  70% { opacity: 1; transform: translateY(-.2rem) rotate(90deg) scale(1); }
+  84% { opacity: 0; transform: translateY(-.75rem) rotate(180deg) scale(.7); }
+}
 
 /* A soft, continuous vertical bob — gives the "earth" accent a bit of life
    instead of sitting dead-still under the moving video. */

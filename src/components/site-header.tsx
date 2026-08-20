@@ -28,16 +28,22 @@ export default function SiteHeader() {
 
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 48);
+      const threshold = overHero ? window.innerHeight * 0.88 : 48;
+      setScrolled(window.scrollY > threshold);
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [overHero]);
 
   useEffect(() => {
-    setScrolled(window.scrollY > 48);
-  }, [pathname]);
+    const threshold = overHero ? window.innerHeight * 0.88 : 48;
+    setScrolled(window.scrollY > threshold);
+  }, [pathname, overHero]);
 
   return (
     <header
