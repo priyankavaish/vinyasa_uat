@@ -47,11 +47,7 @@ export default function SiteHeader() {
 
   return (
     <header
-      className={`fixed top-0 z-40 w-full transition-all duration-500 ${
-        transparent
-          ? "bg-transparent"
-          : "bg-background/75 shadow-[0_10px_30px_-18px_rgba(43,38,32,0.35)] backdrop-blur-lg"
-      }`}
+      className="fixed top-0 z-40 w-full bg-transparent transition-all duration-500"
     >
       <div className="site-header-inner mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
         <Link href="/" className="site-logo flex items-center gap-2.5" aria-label="Vinyasa Earth home">
@@ -98,8 +94,6 @@ export default function SiteHeader() {
           </button>
         </div>
       </div>
-
-      {!transparent && <div className="earth-edge" aria-hidden />}
 
       {open && (
         <nav className="mobile-nav border-t border-line bg-background px-5 py-4 lg:hidden">
