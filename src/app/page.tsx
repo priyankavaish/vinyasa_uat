@@ -14,6 +14,8 @@ import ConnectSection from "@/components/connect-section";
 import { Reveal } from "@/components/reveal";
 import { cottages, events } from "@/lib/content";
 
+export const metadata = { alternates: { canonical: "/" } };
+
 export default function HomePage() {
   const featured = cottages.slice(0, 3);
   const upcomingEvents = events.slice(0, 3);

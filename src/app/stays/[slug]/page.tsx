@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cottages } from "@/lib/content";
+import type { Metadata } from "next";
 
 const IMAGE_ROTATION = [
   "/images/property-cottages-day.jpg",
@@ -11,6 +12,13 @@ const IMAGE_ROTATION = [
 
 export function generateStaticParams() {
   return cottages.map((c) => ({ slug: c.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const cottage = cottages.find((item) => item.slug === slug);
+  if (!cottage) return {};
+  return { title: `${cottage.name} Cottage`, description: cottage.description, alternates: { canonical: `/stays/${cottage.slug}` } };
 }
 
 export default async function CottageDetailPage({ params }: { params: Promise<{ slug: string }> }) {

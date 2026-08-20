@@ -2,7 +2,7 @@ import { PageHero } from "@/components/hero";
 import LeadForm from "@/components/lead-form";
 import { ADDRESS, CONTACT_EMAIL, CONTACT_PHONE_DISPLAY } from "@/lib/site";
 
-export const metadata = { title: "Contact | Vinyasa Earth" };
+export const metadata = { title: "Contact", description: "Contact Vinyasa Earth in Amer, Jaipur about stays, retreats, residencies and offsites.", alternates: { canonical: "/contact" } };
 
 export default function ContactPage() {
   return (

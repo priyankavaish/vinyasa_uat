@@ -2,7 +2,7 @@ import { PageHero } from "@/components/hero";
 import CottageCard from "@/components/cottage-card";
 import { cottages } from "@/lib/content";
 
-export const metadata = { title: "Stays | Vinyasa Earth" };
+export const metadata = { title: "Mud Cottage Stays", description: "Stay in one of six hand-built, artist-designed mud cottages at Vinyasa Earth in Amer, Jaipur.", alternates: { canonical: "/stays" } };
 
 export default function StaysPage() {
   return (

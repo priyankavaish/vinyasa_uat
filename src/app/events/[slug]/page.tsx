@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { events } from "@/lib/content";
+import type { Metadata } from "next";
 
 const IMAGE_ROTATION = [
   "/images/property-night-gathering.jpg",
@@ -11,6 +12,13 @@ const IMAGE_ROTATION = [
 
 export function generateStaticParams() {
   return events.map((e) => ({ slug: e.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const event = events.find((item) => item.slug === slug);
+  if (!event) return {};
+  return { title: event.name, description: event.description, alternates: { canonical: `/events/${event.slug}` } };
 }
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {

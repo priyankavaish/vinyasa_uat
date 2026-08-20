@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { PageHero } from "@/components/hero";
 import BookingForm from "@/components/booking-form";
 
-export const metadata = { title: "Book | Vinyasa Earth" };
+export const metadata = { title: "Book Your Stay", description: "Check availability and book a mud cottage stay or creative experience at Vinyasa Earth.", alternates: { canonical: "/book" } };
 
 export default function BookPage() {
   return (

@@ -2,7 +2,7 @@ import { PageHero } from "@/components/hero";
 import EventCard from "@/components/event-card";
 import { events } from "@/lib/content";
 
-export const metadata = { title: "Events & Retreats | Vinyasa Earth" };
+export const metadata = { title: "Events & Retreats", description: "Explore artist residencies, self-discovery retreats and creative workshops at Vinyasa Earth.", alternates: { canonical: "/events" } };
 
 export default function EventsPage() {
   return (

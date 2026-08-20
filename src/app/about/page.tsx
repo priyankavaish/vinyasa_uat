@@ -1,7 +1,7 @@
 import { PageHero } from "@/components/hero";
 import BougainvilleaCanopy from "@/components/bougainvillea-canopy";
 
-export const metadata = { title: "About | Vinyasa Earth" };
+export const metadata = { title: "About", description: "Discover the story and earth-first philosophy behind Vinyasa Earth in Amer, Jaipur.", alternates: { canonical: "/about" } };
 
 export default function AboutPage() {
   return (

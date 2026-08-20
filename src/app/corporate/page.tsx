@@ -2,7 +2,7 @@ import { PageHero } from "@/components/hero";
 import LeadForm from "@/components/lead-form";
 import { corporateOffering } from "@/lib/content";
 
-export const metadata = { title: "Corporate Offsites | Vinyasa Earth" };
+export const metadata = { title: "Corporate Offsites", description: "Host a grounded, creative team offsite at Vinyasa Earth near Jaipur.", alternates: { canonical: "/corporate" } };
 
 export default function CorporatePage() {
   return (
