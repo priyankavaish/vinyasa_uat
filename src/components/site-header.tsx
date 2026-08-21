@@ -27,27 +27,37 @@ export default function SiteHeader() {
   const transparent = overHero && !scrolled && !open;
 
   useEffect(() => {
-    function onScroll() {
-      const threshold = overHero ? window.innerHeight * 0.88 : 48;
-      setScrolled(window.scrollY > threshold);
+    function getScrollPosition() {
+      return Math.max(
+        window.scrollY,
+        document.documentElement.scrollTop,
+        document.body.scrollTop,
+      );
     }
+
+    function onScroll() {
+      setScrolled(getScrollPosition() > 1);
+    }
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("scroll", onScroll, { passive: true, capture: true });
     window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("scroll", onScroll, { capture: true });
       window.removeEventListener("resize", onScroll);
     };
-  }, [overHero]);
-
-  useEffect(() => {
-    const threshold = overHero ? window.innerHeight * 0.88 : 48;
-    setScrolled(window.scrollY > threshold);
-  }, [pathname, overHero]);
+  }, [pathname]);
 
   return (
     <header
-      className="fixed top-0 z-40 w-full bg-transparent transition-all duration-500"
+      className={`fixed top-0 z-40 w-full transition-all duration-500 ${scrolled ? "site-header--scrolled" : ""} ${
+        transparent
+          ? "border-b border-transparent"
+          : "border-b border-black/10 shadow-[0_8px_30px_rgba(35,31,25,0.10)]"
+      }`}
+      style={{ backgroundColor: transparent ? "transparent" : "#ffffff" }}
     >
       <div className="site-header-inner mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
         <Link href="/" className="site-logo flex items-center gap-2.5" aria-label="Vinyasa Earth home">
@@ -55,8 +65,8 @@ export default function SiteHeader() {
         </Link>
 
         <ul
-          className={`hidden items-center gap-8 text-xs font-medium tracking-[0.12em] uppercase lg:flex ${
-            transparent ? "text-background/90" : "text-foreground-soft"
+          className={`hidden items-center gap-8 text-xs font-semibold tracking-[0.12em] uppercase lg:flex ${
+            transparent ? "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.65)]" : "text-black"
           }`}
         >
           {NAV_LINKS.map((link) => (
@@ -74,6 +84,13 @@ export default function SiteHeader() {
         </ul>
 
         <div className="flex items-center gap-4">
+          <Link
+            href="/book"
+            className="hidden items-center justify-center px-5 py-3 text-xs font-semibold tracking-[0.12em] text-white uppercase transition-all hover:-translate-y-0.5 hover:brightness-110 lg:inline-flex"
+            style={{ backgroundColor: "#8f3b31", color: "#ffffff" }}
+          >
+            Book Your Stay
+          </Link>
           <button
             type="button"
             aria-expanded={open}
@@ -100,8 +117,13 @@ export default function SiteHeader() {
               </li>
             ))}
             <li>
-              <Link href="/book" onClick={() => setOpen(false)} className="btn btn-book-stay inline-flex">
-                Book a Stay
+              <Link
+                href="/book"
+                onClick={() => setOpen(false)}
+                className="inline-flex px-5 py-3 font-semibold text-white"
+                style={{ backgroundColor: "#8f3b31", color: "#ffffff" }}
+              >
+                Book Your Stay
               </Link>
             </li>
           </ul>

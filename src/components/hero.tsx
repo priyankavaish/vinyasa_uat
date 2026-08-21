@@ -68,9 +68,9 @@ export function HomeHero() {
         ref={contentRef}
         className="hero-content relative z-10 flex w-full flex-1 flex-col items-center justify-center px-5 text-center sm:px-8"
       >
-        <p className="mb-2 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-background/80">
+        <p className="mt-2 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-background/80">
           <span className="h-px w-6 bg-background/50" aria-hidden />
-          Amer, Jaipur
+           Jaipur, Rajasthan
           <span className="h-px w-6 bg-background/50" aria-hidden />
         </p>
         <div className="hero-brand" aria-label="Vinyasa Earth">
@@ -83,11 +83,11 @@ export function HomeHero() {
         <p className="mt-7 max-w-[44ch] text-base leading-relaxed text-background/90">
           Slow down, create, and meet the people shaping what&apos;s next.
         </p>
-        <div className="hero-actions mt-9 flex flex-wrap items-center justify-center gap-4">
+        {/* <div className="hero-actions mt-9 flex flex-wrap items-center justify-center gap-4">
           <Link href="/book" className="btn btn-outline-light hero-book-button">
             Book your stay <span aria-hidden>↗</span>
           </Link>
-        </div>
+        </div> */}
       </div>
 
     </section>

@@ -1,4 +1,8 @@
 import Image from "next/image";
+import vine1 from "@/app/assets/vine1.png";
+import vine2 from "@/app/assets/vine2.png";
+import vine3 from "@/app/assets/vine3.png";
+import vine4 from "@/app/assets/vine4.png";
 import Link from "next/link";
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
@@ -59,8 +63,31 @@ const REVEAL_VARIANTS = ["scale", "up", "fade", "left", "right"] as const;
 
 export default function ConnectSection() {
   return (
-    <section className="organic-section organic-connect bg-background py-24 text-foreground">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section className="organic-section organic-connect relative overflow-hidden bg-background py-24 text-foreground">
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <Image
+          src={vine1}
+          alt=""
+          className="absolute -right-20 -top-24 w-[18rem] opacity-30 sm:-right-16 sm:w-[25rem] lg:w-[30rem]"
+        />
+        <Image
+          src={vine2}
+          alt=""
+          className="absolute -left-24 top-[18%] hidden w-[24rem] -rotate-6 opacity-20 md:block lg:w-[30rem]"
+        />
+        <Image
+          src={vine3}
+          alt=""
+          className="absolute -right-28 top-[42%] hidden w-[27rem] rotate-3 opacity-20 md:block lg:w-[34rem]"
+        />
+        <Image
+          src={vine4}
+          alt=""
+          className="absolute -bottom-28 -left-24 w-[20rem] opacity-25 sm:w-[27rem] lg:w-[33rem]"
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal variant="fade" className="mb-12 max-w-2xl">
           <SectionEyebrow tone="secondary" icon="compass-outline">Self-discovery</SectionEyebrow>
           <h2 className="mt-3 font-display italic text-5xl leading-[1.02] sm:text-6xl">

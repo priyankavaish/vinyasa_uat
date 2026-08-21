@@ -1,4 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
+import vine5 from "@/app/assets/vine5.png";
+import clayPot from "@/app/assets/claypot.png";
 import { HomeHero } from "@/components/hero";
 import MarqueeBar from "@/components/marquee-bar";
 import SectionEyebrow from "@/components/section-eyebrow";
@@ -26,8 +29,14 @@ export default function HomePage() {
       <MarqueeBar />
       <ConnectSection />
 
-      <section className="organic-section organic-stays mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-4">
+      <section className="organic-section organic-stays relative mx-auto max-w-6xl overflow-hidden px-5 py-20 sm:px-8">
+        <Image
+          src={vine5}
+          alt=""
+          className="pointer-events-none absolute -right-24 -top-28 w-[20rem] opacity-20 sm:w-[28rem] lg:w-[34rem]"
+          aria-hidden="true"
+        />
+        <Reveal className="relative z-10 mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <SectionEyebrow icon="home-outline">The Cottages</SectionEyebrow>
             <h2 className="mt-3 max-w-[22ch] font-display italic text-4xl leading-tight">
@@ -38,15 +47,24 @@ export default function HomePage() {
             View all stays
           </Link>
         </Reveal>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="relative z-10 grid gap-5 sm:grid-cols-2">
           {featured.map((c, i) => (
             <CottageCard key={c.slug} cottage={c} featured={i === 0} index={i} />
           ))}
         </div>
       </section>
 
-      <section className="organic-section organic-events bg-clay-surface py-20">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+      <section className="organic-section organic-events relative overflow-hidden bg-clay-surface py-20">
+        <Image
+          src={clayPot}
+          alt=""
+          fill
+          sizes="100vw"
+          className="pointer-events-none object-cover object-left opacity-20 mix-blend-multiply"
+          aria-hidden="true"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-clay-surface/55" aria-hidden="true" />
+        <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="left" className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
               <SectionEyebrow icon="calendar-outline">Events &amp; Retreats</SectionEyebrow>

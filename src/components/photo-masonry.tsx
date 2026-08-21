@@ -34,8 +34,9 @@ export default function PhotoMasonry() {
   }, [emblaApi]);
 
   return (
-    <section className="bg-dusk-surface py-20">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section className="relative overflow-hidden bg-dusk-surface py-20">
+
+      <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal variant="scale" className="mb-10">
           <SectionEyebrow icon="images-outline">The place, in pictures</SectionEyebrow>
           <h2 className="mt-3 max-w-[26ch] font-display italic text-4xl leading-tight">
@@ -44,7 +45,7 @@ export default function PhotoMasonry() {
         </Reveal>
       </div>
 
-      <Reveal variant="fade" className="place-carousel">
+      <Reveal variant="fade" className="place-carousel relative z-10">
         <div ref={emblaRef} className="place-carousel-viewport cursor-grab overflow-hidden active:cursor-grabbing">
           <div className="place-carousel-track flex touch-pan-y pl-5 sm:pl-8">
             {placePhotos.map((photo, i) => (

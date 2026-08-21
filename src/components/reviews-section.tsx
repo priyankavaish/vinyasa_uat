@@ -1,3 +1,5 @@
+import Image from "next/image";
+import vine7 from "@/app/assets/vine7.png";
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
 import { Icon, type IconName } from "./icon";
@@ -31,6 +33,12 @@ const pullQuote = GOOGLE_RATING.summary.split(/(?<=\.)\s+/)[0]!.replace(/\.$/, "
 export default function ReviewsSection() {
   return (
     <section className="relative overflow-hidden bg-surface py-24">
+      <Image
+        src={vine7}
+        alt=""
+        className="pointer-events-none absolute -right-28 top-1/2 w-[22rem] -translate-y-1/2 opacity-15 sm:w-[30rem] lg:w-[36rem]"
+        aria-hidden="true"
+      />
       <span
         className="pointer-events-none absolute -left-8 -top-20 font-display text-[18rem] italic leading-none text-foreground/[0.035] select-none"
         aria-hidden

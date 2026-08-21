@@ -233,8 +233,29 @@ a {
 .organic-section { position: relative; isolation: isolate; }
 .organic-connect { margin-top: -2.5rem; padding-top: 8rem; clip-path: ellipse(100% 100% at 50% 100%); }
 .organic-stays::before {
-  content: ""; position: absolute; inset: 3rem -6vw 1rem; z-index: -1;
-  border-radius: 14rem 1.5rem 14rem 1.5rem; background: #e8eddd; transform: rotate(-1deg);
+ content: "";
+position: absolute;
+inset: 2rem -6vw 0;
+z-index: -1;
+
+background:
+  radial-gradient(
+    circle at 18% 20%,
+    rgba(255, 255, 255, 0.35),
+    transparent 30%
+  ),
+  #e8eddd;
+
+border-radius:
+  34% 66% 42% 58% /
+  58% 38% 62% 42%;
+
+transform: rotate(-1deg) skewX(-1deg);
+
+box-shadow:
+  0 20px 50px rgba(48, 70, 50, 0.08);
+
+opacity: 0.98;
 }
 .organic-events { clip-path: polygon(0 4rem, 34% 0, 70% 3rem, 100% 0, 100% 100%, 0 100%); padding-top: 8rem; }
 .connect-tile { transition: border-radius .7s ease, transform .5s cubic-bezier(.2,.8,.2,1); }
@@ -293,7 +314,7 @@ a {
 .hero-brand-kicker {
   margin-bottom: 1.25rem;
   color: #d8cfb9;
-  font-size: .68rem;
+  font-size: .80rem;
   font-weight: 700;
   letter-spacing: .32em;
   text-transform: none;
@@ -368,6 +389,11 @@ a {
 }
 
 /* Mobile shell and hero polish */
+.site-header--scrolled {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
 .site-header-inner {
   padding-top: max(1rem, env(safe-area-inset-top));
   padding-right: max(1.25rem, env(safe-area-inset-right));
@@ -383,7 +409,12 @@ a {
 @media (max-width: 639px) {
   html, body { max-width: 100%; overflow-x: clip; }
   main > * { max-width: 100%; }
-  .site-header-inner { min-height: calc(4.75rem + env(safe-area-inset-top)); padding-bottom: .75rem; }
+  .site-header--scrolled {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.site-header-inner { min-height: calc(4.75rem + env(safe-area-inset-top)); padding-bottom: .75rem; }
   .site-logo img { width: 2.75rem; height: 2.75rem; }
   .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: rgba(255,255,255,.48); background: rgba(20,25,18,.18); }
 
