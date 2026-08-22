@@ -233,29 +233,20 @@ a {
 .organic-section { position: relative; isolation: isolate; }
 .organic-connect { margin-top: -2.5rem; padding-top: 8rem; clip-path: ellipse(100% 100% at 50% 100%); }
 .organic-stays::before {
- content: "";
-position: absolute;
-inset: 2rem -6vw 0;
-z-index: -1;
-
-background:
-  radial-gradient(
-    circle at 18% 20%,
-    rgba(255, 255, 255, 0.35),
-    transparent 30%
-  ),
-  #e8eddd;
-
-border-radius:
-  34% 66% 42% 58% /
-  58% 38% 62% 42%;
-
-transform: rotate(-1deg) skewX(-1deg);
-
-box-shadow:
-  0 20px 50px rgba(48, 70, 50, 0.08);
-
-opacity: 0.98;
+  content: "";
+  position: absolute;
+  inset: 1.25rem -4vw .5rem;
+  z-index: -1;
+  border: 1px solid rgba(92, 112, 70, .12);
+  border-radius: 9rem 2.25rem 11rem 3rem / 6rem 9rem 7rem 10rem;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(255, 255, 255, .62), transparent 28%),
+    radial-gradient(circle at 86% 82%, rgba(196, 209, 172, .55), transparent 32%),
+    linear-gradient(135deg, #eef1e5 0%, #e3ead8 54%, #edf0e2 100%);
+  /* box-shadow: 0 1.75rem 4.5rem rgba(48, 70, 50, .11); */
+  opacity: .98;
+  transform: rotate(-.55deg);
+  transform-origin: center;
 }
 .organic-events { clip-path: polygon(0 4rem, 34% 0, 70% 3rem, 100% 0, 100% 100%, 0 100%); padding-top: 8rem; }
 .connect-tile { transition: border-radius .7s ease, transform .5s cubic-bezier(.2,.8,.2,1); }
@@ -270,10 +261,38 @@ opacity: 0.98;
 .stay-card-2 { border-radius: 1rem 7rem 1rem 1rem; }
 .stay-card-3 { border-radius: 7rem 1rem 7rem 1rem; }
 .stay-card:hover { transform: translateY(-.65rem) rotate(.5deg); }
-.event-card-1 { border-radius: 8rem 8rem 1rem 1rem; }
-.event-card-2 { clip-path: polygon(0 0, 92% 0, 100% 12%, 100% 100%, 0 100%); }
-.event-card-3 { border-radius: 1rem 1rem 8rem 1rem; }
-.event-card:hover { transform: translateY(-.6rem); }
+.event-card {
+  --event-accent: #b5643b;
+  position: relative;
+  border-color: color-mix(in srgb, var(--event-accent) 22%, var(--line));
+  box-shadow: 0 1.25rem 3rem rgba(74, 52, 35, .08);
+  transition: transform .45s cubic-bezier(.2,.8,.2,1), border-radius .55s ease, box-shadow .45s ease;
+}
+.event-card-1 { --event-accent: #b5643b; border-radius: 4.5rem 1rem 2rem 1rem; }
+.event-card-2 { --event-accent: #7c8f5a; border-radius: 1rem 4.5rem 1rem 2rem; }
+.event-card-3 { --event-accent: #6b7a9e; border-radius: 2rem 1rem 4.5rem 1rem; }
+.event-card:hover {
+  border-radius: 2rem;
+  box-shadow: 0 2rem 4.5rem rgba(74, 52, 35, .16);
+  transform: translateY(-.65rem);
+}
+.event-card-image::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--event-accent);
+  content: "";
+  opacity: .8;
+}
+.event-kind {
+  border: 1px solid color-mix(in srgb, var(--event-accent) 35%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--event-accent) 10%, white);
+  color: var(--event-accent);
+}
+.event-card-footer { border-top: 1px solid color-mix(in srgb, var(--event-accent) 20%, var(--line)); }
 
 /* Price as a small editorial seal instead of a line of metadata. */
 .price-seal { display: inline-grid; width: fit-content; min-width: 12rem; padding: .9rem 1.25rem; border: 1px solid var(--accent); border-radius: 50% 48% 45% 52%; background: var(--clay-surface); transform: rotate(-2deg); box-shadow: .3rem .35rem 0 rgba(181,100,59,.18); }
@@ -289,7 +308,7 @@ opacity: 0.98;
   .hero-brand-earth { font-size: clamp(3rem, 15vw, 4.2rem); }
   .btn-book-stay { display: inline-flex; width: min(100%, 18rem); justify-content: center; padding: 1rem 1.3rem; }
   .organic-connect { clip-path: ellipse(170% 100% at 50% 100%); }
-  .organic-stays::before { inset: 2rem -.75rem; border-radius: 6rem 1rem 6rem 1rem; }
+  .organic-stays::before { inset: .75rem -.5rem; border-radius: 4.5rem 1.25rem 5.5rem 1.5rem / 3.5rem 2rem 4.25rem 2.5rem; transform: none; }
   .organic-events { clip-path: polygon(0 2rem, 45% 0, 100% 2rem, 100% 100%, 0 100%); padding-top: 5rem; }
   .connect-tile-1, .connect-tile-3 { border-radius: 6rem 1rem 1rem 1rem; }
   .connect-tile-2, .connect-tile-4, .connect-tile-5 { border-radius: 1rem 1rem 6rem 1rem; }

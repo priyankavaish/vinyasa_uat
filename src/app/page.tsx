@@ -85,10 +85,10 @@ export default function HomePage() {
       </section>
 
       <CommunitySection />
-      <DiscountStripe />
       <PhotoMasonry />
       <GallerySection />
       <ReviewsSection />
+      <DiscountStripe />
       <LocationSection />
     </>
   );
