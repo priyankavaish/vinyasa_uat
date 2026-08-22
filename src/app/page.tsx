@@ -9,10 +9,8 @@ import CottageCard from "@/components/cottage-card";
 import EventCard from "@/components/event-card";
 import ReviewsSection from "@/components/reviews-section";
 import GallerySection from "@/components/gallery-section";
-import LocationSection from "@/components/location-section";
 import CommunitySection from "@/components/community-section";
 import PhotoMasonry from "@/components/photo-masonry";
-import DiscountStripe from "@/components/discount-stripe";
 import ConnectSection from "@/components/connect-section";
 import { Reveal } from "@/components/reveal";
 import { Parallax, ParallaxHeroImage } from "@/components/parallax";
@@ -88,8 +86,6 @@ export default function HomePage() {
       <PhotoMasonry />
       <GallerySection />
       <ReviewsSection />
-      <DiscountStripe />
-      <LocationSection />
     </>
   );
 }

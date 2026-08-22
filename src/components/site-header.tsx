@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import whiteLogo from "@/app/assets/white_logo.png";
+import colorLogo from "@/app/assets/logo.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "./icon";
+import { whatsappLink } from "@/lib/site";
 
 const NAV_LINKS = [
   { href: "/stays", label: "Stays" },
@@ -61,7 +64,14 @@ export default function SiteHeader() {
     >
       <div className="site-header-inner mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
         <Link href="/" className="site-logo flex items-center gap-2.5" aria-label="Vinyasa Earth home">
-          <Image src="/images/logo.png" alt="" width={42} height={42} className="rounded-full" />
+
+          <Image
+            src={transparent ? whiteLogo : colorLogo}
+            alt=""
+            width={42}
+            height={42}
+            className="rounded-full transition-opacity duration-300"
+          />
         </Link>
 
         <ul
@@ -83,7 +93,7 @@ export default function SiteHeader() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <Link
             href="/book"
             className="hidden items-center justify-center px-5 py-3 text-xs font-semibold tracking-[0.12em] text-white uppercase transition-all hover:-translate-y-0.5 hover:brightness-110 lg:inline-flex"
@@ -91,6 +101,19 @@ export default function SiteHeader() {
           >
             Book Your Stay
           </Link>
+          <a
+            href={whatsappLink("Hi! I'd like to know more about Vinyasa Earth.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`hidden items-center justify-center gap-2 border px-4 py-3 text-xs !text-white font-semibold tracking-[0.1em] uppercase transition-all hover:-translate-y-0.5 hover:shadow-md lg:inline-flex ${
+              transparent
+                ? "border-white bg-transparent text-white hover:bg-white/10"
+                : "border-[#6b7a5e] bg-[#6b7a5e] text-white hover:border-[#55644a] hover:bg-[#55644a]"
+            }`}
+          >
+            <Icon name="logo-whatsapp" size={16} />
+            Chat on WhatsApp
+          </a>
           <button
             type="button"
             aria-expanded={open}
@@ -116,6 +139,18 @@ export default function SiteHeader() {
                 </Link>
               </li>
             ))}
+            <li>
+              <a
+                href={whatsappLink("Hi! I'd like to know more about Vinyasa Earth.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center gap-2 bg-[#6b7a5e] px-5 py-3 font-semibold !text-white"
+              >
+                <Icon name="logo-whatsapp" size={18} />
+                Chat on WhatsApp
+              </a>
+            </li>
             <li>
               <Link
                 href="/book"
