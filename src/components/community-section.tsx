@@ -3,16 +3,14 @@ import chulha from "@/app/assets/chulha.png";
 import Link from "next/link";
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
+import { Parallax } from "./parallax";
 
 export default function CommunitySection() {
   return (
     <section className="relative overflow-hidden bg-secondary-surface py-20">
-      <Image
-        src={chulha}
-        alt=""
-        className="pointer-events-none absolute -bottom-24 -right-24 w-[20rem] opacity-10 sm:w-[28rem] lg:w-[34rem]"
-        aria-hidden="true"
-      />
+      <Parallax speed={0.045} className="pointer-events-none absolute -bottom-24 -right-24 w-[20rem] sm:w-[28rem] lg:w-[34rem]">
+        <Image src={chulha} alt="" className="w-full opacity-10" aria-hidden="true" />
+      </Parallax>
       <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-5 sm:grid-cols-[1fr_1.2fr] sm:px-8">
         <Reveal variant="clip" className="relative min-h-[380px] overflow-hidden border border-line">
           <Image

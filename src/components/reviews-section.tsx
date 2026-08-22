@@ -1,8 +1,9 @@
 import Image from "next/image";
-import vine7 from "@/app/assets/vine7.png";
+import hut from "@/app/assets/hut.png.png";
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
 import { Icon, type IconName } from "./icon";
+import { Parallax, ParallaxHeroImage } from "./parallax";
 import { GOOGLE_RATING, GOOGLE_MAPS_LINK } from "@/lib/site";
 
 function Stars({ score }: { score: number }) {
@@ -33,10 +34,26 @@ const pullQuote = GOOGLE_RATING.summary.split(/(?<=\.)\s+/)[0]!.replace(/\.$/, "
 export default function ReviewsSection() {
   return (
     <section className="relative overflow-hidden bg-surface py-24">
-      <Image
-        src={vine7}
-        alt=""
-        className="pointer-events-none absolute -right-28 top-1/2 w-[22rem] -translate-y-1/2 opacity-15 sm:w-[30rem] lg:w-[36rem]"
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-[72%]" aria-hidden="true">
+        <ParallaxHeroImage>
+          <Image
+            src={hut}
+            alt=""
+            fill
+            sizes="(min-width: 640px) 72vw, 100vw"
+            className="object-cover object-right opacity-35"
+            style={{
+              WebkitMaskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 35%, #000 72%)",
+              maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,.35) 35%, #000 72%)",
+            }}
+          />
+        </ParallaxHeroImage>
+      </div>
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: "radial-gradient(circle at 12% 28%, rgba(232,237,221,.92), transparent 38%), linear-gradient(90deg, rgba(251,249,243,.98) 0%, rgba(251,249,243,.88) 46%, rgba(243,230,216,.48) 100%)",
+        }}
         aria-hidden="true"
       />
       <span
@@ -46,33 +63,37 @@ export default function ReviewsSection() {
         &ldquo;
       </span>
 
-      <div className="relative mx-auto max-w-4xl px-5 text-center sm:px-8">
+      <div className="relative z-10 mx-auto max-w-4xl px-5 text-center sm:px-8">
         <Reveal variant="fade" className="flex justify-center">
           <SectionEyebrow icon="ribbon-outline">Verified on Google</SectionEyebrow>
         </Reveal>
 
-        <Reveal variant="scale" delay={80} className="mx-auto mt-9 flex w-fit flex-col items-center">
-          <div>
-            <span className="font-display text-8xl italic leading-none sm:text-9xl">{GOOGLE_RATING.score}</span>
-          </div>
-          <div className="mt-3">
-            <Stars score={GOOGLE_RATING.score} />
-          </div>
-          <a
-            href={GOOGLE_MAPS_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 text-xs tracking-[0.06em] uppercase text-foreground-soft underline underline-offset-4"
-          >
-            {GOOGLE_RATING.count} Google reviews
-          </a>
-        </Reveal>
+        <Parallax speed={-0.04} className="relative">
+          <Reveal variant="scale" delay={80} className="mx-auto mt-9 flex w-fit flex-col items-center">
+            <div>
+              <span className="font-display text-8xl italic leading-none sm:text-9xl">{GOOGLE_RATING.score}</span>
+            </div>
+            <div className="mt-3">
+              <Stars score={GOOGLE_RATING.score} />
+            </div>
+            <a
+              href={GOOGLE_MAPS_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 text-xs tracking-[0.06em] uppercase text-foreground-soft underline underline-offset-4"
+            >
+              {GOOGLE_RATING.count} Google reviews
+            </a>
+          </Reveal>
+        </Parallax>
 
-        <Reveal variant="up" delay={180}>
-          <p className="mx-auto mt-12 max-w-[30ch] font-display text-3xl italic leading-snug sm:text-4xl">
-            &ldquo;{pullQuote}&rdquo;
-          </p>
-        </Reveal>
+        <Parallax speed={0.035} className="relative">
+          <Reveal variant="up" delay={180}>
+            <p className="mx-auto mt-12 max-w-[30ch] font-display text-3xl italic leading-snug sm:text-4xl">
+              &ldquo;{pullQuote}&rdquo;
+            </p>
+          </Reveal>
+        </Parallax>
 
         <div className="mt-16 flex flex-wrap justify-center gap-5">
           {GOOGLE_RATING.topics.map((topic, i) => {

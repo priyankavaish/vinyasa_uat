@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import vine5 from "@/app/assets/vine5.png";
+import chakki from "@/app/assets/chakki.png";
 import clayPot from "@/app/assets/claypot.png";
 import { HomeHero } from "@/components/hero";
 import MarqueeBar from "@/components/marquee-bar";
@@ -15,6 +15,7 @@ import PhotoMasonry from "@/components/photo-masonry";
 import DiscountStripe from "@/components/discount-stripe";
 import ConnectSection from "@/components/connect-section";
 import { Reveal } from "@/components/reveal";
+import { Parallax, ParallaxHeroImage } from "@/components/parallax";
 import { cottages, events } from "@/lib/content";
 
 export const metadata = { alternates: { canonical: "/" } };
@@ -30,12 +31,9 @@ export default function HomePage() {
       <ConnectSection />
 
       <section className="organic-section organic-stays relative mx-auto max-w-6xl overflow-hidden px-5 py-20 sm:px-8">
-        <Image
-          src={vine5}
-          alt=""
-          className="pointer-events-none absolute -right-24 -top-28 w-[20rem] opacity-20 sm:w-[28rem] lg:w-[34rem]"
-          aria-hidden="true"
-        />
+        <Parallax speed={-0.055} className="pointer-events-none absolute -right-14 top-2 w-[16rem] sm:-right-8 sm:w-[22rem] lg:right-2 lg:top-4 lg:w-[26rem]">
+          <Image src={chakki} alt="" className="w-full rotate-[-5deg] opacity-[0.12]" aria-hidden="true" />
+        </Parallax>
         <Reveal className="relative z-10 mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <SectionEyebrow icon="home-outline">The Cottages</SectionEyebrow>
@@ -55,14 +53,16 @@ export default function HomePage() {
       </section>
 
       <section className="organic-section organic-events relative overflow-hidden bg-clay-surface py-20">
-        <Image
-          src={clayPot}
-          alt=""
-          fill
-          sizes="100vw"
-          className="pointer-events-none object-cover object-left opacity-20 mix-blend-multiply"
-          aria-hidden="true"
-        />
+        <ParallaxHeroImage className="pointer-events-none">
+          <Image
+            src={clayPot}
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-left opacity-20 mix-blend-multiply"
+            aria-hidden="true"
+          />
+        </ParallaxHeroImage>
         <div className="pointer-events-none absolute inset-0 bg-clay-surface/55" aria-hidden="true" />
         <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="left" className="mb-10 flex flex-wrap items-end justify-between gap-4">

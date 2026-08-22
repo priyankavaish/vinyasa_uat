@@ -7,6 +7,7 @@ import Link from "next/link";
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
 import { Icon } from "./icon";
+import { Parallax } from "./parallax";
 
 // Each tile previews the page it links to, so it borrows that page's own
 // hero/identity photo rather than a fresh one — never a photo shown nowhere
@@ -65,11 +66,9 @@ export default function ConnectSection() {
   return (
     <section className="organic-section organic-connect relative overflow-hidden bg-background py-24 text-foreground">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <Image
-          src={vine1}
-          alt=""
-          className="absolute -right-20 -top-24 w-[18rem] opacity-30 sm:-right-16 sm:w-[25rem] lg:w-[30rem]"
-        />
+        <Parallax speed={-0.04} className="absolute -right-20 -top-24 w-[18rem] sm:-right-16 sm:w-[25rem] lg:w-[30rem]">
+          <Image src={vine1} alt="" className="w-full opacity-30" />
+        </Parallax>
         <Image
           src={vine2}
           alt=""
@@ -80,11 +79,9 @@ export default function ConnectSection() {
           alt=""
           className="absolute -right-28 top-[42%] hidden w-[27rem] rotate-3 opacity-20 md:block lg:w-[34rem]"
         />
-        <Image
-          src={vine4}
-          alt=""
-          className="absolute -bottom-28 -left-24 w-[20rem] opacity-25 sm:w-[27rem] lg:w-[33rem]"
-        />
+        <Parallax speed={0.035} className="absolute -bottom-28 -left-24 w-[20rem] sm:w-[27rem] lg:w-[33rem]">
+          <Image src={vine4} alt="" className="w-full opacity-25" />
+        </Parallax>
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">

@@ -7,6 +7,7 @@ import { galleryPosts } from "@/lib/content";
 export default function GallerySection() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+
       <Reveal variant="fade" className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
           <SectionEyebrow icon="camera-outline">From the community</SectionEyebrow>

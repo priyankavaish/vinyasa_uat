@@ -34,7 +34,7 @@ export default function CottageCard({
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-          <span className="absolute right-4 top-4 border border-background/50 bg-black/35 px-3 py-1 text-[11px] tracking-[0.1em] uppercase text-background backdrop-blur-sm">
+          <span className="absolute left-1/2 top-4 z-10 max-w-[calc(100%-3rem)] -translate-x-1/2 border border-white/70 bg-black/75 px-4 py-2 text-center text-[11px] font-semibold leading-tight tracking-[0.1em] whitespace-normal uppercase text-white shadow-[0_4px_16px_rgba(0,0,0,0.35)] backdrop-blur-md">
             {cottage.tagline}
           </span>
         </div>

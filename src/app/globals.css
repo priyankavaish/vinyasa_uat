@@ -492,8 +492,6 @@ opacity: 0.98;
 }
 
 .place-carousel-slide { flex-basis: min(82vw, 22rem); }
-.place-carousel-slide:nth-child(even) button { border-radius: 7rem 7rem .75rem .75rem; }
-.place-carousel-slide:nth-child(3n) button { border-radius: .75rem 6rem .75rem .75rem; }
 .place-carousel-track { backface-visibility: hidden; }
 @media (min-width: 640px) { .place-carousel-slide { flex-basis: 44%; } }
 @media (min-width: 1024px) { .place-carousel-slide { flex-basis: 32%; } }
