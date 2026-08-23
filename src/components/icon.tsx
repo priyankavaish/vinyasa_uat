@@ -21,7 +21,11 @@ export type IconName =
   | "ribbon-outline"
   | "moon-outline"
   | "musical-notes-outline"
-  | "sunny-outline";
+  | "sunny-outline"
+  | "flame-outline"
+  | "water-outline"
+  | "wind-outline"
+  | "circle-outline";
 
 const PATHS: Record<IconName, React.ReactNode> = {
   "leaf-outline": (
@@ -332,6 +336,36 @@ const PATHS: Record<IconName, React.ReactNode> = {
       ))}
       <circle cx="256" cy="256" r="80" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="32" />
     </>
+  ),
+  "flame-outline": (
+    <path
+      d="M256,464c-88,0-160-64-160-152c0-72,40-118,68-158c4,30-6,56,12,76c10-70,46-118,88-150c18,62-10,96,4,140c24-10,34-40,30-70c46,34,78,84,78,162C376,400,344,464,256,464Z"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="30"
+    />
+  ),
+  "water-outline": (
+    <path
+      d="M256,64c72,96,144,192,144,272a144,144,0,0,1-288,0C112,256,184,160,256,64Z"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="30"
+    />
+  ),
+  "wind-outline": (
+    <>
+      <path d="M48,168h264a48,48,0,1,0-48-48" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="32" />
+      <path d="M48,256h336a48,48,0,1,1-48,48" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="32" />
+      <path d="M48,344h216a48,48,0,1,1-48,48" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="32" />
+    </>
+  ),
+  "circle-outline": (
+    <circle cx="256" cy="256" r="160" fill="none" stroke="currentColor" strokeWidth="32" />
   ),
 };
 

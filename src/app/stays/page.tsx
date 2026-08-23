@@ -4,8 +4,11 @@ import { PageHero } from "@/components/hero";
 import SectionEyebrow from "@/components/section-eyebrow";
 import { Reveal } from "@/components/reveal";
 import { Parallax } from "@/components/parallax";
-import { Icon } from "@/components/icon";
+import { Icon, type IconName } from "@/components/icon";
 import { whatsappLink } from "@/lib/site";
+
+import vine3 from "@/app/assets/vine3.png";
+import vine4 from "@/app/assets/vine4.png";
 
 import heroSunset from "@/app/assets/stays/IMG_7852-768x1024.jpg";
 import nightGazebos from "@/app/assets/stays/WhatsApp-Image-2023-09-30-at-9.31.50-PM-1-768x1024.jpeg";
@@ -46,6 +49,8 @@ type Room = {
   element: string;
   image: typeof roomAgni;
   description: string;
+  icon: IconName;
+  accent: string;
 };
 
 const ROOMS: Room[] = [
@@ -54,42 +59,56 @@ const ROOMS: Room[] = [
     element: "Fire",
     image: roomAgni,
     description: "A sunset-red room with its own open-air wash pit, carved straight into the earthen wall.",
+    icon: "flame-outline",
+    accent: "#b5643b",
   },
   {
     name: "Jal",
     element: "Water",
     image: roomJal,
     description: "A cobalt skylight over the bed pulls the colour of the sky straight into the room.",
+    icon: "water-outline",
+    accent: "#6b7a9e",
   },
   {
     name: "Chandrama",
     element: "Moon",
     image: roomChandrama,
     description: "A trail of moon phases circles the wall of this round, quiet mud room.",
+    icon: "moon-outline",
+    accent: "#3f3f5c",
   },
   {
     name: "Prithvi",
     element: "Earth",
     image: roomPrithvi,
     description: "A cave-like nook pressed by hand from raw earth, with a built-in chulha seat by the window.",
+    icon: "leaf-outline",
+    accent: "#66783f",
   },
   {
     name: "Vayu",
     element: "Air",
     image: roomVayu,
     description: "Wide shutters and high thatch keep this room catching every breeze that passes.",
+    icon: "wind-outline",
+    accent: "#7c8f5a",
   },
   {
     name: "Shunya",
     element: "Stillness",
     image: roomShunya,
     description: "Nothing but a bed, a net, and a window — built for doing absolutely nothing.",
+    icon: "circle-outline",
+    accent: "#a49a86",
   },
   {
     name: "Dorm",
     element: "Shared",
     image: roomDorm,
     description: "Bunk beds under one shared thatched roof, for travelling light and meeting everyone.",
+    icon: "people-outline",
+    accent: "#6b7a5e",
   },
 ];
 
@@ -164,42 +183,59 @@ export default function StaysPage() {
         </div>
       </section>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-20">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
+      <section className="organic-section relative overflow-hidden bg-clay-surface py-12 sm:py-14">
+        <Parallax speed={-0.03} className="pointer-events-none absolute -left-16 -top-10 w-[13rem] opacity-[0.15] sm:w-[17rem]" aria-hidden="true">
+          <Image src={vine3} alt="" className="w-full -rotate-[100deg]" />
+        </Parallax>
+        <Parallax speed={0.03} className="pointer-events-none absolute -bottom-16 -right-16 w-[13rem] opacity-[0.15] sm:w-[17rem]" aria-hidden="true">
+          <Image src={vine4} alt="" className="w-full rotate-[165deg]" />
+        </Parallax>
+
+        <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
             <SectionEyebrow icon="home-outline">Choose a stay experience</SectionEyebrow>
-            <h2 className="mt-3 font-display italic text-4xl leading-tight">
+            <h2 className="mt-2 font-display italic text-3xl leading-tight sm:text-4xl">
               Seven rooms, each named for an element
             </h2>
-            <p className="mt-4 text-foreground-soft leading-relaxed">
+            <p className="mt-3 text-sm text-foreground-soft leading-relaxed">
               Every room at Vinyasa is hand-plastered and one of a kind. Pick the element that
-              suits how you want to spend your stay, or book the dorm and meet everyone at once.
+              suits your stay, or book the dorm and meet everyone at once.
             </p>
           </Reveal>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-x-5 gap-y-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
             {ROOMS.map((room, i) => (
-              <Reveal key={room.name} variant="up" delay={(i % 3) * 90} className={i === 0 ? "lg:col-span-2" : ""}>
-                <div className={`stay-card stay-card-${(i % 3) + 1} group relative overflow-hidden border border-line bg-surface transition-all hover:shadow-xl`}>
-                  <div className={`relative ${i === 0 ? "h-72 lg:h-80" : "h-64"}`}>
+              <Reveal key={room.name} variant="up" delay={(i % 4) * 80}>
+                <div className="group flex flex-col items-center text-center">
+                  <div className="relative aspect-square w-full max-w-[11rem] overflow-hidden rounded-t-full border border-line/70 shadow-[0_1rem_2rem_rgba(75,55,35,0.12)]">
                     <Image
                       src={room.image}
                       alt={`${room.name} room at Vinyasa Earth`}
                       fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      sizes="(min-width: 1024px) 15vw, (min-width: 640px) 22vw, 40vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-5">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-background/80">
-                        {room.element}
-                      </span>
-                      <h3 className="font-display italic text-2xl leading-tight text-background drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-                        {room.name}
-                      </h3>
-                    </div>
+                    <span
+                      className="absolute bottom-1.5 right-1.5 grid h-8 w-8 place-items-center rounded-full border border-white/40 shadow-[0_2px_8px_rgba(0,0,0,0.25)] backdrop-blur-sm"
+                      style={{ backgroundColor: `${room.accent}e6`, color: "#fff8ee" }}
+                      aria-hidden="true"
+                    >
+                      <Icon name={room.icon} size={15} />
+                    </span>
                   </div>
-                  <p className="p-5 text-sm leading-relaxed text-foreground-soft">{room.description}</p>
+                  <span className="mt-3 text-[9px] font-bold uppercase tracking-[0.2em]" style={{ color: room.accent }}>
+                    {room.element}
+                  </span>
+                  <h3 className="font-display italic text-xl leading-tight">{room.name}</h3>
+                  <p className="mt-1 max-w-[20ch] text-xs leading-relaxed text-foreground-soft">
+                    {room.description}
+                  </p>
+                  <Link
+                    href="/book"
+                    className="mt-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-accent underline decoration-accent/50 underline-offset-4 transition-colors hover:text-foreground"
+                  >
+                    Enquire to stay
+                  </Link>
                 </div>
               </Reveal>
             ))}
