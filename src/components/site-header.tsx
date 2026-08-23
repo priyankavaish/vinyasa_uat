@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import whiteLogo from "@/app/assets/white_logo.png";
-import colorLogo from "@/app/assets/logo.png";
+import logoMark from "@/app/assets/vinayasa.png";
+import logoMarkWhite from "@/app/assets/vinayasa-white.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -63,15 +63,31 @@ export default function SiteHeader() {
       style={{ backgroundColor: transparent ? "transparent" : "#ffffff" }}
     >
       <div className="site-header-inner mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
-        <Link href="/" className="site-logo flex items-center gap-2.5" aria-label="Vinyasa Earth home">
-
+        <Link href="/" className="site-logo group flex items-center gap-3" aria-label="Vinyasa Earth home">
           <Image
-            src={transparent ? whiteLogo : colorLogo}
+            src={transparent ? logoMarkWhite : logoMark}
             alt=""
-            width={42}
-            height={42}
-            className="rounded-full transition-opacity duration-300"
+            width={48}
+            height={48}
+            priority
+            className="h-10 w-10 shrink-0 object-contain transition-transform duration-500 ease-out group-hover:rotate-[12deg] sm:h-12 sm:w-12"
           />
+          <span className="flex items-baseline gap-2">
+            <span
+              className={`font-display text-[1.6rem] leading-none tracking-tight transition-colors duration-300 sm:text-[1.75rem] ${
+                transparent ? "text-[#fff8e9] drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]" : "text-foreground"
+              }`}
+            >
+              Vinyasa
+            </span>
+            <span
+              className={`translate-y-[-0.1em] text-[0.68rem] font-bold uppercase leading-none tracking-[0.24em] transition-colors duration-300 ${
+                transparent ? "text-[#edb678] drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]" : "text-accent"
+              }`}
+            >
+              Earth
+            </span>
+          </span>
         </Link>
 
         <ul

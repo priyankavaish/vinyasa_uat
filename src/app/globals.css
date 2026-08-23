@@ -249,6 +249,7 @@ a {
   transform-origin: center;
 }
 .organic-events { clip-path: polygon(0 4rem, 34% 0, 70% 3rem, 100% 0, 100% 100%, 0 100%); padding-top: 8rem; }
+.organic-reviews { clip-path: ellipse(110% 100% at 50% 100%); margin-top: -3rem; padding-top: 7.5rem; }
 .connect-tile { transition: border-radius .7s ease, transform .5s cubic-bezier(.2,.8,.2,1); }
 .connect-tile-1 { border-radius: 8rem 1rem 1rem 1rem; }
 .connect-tile-2 { border-radius: 1rem 6rem 1rem 6rem; }
@@ -310,6 +311,7 @@ a {
   .organic-connect { clip-path: ellipse(170% 100% at 50% 100%); }
   .organic-stays::before { inset: .75rem -.5rem; border-radius: 4.5rem 1.25rem 5.5rem 1.5rem / 3.5rem 2rem 4.25rem 2.5rem; transform: none; }
   .organic-events { clip-path: polygon(0 2rem, 45% 0, 100% 2rem, 100% 100%, 0 100%); padding-top: 5rem; }
+  .organic-reviews { clip-path: ellipse(170% 100% at 50% 100%); margin-top: -1.5rem; padding-top: 4.5rem; }
   .connect-tile-1, .connect-tile-3 { border-radius: 6rem 1rem 1rem 1rem; }
   .connect-tile-2, .connect-tile-4, .connect-tile-5 { border-radius: 1rem 1rem 6rem 1rem; }
   .stay-card-1 { border-radius: 6rem 6rem 1rem 1rem; }
@@ -481,7 +483,7 @@ a {
 
   .organic-section { overflow: clip; }
   .organic-section h2 { font-size: clamp(2.25rem, 10vw, 3rem); text-wrap: balance; }
-  .organic-connect, .organic-events { padding-block: 4.5rem; }
+  .organic-connect, .organic-events, .organic-reviews { padding-block: 4.5rem; }
   .organic-connect { margin-top: 0; clip-path: none; border-radius: 3.5rem 3.5rem 0 0; }
   .marquee-strip { min-height: 3.25rem; align-items: center; }
 .marquee-strip + .organic-connect { position: relative; z-index: 1; }

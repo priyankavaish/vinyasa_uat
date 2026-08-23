@@ -36,7 +36,7 @@ const pullQuote = GOOGLE_RATING.summary.split(/(?<=\.)\s+/)[0]!.replace(/\.$/, "
 
 export default function ReviewsSection() {
   return (
-    <section className="relative isolate overflow-hidden border-y border-line bg-background py-16 sm:py-20 lg:min-h-[680px]">
+    <section className="organic-section organic-reviews relative isolate overflow-hidden bg-background pb-16 sm:pb-20 lg:min-h-[680px]">
       <div className="pointer-events-none absolute inset-y-0 right-0 w-full sm:w-[56%] lg:w-[51%]" aria-hidden="true">
         <ParallaxHeroImage>
           <Image
