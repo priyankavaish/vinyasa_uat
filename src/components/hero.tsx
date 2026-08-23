@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { ParallaxHeroImage } from "./parallax";
 
@@ -103,7 +103,7 @@ export function PageHero({
   eyebrow: string;
   title: string;
   description?: string;
-  image?: string;
+  image?: string | StaticImageData;
 }) {
   if (image) {
     return (
