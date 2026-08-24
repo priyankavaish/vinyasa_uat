@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
+import logoMark from "@/app/assets/vinayasa.png";
 import { ParallaxHeroImage } from "./parallax";
 
 export function HomeHero() {
@@ -74,6 +75,16 @@ export function HomeHero() {
           <span className="h-px w-6 bg-background/50" aria-hidden />
         </p>
         <div className="hero-brand" aria-label="Vinyasa Earth">
+          <span className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full border-2 border-background/60 bg-transparent backdrop-blur-[2px] sm:h-20 sm:w-20">
+            <Image
+              src={logoMark}
+              alt=""
+              width={56}
+              height={56}
+              priority
+              className="h-11 w-11 object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-14 sm:w-14"
+            />
+          </span>
           <span className="hero-brand-kicker">A retreat for curious minds</span>
           <span className="hero-brand-vinyasa">Vinyasa Earth</span>
           <span className="hero-brand-rule" aria-hidden />
