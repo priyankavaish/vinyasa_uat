@@ -66,7 +66,7 @@ export function HomeHero() {
 
       <div
         ref={contentRef}
-        className="hero-content relative z-10 flex w-full flex-1 flex-col items-center justify-center px-5 text-center sm:px-8"
+        className="hero-content relative z-10 flex w-full flex-1 flex-col items-center justify-center px-5 pt-28 text-center sm:px-8"
       >
         <p className="mt-2 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-background/80">
           <span className="h-px w-6 bg-background/50" aria-hidden />

@@ -183,7 +183,7 @@ export default function StaysPage() {
         </div>
       </section>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-12 sm:py-14">
+      <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
         <Parallax speed={-0.03} className="pointer-events-none absolute -left-16 -top-10 w-[13rem] opacity-[0.15] sm:w-[17rem]" aria-hidden="true">
           <Image src={vine3} alt="" className="w-full -rotate-[100deg]" />
         </Parallax>
@@ -203,40 +203,45 @@ export default function StaysPage() {
             </p>
           </Reveal>
 
-          <div className="mt-8 grid gap-x-5 gap-y-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-9 grid gap-5 grid-cols-2 lg:grid-cols-4">
             {ROOMS.map((room, i) => (
-              <Reveal key={room.name} variant="up" delay={(i % 4) * 80}>
-                <div className="group flex flex-col items-center text-center">
-                  <div className="relative aspect-square w-full max-w-[11rem] overflow-hidden rounded-t-full border border-line/70 shadow-[0_1rem_2rem_rgba(75,55,35,0.12)]">
+              <Reveal key={room.name} variant="up" delay={(i % 4) * 80} className={i % 2 === 1 ? "sm:mt-8" : ""}>
+                <Link
+                  href="/book"
+                  className="group flex flex-col overflow-hidden border border-line bg-surface transition-all hover:shadow-xl"
+                >
+                  <div className="relative h-36 shrink-0 overflow-hidden sm:h-44">
                     <Image
                       src={room.image}
                       alt={`${room.name} room at Vinyasa Earth`}
                       fill
-                      sizes="(min-width: 1024px) 15vw, (min-width: 640px) 22vw, 40vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 30vw, 45vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.05]"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
                     <span
-                      className="absolute bottom-1.5 right-1.5 grid h-8 w-8 place-items-center rounded-full border border-white/40 shadow-[0_2px_8px_rgba(0,0,0,0.25)] backdrop-blur-sm"
+                      className="absolute right-2.5 top-2.5 grid h-9 w-9 place-items-center rounded-full border border-white/40 shadow-[0_2px_10px_rgba(0,0,0,0.3)] backdrop-blur-sm transition-transform duration-300 group-hover:rotate-12"
                       style={{ backgroundColor: `${room.accent}e6`, color: "#fff8ee" }}
                       aria-hidden="true"
                     >
-                      <Icon name={room.icon} size={15} />
+                      <Icon name={room.icon} size={16} />
                     </span>
                   </div>
-                  <span className="mt-3 text-[9px] font-bold uppercase tracking-[0.2em]" style={{ color: room.accent }}>
-                    {room.element}
-                  </span>
-                  <h3 className="font-display italic text-xl leading-tight">{room.name}</h3>
-                  <p className="mt-1 max-w-[20ch] text-xs leading-relaxed text-foreground-soft">
-                    {room.description}
-                  </p>
-                  <Link
-                    href="/book"
-                    className="mt-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-accent underline decoration-accent/50 underline-offset-4 transition-colors hover:text-foreground"
-                  >
-                    Enquire to stay
-                  </Link>
-                </div>
+                  <div className="flex flex-1 flex-col p-3.5 sm:p-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[10px] font-extrabold uppercase tracking-[0.18em]" style={{ color: room.accent }}>
+                          {room.element}
+                        </span>
+                        <h3 className="mt-0.5 font-display italic text-2xl leading-tight text-foreground">{room.name}</h3>
+                      </div>
+                      <span className="shrink-0 text-lg text-accent transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden>
+                        ↗
+                      </span>
+                    </div>
+                    <p className="mt-1.5 text-[13px] font-medium leading-snug text-foreground">{room.description}</p>
+                  </div>
+                </Link>
               </Reveal>
             ))}
           </div>
