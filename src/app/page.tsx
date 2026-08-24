@@ -26,7 +26,7 @@ export default function HomePage() {
       <ConnectSection />
 
       <section className="organic-section organic-stays relative mx-auto max-w-6xl overflow-hidden px-5 py-20 sm:px-8">
-        <Parallax speed={0.045} className="pointer-events-none absolute -bottom-12 -left-12 z-[-1] w-32 opacity-70 sm:-bottom-20 sm:-left-20 sm:w-48 lg:-bottom-24 lg:-left-24 lg:w-60">
+        <Parallax speed={0.045} className="pointer-events-none absolute -bottom-20 -left-20 z-[-1] w-40 opacity-70 sm:-bottom-28 sm:-left-24 sm:w-56 lg:-bottom-32 lg:-left-28 lg:w-64">
           <Image src={chakkiLeft} alt="" className="w-full rotate-[-3deg]" aria-hidden="true" />
         </Parallax>
         <Reveal className="relative z-10 mb-10 flex flex-wrap items-end justify-between gap-4">

@@ -317,17 +317,7 @@ export default function StaysPage() {
             ))}
           </div>
 
-          <Reveal variant="fade" delay={150} className="mt-10 text-center">
-            <a
-              href={whatsappLink("Hi! I'd like to know more about visiting Vinyasa Earth.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-secondary inline-flex items-center gap-2"
-            >
-              <Icon name="logo-whatsapp" size={16} />
-              Connect with us
-            </a>
-          </Reveal>
+        
         </div>
       </section>
 
