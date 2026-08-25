@@ -166,79 +166,99 @@ export default function StaysPage() {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#1c160f]/40" />
 
         <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-12 px-5 pb-16 pt-32 sm:px-8 sm:pt-40 lg:grid-cols-[48%_52%] lg:pb-20">
-          <div>
-            <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-background/75">
-              <span className="h-px w-8 bg-accent" aria-hidden />
-              Twin-sharing cottages, dorm &amp; tents
-            </p>
-            <h1
-              className="text-balance font-display italic leading-[1.02] text-[#f7efe4]"
-              style={{ maxWidth: "540px", fontSize: "clamp(2.625rem, 2.09rem + 2.68vw, 4.5rem)" }}
-            >
-              Stays at Vinyasa Earth in Jaipur
-            </h1>
-            <p className="mt-6 leading-relaxed text-background/80" style={{ maxWidth: "460px" }}>
-              Disconnect from the noise, reconnect with what matters — hand built earth spaces,
-              rooted in nature and crafted for rest.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href="/book"
-                className="inline-flex items-center justify-center bg-accent text-accent-ink font-semibold uppercase tracking-[0.08em] text-xs transition-all hover:-translate-y-0.5 hover:brightness-110"
-                style={{ width: "190px", height: "52px" }}
+          <Parallax speed={-0.03}>
+            <Reveal variant="up">
+              <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-background/75">
+                <span className="h-px w-8 bg-accent" aria-hidden />
+                Twin-sharing cottages, dorm &amp; tents
+              </p>
+            </Reveal>
+            <Reveal variant="up" delay={90}>
+              <h1
+                className="text-balance font-display italic leading-[1.02] text-[#f7efe4]"
+                style={{ maxWidth: "540px", fontSize: "clamp(2.625rem, 2.09rem + 2.68vw, 4.5rem)" }}
               >
-                Make a reservation
-              </Link>
-              <a
-                href="#rooms"
-                className="inline-flex items-center justify-center border border-background/60 bg-transparent font-semibold uppercase tracking-[0.08em] text-xs text-background transition-all hover:-translate-y-0.5 hover:border-background"
-                style={{ width: "190px", height: "52px" }}
-              >
-                Explore stays
-              </a>
-            </div>
-          </div>
+                Stays at Vinyasa Earth in Jaipur
+              </h1>
+            </Reveal>
+            <Reveal variant="up" delay={180}>
+              <p className="mt-6 leading-relaxed text-background/80" style={{ maxWidth: "460px" }}>
+                Disconnect from the noise, reconnect with what matters — hand built earth spaces,
+                rooted in nature and crafted for rest.
+              </p>
+            </Reveal>
+            <Reveal variant="up" delay={270}>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/book"
+                  className="inline-flex items-center justify-center bg-accent text-accent-ink font-semibold uppercase tracking-[0.08em] text-xs transition-all hover:-translate-y-0.5 hover:brightness-110"
+                  style={{ width: "190px", height: "52px" }}
+                >
+                  Make a reservation
+                </Link>
+                <a
+                  href="#rooms"
+                  className="inline-flex items-center justify-center border border-background/60 bg-transparent font-semibold uppercase tracking-[0.08em] text-xs text-background transition-all hover:-translate-y-0.5 hover:border-background"
+                  style={{ width: "190px", height: "52px" }}
+                >
+                  Explore stays
+                </a>
+              </div>
+            </Reveal>
+          </Parallax>
 
           <div className="relative" style={{ height: "clamp(260px, 46vw, 420px)" }}>
-            <div
-              className="absolute right-[10%] top-[6%] z-20 overflow-hidden rounded-[11px] border border-white/35"
-              style={{
-                width: "clamp(150px, 32vw, 260px)",
-                height: "clamp(100px, 21.5vw, 175px)",
-                boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
-              }}
-            >
-              <Image src={heroCardFountain} alt="" fill sizes="(min-width: 1024px) 260px, 32vw" className="object-cover" />
-            </div>
+            <Reveal variant="scale" delay={80} className="absolute right-[10%] top-[6%] z-20">
+              <Parallax speed={0.1}>
+                <div
+                  className="relative overflow-hidden rounded-[11px] border border-white/35"
+                  style={{
+                    width: "clamp(150px, 32vw, 260px)",
+                    height: "clamp(100px, 21.5vw, 175px)",
+                    boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
+                  }}
+                >
+                  <Image src={heroCardFountain} alt="" fill sizes="(min-width: 1024px) 260px, 32vw" className="object-cover" />
+                </div>
+              </Parallax>
+            </Reveal>
 
-            <div
-              className="absolute left-[6%] top-[26%] z-10 overflow-hidden rounded-[11px] border border-white/35"
-              style={{
-                width: "clamp(190px, 40vw, 330px)",
-                height: "clamp(120px, 25.5vw, 210px)",
-                boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
-              }}
-            >
-              <Image
-                src={heroCardCottage}
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 330px, 40vw"
-                className="object-cover"
-                style={{ objectPosition: "60% 35%" }}
-              />
-            </div>
+            <Reveal variant="scale" delay={0} className="absolute left-[6%] top-[26%] z-10">
+              <Parallax speed={-0.07}>
+                <div
+                  className="relative overflow-hidden rounded-[11px] border border-white/35"
+                  style={{
+                    width: "clamp(190px, 40vw, 330px)",
+                    height: "clamp(120px, 25.5vw, 210px)",
+                    boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
+                  }}
+                >
+                  <Image
+                    src={heroCardCottage}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 330px, 40vw"
+                    className="object-cover"
+                    style={{ objectPosition: "60% 35%" }}
+                  />
+                </div>
+              </Parallax>
+            </Reveal>
 
-            <div
-              className="absolute bottom-[4%] right-[4%] z-0 overflow-hidden rounded-[11px] border border-white/35"
-              style={{
-                width: "clamp(130px, 27vw, 220px)",
-                height: "clamp(86px, 17.5vw, 145px)",
-                boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
-              }}
-            >
-              <Image src={heroCardDome} alt="" fill sizes="(min-width: 1024px) 220px, 27vw" className="object-cover" />
-            </div>
+            <Reveal variant="scale" delay={160} className="absolute bottom-[4%] right-[4%] z-0">
+              <Parallax speed={0.14}>
+                <div
+                  className="relative overflow-hidden rounded-[11px] border border-white/35"
+                  style={{
+                    width: "clamp(130px, 27vw, 220px)",
+                    height: "clamp(86px, 17.5vw, 145px)",
+                    boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
+                  }}
+                >
+                  <Image src={heroCardDome} alt="" fill sizes="(min-width: 1024px) 220px, 27vw" className="object-cover" />
+                </div>
+              </Parallax>
+            </Reveal>
           </div>
         </div>
       </section>
