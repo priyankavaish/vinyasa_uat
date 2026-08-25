@@ -31,6 +31,14 @@ const archivo = localFont({
   display: "swap",
 });
 
+const samarkan = localFont({
+  src: "../../public/fonts/samarkan.ttf",
+  variable: "--font-samarkan",
+  weight: "400",
+  style: "normal",
+  display: "swap",
+});
+
 const description =
   "Stay in hand-built mud cottages, join artist residencies and retreats, or host a thoughtful team offsite in Amer, Jaipur.";
 
@@ -88,7 +96,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${displaySerif.variable} ${archivo.variable} ${script.variable}`}>
+    <html lang="en" className={`${displaySerif.variable} ${archivo.variable} ${script.variable} ${samarkan.variable}`}>
       <body className="min-h-screen flex flex-col">
         <script
           type="application/ld+json"
