@@ -49,7 +49,7 @@ const WAYS = [
     href: "/stays",
     image: "/images/property-cottages-day.jpg",
     blurb: "Six hand-built mud cottages to return to.",
-    accent: "#b5643b",
+    accent: "#c85f49",
     span: "sm:col-span-3 sm:row-span-1",
   },
   {

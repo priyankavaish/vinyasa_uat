@@ -25,7 +25,8 @@ export type IconName =
   | "flame-outline"
   | "water-outline"
   | "wind-outline"
-  | "circle-outline";
+  | "circle-outline"
+  | "expand-outline";
 
 const PATHS: Record<IconName, React.ReactNode> = {
   "leaf-outline": (
@@ -366,6 +367,14 @@ const PATHS: Record<IconName, React.ReactNode> = {
   ),
   "circle-outline": (
     <circle cx="256" cy="256" r="160" fill="none" stroke="currentColor" strokeWidth="32" />
+  ),
+  "expand-outline": (
+    <>
+      <polyline points="332 64 448 64 448 180" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+      <polyline points="180 448 64 448 64 332" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+      <line x1="448" y1="64" x2="300" y2="212" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+      <line x1="64" y1="448" x2="212" y2="300" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+    </>
   ),
 };
 

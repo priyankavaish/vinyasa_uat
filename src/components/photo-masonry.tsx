@@ -7,6 +7,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import "yet-another-react-lightbox/styles.css";
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
+import { Icon } from "./icon";
 import { placePhotos } from "@/lib/content";
 
 export default function PhotoMasonry() {
@@ -62,7 +63,9 @@ export default function PhotoMasonry() {
                     sizes="(min-width: 1024px) 31vw, (min-width: 640px) 43vw, 82vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <span className="absolute bottom-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-black/45 text-sm text-white backdrop-blur-sm" aria-hidden>↗</span>
+                  <span className="absolute bottom-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-black/45 text-white backdrop-blur-sm" aria-hidden>
+                    <Icon name="expand-outline" size={14} />
+                  </span>
                 </button>
               </div>
             ))}
@@ -72,8 +75,12 @@ export default function PhotoMasonry() {
           <span className="text-[10px] font-bold uppercase tracking-[.2em] text-dusk-ink/65 sm:hidden">Swipe to explore</span>
           <span className="hidden text-xs tabular-nums text-dusk-ink/60 sm:block">{String(selected + 1).padStart(2, "0")} / {String(placePhotos.length).padStart(2, "0")}</span>
           <div className="flex gap-2">
-            <button type="button" onClick={scrollPrev} aria-label="Previous photo" className="grid h-10 w-10 place-items-center rounded-full border border-dusk-ink/35 text-lg transition-colors hover:bg-dusk-ink hover:text-dusk-surface">←</button>
-            <button type="button" onClick={scrollNext} aria-label="Next photo" className="grid h-10 w-10 place-items-center rounded-full border border-dusk-ink/35 text-lg transition-colors hover:bg-dusk-ink hover:text-dusk-surface">→</button>
+            <button type="button" onClick={scrollPrev} aria-label="Previous photo" className="grid h-10 w-10 place-items-center rounded-full border border-dusk-ink/35 transition-colors hover:bg-dusk-ink hover:text-dusk-surface">
+              <Icon name="arrow-forward-outline" size={16} className="rotate-180" />
+            </button>
+            <button type="button" onClick={scrollNext} aria-label="Next photo" className="grid h-10 w-10 place-items-center rounded-full border border-dusk-ink/35 transition-colors hover:bg-dusk-ink hover:text-dusk-surface">
+              <Icon name="arrow-forward-outline" size={16} />
+            </button>
           </div>
         </div>
       </Reveal>

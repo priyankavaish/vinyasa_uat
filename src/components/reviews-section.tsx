@@ -106,7 +106,7 @@ export default function ReviewsSection() {
 
           <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
             {GOOGLE_RATING.topics.map((topic, i) => {
-              const style = TOPIC_STYLE[topic] ?? { icon: "sparkles-outline" as IconName, accent: "#b5643b" };
+              const style = TOPIC_STYLE[topic] ?? { icon: "sparkles-outline" as IconName, accent: "#c85f49" };
               return (
                 <Reveal key={topic} variant="up" delay={220 + i * 70}>
                   <div className={`group relative flex min-h-24 flex-col items-center justify-center border px-3 py-3 text-center shadow-[0_8px_24px_rgba(75,55,35,0.06)] backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:z-20 hover:border-accent/55 hover:shadow-[0_12px_30px_rgba(75,55,35,0.13)] ${TOPIC_CARD_STYLE[i % TOPIC_CARD_STYLE.length]}`}>

@@ -62,7 +62,7 @@ const ROOMS: Room[] = [
     image: roomAgni,
     description: "A sunset-red room with its own open-air wash pit, carved straight into the earthen wall.",
     icon: "flame-outline",
-    accent: "#b5643b",
+    accent: "#c85f49",
   },
   {
     name: "Jal",
