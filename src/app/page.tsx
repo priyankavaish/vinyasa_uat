@@ -26,9 +26,6 @@ export default function HomePage() {
       <ConnectSection />
 
       <section className="organic-section organic-stays relative mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <Parallax speed={0.045} className="pointer-events-none absolute -bottom-20 -left-8 z-0 w-32 opacity-90 sm:-bottom-28 sm:-left-12 sm:w-44 lg:-bottom-36 lg:-left-16 lg:w-48">
-          <Image src={chakkiLeft} alt="" className="w-full rotate-[-3deg] drop-shadow-[0_18px_30px_rgba(75,55,35,0.25)]" aria-hidden="true" />
-        </Parallax>
         <Reveal className="relative z-10 mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <SectionEyebrow icon="home-outline">The Cottages</SectionEyebrow>
@@ -46,6 +43,12 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <div className="relative z-20 mx-auto max-w-6xl px-5 sm:px-8">
+        <Parallax speed={0.045} className="pointer-events-none absolute -top-24 -left-8 w-32 opacity-90 sm:-top-28 sm:-left-10 sm:w-44 lg:-top-32 lg:-left-14 lg:w-48">
+          <Image src={chakkiLeft} alt="" className="w-full rotate-[-3deg] drop-shadow-[0_18px_30px_rgba(75,55,35,0.25)]" aria-hidden="true" />
+        </Parallax>
+      </div>
 
       <CommunitySection />
       <PhotoMasonry />

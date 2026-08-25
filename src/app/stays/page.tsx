@@ -1,16 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PageHero } from "@/components/hero";
 import SectionEyebrow from "@/components/section-eyebrow";
 import { Reveal } from "@/components/reveal";
-import { Parallax } from "@/components/parallax";
+import { Parallax, ParallaxHeroImage } from "@/components/parallax";
 import { Icon, type IconName } from "@/components/icon";
 import { whatsappLink } from "@/lib/site";
 
 import vine3 from "@/app/assets/vine3.png";
 import vine4 from "@/app/assets/vine4.png";
 
-import heroSunset from "@/app/assets/stays/IMG_7852-768x1024.jpg";
+import heroAerial from "@/app/assets/banner_bg_sunset.png";
+import heroCardCottage from "@/app/assets/03_cottage_flowers.jpg";
+import heroCardFountain from "@/app/assets/04_pavilion_seating.jpg";
+import heroCardDome from "@/app/assets/05_night_pavilion.jpg";
 import nightGazebos from "@/app/assets/stays/WhatsApp-Image-2023-09-30-at-9.31.50-PM-1-768x1024.jpeg";
 import amphitheatre from "@/app/assets/stays/vinyasa-ampitheatre-1024x768.jpg";
 import studioDome from "@/app/assets/stays/mohitXvinyasa-1-of-5-1-scaled.jpg";
@@ -146,12 +148,100 @@ const PARTNERS = [
 export default function StaysPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Twin-sharing cottages, dorm & tents"
-        title="Stays at Vinyasa Earth in Jaipur"
-        description="Disconnect from the pressures of the outside world in seven hand-built rooms — each named for an element — set around a shared courtyard, kitchen, and firepit."
-        image={heroSunset}
-      />
+      <section className="relative min-h-[650px] overflow-hidden bg-[#1c160f] text-background lg:min-h-[720px]">
+        <div className="absolute inset-0">
+          <ParallaxHeroImage>
+            <Image src={heroAerial} alt="" fill priority sizes="100vw" className="object-cover" />
+          </ParallaxHeroImage>
+        </div>
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(15,10,5,.88) 0%, rgba(15,10,5,.6) 32%, rgba(15,10,5,.28) 58%, rgba(15,10,5,.12) 100%), linear-gradient(180deg, rgba(10,7,4,.4) 0%, rgba(10,7,4,0) 22%, rgba(10,7,4,0) 68%, rgba(10,7,4,.5) 100%)",
+          }}
+        />
+
+        {/* fade into the section below */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#1c160f]/40" />
+
+        <div className="relative z-10 mx-auto grid max-w-[1200px] items-center gap-12 px-5 pb-16 pt-32 sm:px-8 sm:pt-40 lg:grid-cols-[48%_52%] lg:pb-20">
+          <div>
+            <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-background/75">
+              <span className="h-px w-8 bg-accent" aria-hidden />
+              Twin-sharing cottages, dorm &amp; tents
+            </p>
+            <h1
+              className="text-balance font-display italic leading-[1.02] text-[#f7efe4]"
+              style={{ maxWidth: "540px", fontSize: "clamp(2.625rem, 2.09rem + 2.68vw, 4.5rem)" }}
+            >
+              Stays at Vinyasa Earth in Jaipur
+            </h1>
+            <p className="mt-6 leading-relaxed text-background/80" style={{ maxWidth: "460px" }}>
+              Disconnect from the noise, reconnect with what matters — hand built earth spaces,
+              rooted in nature and crafted for rest.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Link
+                href="/book"
+                className="inline-flex items-center justify-center bg-accent text-accent-ink font-semibold uppercase tracking-[0.08em] text-xs transition-all hover:-translate-y-0.5 hover:brightness-110"
+                style={{ width: "190px", height: "52px" }}
+              >
+                Make a reservation
+              </Link>
+              <a
+                href="#rooms"
+                className="inline-flex items-center justify-center border border-background/60 bg-transparent font-semibold uppercase tracking-[0.08em] text-xs text-background transition-all hover:-translate-y-0.5 hover:border-background"
+                style={{ width: "190px", height: "52px" }}
+              >
+                Explore stays
+              </a>
+            </div>
+          </div>
+
+          <div className="relative" style={{ height: "clamp(260px, 46vw, 420px)" }}>
+            <div
+              className="absolute right-[10%] top-[6%] z-20 overflow-hidden rounded-[11px] border border-white/35"
+              style={{
+                width: "clamp(150px, 32vw, 260px)",
+                height: "clamp(100px, 21.5vw, 175px)",
+                boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
+              }}
+            >
+              <Image src={heroCardFountain} alt="" fill sizes="(min-width: 1024px) 260px, 32vw" className="object-cover" />
+            </div>
+
+            <div
+              className="absolute left-[6%] top-[26%] z-10 overflow-hidden rounded-[11px] border border-white/35"
+              style={{
+                width: "clamp(190px, 40vw, 330px)",
+                height: "clamp(120px, 25.5vw, 210px)",
+                boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
+              }}
+            >
+              <Image
+                src={heroCardCottage}
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 330px, 40vw"
+                className="object-cover"
+                style={{ objectPosition: "60% 35%" }}
+              />
+            </div>
+
+            <div
+              className="absolute bottom-[4%] right-[4%] z-0 overflow-hidden rounded-[11px] border border-white/35"
+              style={{
+                width: "clamp(130px, 27vw, 220px)",
+                height: "clamp(86px, 17.5vw, 145px)",
+                boxShadow: "0 18px 50px rgba(0,0,0,0.22)",
+              }}
+            >
+              <Image src={heroCardDome} alt="" fill sizes="(min-width: 1024px) 220px, 27vw" className="object-cover" />
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-3xl text-center">
@@ -161,9 +251,9 @@ export default function StaysPage() {
             Our cottages offer a comfortable, relaxing atmosphere: the perfect place to unwind after
             a day exploring the outdoor scenery around Amer.
           </p>
-          <Link href="/book" className="btn btn-accent mt-6 inline-flex">
+          {/* <Link href="/book" className="btn btn-accent mt-6 inline-flex">
             Make a reservation
-          </Link>
+          </Link> */}
         </Reveal>
 
         <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -175,6 +265,8 @@ export default function StaysPage() {
                   alt=""
                   fill
                   sizes="(min-width: 640px) 25vw, 50vw"
+                  placeholder="blur"
+                  priority
                   className="object-cover transition-transform duration-500 hover:scale-105"
                 />
               </div>
@@ -183,7 +275,7 @@ export default function StaysPage() {
         </div>
       </section>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
+      <section id="rooms" className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
         <Parallax speed={-0.03} className="pointer-events-none absolute -left-16 -top-10 w-[13rem] opacity-[0.15] sm:w-[17rem]" aria-hidden="true">
           <Image src={vine3} alt="" className="w-full -rotate-[100deg]" />
         </Parallax>

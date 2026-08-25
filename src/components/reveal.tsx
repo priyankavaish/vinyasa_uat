@@ -78,7 +78,7 @@ export function Reveal({
           io.unobserve(entry.target);
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.15 },
+      { rootMargin: "0px 0px 200px 0px", threshold: 0.01 },
     );
     io.observe(el);
     // Failsafe: an element that never intersects (missed observer callback,

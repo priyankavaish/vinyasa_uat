@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "./icon";
-import { whatsappLink } from "@/lib/site";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -64,9 +63,11 @@ export default function SiteHeader() {
       }`}
       style={{ backgroundColor: transparent ? "transparent" : "#ffffff" }}
     >
-      <div className="site-header-inner mx-auto flex max-w-6xl items-center justify-end gap-4 px-5 py-4 sm:px-8 lg:justify-between">
+      <div className="site-header-inner mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-4 sm:px-8">
+        <span className="hidden lg:block" aria-hidden />
+
         <ul
-          className={`hidden flex-1 items-center justify-center gap-6 text-xs font-semibold tracking-[0.12em] uppercase lg:flex ${
+          className={`hidden items-center justify-center gap-6 text-xs font-semibold tracking-[0.12em] uppercase lg:flex ${
             transparent ? "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.65)]" : "text-black"
           }`}
         >
@@ -79,7 +80,7 @@ export default function SiteHeader() {
           ))}
         </ul>
 
-        <div className="flex shrink-0 items-center gap-3">
+        <div className="col-start-3 flex shrink-0 items-center justify-self-end gap-3 lg:col-start-3">
           <Link
             href="/book"
             className="hidden items-center justify-center px-5 py-3 text-xs font-semibold tracking-[0.12em] text-white uppercase transition-all hover:-translate-y-0.5 hover:brightness-110 lg:inline-flex"
@@ -87,19 +88,6 @@ export default function SiteHeader() {
           >
             Book Your Stay
           </Link>
-          <a
-            href={whatsappLink("Hi! I'd like to know more about Vinyasa Earth.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`hidden items-center justify-center gap-2 border px-4 py-3 text-xs !text-white font-semibold tracking-[0.1em] uppercase transition-all hover:-translate-y-0.5 hover:shadow-md lg:inline-flex ${
-              transparent
-                ? "border-white bg-transparent text-white hover:bg-white/10"
-                : "border-[#6b7a5e] bg-[#6b7a5e] text-white hover:border-[#55644a] hover:bg-[#55644a]"
-            }`}
-          >
-            <Icon name="logo-whatsapp" size={16} />
-            Chat on WhatsApp
-          </a>
           <button
             type="button"
             aria-expanded={open}
@@ -125,18 +113,6 @@ export default function SiteHeader() {
                 </Link>
               </li>
             ))}
-            <li>
-              <a
-                href={whatsappLink("Hi! I'd like to know more about Vinyasa Earth.")}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                className="inline-flex items-center gap-2 bg-[#6b7a5e] px-5 py-3 font-semibold !text-white"
-              >
-                <Icon name="logo-whatsapp" size={18} />
-                Chat on WhatsApp
-              </a>
-            </li>
             <li>
               <Link
                 href="/book"

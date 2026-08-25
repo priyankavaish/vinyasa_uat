@@ -53,7 +53,7 @@ export default function PhotoMasonry() {
                 <button
                   type="button"
                   onClick={() => setLightboxIndex(i)}
-                  className="group relative block h-64 w-full overflow-hidden rounded-none border border-line sm:h-80"
+                  className="group relative block h-64 w-full cursor-pointer overflow-hidden rounded-none border border-line sm:h-80"
                 >
                   <Image
                     src={photo.image}
