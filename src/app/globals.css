@@ -232,36 +232,13 @@ a {
 /* Deliberately different silhouettes across the home page. */
 .organic-section { position: relative; isolation: isolate; }
 .organic-connect { margin-top: -2.5rem; padding-top: 8rem; clip-path: ellipse(100% 100% at 50% 100%); }
-.organic-stays::before {
-  content: "";
-  position: absolute;
-  inset: 1.25rem -4vw .5rem;
-  z-index: -1;
-  border: 1px solid rgba(92, 112, 70, .12);
-  border-radius: 9rem 2.25rem 11rem 3rem / 6rem 9rem 7rem 10rem;
-  background:
-    radial-gradient(circle at 14% 18%, rgba(255, 255, 255, .62), transparent 28%),
-    radial-gradient(circle at 86% 82%, rgba(196, 209, 172, .55), transparent 32%),
-    linear-gradient(135deg, #eef1e5 0%, #e3ead8 54%, #edf0e2 100%);
-  /* box-shadow: 0 1.75rem 4.5rem rgba(48, 70, 50, .11); */
-  opacity: .98;
-  transform: rotate(-.55deg);
-  transform-origin: center;
-}
+.organic-stays-hut { position: absolute; z-index: 5; pointer-events: none; }
 .organic-events { clip-path: polygon(0 4rem, 34% 0, 70% 3rem, 100% 0, 100% 100%, 0 100%); padding-top: 8rem; }
 .organic-reviews { clip-path: ellipse(110% 100% at 50% 100%); margin-top: -3rem; padding-top: 7.5rem; }
-.connect-tile { transition: border-radius .7s ease, transform .5s cubic-bezier(.2,.8,.2,1); }
-.connect-tile-1 { border-radius: 8rem 1rem 1rem 1rem; }
-.connect-tile-2 { border-radius: 1rem 6rem 1rem 6rem; }
-.connect-tile-3 { border-radius: 50% 50% 1rem 1rem; }
-.connect-tile-4 { border-radius: 1rem 1rem 7rem 1rem; }
-.connect-tile-5 { border-radius: 1rem 7rem 7rem 1rem; }
-.connect-tile:hover { border-radius: 2rem; transform: translateY(-.55rem) rotate(-.7deg); }
-.stay-card { transition: transform .4s ease, border-radius .6s ease; }
-.stay-card-1 { border-radius: 10rem 10rem 1rem 1rem; }
-.stay-card-2 { border-radius: 1rem 7rem 1rem 1rem; }
-.stay-card-3 { border-radius: 7rem 1rem 7rem 1rem; }
-.stay-card:hover { transform: translateY(-.65rem) rotate(.5deg); }
+.connect-tile { border-radius: 1.25rem; transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
+.connect-tile:hover { transform: translateY(-.4rem); box-shadow: 0 1.75rem 3.5rem rgba(35, 28, 18, .22); }
+.stay-card { border-radius: 1.25rem; box-shadow: 0 1.25rem 3rem rgba(43, 38, 32, .07); transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; }
+.stay-card:hover { transform: translateY(-.5rem); box-shadow: 0 2rem 4rem rgba(43, 38, 32, .16); }
 .event-card {
   --event-accent: #b5643b;
   position: relative;

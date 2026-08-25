@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import chakkiLeft from "@/app/assets/chakki_left.png";
+import decorativeHut from "@/app/assets/decorative-hut.png";
+import huttFlorals from "@/app/assets/vine4.png";
 import { HomeHero } from "@/components/hero";
 import MarqueeBar from "@/components/marquee-bar";
 import SectionEyebrow from "@/components/section-eyebrow";
@@ -26,6 +28,23 @@ export default function HomePage() {
       <ConnectSection />
 
       <section className="organic-section organic-stays relative mx-auto max-w-6xl px-5 py-20 sm:px-8">
+        <Parallax
+          speed={0.14}
+          className="pointer-events-none absolute -top-6 right-10 z-0 w-28 opacity-40 sm:right-16 sm:w-36 lg:w-44"
+        >
+          <Image src={huttFlorals} alt="" aria-hidden="true" className="w-full rotate-[18deg]" />
+        </Parallax>
+        <Parallax
+          speed={-0.1}
+          className="organic-stays-hut -top-14 -right-6 w-36 opacity-95 sm:-top-16 sm:right-0 sm:w-48 lg:-top-20 lg:w-60"
+        >
+          <Image
+            src={decorativeHut}
+            alt=""
+            aria-hidden="true"
+            className="w-full drop-shadow-[0_20px_35px_rgba(75,45,25,0.28)]"
+          />
+        </Parallax>
         <Reveal className="relative z-10 mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <SectionEyebrow icon="home-outline">The Cottages</SectionEyebrow>

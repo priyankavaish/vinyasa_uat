@@ -1,4 +1,7 @@
 import Image from "next/image";
+import eventsTileImage from "@/app/assets/events-01.png";
+import corporateTileImage from "@/app/assets/IMG_2429.jpeg";
+import artistTileImage from "@/app/assets/2N0A9806-artist.JPG";
 import vine1 from "@/app/assets/vine1.png";
 import vine2 from "@/app/assets/vine2.png";
 import vine3 from "@/app/assets/vine3.png";
@@ -17,7 +20,7 @@ const WAYS = [
     number: "01",
     title: "Events",
     href: "/events",
-    image: "/images/property-night-gathering.jpg",
+    image: eventsTileImage,
     blurb: "Residencies, retreats, and workshops for makers.",
     accent: "#c9713f",
     span: "sm:col-span-4 sm:row-span-2",
@@ -26,7 +29,7 @@ const WAYS = [
     number: "02",
     title: "Corporate Offsites",
     href: "/corporate",
-    image: "/images/property-lawn-gazebo.jpg",
+    image: corporateTileImage,
     blurb: "Team retreats grounded in the desert, not a boardroom.",
     accent: "#7c8f5a",
     span: "sm:col-span-2 sm:row-span-1",
@@ -35,7 +38,7 @@ const WAYS = [
     number: "03",
     title: "Artist Escapes",
     href: "/events/artist-escape",
-    image: "/images/hero-desert-dusk.jpg",
+    image: artistTileImage,
     blurb: "Weeks to build, paint, or write alongside a resident community.",
     accent: "#d99a2b",
     span: "sm:col-span-2 sm:row-span-1",
@@ -106,7 +109,7 @@ export default function ConnectSection() {
             >
               <Link
                 href={way.href}
-                className={`connect-tile connect-tile-${i + 1} group relative block h-full min-h-[220px] overflow-hidden border border-line`}
+                className="connect-tile group relative block h-full min-h-[220px] overflow-hidden border border-line"
               >
                 <Image
                   src={way.image}
@@ -115,15 +118,15 @@ export default function ConnectSection() {
                   sizes="(min-width: 640px) 40vw, 100vw"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10 transition-opacity duration-500 group-hover:from-black/90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/30 to-black/5 transition-opacity duration-500 group-hover:from-black/92" />
                 <span
-                  className="absolute right-4 top-4 font-display text-4xl italic opacity-40 transition-opacity duration-500 group-hover:opacity-80 sm:text-5xl"
-                  style={{ color: way.accent }}
+                  className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full font-display text-sm italic text-background/90 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 sm:h-10 sm:w-10"
+                  style={{ backgroundColor: `${way.accent}55`, border: `1px solid ${way.accent}99` }}
                   aria-hidden
                 >
                   {way.number}
                 </span>
-                <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                <div className="absolute inset-x-0 bottom-0 flex min-h-[7.5rem] flex-col justify-end p-5 sm:p-6">
                   <span
                     className="mb-2 inline-block h-1 w-8 rounded-full transition-all duration-500 group-hover:w-14"
                     style={{ backgroundColor: way.accent }}
@@ -132,7 +135,7 @@ export default function ConnectSection() {
                   <h3 className="font-display italic text-2xl leading-tight text-background drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:text-3xl">
                     {way.title}
                   </h3>
-                  <p className="mt-1.5 max-w-[32ch] text-sm text-background/80">{way.blurb}</p>
+                  <p className="mt-1.5 line-clamp-2 max-w-[32ch] text-sm leading-snug text-background/80">{way.blurb}</p>
                   <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-background/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     Explore
                     <Icon name="arrow-forward-outline" size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
