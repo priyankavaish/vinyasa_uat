@@ -45,7 +45,7 @@ const pullQuote = GOOGLE_RATING.summary.split(/(?<=\.)\s+/)[0]!.replace(/\.$/, "
 
 export default function ReviewsSection() {
   return (
-    <section className="organic-section organic-reviews relative isolate overflow-hidden bg-background py-12 sm:py-16">
+    <section className="relative isolate overflow-hidden py-20 sm:py-28">
       <Parallax speed={-0.025} className="pointer-events-none absolute -left-16 -top-16 z-[1] w-[13rem] opacity-25 sm:-left-20 sm:-top-20 sm:w-[18rem]" aria-hidden="true">
         <Image src={vine2} alt="" className="w-full -rotate-12" />
       </Parallax>
@@ -54,7 +54,7 @@ export default function ReviewsSection() {
       </Parallax>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal variant="scale" className="relative mx-auto max-w-2xl border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
+        <Reveal variant="up" className="relative mx-auto max-w-2xl border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 -top-8 z-10 h-8 sm:-top-10 sm:h-10"

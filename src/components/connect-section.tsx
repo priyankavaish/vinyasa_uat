@@ -2,17 +2,12 @@ import Image from "next/image";
 import eventsTileImage from "@/app/assets/events-tile-community.png";
 import corporateTileImage from "@/app/assets/IMG_2429.jpeg";
 import artistTileImage from "@/app/assets/2N0A9983.JPG";
-import vine1 from "@/app/assets/vine1.png";
-import vine2 from "@/app/assets/vine2.png";
-import vine3 from "@/app/assets/vine3.png";
-import vine4 from "@/app/assets/vine4.png";
 import Link from "next/link";
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
 import { Icon } from "./icon";
-import { Parallax } from "./parallax";
 
-// Each tile previews the page it links to, so it borrows that page's own
+// Each block previews the page it links to, so it borrows that page's own
 // hero/identity photo rather than a fresh one — never a photo shown nowhere
 // else on the site, just the same "cover shot" doing double duty as a preview.
 const WAYS = [
@@ -21,133 +16,96 @@ const WAYS = [
     title: "Events",
     href: "/events",
     image: eventsTileImage,
-    blurb: "Residencies, retreats, and workshops for makers.",
-    accent: "#c9713f",
-    span: "sm:col-span-4 sm:row-span-2",
+    blurb:
+      "Residencies, retreats, and workshops for makers — a rotating calendar of ways to spend a week or a month here, alongside people building something of their own.",
   },
   {
     number: "02",
     title: "Corporate Offsites",
     href: "/corporate",
     image: corporateTileImage,
-    blurb: "Team retreats grounded in the desert, not a boardroom.",
-    accent: "#7c8f5a",
-    span: "sm:col-span-2 sm:row-span-1",
+    blurb:
+      "Team retreats grounded in the desert, not a boardroom. Slow mornings, shared meals, and conversations that don't happen back at the office.",
   },
   {
     number: "03",
     title: "Artist Escapes",
     href: "/events/artist-escape",
     image: artistTileImage,
-    blurb: "Weeks to build, paint, or write alongside a resident community.",
-    accent: "#d99a2b",
-    span: "sm:col-span-2 sm:row-span-1",
+    blurb:
+      "Weeks to build, paint, or write alongside a resident community — an affordable stay-with-meals program for creative practitioners.",
   },
-  // {
-  //   number: "04",
-  //   title: "Stays",
-  //   href: "/stays",
-  //   image: "/images/property-cottages-day.jpg",
-  //   blurb: "Six hand-built mud cottages to return to.",
-  //   accent: "#8f3b31",
-  //   span: "sm:col-span-3 sm:row-span-1",
-  // },
-  // {
-  //   number: "05",
-  //   title: "Founder's Place",
-  //   href: "/about",
-  //   image: "/images/amer-fort-lake.jpg",
-  //   blurb: "Stay among founders, trade ideas by the fire, and perhaps meet your next CTO or collaborator.",
-  //   accent: "#6b7a9e",
-  //   span: "sm:col-span-3 sm:row-span-1",
-  // },
 ] as const;
-
-const REVEAL_VARIANTS = ["scale", "up", "fade", "left", "right"] as const;
 
 export default function ConnectSection() {
   return (
-    <section className="organic-section organic-connect relative overflow-hidden bg-background py-24 text-foreground">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        {/* <Parallax speed={-0.04} className="absolute -right-20 -top-24 w-[18rem] sm:-right-16 sm:w-[25rem] lg:w-[30rem]">
-          <Image src={vine1} alt="" className="w-full opacity-30" />
-        </Parallax>
-        <Image
-          src={vine2}
-          alt=""
-          className="absolute -left-24 top-[18%] hidden w-[24rem] -rotate-6 opacity-20 md:block lg:w-[30rem]"
-        />
-        <Image
-          src={vine3}
-          alt=""
-          className="absolute -right-28 top-[42%] hidden w-[27rem] rotate-3 opacity-20 md:block lg:w-[34rem]"
-        />
-        <Parallax speed={0.035} className="absolute -bottom-28 -left-24 w-[20rem] sm:w-[27rem] lg:w-[33rem]">
-          <Image src={vine4} alt="" className="w-full opacity-25" />
-        </Parallax> */}
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
-        <Reveal variant="fade" className="mb-12 max-w-2xl">
-          <SectionEyebrow tone="secondary" icon="compass-outline">Self-discovery</SectionEyebrow>
-          <h2 className="mt-3 font-display text-5xl leading-[1.02] sm:text-6xl">
+    <section className="relative overflow-hidden py-20 text-foreground sm:py-28">
+      <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
+        <Reveal variant="up">
+          <SectionEyebrow tone="secondary" icon="compass-outline" className="justify-center">
+            Self-discovery
+          </SectionEyebrow>
+          <h2 className="mt-4 font-display text-4xl leading-[1.08] sm:text-5xl">
             A place to arrive. People to build with.
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-foreground-soft">
+          <p className="mx-auto mt-5 max-w-[52ch] text-lg leading-relaxed text-foreground">
             Stay among artists, founders, and curious minds. Make something, exchange ideas,
             or meet the person who changes what you build next.
           </p>
         </Reveal>
+      </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-6 sm:auto-rows-[190px]">
-          {WAYS.map((way, i) => (
-            <Reveal
-              key={way.href}
-              variant={REVEAL_VARIANTS[i % REVEAL_VARIANTS.length]}
-              delay={i * 90}
-              className={way.span}
+      <div className="mt-16 sm:mt-24">
+        {WAYS.map((way, i) => (
+          <div key={way.href} className="mx-auto max-w-[100rem]">
+            <div
+              className={`grid items-center gap-0 md:grid-cols-2 ${
+                i > 0 ? "border-t border-line" : ""
+              }`}
             >
-              <Link
-                href={way.href}
-                className="connect-tile group relative block h-full min-h-[220px] overflow-hidden border border-line"
+              <Reveal
+                variant="up"
+                className={`relative aspect-[4/3] w-full sm:aspect-[16/10] md:aspect-[4/3] ${
+                  i % 2 === 1 ? "md:order-2" : ""
+                }`}
               >
-                <Parallax speed={0.04} className="absolute inset-0">
-                  <Image
-                    src={way.image}
-                    alt=""
-                    fill
-                    quality={90}
-                    sizes="(min-width: 1024px) 60vw, (min-width: 640px) 75vw, 100vw"
-                    className="scale-110 object-cover transition-transform duration-700 ease-out group-hover:scale-125"
-                  />
-                </Parallax>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/30 to-black/5 transition-opacity duration-500 group-hover:from-black/92" />
-                <span
-                  className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full font-display text-sm text-background/90 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 sm:h-10 sm:w-10"
-                  style={{ backgroundColor: `${way.accent}55`, border: `1px solid ${way.accent}99` }}
-                  aria-hidden
-                >
+                <Image
+                  src={way.image}
+                  alt=""
+                  fill
+                  quality={90}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              </Reveal>
+
+              <Reveal
+                variant="up"
+                delay={200}
+                className={`px-6 py-14 sm:px-12 sm:py-16 md:px-16 lg:px-20 ${
+                  i % 2 === 1 ? "md:order-1" : ""
+                }`}
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
                   {way.number}
                 </span>
-                <div className="absolute inset-x-0 bottom-0 flex min-h-[7.5rem] flex-col justify-end p-5 sm:p-6">
-                  <span
-                    className="mb-2 inline-block h-1 w-8 rounded-full transition-all duration-500 group-hover:w-14"
-                    style={{ backgroundColor: way.accent }}
-                    aria-hidden
-                  />
-                  <h3 className="font-display text-2xl leading-tight text-background drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:text-3xl">
-                    {way.title}
-                  </h3>
-                  <p className="mt-1.5 line-clamp-2 max-w-[32ch] text-sm leading-snug text-background/80">{way.blurb}</p>
-                  <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-background/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    Explore
-                    <Icon name="arrow-forward-outline" size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+                <h3 className="mt-3 max-w-[16ch] font-display text-3xl leading-tight sm:text-4xl">
+                  {way.title}
+                </h3>
+                <p className="mt-5 max-w-[42ch] text-base leading-relaxed text-foreground">
+                  {way.blurb}
+                </p>
+                <Link
+                  href={way.href}
+                  className="mt-7 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent transition-[gap] duration-300 hover:gap-3.5"
+                >
+                  Explore
+                  <Icon name="arrow-forward-outline" size={13} />
+                </Link>
+              </Reveal>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
