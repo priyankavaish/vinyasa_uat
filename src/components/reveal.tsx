@@ -6,8 +6,8 @@ export type RevealVariant = "up" | "fade" | "scale" | "left" | "right" | "clip";
 
 const VARIANT_STYLE: Record<RevealVariant, { hidden: React.CSSProperties; transition: string }> = {
   up: {
-    hidden: { opacity: 0, transform: "translate3d(0, 24px, 0)" },
-    transition: "opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)",
+    hidden: { opacity: 0, transform: "translate3d(0, 34px, 0)" },
+    transition: "opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)",
   },
   fade: {
     hidden: { opacity: 0 },
@@ -27,7 +27,7 @@ const VARIANT_STYLE: Record<RevealVariant, { hidden: React.CSSProperties; transi
   },
   clip: {
     hidden: { opacity: 1, clipPath: "inset(0 0 100% 0)" },
-    transition: "clip-path 0.8s cubic-bezier(0.65,0,0.35,1)",
+    transition: "clip-path 0.6s cubic-bezier(0.65,0,0.35,1)",
   },
 };
 

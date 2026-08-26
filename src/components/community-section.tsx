@@ -24,7 +24,7 @@ export default function CommunitySection() {
             />
           </ParallaxHeroImage>
         </Reveal>
-        <Reveal variant="up" delay={120} className="flex flex-col justify-center">
+        <Reveal variant="up" delay={40} className="flex flex-col justify-center">
           <SectionEyebrow tone="secondary" icon="people-outline">One community, one table</SectionEyebrow>
           <h2 className="mt-3 max-w-[22ch] font-display text-4xl leading-tight">
             Volunteers, artists, and strangers, cooking, eating, and living as one

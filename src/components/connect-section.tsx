@@ -1,7 +1,7 @@
 import Image from "next/image";
 import eventsTileImage from "@/app/assets/events-01.png";
 import corporateTileImage from "@/app/assets/IMG_2429.jpeg";
-import artistTileImage from "@/app/assets/2N0A9806-artist.jpg";
+import artistTileImage from "@/app/assets/2N0A9983.JPG";
 import vine1 from "@/app/assets/vine1.png";
 import vine2 from "@/app/assets/vine2.png";
 import vine3 from "@/app/assets/vine3.png";
@@ -111,13 +111,15 @@ export default function ConnectSection() {
                 href={way.href}
                 className="connect-tile group relative block h-full min-h-[220px] overflow-hidden border border-line"
               >
-                <Image
-                  src={way.image}
-                  alt=""
-                  fill
-                  sizes="(min-width: 640px) 40vw, 100vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                />
+                <Parallax speed={0.04} className="absolute inset-0">
+                  <Image
+                    src={way.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 640px) 40vw, 100vw"
+                    className="scale-110 object-cover transition-transform duration-700 ease-out group-hover:scale-125"
+                  />
+                </Parallax>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/30 to-black/5 transition-opacity duration-500 group-hover:from-black/92" />
                 <span
                   className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full font-display text-sm text-background/90 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 sm:h-10 sm:w-10"

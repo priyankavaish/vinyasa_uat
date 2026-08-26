@@ -2,12 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Cottage } from "@/lib/content";
 import { Reveal } from "./reveal";
+import { Parallax } from "./parallax";
+import cottageIndigoImage from "@/app/assets/IMG_1068.JPG";
 
 const IMAGE_ROTATION = [
   "/images/property-cottages-day.jpg",
   "/images/property-night-gathering.jpg",
   "/images/property-lawn-gazebo.jpg",
 ];
+
+const COTTAGE_IMAGE_OVERRIDES: Record<string, typeof cottageIndigoImage | string> = {
+  indigo: cottageIndigoImage,
+};
 
 export default function CottageCard({
   cottage,
@@ -18,7 +24,7 @@ export default function CottageCard({
   featured?: boolean;
   index?: number;
 }) {
-  const image = IMAGE_ROTATION[index % IMAGE_ROTATION.length];
+  const image = COTTAGE_IMAGE_OVERRIDES[cottage.slug] ?? IMAGE_ROTATION[index % IMAGE_ROTATION.length];
   const price = (
     <div className="flex items-end justify-between gap-4 border-t border-line pt-4">
       <div className="leading-none">
@@ -49,14 +55,16 @@ export default function CottageCard({
           href={`/stays/${cottage.slug}`}
           className="stay-card group grid overflow-hidden border border-line bg-surface sm:grid-cols-[1.25fr_1fr]"
         >
-          <div className="relative h-64 sm:h-auto sm:min-h-[22rem]">
-            <Image
-              src={image}
-              alt=""
-              fill
-              sizes="(min-width: 640px) 55vw, 100vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-            />
+          <div className="relative h-64 overflow-hidden sm:h-auto sm:min-h-[22rem]">
+            <Parallax speed={0.05} className="absolute inset-0">
+              <Image
+                src={image}
+                alt=""
+                fill
+                sizes="(min-width: 640px) 55vw, 100vw"
+                className="scale-110 object-cover transition-transform duration-500 group-hover:scale-[1.16]"
+              />
+            </Parallax>
             <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 to-black/0 sm:bg-gradient-to-r" />
             <span className="absolute left-4 top-4 z-10 rounded-full border border-white/25 bg-black/45 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-md">
               {cottage.tagline}
@@ -82,14 +90,16 @@ export default function CottageCard({
         href={`/stays/${cottage.slug}`}
         className="stay-card group flex h-full flex-col overflow-hidden border border-line bg-surface"
       >
-        <div className="relative h-56">
-          <Image
-            src={image}
-            alt=""
-            fill
-            sizes="(min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
+        <div className="relative h-56 overflow-hidden">
+          <Parallax speed={0.05} className="absolute inset-0">
+            <Image
+              src={image}
+              alt=""
+              fill
+              sizes="(min-width: 640px) 50vw, 100vw"
+              className="scale-110 object-cover transition-transform duration-500 group-hover:scale-[1.16]"
+            />
+          </Parallax>
           <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/0" />
           <span className="absolute left-4 top-4 z-10 max-w-[calc(100%-2rem)] rounded-full border border-white/25 bg-black/45 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-md">
             {cottage.tagline}
