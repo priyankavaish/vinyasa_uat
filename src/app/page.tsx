@@ -12,6 +12,7 @@ import GallerySection from "@/components/gallery-section";
 import CommunitySection from "@/components/community-section";
 import PhotoMasonry from "@/components/photo-masonry";
 import ConnectSection from "@/components/connect-section";
+import { LaceDivider } from "@/components/lace-divider";
 import { Reveal } from "@/components/reveal";
 import { Parallax } from "@/components/parallax";
 import { cottages } from "@/lib/content";
@@ -77,6 +78,7 @@ export default function HomePage() {
       <CommunitySection />
       <PhotoMasonry />
       <GallerySection />
+      <LaceDivider variant="white" />
       <ReviewsSection />
     </div>
   );

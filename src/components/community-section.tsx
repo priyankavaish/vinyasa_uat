@@ -1,10 +1,10 @@
 import Image from "next/image";
 import chulha from "@/app/assets/chulha.png";
-import communityGathering from "@/app/assets/community-gathering.png";
+import communityGathering from "@/app/assets/community-gathering-2.jpg";
 import Link from "next/link";
 import SectionEyebrow from "./section-eyebrow";
 import { Reveal } from "./reveal";
-import { Parallax, ParallaxHeroImage } from "./parallax";
+import { Parallax } from "./parallax";
 
 export default function CommunitySection() {
   return (
@@ -14,15 +14,14 @@ export default function CommunitySection() {
       </Parallax>
       <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-5 sm:grid-cols-[1fr_1.2fr] sm:px-8">
         <Reveal variant="clip" className="relative min-h-[380px] overflow-hidden border border-line">
-          <ParallaxHeroImage>
-            <Image
-              src={communityGathering}
-              alt="Travellers from around the world gathered together at Vinyasa Earth"
-              fill
-              sizes="(min-width: 640px) 45vw, 100vw"
-              className="object-cover"
-            />
-          </ParallaxHeroImage>
+          <Image
+            src={communityGathering}
+            alt="Travellers from around the world gathered together at Vinyasa Earth"
+            fill
+            quality={95}
+            sizes="(min-width: 640px) 45vw, 100vw"
+            className="object-cover"
+          />
         </Reveal>
         <Reveal variant="up" delay={40} className="flex flex-col justify-center">
           <SectionEyebrow tone="secondary" icon="people-outline">One community, one table</SectionEyebrow>

@@ -54,7 +54,17 @@ export default function ReviewsSection() {
       </Parallax>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal variant="scale" className="mx-auto max-w-2xl border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
+        <Reveal variant="scale" className="relative mx-auto max-w-2xl border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 -top-8 z-10 h-8 sm:-top-10 sm:h-10"
+            style={{
+              backgroundImage: "url(/images/lace-border-white.png)",
+              backgroundRepeat: "repeat-x",
+              backgroundPosition: "top center",
+              backgroundSize: "auto 100%",
+            }}
+          />
           <div className="flex flex-wrap items-center justify-center gap-2">
             <GoogleLogo size={20} />
             <span className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">
@@ -106,7 +116,7 @@ export default function ReviewsSection() {
 
           <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
             {GOOGLE_RATING.topics.map((topic, i) => {
-              const style = TOPIC_STYLE[topic] ?? { icon: "sparkles-outline" as IconName, accent: "#c85f49" };
+              const style = TOPIC_STYLE[topic] ?? { icon: "sparkles-outline" as IconName, accent: "#8f3b31" };
               return (
                 <Reveal key={topic} variant="up" delay={220 + i * 70}>
                   <div className={`group relative flex min-h-24 flex-col items-center justify-center border px-3 py-3 text-center shadow-[0_8px_24px_rgba(75,55,35,0.06)] backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:z-20 hover:border-accent/55 hover:shadow-[0_12px_30px_rgba(75,55,35,0.13)] ${TOPIC_CARD_STYLE[i % TOPIC_CARD_STYLE.length]}`}>

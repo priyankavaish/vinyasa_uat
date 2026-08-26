@@ -2,7 +2,7 @@ import "./globals.css";
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { Mrs_Saint_Delafield } from "next/font/google";
+import { Mrs_Saint_Delafield, Bellefair } from "next/font/google";
 import { SITE_ORIGIN } from "@/lib/site";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
@@ -15,6 +15,12 @@ const displaySerif = localFont({
   weight: "400",
   style: "normal",
   display: "swap",
+});
+
+const bellefair = Bellefair({
+  subsets: ["latin"],
+  variable: "--font-bellefair",
+  weight: "400",
 });
 
 const script = Mrs_Saint_Delafield({
@@ -96,7 +102,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${displaySerif.variable} ${archivo.variable} ${script.variable} ${samarkan.variable}`}>
+    <html lang="en" className={`${displaySerif.variable} ${archivo.variable} ${script.variable} ${samarkan.variable} ${bellefair.variable}`}>
       <body className="min-h-screen flex flex-col">
         <script
           type="application/ld+json"

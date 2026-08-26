@@ -1,5 +1,5 @@
 import Image from "next/image";
-import eventsTileImage from "@/app/assets/events-01.png";
+import eventsTileImage from "@/app/assets/events-tile-community.png";
 import corporateTileImage from "@/app/assets/IMG_2429.jpeg";
 import artistTileImage from "@/app/assets/2N0A9983.JPG";
 import vine1 from "@/app/assets/vine1.png";
@@ -49,7 +49,7 @@ const WAYS = [
   //   href: "/stays",
   //   image: "/images/property-cottages-day.jpg",
   //   blurb: "Six hand-built mud cottages to return to.",
-  //   accent: "#c85f49",
+  //   accent: "#8f3b31",
   //   span: "sm:col-span-3 sm:row-span-1",
   // },
   // {
@@ -116,7 +116,8 @@ export default function ConnectSection() {
                     src={way.image}
                     alt=""
                     fill
-                    sizes="(min-width: 640px) 40vw, 100vw"
+                    quality={90}
+                    sizes="(min-width: 1024px) 60vw, (min-width: 640px) 75vw, 100vw"
                     className="scale-110 object-cover transition-transform duration-700 ease-out group-hover:scale-125"
                   />
                 </Parallax>

@@ -124,7 +124,7 @@ export default function BookingForm() {
         description: `${item.name} booking`,
         order_id: order.id,
         prefill: { name: values.guestName, email: values.guestEmail, contact: values.guestPhone },
-        theme: { color: "#c85f49" },
+        theme: { color: "#8f3b31" },
         handler: (response: {
           razorpay_order_id: string;
           razorpay_payment_id: string;
