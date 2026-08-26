@@ -65,7 +65,7 @@ export default function CottageCard({
           <div className="flex flex-col justify-center gap-5 p-6 sm:p-9">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-[.18em] text-accent">Earth cottage</span>
-              <h3 className="mt-1.5 font-display italic text-3xl leading-tight sm:text-4xl">{cottage.name}</h3>
+              <h3 className="mt-1.5 font-display text-3xl leading-tight sm:text-4xl">{cottage.name}</h3>
               <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{cottage.description}</p>
             </div>
             {price}
@@ -98,7 +98,7 @@ export default function CottageCard({
         <div className="flex flex-1 flex-col gap-4 p-5 sm:p-6">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-[.18em] text-accent">Earth cottage</span>
-            <h3 className="mt-1 font-display italic text-2xl">{cottage.name}</h3>
+            <h3 className="mt-1 font-display text-2xl">{cottage.name}</h3>
             <p className="mt-2 text-sm leading-relaxed text-foreground-soft">{cottage.description}</p>
           </div>
           <div className="mt-auto">

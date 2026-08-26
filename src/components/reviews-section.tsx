@@ -36,10 +36,10 @@ const TOPIC_STYLE: Record<string, { icon: IconName; accent: string }> = {
 };
 
 const TOPIC_CARD_STYLE = [
-  "rounded-[2.75rem_1rem_1rem_1rem] border-dusk-ink/15 bg-dusk-surface/90",
-  "rounded-[1rem_2.75rem_1rem_1rem] border-secondary/20 bg-secondary-surface/90",
-  "rounded-[1rem_1rem_1rem_2.75rem] border-accent/20 bg-clay-surface/90",
-  "rounded-[1rem_1rem_2.75rem_1rem] border-line bg-surface/90",
+  "border-dusk-ink/15 bg-dusk-surface/90",
+  "border-secondary/20 bg-secondary-surface/90",
+  "border-accent/20 bg-clay-surface/90",
+  "border-line bg-surface/90",
 ] as const;
 const pullQuote = GOOGLE_RATING.summary.split(/(?<=\.)\s+/)[0]!.replace(/\.$/, "");
 
@@ -54,7 +54,7 @@ export default function ReviewsSection() {
       </Parallax>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
-        <Reveal variant="scale" className="mx-auto max-w-2xl rounded-[2.5rem_1.25rem_2.5rem_1.25rem] border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
+        <Reveal variant="scale" className="mx-auto max-w-2xl border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
           <div className="flex flex-wrap items-center justify-center gap-2">
             <GoogleLogo size={20} />
             <span className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">
@@ -70,7 +70,7 @@ export default function ReviewsSection() {
               <div className="flex items-center justify-center gap-4 sm:gap-6">
                 <span className="h-px w-14 bg-gradient-to-r from-transparent to-secondary/45 sm:w-24" aria-hidden="true" />
                 <Icon name="leaf-outline" size={20} className="-rotate-45 text-secondary/70" />
-                <span className="font-display text-5xl italic leading-none text-secondary-ink sm:text-6xl">
+                <span className="font-display text-5xl leading-none text-secondary-ink sm:text-6xl">
                   {GOOGLE_RATING.score}
                 </span>
                 <Icon name="leaf-outline" size={20} className="rotate-45 scale-x-[-1] text-secondary/70" />
@@ -81,7 +81,7 @@ export default function ReviewsSection() {
                 href={GOOGLE_MAPS_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2.5 inline-flex items-center gap-1.5 rounded-full border border-line bg-background/70 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-accent hover:text-accent"
+                className="mt-2.5 inline-flex items-center gap-1.5 border border-line bg-background/70 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-accent hover:text-accent"
               >
                 {GOOGLE_RATING.count} Google reviews
                 <Icon name="arrow-forward-outline" size={11} />
@@ -91,7 +91,7 @@ export default function ReviewsSection() {
 
           <Parallax speed={0.018} className="relative">
             <Reveal variant="up" delay={150} className="mt-5 text-center">
-              <blockquote className="relative mx-auto max-w-[34ch] font-display text-lg italic leading-snug text-foreground sm:text-xl">
+              <blockquote className="relative mx-auto max-w-[34ch] font-display text-lg leading-snug text-foreground sm:text-xl">
                 <span className="absolute -left-3 -top-4 text-4xl text-accent/45 sm:-left-8" aria-hidden>&ldquo;</span>
                 {pullQuote}
                 <span className="ml-1 text-2xl text-accent/45" aria-hidden>&rdquo;</span>
@@ -110,7 +110,7 @@ export default function ReviewsSection() {
               return (
                 <Reveal key={topic} variant="up" delay={220 + i * 70}>
                   <div className={`group relative flex min-h-24 flex-col items-center justify-center border px-3 py-3 text-center shadow-[0_8px_24px_rgba(75,55,35,0.06)] backdrop-blur-sm transition-[border-color,box-shadow] duration-300 hover:z-20 hover:border-accent/55 hover:shadow-[0_12px_30px_rgba(75,55,35,0.13)] ${TOPIC_CARD_STYLE[i % TOPIC_CARD_STYLE.length]}`}>
-                    <span className="grid h-8 w-8 place-items-center rounded-full border border-current/10 bg-background/80 shadow-sm transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105" style={{ color: style.accent }}>
+                    <span className="grid h-8 w-8 place-items-center border border-current/10 bg-background/80 shadow-sm transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105" style={{ color: style.accent }}>
                       <Icon name={style.icon} size={16} />
                     </span>
                     <span className="mt-2 text-[11px] font-semibold leading-snug text-foreground">{topic}</span>

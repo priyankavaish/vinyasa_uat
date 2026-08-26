@@ -43,24 +43,24 @@ const WAYS = [
     accent: "#d99a2b",
     span: "sm:col-span-2 sm:row-span-1",
   },
-  {
-    number: "04",
-    title: "Stays",
-    href: "/stays",
-    image: "/images/property-cottages-day.jpg",
-    blurb: "Six hand-built mud cottages to return to.",
-    accent: "#c85f49",
-    span: "sm:col-span-3 sm:row-span-1",
-  },
-  {
-    number: "05",
-    title: "Founder's Place",
-    href: "/about",
-    image: "/images/amer-fort-lake.jpg",
-    blurb: "Stay among founders, trade ideas by the fire, and perhaps meet your next CTO or collaborator.",
-    accent: "#6b7a9e",
-    span: "sm:col-span-3 sm:row-span-1",
-  },
+  // {
+  //   number: "04",
+  //   title: "Stays",
+  //   href: "/stays",
+  //   image: "/images/property-cottages-day.jpg",
+  //   blurb: "Six hand-built mud cottages to return to.",
+  //   accent: "#c85f49",
+  //   span: "sm:col-span-3 sm:row-span-1",
+  // },
+  // {
+  //   number: "05",
+  //   title: "Founder's Place",
+  //   href: "/about",
+  //   image: "/images/amer-fort-lake.jpg",
+  //   blurb: "Stay among founders, trade ideas by the fire, and perhaps meet your next CTO or collaborator.",
+  //   accent: "#6b7a9e",
+  //   span: "sm:col-span-3 sm:row-span-1",
+  // },
 ] as const;
 
 const REVEAL_VARIANTS = ["scale", "up", "fade", "left", "right"] as const;
@@ -69,7 +69,7 @@ export default function ConnectSection() {
   return (
     <section className="organic-section organic-connect relative overflow-hidden bg-background py-24 text-foreground">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <Parallax speed={-0.04} className="absolute -right-20 -top-24 w-[18rem] sm:-right-16 sm:w-[25rem] lg:w-[30rem]">
+        {/* <Parallax speed={-0.04} className="absolute -right-20 -top-24 w-[18rem] sm:-right-16 sm:w-[25rem] lg:w-[30rem]">
           <Image src={vine1} alt="" className="w-full opacity-30" />
         </Parallax>
         <Image
@@ -84,13 +84,13 @@ export default function ConnectSection() {
         />
         <Parallax speed={0.035} className="absolute -bottom-28 -left-24 w-[20rem] sm:w-[27rem] lg:w-[33rem]">
           <Image src={vine4} alt="" className="w-full opacity-25" />
-        </Parallax>
+        </Parallax> */}
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal variant="fade" className="mb-12 max-w-2xl">
           <SectionEyebrow tone="secondary" icon="compass-outline">Self-discovery</SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-5xl leading-[1.02] sm:text-6xl">
+          <h2 className="mt-3 font-display text-5xl leading-[1.02] sm:text-6xl">
             A place to arrive. People to build with.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-foreground-soft">
@@ -120,7 +120,7 @@ export default function ConnectSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/30 to-black/5 transition-opacity duration-500 group-hover:from-black/92" />
                 <span
-                  className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full font-display text-sm italic text-background/90 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 sm:h-10 sm:w-10"
+                  className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full font-display text-sm text-background/90 backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 sm:h-10 sm:w-10"
                   style={{ backgroundColor: `${way.accent}55`, border: `1px solid ${way.accent}99` }}
                   aria-hidden
                 >
@@ -132,7 +132,7 @@ export default function ConnectSection() {
                     style={{ backgroundColor: way.accent }}
                     aria-hidden
                   />
-                  <h3 className="font-display italic text-2xl leading-tight text-background drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:text-3xl">
+                  <h3 className="font-display text-2xl leading-tight text-background drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:text-3xl">
                     {way.title}
                   </h3>
                   <p className="mt-1.5 line-clamp-2 max-w-[32ch] text-sm leading-snug text-background/80">{way.blurb}</p>

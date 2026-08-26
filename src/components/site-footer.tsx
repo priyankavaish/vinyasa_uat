@@ -7,7 +7,7 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
         <div className="grid gap-10 border-b border-background/15 pb-10 sm:grid-cols-3">
           <div>
-            <p className="font-display italic text-xl">Vinyasa Earth</p>
+            <p className="font-display text-xl">Vinyasa Earth</p>
             <p className="mt-3 max-w-[28ch] text-sm text-background/70">{ADDRESS}</p>
           </div>
           <div>

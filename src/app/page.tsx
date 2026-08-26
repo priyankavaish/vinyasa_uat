@@ -22,13 +22,18 @@ export default function HomePage() {
   const featured = cottages.slice(0, 3);
 
   return (
-    <>
+    <div className="home-page-theme">
+      <style>{`
+        .home-page-theme {
+          background-color: #fff1e0;
+        }
+      `}</style>
       <HomeHero />
       <MarqueeBar />
       <ConnectSection />
 
       <section className="organic-section organic-stays relative mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <Parallax
+        {/* <Parallax
           speed={0.14}
           className="pointer-events-none absolute -top-6 right-10 z-0 w-28 opacity-40 sm:right-16 sm:w-36 lg:w-44"
         >
@@ -44,11 +49,11 @@ export default function HomePage() {
             aria-hidden="true"
             className="w-full drop-shadow-[0_20px_35px_rgba(75,45,25,0.28)]"
           />
-        </Parallax>
+        </Parallax> */}
         <Reveal className="relative z-10 mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <SectionEyebrow icon="home-outline">The Cottages</SectionEyebrow>
-            <h2 className="mt-3 max-w-[22ch] font-display italic text-4xl leading-tight">
+            <h2 className="mt-3 max-w-[22ch] font-display text-4xl leading-tight">
               Six cottages. Each made by hand.
             </h2>
           </div>
@@ -63,16 +68,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="relative z-20 mx-auto max-w-6xl px-5 sm:px-8">
+      {/* <div className="relative z-20 mx-auto max-w-6xl px-5 sm:px-8">
         <Parallax speed={0.045} className="pointer-events-none absolute -top-24 -left-8 w-32 opacity-90 sm:-top-28 sm:-left-10 sm:w-44 lg:-top-32 lg:-left-14 lg:w-48">
           <Image src={chakkiLeft} alt="" className="w-full rotate-[-3deg] drop-shadow-[0_18px_30px_rgba(75,55,35,0.25)]" aria-hidden="true" />
         </Parallax>
-      </div>
+      </div> */}
 
       <CommunitySection />
       <PhotoMasonry />
       <GallerySection />
       <ReviewsSection />
-    </>
+    </div>
   );
 }

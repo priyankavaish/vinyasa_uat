@@ -11,7 +11,7 @@ export default function GallerySection() {
       <Reveal variant="fade" className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
           <SectionEyebrow icon="camera-outline">From the community</SectionEyebrow>
-          <h2 className="mt-3 max-w-[26ch] font-display italic text-4xl leading-tight">
+          <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight">
             Days at Vinyasa Earth
           </h2>
         </div>

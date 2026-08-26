@@ -26,7 +26,7 @@ export default function CommunitySection() {
         </Reveal>
         <Reveal variant="up" delay={120} className="flex flex-col justify-center">
           <SectionEyebrow tone="secondary" icon="people-outline">One community, one table</SectionEyebrow>
-          <h2 className="mt-3 max-w-[22ch] font-display italic text-4xl leading-tight">
+          <h2 className="mt-3 max-w-[22ch] font-display text-4xl leading-tight">
             Volunteers, artists, and strangers, cooking, eating, and living as one
           </h2>
           <p className="mt-5 max-w-[54ch] leading-relaxed text-foreground">
