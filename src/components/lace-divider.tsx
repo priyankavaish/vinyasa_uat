@@ -1,9 +1,6 @@
-import laceBorderBrown from "@/app/assets/ChatGPT Image Aug 26, 2026, 02_21_03 PM (1).png";
-import laceBorderWhite from "@/app/assets/ChatGPT Image Aug 26, 2026, 02_21_03 PM (2).png";
-
 const VARIANT_SRC = {
-  brown: laceBorderBrown.src,
-  white: laceBorderWhite.src,
+  brown: "/images/lace-border-brown.png",
+  white: "/images/lace-border-white.png",
 } as const;
 
 /** Full-width lace/jharokha trim used as a decorative seam between home page
