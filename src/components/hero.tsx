@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image, { type StaticImageData } from "next/image";
-import Link from "next/link";
-import logoMark from "@/app/assets/vinayasa.png";
+import brandLogo from "./white_logo.jpeg";
 import { ParallaxHeroImage } from "./parallax";
 
 export function HomeHero() {
@@ -63,7 +62,7 @@ export function HomeHero() {
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
       </ParallaxHeroImage>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#15120b]/55 via-[#1c2418]/35 to-[#171108]/70" />
+      <div className="hero-video-overlay absolute inset-0" />
 
       <div
         ref={contentRef}
@@ -74,26 +73,30 @@ export function HomeHero() {
            Jaipur, Rajasthan
           <span className="h-px w-6 bg-background/50" aria-hidden />
         </p>
-        <div className="hero-brand" aria-label="Vinyasa Earth">
-          <span className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full border-2 border-background/60 bg-transparent backdrop-blur-[2px] sm:h-20 sm:w-20">
-            <Image
-              src={logoMark}
-              alt=""
-              width={56}
-              height={56}
-              priority
-              className="h-11 w-11 object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-14 sm:w-14"
-            />
-          </span>
+        <div className="hero-brand">
           <span className="hero-brand-kicker">A retreat for curious minds</span>
-          <span className="hero-brand-vinyasa">Vinyasa Earth</span>
+          <h1 className="hero-brand-lockup">
+            <span className="hero-brand-emblem" aria-hidden="true">
+              <Image
+                src={brandLogo}
+                alt=""
+                priority
+                sizes="(max-width: 639px) 88px, 104px"
+                className="hero-brand-emblem-image"
+              />
+            </span>
+            <span className="hero-brand-name">
+              <span className="hero-brand-name-primary">Vinyasa</span>
+              <span className="hero-brand-name-secondary">Earth</span>
+            </span>
+          </h1>
           <span className="hero-brand-rule" aria-hidden />
-          <span className="hero-brand-earth">Stay · Create · Connect</span>
+          <span className="hero-brand-values">Stay <i /> Create <i /> Connect</span>
         </div>
 
-        <p className="mt-7 max-w-[44ch] text-base leading-relaxed text-background/90">
+        {/* <p className="mt-7 max-w-[44ch] text-base leading-relaxed text-background/90">
           Slow down, create, and meet the people shaping what&apos;s next.
-        </p>
+        </p> */}
         {/* <div className="hero-actions mt-9 flex flex-wrap items-center justify-center gap-4">
           <Link href="/book" className="btn btn-outline-light hero-book-button">
             Book your stay <span aria-hidden>↗</span>
