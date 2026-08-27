@@ -23,7 +23,7 @@ export function LaceDivider({
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none relative z-10 h-28 opacity-80 sm:h-20 ${className}`}
+      className={`pointer-events-none relative z-10 h-28 opacity-80 sm:h-28 ${className}`}
       style={{
         backgroundImage: `url(${VARIANT_SRC[variant]})`,
         backgroundRepeat: "repeat-x",

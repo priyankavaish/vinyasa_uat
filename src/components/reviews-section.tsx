@@ -55,16 +55,6 @@ export default function ReviewsSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal variant="up" className="relative mx-auto max-w-2xl border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 -top-8 z-10 h-8 sm:-top-10 sm:h-10"
-            style={{
-              backgroundImage: "url(/images/lace-border-white.png)",
-              backgroundRepeat: "repeat-x",
-              backgroundPosition: "top center",
-              backgroundSize: "auto 100%",
-            }}
-          />
           <div className="flex flex-wrap items-center justify-center gap-2">
             <GoogleLogo size={20} />
             <span className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">
