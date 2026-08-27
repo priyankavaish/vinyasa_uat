@@ -525,36 +525,6 @@ a {
   84% { opacity: 0; transform: translateY(-.75rem) rotate(180deg) scale(.7); }
 }
 
-.music-toggle {
-  position: fixed;
-  left: max(1.25rem, env(safe-area-inset-left));
-  bottom: max(1.25rem, env(safe-area-inset-bottom));
-  z-index: 30;
-  display: inline-flex;
-  width: 2.75rem;
-  height: 2.75rem;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 1px solid rgba(251, 249, 243, .35);
-  border-radius: 999px;
-  background: rgba(35, 31, 25, .78);
-  color: #fbf9f3;
-  box-shadow: 0 .5rem 1.8rem rgba(25, 20, 14, .2);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: background .25s ease, transform .25s ease;
-}
-.music-toggle:hover { background: rgba(181, 100, 59, .92); transform: translateY(-2px); }
-.music-note { color: #edb678; font-size: 1.15rem; line-height: 1; transition: transform .25s ease; }
-.music-toggle.is-playing .music-note { animation: music-note-pulse 1.6s ease-in-out infinite; }
-.music-slash { position: absolute; width: 1.35rem; height: 1px; background: #fbf9f3; transform: rotate(-45deg); box-shadow: 0 0 0 2px rgba(35,31,25,.35); }
-@keyframes music-note-pulse { 0%, 100% { transform: scale(.92); } 50% { transform: scale(1.12); } }
-
-@media (max-width: 639px) {
-  .music-toggle { width: 2.75rem; height: 2.75rem; }
-}
-
 /* A soft, continuous vertical bob — gives the "earth" accent a bit of life
    instead of sitting dead-still under the moving video. */
 @keyframes gentle-bob {

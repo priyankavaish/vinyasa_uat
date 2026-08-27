@@ -7,7 +7,6 @@ import { SITE_ORIGIN } from "@/lib/site";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import WhatsappButton from "@/components/whatsapp-button";
-import AmbientAudio from "@/components/ambient-audio";
 
 const displaySerif = localFont({
   src: "../../public/fonts/tt-ramillas.woff2",
@@ -132,7 +131,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
-        <AmbientAudio />
         <WhatsappButton />
       </body>
     </html>
