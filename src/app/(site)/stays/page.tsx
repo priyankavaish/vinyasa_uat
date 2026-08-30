@@ -58,7 +58,7 @@ export default async function StaysPage() {
         />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/45 to-transparent" />
         {/* smooth blend into page */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[var(--background)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-b from-transparent to-[var(--background)]" />
 
         <div className="relative z-10 mx-auto w-full max-w-[1180px] px-5 pb-24 pt-36 sm:px-8 sm:pt-44 lg:pb-28">
           <Parallax speed={-0.03}>
