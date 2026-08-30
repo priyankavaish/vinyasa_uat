@@ -3,13 +3,12 @@ import Link from "next/link";
 import { PageHero } from "@/components/hero";
 import SectionEyebrow from "@/components/section-eyebrow";
 import { Reveal } from "@/components/reveal";
-import { Parallax } from "@/components/parallax";
-import { LaceDivider } from "@/components/lace-divider";
+import { Parallax, ParallaxHeroImage } from "@/components/parallax";
 import { Icon, type IconName } from "@/components/icon";
-import BougainvilleaCanopy from "@/components/bougainvillea-canopy";
 import { getContent } from "@/lib/cms";
 
 import heroImg from "@/app/assets/new/grounds-05.jpg";
+import bandImg from "@/app/assets/new/grounds-06.jpg";
 
 export const revalidate = 300;
 
@@ -117,9 +116,34 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <LaceDivider variant="white" />
-      <BougainvilleaCanopy />
-      <LaceDivider variant="white" upsideDown />
+      <section className="relative flex min-h-[62vh] items-center overflow-hidden bg-[#241a12] text-background">
+        <ParallaxHeroImage>
+          <Image src={bandImg} alt="" fill sizes="100vw" className="object-cover" />
+        </ParallaxHeroImage>
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(120% 100% at 50% 40%, rgba(20,12,6,0.28) 0%, rgba(20,12,6,0.62) 70%, rgba(20,12,6,0.78) 100%)",
+          }}
+        />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/35 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-[var(--background)]" />
+
+        <Reveal
+          variant="fade"
+          className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center sm:px-8"
+        >
+          <span className="mx-auto mb-7 block h-10 w-px bg-[#d88b50]/70" aria-hidden />
+          <p className="font-display text-[1.9rem] leading-snug text-[#fbf3e8] sm:text-[2.6rem]">
+            &ldquo;Everything at Vinyasa carries the goodness of mother earth — a blend of humanity
+            and nature, held with gratitude.&rdquo;
+          </p>
+          <p className="mt-7 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">
+            The Vinyasa Earth community
+          </p>
+        </Reveal>
+      </section>
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
