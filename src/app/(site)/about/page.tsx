@@ -8,7 +8,7 @@ import { Icon, type IconName } from "@/components/icon";
 import { getContent } from "@/lib/cms";
 
 import heroImg from "@/app/assets/new/grounds-05.jpg";
-import bandImg from "@/app/assets/new/grounds-06.jpg";
+import bandImg from "@/app/assets/new/grounds-08.jpg";
 
 export const revalidate = 300;
 
