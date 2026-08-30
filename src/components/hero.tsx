@@ -81,7 +81,7 @@ export function HomeHero() {
                 src={brandLogo}
                 alt=""
                 priority
-                sizes="(max-width: 639px) 88px, 104px"
+                sizes="(max-width: 639px) 84px, 112px"
                 className="hero-brand-emblem-image"
               />
             </span>

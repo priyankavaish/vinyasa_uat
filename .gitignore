@@ -4,3 +4,6 @@ node_modules
 data/*.jsonl
 .env.local
 *.tsbuildinfo
+
+.pglite/
+.env.local

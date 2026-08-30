@@ -1,10 +1,10 @@
-import { randomUUID } from "crypto";
-import { mkdir, appendFile, readFile, writeFile } from "fs/promises";
-import path from "path";
+import { and, desc, eq, lt, inArray, sql } from "drizzle-orm";
+import { getDb } from "@/lib/db";
+import { bookings as bookingsTable, leads as leadsTable } from "@/lib/db/schema";
 
-// Demo-grade persistence: append-only JSONL, no DB. Swap for a real database
-// before this leaves the demo phase (see plan's "NOT in scope").
-const DATA_DIR = path.join(process.cwd(), "data");
+// Bookings + leads persistence. Backed by Neon Postgres (Drizzle). The
+// function surface is unchanged from the old JSONL store so the API routes
+// and admin pages did not need to change.
 
 export type Booking = {
   id: string;
@@ -26,7 +26,7 @@ export type Booking = {
 
 export type Lead = {
   id: string;
-  source: "contact" | "corporate" | "newsletter";
+  source: "contact" | "corporate" | "newsletter" | "volunteer";
   name: string;
   email: string;
   phone?: string;
@@ -34,57 +34,64 @@ export type Lead = {
   createdAt: string;
 };
 
-async function ensureDataDir() {
-  await mkdir(DATA_DIR, { recursive: true });
+type BookingRow = typeof bookingsTable.$inferSelect;
+type LeadRow = typeof leadsTable.$inferSelect;
+
+function toBooking(r: BookingRow): Booking {
+  return {
+    id: r.id,
+    type: r.type as Booking["type"],
+    itemSlug: r.itemSlug,
+    checkIn: r.checkIn ?? undefined,
+    checkOut: r.checkOut ?? undefined,
+    eventDate: r.eventDate ?? undefined,
+    guests: r.guests,
+    guestName: r.guestName,
+    guestEmail: r.guestEmail,
+    guestPhone: r.guestPhone,
+    amount: r.amount,
+    status: r.status as Booking["status"],
+    razorpayOrderId: r.razorpayOrderId ?? undefined,
+    razorpayPaymentId: r.razorpayPaymentId ?? undefined,
+    createdAt: r.createdAt.toISOString(),
+  };
 }
 
-async function appendRecord<T>(file: string, record: T): Promise<void> {
-  await ensureDataDir();
-  await appendFile(path.join(DATA_DIR, file), JSON.stringify(record) + "\n", "utf8");
-}
-
-async function readRecords<T>(file: string): Promise<T[]> {
-  await ensureDataDir();
-  const filePath = path.join(DATA_DIR, file);
-  let raw: string;
-  try {
-    raw = await readFile(filePath, "utf8");
-  } catch (err: unknown) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
-    throw err;
-  }
-  const records: T[] = [];
-  for (const line of raw.split("\n")) {
-    const trimmed = line.trim();
-    if (!trimmed) continue;
-    try {
-      records.push(JSON.parse(trimmed) as T);
-    } catch {
-      console.warn(`[store] skipped unparseable line in ${file}: ${trimmed.slice(0, 80)}`);
-    }
-  }
-  return records;
-}
-
-// Rewrites the whole file. Fine at demo volume; a real DB would use an
-// UPDATE instead once this store is retired.
-async function rewriteRecords<T>(file: string, records: T[]): Promise<void> {
-  await ensureDataDir();
-  const body = records.map((r) => JSON.stringify(r)).join("\n") + (records.length ? "\n" : "");
-  await writeFile(path.join(DATA_DIR, file), body, "utf8");
+function toLead(r: LeadRow): Lead {
+  return {
+    id: r.id,
+    source: r.source as Lead["source"],
+    name: r.name,
+    email: r.email,
+    phone: r.phone ?? undefined,
+    message: r.message ?? undefined,
+    createdAt: r.createdAt.toISOString(),
+  };
 }
 
 export async function createBooking(
   input: Omit<Booking, "id" | "createdAt" | "status">
 ): Promise<Booking> {
-  const booking: Booking = {
-    ...input,
-    id: randomUUID(),
-    status: "pending",
-    createdAt: new Date().toISOString(),
-  };
-  await appendRecord("bookings.jsonl", booking);
-  return booking;
+  const db = getDb();
+  const [row] = await db
+    .insert(bookingsTable)
+    .values({
+      type: input.type,
+      itemSlug: input.itemSlug,
+      checkIn: input.checkIn,
+      checkOut: input.checkOut,
+      eventDate: input.eventDate,
+      guests: input.guests,
+      guestName: input.guestName,
+      guestEmail: input.guestEmail,
+      guestPhone: input.guestPhone,
+      amount: input.amount,
+      status: "pending",
+      razorpayOrderId: input.razorpayOrderId,
+      razorpayPaymentId: input.razorpayPaymentId,
+    })
+    .returning();
+  return toBooking(row);
 }
 
 export async function updateBookingStatus(
@@ -92,31 +99,61 @@ export async function updateBookingStatus(
   status: Booking["status"],
   extra?: Partial<Pick<Booking, "razorpayOrderId" | "razorpayPaymentId">>
 ): Promise<Booking | null> {
-  const bookings = await readRecords<Booking>("bookings.jsonl");
-  const idx = bookings.findIndex((b) => b.id === id);
-  if (idx === -1) return null;
-  bookings[idx] = { ...bookings[idx], status, ...extra };
-  await rewriteRecords("bookings.jsonl", bookings);
-  return bookings[idx];
+  const db = getDb();
+  const [row] = await db
+    .update(bookingsTable)
+    .set({ status, ...extra })
+    .where(eq(bookingsTable.id, id))
+    .returning();
+  return row ? toBooking(row) : null;
 }
 
 export async function getBooking(id: string): Promise<Booking | null> {
-  const bookings = await readRecords<Booking>("bookings.jsonl");
-  return bookings.find((b) => b.id === id) ?? null;
+  const db = getDb();
+  const [row] = await db.select().from(bookingsTable).where(eq(bookingsTable.id, id)).limit(1);
+  return row ? toBooking(row) : null;
 }
 
 export async function listBookings(): Promise<Booking[]> {
-  const bookings = await readRecords<Booking>("bookings.jsonl");
-  return bookings.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const db = getDb();
+  const rows = await db.select().from(bookingsTable).orderBy(desc(bookingsTable.createdAt));
+  return rows.map(toBooking);
+}
+
+/** Bookings that were created but never paid (widget closed, tab abandoned).
+ *  `olderThanMinutes` avoids counting a payment that is still in flight. */
+export async function countAbandonedBookings(olderThanMinutes = 15): Promise<number> {
+  const db = getDb();
+  const cutoff = new Date(Date.now() - olderThanMinutes * 60_000);
+  const [row] = await db
+    .select({ n: sql<number>`count(*)::int` })
+    .from(bookingsTable)
+    .where(
+      and(
+        inArray(bookingsTable.status, ["pending", "failed"]),
+        lt(bookingsTable.createdAt, cutoff)
+      )
+    );
+  return row?.n ?? 0;
 }
 
 export async function createLead(input: Omit<Lead, "id" | "createdAt">): Promise<Lead> {
-  const lead: Lead = { ...input, id: randomUUID(), createdAt: new Date().toISOString() };
-  await appendRecord("leads.jsonl", lead);
-  return lead;
+  const db = getDb();
+  const [row] = await db
+    .insert(leadsTable)
+    .values({
+      source: input.source,
+      name: input.name,
+      email: input.email,
+      phone: input.phone,
+      message: input.message,
+    })
+    .returning();
+  return toLead(row);
 }
 
 export async function listLeads(): Promise<Lead[]> {
-  const leads = await readRecords<Lead>("leads.jsonl");
-  return leads.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const db = getDb();
+  const rows = await db.select().from(leadsTable).orderBy(desc(leadsTable.createdAt));
+  return rows.map(toLead);
 }

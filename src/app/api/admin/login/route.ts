@@ -1,13 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
+import { verifyAdmin } from "@/lib/db/users";
+import { hasDb } from "@/lib/db";
 
-const loginSchema = z.object({ password: z.string().min(1).max(200) });
+export const runtime = "nodejs";
+
+const loginSchema = z.object({
+  email: z.string().trim().email().max(200),
+  password: z.string().min(1).max(200),
+});
 
 export async function POST(req: NextRequest) {
-  if (!process.env.ADMIN_PASSWORD) {
-    console.error("[api/admin/login] ADMIN_PASSWORD is not set");
-    return NextResponse.json({ error: "Admin login is not configured." }, { status: 500 });
+  if (!hasDb()) {
+    return NextResponse.json(
+      { error: "Admin is not configured. Set DATABASE_URL and run db:seed." },
+      { status: 500 }
+    );
   }
 
   let body: unknown;
@@ -19,15 +28,16 @@ export async function POST(req: NextRequest) {
 
   const parsed = loginSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Enter a password." }, { status: 400 });
+    return NextResponse.json({ error: "Enter your email and password." }, { status: 400 });
   }
 
-  if (parsed.data.password !== process.env.ADMIN_PASSWORD) {
-    return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
+  const user = await verifyAdmin(parsed.data.email, parsed.data.password);
+  if (!user) {
+    return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
   }
 
   const res = NextResponse.json({ ok: true });
-  res.cookies.set(SESSION_COOKIE, await createSessionToken(), {
+  res.cookies.set(SESSION_COOKIE, await createSessionToken(user.email), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

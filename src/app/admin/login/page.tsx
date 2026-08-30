@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function AdminLoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const params = useSearchParams();
+  const next = params.get("next") || "/admin";
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -17,13 +20,13 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body?.error ?? "Login failed.");
       }
-      router.push("/admin/bookings");
+      router.push(next);
       router.refresh();
     } catch (err) {
       setStatus("error");
@@ -32,21 +35,36 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <section className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-5 pb-16 pt-28 sm:px-8">
-      <h1 className="font-display italic text-3xl">Admin</h1>
-      <p className="mt-2 text-sm text-foreground-soft">Sign in to view bookings and leads.</p>
-      <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
+    <div className="w-full max-w-sm">
+      <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#a84f32]">Vinyasa Earth</p>
+      <h1 className="mt-2 font-display text-4xl italic">Admin sign in</h1>
+      <p className="mt-2 text-sm text-foreground-soft">Manage content, bookings, and enquiries.</p>
+      <form onSubmit={onSubmit} className="mt-8 space-y-4" noValidate>
         <div>
-          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor="password">
+          <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-foreground-soft" htmlFor="email">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="username"
+            className="mt-1.5 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoFocus
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-foreground-soft" htmlFor="password">
             Password
           </label>
           <input
             id="password"
             type="password"
-            className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
+            autoComplete="current-password"
+            className="mt-1.5 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            autoFocus
           />
         </div>
         {status === "error" && error && (
@@ -62,6 +80,16 @@ export default function AdminLoginPage() {
           {status === "submitting" ? "Signing in…" : "Sign in"}
         </button>
       </form>
+    </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <section className="flex min-h-screen items-center justify-center bg-[#f7f1e7] px-5 py-16">
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
     </section>
   );
 }

@@ -7,12 +7,16 @@ import { Icon } from "./icon";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
   { href: "/stays", label: "Stays" },
   { href: "/events", label: "Events & Retreats" },
   { href: "/corporate", label: "Volunteer" },
-  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
+
+function isActivePath(pathname: string, href: string) {
+  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+}
 
 // Routes whose first viewport is a full-bleed photo hero — nav rides
 // transparent over the image on these, like villaskamezi/era-residence.
@@ -53,6 +57,9 @@ export default function SiteHeader() {
   const linkClass = `underline decoration-transparent underline-offset-4 transition-colors ${
     transparent ? "hover:decoration-background" : "hover:text-accent hover:decoration-accent"
   }`;
+  const activeClass = transparent
+    ? "text-white !decoration-white decoration-2 underline-offset-[6px]"
+    : "text-accent !decoration-[#8f3b31] decoration-2 underline-offset-[6px]";
 
   return (
     <header
@@ -71,13 +78,20 @@ export default function SiteHeader() {
             transparent ? "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.65)]" : "text-black"
           }`}
         >
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <Link href={link.href} className={linkClass}>
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const active = isActivePath(pathname, link.href);
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`${linkClass} ${active ? activeClass : ""}`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="col-start-3 flex shrink-0 items-center justify-self-end gap-3 lg:col-start-3">
@@ -106,13 +120,25 @@ export default function SiteHeader() {
       {open && (
         <nav className="mobile-nav border-t border-line bg-background px-5 py-4 lg:hidden">
           <ul className="flex flex-col gap-4 text-sm tracking-[0.08em] uppercase text-foreground-soft">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} onClick={() => setOpen(false)}>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const active = isActivePath(pathname, link.href);
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={
+                      active
+                        ? "font-semibold text-accent underline decoration-2 decoration-[#8f3b31] underline-offset-4"
+                        : ""
+                    }
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
             <li>
               <Link
                 href="/book"

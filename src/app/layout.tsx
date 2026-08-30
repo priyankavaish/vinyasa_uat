@@ -4,9 +4,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Mrs_Saint_Delafield, Bellefair } from "next/font/google";
 import { SITE_ORIGIN } from "@/lib/site";
-import SiteHeader from "@/components/site-header";
-import SiteFooter from "@/components/site-footer";
-import WhatsappButton from "@/components/whatsapp-button";
+import PageViewTracker from "@/components/page-view-tracker";
 
 const displaySerif = localFont({
   src: "../../public/fonts/tt-ramillas.woff2",
@@ -128,10 +126,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             }).replace(/</g, "\\u003c"),
           }}
         />
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-        <WhatsappButton />
+        {children}
+        <PageViewTracker />
       </body>
     </html>
   );

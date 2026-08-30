@@ -421,18 +421,20 @@ a {
   margin: 0;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 0;
 }
 .hero-brand-emblem {
   position: relative;
   display: block;
   width: clamp(5.6rem, 7.2vw, 6.6rem);
   height: clamp(5.6rem, 7.2vw, 6.6rem);
-  overflow: visible;
-  padding: .22rem;
-  border: 1px solid rgba(239, 194, 127, .34);
+  flex: 0 0 auto;
+  padding: .24rem;
+  border: 1px solid rgba(239, 194, 127, .38);
   border-radius: 50%;
   background: #302d24;
-  filter: drop-shadow(0 .45rem 1.2rem rgba(0, 0, 0, .38));
+  box-shadow: 0 0 0 .35rem rgba(255, 248, 233, .04), 0 .9rem 2.5rem rgba(0, 0, 0, .3);
   isolation: isolate;
 }
 .hero-brand-emblem-image {
@@ -453,7 +455,7 @@ a {
 }
 .hero-brand-name-primary {
   font-family: var(--font-bellefair), Georgia, "Times New Roman", serif;
-  font-size: clamp(5rem, 11vw, 9.5rem);
+  font-size: clamp(5rem, 10vw, 8.8rem);
   font-weight: 400;
   line-height: .72;
   letter-spacing: -.04em;
@@ -468,7 +470,7 @@ a {
   background-clip: text;
   -webkit-background-clip: text;
   font-family: var(--font-script), cursive;
-  font-size: clamp(3.6rem, 7.4vw, 6.6rem);
+  font-size: clamp(3.6rem, 7vw, 6.2rem);
   font-weight: 400;
   line-height: 1;
   text-shadow: 0 0 1.2rem rgba(239, 194, 127, .2);
@@ -536,6 +538,7 @@ a {
   }
   .hero-brand-wordmark-accent { font-size: .8em; transform: rotate(-3deg); }
   .hero-brand-values { gap: .6rem; font-size: .56rem; letter-spacing: .18em; }
+  .hero-brand-lockup { flex-direction: column; gap: 0; }
   .hero-brand-emblem { width: 5.5rem; height: 5.5rem; }
   .hero-brand-name { flex-direction: column; gap: .15rem; margin-top: .7rem; }
   .hero-brand-name-primary { font-size: clamp(4.8rem, 23vw, 6.4rem); line-height: .66; }
@@ -749,3 +752,35 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/* --- admin ------------------------------------------------------------- */
+.btn-sm { padding: 0.45rem 0.9rem; font-size: 0.7rem; }
+
+/* --- rich text (admin-authored blog / detail bodies) ------------------ */
+.rich { line-height: 1.75; color: var(--foreground); }
+.rich > * + * { margin-top: 1rem; }
+.rich h2 { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 1.9rem; line-height: 1.2; margin-top: 2rem; }
+.rich h3 { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 1.45rem; line-height: 1.25; margin-top: 1.75rem; }
+.rich h4 { font-weight: 700; font-size: 1.1rem; margin-top: 1.5rem; }
+.rich ul { list-style: disc; padding-left: 1.4rem; }
+.rich ol { list-style: decimal; padding-left: 1.4rem; }
+.rich li { margin-top: 0.35rem; }
+.rich blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; font-style: italic; color: var(--foreground-soft); }
+.rich a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.rich img, .rich .rich-img { max-width: 100%; height: auto; border-radius: 0.25rem; margin: 1.25rem 0; }
+.rich hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
+.rich a[data-btn] {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.5rem; border: 1px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; text-decoration: none; border-radius: 0;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+.rich a[data-btn]:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.rich a[data-btn][data-variant="outline"] { background: transparent; color: var(--accent); }
+
+/* --- upright display type ------------------------------------------------ */
+/* Italic is switched off everywhere; only the home-page hero keeps it. */
+.italic { font-style: normal; }
+.home-hero .italic { font-style: italic; }

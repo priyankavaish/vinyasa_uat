@@ -5,7 +5,12 @@ import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Script from "next/script";
-import { cottages, events } from "@/lib/content";
+import {
+  cottages as seedCottages,
+  events as seedEvents,
+  type Cottage,
+  type EventProgram,
+} from "@/lib/content";
 import { bookingRequestSchema, type BookingRequest } from "@/lib/schemas";
 
 declare global {
@@ -22,10 +27,16 @@ function nightsBetween(checkIn?: string, checkOut?: string): number {
   return Math.max(0, Math.round(ms / (1000 * 60 * 60 * 24)));
 }
 
-export default function BookingForm() {
+export default function BookingForm({
+  cottages = seedCottages,
+  events = seedEvents,
+}: {
+  cottages?: Cottage[];
+  events?: EventProgram[];
+}) {
   const searchParams = useSearchParams();
   const initialType = (searchParams.get("type") as "stay" | "event") ?? "stay";
-  const initialSlug = searchParams.get("slug") ?? cottages[0].slug;
+  const initialSlug = searchParams.get("slug") ?? cottages[0]?.slug ?? "";
 
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -56,7 +67,7 @@ export default function BookingForm() {
   const item = useMemo(() => {
     if (type === "stay") return cottages.find((c) => c.slug === itemSlug) ?? cottages[0];
     return events.find((e) => e.slug === itemSlug) ?? events[0];
-  }, [type, itemSlug]);
+  }, [type, itemSlug, cottages, events]);
 
   const amount = useMemo(() => {
     if (type === "stay" && "pricePerNight" in item) {

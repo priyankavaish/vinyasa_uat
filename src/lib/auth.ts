@@ -31,6 +31,12 @@ async function hmacHex(message: string): Promise<string> {
   return toHex(sig);
 }
 
+/** HMAC-SHA256 of an arbitrary value, hex. Also used to hash visitor IPs
+ *  for analytics so raw addresses are never stored. */
+export async function hmac(value: string): Promise<string> {
+  return hmacHex(value);
+}
+
 function timingSafeEqualHex(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   let diff = 0;
@@ -38,21 +44,35 @@ function timingSafeEqualHex(a: string, b: string): boolean {
   return diff === 0;
 }
 
-export async function createSessionToken(): Promise<string> {
+type SessionPayload = { email: string; expires: number };
+
+export async function createSessionToken(email: string): Promise<string> {
   const expires = Date.now() + SESSION_TTL_MS;
-  const payload = String(expires);
+  const payload = `${expires}~${encodeURIComponent(email)}`;
   return `${payload}.${await hmacHex(payload)}`;
 }
 
-export async function isValidSessionToken(token: string | undefined | null): Promise<boolean> {
-  if (!token) return false;
-  const [payload, signature] = token.split(".");
-  if (!payload || !signature) return false;
+export async function readSessionToken(
+  token: string | undefined | null
+): Promise<SessionPayload | null> {
+  if (!token) return null;
+  const dot = token.lastIndexOf(".");
+  if (dot < 0) return null;
+  const payload = token.slice(0, dot);
+  const signature = token.slice(dot + 1);
   const expected = await hmacHex(payload);
-  if (!timingSafeEqualHex(expected, signature)) return false;
-  const expires = Number(payload);
-  return Number.isFinite(expires) && Date.now() < expires;
+  if (!timingSafeEqualHex(expected, signature)) return null;
+  const [expStr, emailEnc] = payload.split("~");
+  const expires = Number(expStr);
+  if (!Number.isFinite(expires) || Date.now() >= expires) return null;
+  return { email: decodeURIComponent(emailEnc ?? ""), expires };
 }
+
+export async function isValidSessionToken(token: string | undefined | null): Promise<boolean> {
+  return (await readSessionToken(token)) !== null;
+}
+
+export type { SessionPayload };
 
 /** Returns a 401 NextResponse if the request lacks a valid admin session, else null. */
 export async function requireAdminSession(req: NextRequest): Promise<NextResponse | null> {

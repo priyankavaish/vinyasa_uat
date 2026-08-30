@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { bookingRequestSchema } from "@/lib/schemas";
-import { cottages, events } from "@/lib/content";
+import { getCottages, getEvents } from "@/lib/cms";
 import { createBooking } from "@/lib/store";
 import { createOrder } from "@/lib/razorpay";
 import { requireAdminSession } from "@/lib/auth";
@@ -14,12 +14,19 @@ function nightsBetween(checkIn?: string, checkOut?: string): number {
 // Amount is always computed server-side from the price list, never trusted
 // from the client — a tampered client `amount` must not be able to buy a
 // ₹9,000 cottage for ₹1.
-function computeAmount(type: "stay" | "event", itemSlug: string, checkIn?: string, checkOut?: string): number | null {
+async function computeAmount(
+  type: "stay" | "event",
+  itemSlug: string,
+  checkIn?: string,
+  checkOut?: string
+): Promise<number | null> {
   if (type === "stay") {
+    const cottages = await getCottages();
     const cottage = cottages.find((c) => c.slug === itemSlug);
     if (!cottage) return null;
     return cottage.pricePerNight * nightsBetween(checkIn, checkOut);
   }
+  const events = await getEvents();
   const event = events.find((e) => e.slug === itemSlug);
   if (!event) return null;
   return event.priceFrom;
@@ -42,7 +49,7 @@ export async function POST(req: NextRequest) {
   }
   const values = parsed.data;
 
-  const amount = computeAmount(values.type, values.itemSlug, values.checkIn, values.checkOut);
+  const amount = await computeAmount(values.type, values.itemSlug, values.checkIn, values.checkOut);
   if (amount === null || amount <= 0) {
     return NextResponse.json({ error: "Could not price that selection." }, { status: 400 });
   }

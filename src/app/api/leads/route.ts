@@ -2,8 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { leadSchema } from "@/lib/schemas";
 import { createLead, listLeads } from "@/lib/store";
 import { requireAdminSession } from "@/lib/auth";
+import { hasDb } from "@/lib/db";
+
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  if (!hasDb()) {
+    return NextResponse.json(
+      { error: "Messaging is temporarily unavailable. Please email vinyasa.ashram@gmail.com." },
+      { status: 503 }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();

@@ -3,17 +3,12 @@ import Link from "next/link";
 import type { Cottage } from "@/lib/content";
 import { Reveal } from "./reveal";
 import { Parallax } from "./parallax";
-import cottageIndigoImage from "@/app/assets/IMG_1068.JPG";
 
 const IMAGE_ROTATION = [
   "/images/property-cottages-day.jpg",
   "/images/property-night-gathering.jpg",
   "/images/property-lawn-gazebo.jpg",
 ];
-
-const COTTAGE_IMAGE_OVERRIDES: Record<string, typeof cottageIndigoImage | string> = {
-  indigo: cottageIndigoImage,
-};
 
 export default function CottageCard({
   cottage,
@@ -24,7 +19,7 @@ export default function CottageCard({
   featured?: boolean;
   index?: number;
 }) {
-  const image = COTTAGE_IMAGE_OVERRIDES[cottage.slug] ?? IMAGE_ROTATION[index % IMAGE_ROTATION.length];
+  const image = cottage.image || IMAGE_ROTATION[index % IMAGE_ROTATION.length];
   const price = (
     <div className="flex items-end justify-between gap-4 border-t border-line pt-4">
       <div className="leading-none">
