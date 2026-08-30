@@ -10,13 +10,16 @@ Reference site: <https://www.vinyasa.earth/>
 
 ## Repository layout
 
-This repo is nested. **The real application is `vinyasa/` inside the repo root**
-(`.../Vinayasa/vinyasa/vinyasa`). Run every command below from that folder:
+The Next.js app is at the repository root — `package.json`, `next.config.mjs`,
+and `src/` are top-level. On Vercel, leave **Root Directory** blank / `./`.
 
 ```
-Vinayasa/
-└─ vinyasa/            <- repo root (this README's parent points here)
-   └─ vinyasa/         <- THE APP: package.json, next.config.mjs, src/, run npm here
+.
+├─ src/               app code (App Router)
+├─ public/            static assets + seeded images
+├─ drizzle/           SQL migrations
+├─ next.config.mjs
+└─ package.json
 ```
 
 ---
@@ -27,7 +30,6 @@ Vinayasa/
 Postgres, no signup, data stored in `./.pglite/`.
 
 ```bash
-cd vinyasa/vinyasa            # the app folder
 npm install
 cp .env.local.example .env.local
 npm run db:setup:local       # create ./.pglite and apply migrations

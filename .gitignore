@@ -1,9 +1,12 @@
 node_modules
 .next
 .next-dev
-data/*.jsonl
-.env.local
 *.tsbuildinfo
 
+# local data
+data/*.jsonl
 .pglite/
+
+# env
 .env.local
+.env*.local
