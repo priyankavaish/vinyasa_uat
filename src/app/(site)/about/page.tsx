@@ -16,6 +16,8 @@ type Copy = Record<string, string>;
 const paras = (s = "") => s.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
 import storyImg from "@/app/assets/new/community-01.jpg";
 import craftImg from "@/app/assets/new/grounds-09.jpg";
+import lifeA from "@/app/assets/new/about-life-1.jpg";
+import lifeB from "@/app/assets/new/about-life-2.jpg";
 
 export const metadata = {
   title: "About",
@@ -128,7 +130,7 @@ export default async function AboutPage() {
           }}
         />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/35 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-[var(--background)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-b from-transparent to-[var(--background)]" />
 
         <Reveal
           variant="fade"
@@ -178,6 +180,34 @@ export default async function AboutPage() {
             </Parallax>
           </Reveal>
         </div>
+
+        <div className="mt-14 grid gap-4 sm:grid-cols-2">
+          <Reveal variant="up">
+            <figure className="relative aspect-[4/3] overflow-hidden border border-line">
+              <Image
+                src={lifeA}
+                alt="Hands working the earth at Vinyasa Earth"
+                fill
+                sizes="(min-width: 640px) 45vw, 100vw"
+                className="object-cover transition-transform duration-700 hover:scale-[1.04]"
+              />
+            </figure>
+          </Reveal>
+          <Reveal variant="up" delay={90}>
+            <figure className="relative aspect-[4/3] overflow-hidden border border-line">
+              <Image
+                src={lifeB}
+                alt="A gathering on the property"
+                fill
+                sizes="(min-width: 640px) 45vw, 100vw"
+                className="object-cover transition-transform duration-700 hover:scale-[1.04]"
+              />
+            </figure>
+          </Reveal>
+        </div>
+        <p className="mt-4 text-center text-xs uppercase tracking-[0.22em] text-muted">
+          Everyday life on the land
+        </p>
       </section>
 
       <section className="organic-section bg-dusk-surface py-20">
