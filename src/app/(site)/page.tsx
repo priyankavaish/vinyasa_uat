@@ -3,7 +3,6 @@ import { HomeHero } from "@/components/hero";
 import MarqueeBar from "@/components/marquee-bar";
 import SectionEyebrow from "@/components/section-eyebrow";
 import CottageCard from "@/components/cottage-card";
-import ReviewsSection from "@/components/reviews-section";
 import GallerySection from "@/components/gallery-section";
 import CommunitySection from "@/components/community-section";
 import WorkFromFarmSection from "@/components/work-from-farm-section";
@@ -63,7 +62,6 @@ export default async function HomePage() {
       <PhotoMasonry />
       <GallerySection />
       <LaceDivider variant="white" />
-      <ReviewsSection />
     </div>
   );
 }

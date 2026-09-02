@@ -152,7 +152,7 @@ export default async function StaysPage() {
               >
                 <Link
                   href={`/stays/${room.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-[14px] border border-line bg-surface shadow-[0_10px_30px_rgba(45,35,25,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(45,35,25,0.16)]"
+                  className="group flex h-full flex-col overflow-hidden border border-line bg-surface shadow-[0_10px_30px_rgba(45,35,25,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(45,35,25,0.16)]"
                 >
                   <div className="relative aspect-[4/3] shrink-0 overflow-hidden">
                     <Image
