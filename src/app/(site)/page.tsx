@@ -6,6 +6,7 @@ import CottageCard from "@/components/cottage-card";
 import ReviewsSection from "@/components/reviews-section";
 import GallerySection from "@/components/gallery-section";
 import CommunitySection from "@/components/community-section";
+import WorkFromFarmSection from "@/components/work-from-farm-section";
 import PhotoMasonry from "@/components/photo-masonry";
 import ConnectSection from "@/components/connect-section";
 import { LaceDivider } from "@/components/lace-divider";
@@ -33,6 +34,7 @@ export default async function HomePage() {
       <MarqueeBar />
       <ConnectSection />
       <LaceDivider variant="white" className="-mt-14 sm:-mt-16" />
+      <WorkFromFarmSection />
       <CommunitySection />
       <LaceDivider variant="white" upsideDown />
 
@@ -56,6 +58,7 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
 
       <PhotoMasonry />
       <GallerySection />
