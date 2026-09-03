@@ -10,3 +10,6 @@ data/*.jsonl
 # env
 .env.local
 .env*.local
+
+# locally uploaded media (served via /media/[name])
+/uploads/

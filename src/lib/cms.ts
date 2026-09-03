@@ -25,6 +25,21 @@ export type Blog = {
 
 // --- row -> public shape mappers -------------------------------------------
 
+// Some legacy rows stored an absolute filesystem path (e.g. a pasted
+// `C:\...\public\images\x.webp`). next/image only accepts an http(s) URL or a
+// root-relative path, so normalise on the way out.
+function toWebPath(value: string | null | undefined): string {
+  const v = (value ?? "").trim();
+  if (!v) return "";
+  if (/^(https?:|data:|blob:)/i.test(v)) return v;
+  let p = v.replace(/^file:\/\/\/?/i, "").replace(/\\/g, "/");
+  const pub = p.match(/(?:^|\/)public\/(.+)$/i);
+  if (pub) p = pub[1];
+  p = p.replace(/^[a-zA-Z]:\//, "");
+  p = p.startsWith("/") ? p : `/${p}`;
+  return p.replace(/^\/uploads\//, "/media/"); // legacy local-upload path
+}
+
 function rowToCottage(r: t.CottageRow): Cottage {
   return {
     slug: r.slug,
@@ -37,8 +52,10 @@ function rowToCottage(r: t.CottageRow): Cottage {
     pricePerNight: r.pricePerNight,
     maxGuests: r.maxGuests,
     amenities: r.amenities ?? [],
-    image: r.imageUrl || "/seed/room-agni-1.jpg",
-    gallery: (r.gallery ?? []).length ? r.gallery : [r.imageUrl].filter(Boolean),
+    image: toWebPath(r.imageUrl) || "/seed/room-agni-1.jpg",
+    gallery: (r.gallery ?? []).length
+      ? r.gallery.map(toWebPath)
+      : [toWebPath(r.imageUrl)].filter(Boolean),
     bodyHtml: r.bodyHtml || undefined,
     placeholder: false,
   };
@@ -55,7 +72,7 @@ function rowToEvent(r: t.EventRow): EventProgram {
     placeholder: false,
     dateLabel: r.dateLabel || undefined,
     facilitator: r.facilitator || undefined,
-    image: r.imageUrl || undefined,
+    image: toWebPath(r.imageUrl) || undefined,
     bodyHtml: r.bodyHtml || undefined,
   };
 }

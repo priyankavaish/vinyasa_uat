@@ -1,7 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useId, useRef, useState } from "react";
+
+// Accept anything a human might paste — a full Windows path, a file:// URL, a
+// bare filename — and reduce it to something next/image can load: an http(s)
+// URL or a root-relative `/…` path. Everything up to and including `public/`
+// is dropped and backslashes are flattened to `/`.
+function toWebPath(value: string): string {
+  const v = value.trim();
+  if (!v) return "";
+  if (/^(https?:|data:|blob:)/i.test(v)) return v;
+  let p = v.replace(/^file:\/\/\/?/i, "").replace(/\\/g, "/");
+  const pub = p.match(/(?:^|\/)public\/(.+)$/i);
+  if (pub) p = pub[1];
+  p = p.replace(/^[a-zA-Z]:\//, ""); // strip leftover drive letter
+  p = p.startsWith("/") ? p : `/${p}`;
+  return p.replace(/^\/uploads\//, "/media/"); // legacy local-upload path
+
+}
+
+const isValidSrc = (v: string) => /^(\/|https?:|data:|blob:)/i.test(v);
 
 export default function ImageField({
   name,
@@ -12,11 +31,18 @@ export default function ImageField({
   label?: string;
   defaultValue?: string;
 }) {
-  const [url, setUrl] = useState(defaultValue);
+  const [url, setUrl] = useState(() => toWebPath(defaultValue));
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [drag, setDrag] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const inputId = useId();
 
   async function upload(file: File) {
+    if (!file.type.startsWith("image/")) {
+      setErr("That file is not an image.");
+      return;
+    }
     setBusy(true);
     setErr(null);
     try {
@@ -39,35 +65,80 @@ export default function ImageField({
         {label}
       </label>
       <input type="hidden" name={name} value={url} />
-      <div className="mt-1.5 flex items-center gap-3">
-        <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded border border-line bg-[#f4efe6]">
-          {url ? (
-            <Image src={url} alt="" fill sizes="112px" className="object-cover" />
+
+      <div className="mt-1.5 flex flex-wrap items-start gap-4">
+        <div className="relative h-28 w-40 shrink-0 overflow-hidden rounded border border-line bg-[#f4efe6]">
+          {isValidSrc(url) ? (
+            <>
+              <Image src={url} alt="" fill sizes="160px" className="object-cover" />
+              <button
+                type="button"
+                onClick={() => setUrl("")}
+                className="absolute right-1 top-1 rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-semibold text-white"
+              >
+                Remove
+              </button>
+            </>
           ) : (
             <span className="grid h-full w-full place-items-center text-[10px] text-muted">
-              none
+              no image
             </span>
           )}
         </div>
-        <div className="min-w-0">
+
+        <div
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDrag(true);
+          }}
+          onDragLeave={() => setDrag(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDrag(false);
+            const f = e.dataTransfer.files?.[0];
+            if (f) void upload(f);
+          }}
+          onPaste={(e) => {
+            const f = e.clipboardData.files?.[0];
+            if (f) void upload(f);
+          }}
+          className={`min-w-[16rem] flex-1 rounded border border-dashed px-4 py-4 text-center transition-colors ${
+            drag ? "border-accent bg-accent/5" : "border-line bg-background"
+          }`}
+        >
           <input
+            id={inputId}
+            ref={inputRef}
             type="file"
             accept="image/*"
-            className="block w-full text-xs"
+            className="hidden"
             disabled={busy}
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) void upload(f);
+              e.target.value = "";
             }}
           />
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            disabled={busy}
+            className="btn btn-outline btn-sm"
+          >
+            {busy ? "Uploading…" : "Choose image from computer"}
+          </button>
+          <p className="mt-2 text-[11px] text-muted">
+            or drag &amp; drop / paste an image here · JPG, PNG, WEBP, GIF up to 8&nbsp;MB
+          </p>
+
           <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="or paste an image URL / path"
-            className="mt-1.5 w-full border border-line bg-background px-2 py-1 text-xs outline-none focus:border-accent"
+            onBlur={(e) => setUrl(toWebPath(e.target.value))}
+            placeholder="…or paste an image URL"
+            className="mt-3 w-full border border-line bg-surface px-2 py-1 text-xs outline-none focus:border-accent"
           />
-          {busy && <p className="mt-1 text-xs text-foreground-soft">Uploading…</p>}
           {err && <p className="mt-1 text-xs text-red-700">{err}</p>}
         </div>
       </div>
