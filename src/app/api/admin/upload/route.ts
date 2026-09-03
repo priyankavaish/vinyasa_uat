@@ -38,8 +38,9 @@ export async function POST(req: NextRequest) {
     .slice(0, 60);
   const name = `${Date.now()}-${stem}.${EXT[file.type]}`;
 
-  // On a serverless host the filesystem is read-only — use Vercel Blob if its
-  // token is set. Otherwise store the file locally (free, no external service).
+  // On a serverless host the filesystem is read-only / per-instance, so a file
+  // written to disk vanishes and /media/[name] 404s on the next request. Use
+  // Vercel Blob when its token is set.
   if (process.env.BLOB_READ_WRITE_TOKEN) {
     const { put } = await import("@vercel/blob");
     const blob = await put(`uploads/${name}`, file, {
@@ -47,6 +48,18 @@ export async function POST(req: NextRequest) {
       addRandomSuffix: false,
     });
     return NextResponse.json({ url: blob.url });
+  }
+
+  // Deployed (Vercel etc.) with no Blob store: local disk won't persist. Fail
+  // loudly instead of "saving" an image that will 404.
+  if (process.env.VERCEL || process.env.NODE_ENV === "production") {
+    return NextResponse.json(
+      {
+        error:
+          "Image storage is not configured on the server. Add a Vercel Blob store to the project (Storage → Blob) so BLOB_READ_WRITE_TOKEN is set, then redeploy.",
+      },
+      { status: 501 }
+    );
   }
 
   try {
