@@ -111,15 +111,20 @@ export default async function StaysPage() {
           </p>
         </Reveal>
 
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[galleryA, galleryB, galleryC, galleryD].map((img, i) => (
-            <Reveal key={i} variant="clip" delay={i * 80} className={i % 2 === 1 ? "sm:mt-6" : ""}>
-              <div className="relative aspect-[3/4] overflow-hidden border border-line">
+        <Reveal variant="fade" delay={120}>
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {[galleryA, galleryB, galleryC, galleryD].map((img, i) => (
+              <div
+                key={i}
+                className={`relative aspect-[3/4] overflow-hidden border border-line ${
+                  i % 2 === 1 ? "sm:mt-6" : ""
+                }`}
+              >
                 <Image src={img} alt="" fill sizes="25vw" placeholder="blur" className="object-cover transition-transform duration-500 hover:scale-105" />
               </div>
-            </Reveal>
-          ))}
-        </div>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
       <section id="rooms" className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
