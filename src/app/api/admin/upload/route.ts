@@ -42,12 +42,19 @@ export async function POST(req: NextRequest) {
   // written to disk vanishes and /media/[name] 404s on the next request. Use
   // Vercel Blob when its token is set.
   if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const { put } = await import("@vercel/blob");
-    const blob = await put(`uploads/${name}`, file, {
-      access: "public",
-      addRandomSuffix: false,
-    });
-    return NextResponse.json({ url: blob.url });
+    try {
+      const { put } = await import("@vercel/blob");
+      const blob = await put(`uploads/${name}`, file, {
+        access: "public",
+        addRandomSuffix: true,
+      });
+      return NextResponse.json({ url: blob.url });
+    } catch (e) {
+      return NextResponse.json(
+        { error: `Blob upload failed: ${e instanceof Error ? e.message : String(e)}` },
+        { status: 500 }
+      );
+    }
   }
 
   // Deployed (Vercel etc.) with no Blob store: local disk won't persist. Fail
