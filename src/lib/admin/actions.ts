@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { cookies } from "next/headers";
-import DOMPurify from "isomorphic-dompurify";
 import { getDb } from "@/lib/db";
 import * as t from "@/lib/db/schema";
 import { SESSION_COOKIE, isValidSessionToken } from "@/lib/auth";
@@ -25,7 +24,12 @@ function slugify(s: string) {
     .slice(0, 80);
 }
 
-function cleanHtml(html: string) {
+// isomorphic-dompurify drags jsdom in at import time, which crashes the
+// serverless bundle on load — and every page that imports this module (via a
+// delete action) 500s before it renders. Pull it in only when a save actually
+// needs to sanitise HTML.
+async function cleanHtml(html: string) {
+  const { default: DOMPurify } = await import("isomorphic-dompurify");
   return DOMPurify.sanitize(html, {
     ALLOWED_TAGS: [
       "p", "br", "strong", "em", "u", "s", "h2", "h3", "h4", "ul", "ol", "li",
@@ -81,7 +85,7 @@ export async function saveCottage(form: FormData) {
     amenities: listStr(form.get("amenities")),
     imageUrl: data.imageUrl,
     gallery: listStr(form.get("gallery")),
-    bodyHtml: cleanHtml(String(form.get("bodyHtml") ?? "")),
+    bodyHtml: await cleanHtml(String(form.get("bodyHtml") ?? "")),
     sort: data.sort,
     published: form.get("published") === "on",
     updatedAt: new Date(),
@@ -136,7 +140,7 @@ export async function saveEvent(form: FormData) {
     priceFrom: data.priceFrom,
     description: data.description,
     imageUrl: data.imageUrl,
-    bodyHtml: cleanHtml(String(form.get("bodyHtml") ?? "")),
+    bodyHtml: await cleanHtml(String(form.get("bodyHtml") ?? "")),
     sort: data.sort,
     published: form.get("published") === "on",
     updatedAt: new Date(),
@@ -176,7 +180,7 @@ export async function saveBlog(form: FormData) {
   const data = blogSchema.parse(Object.fromEntries(form));
   const db = getDb();
   const slug = slugify(data.slug || data.title);
-  const bodyHtml = cleanHtml(String(form.get("bodyHtml") ?? ""));
+  const bodyHtml = await cleanHtml(String(form.get("bodyHtml") ?? ""));
   const now = new Date();
 
   if (data.id) {
