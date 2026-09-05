@@ -73,6 +73,23 @@ a {
   color: inherit;
 }
 
+/* Browsers default <button> to cursor:default (not pointer like <a href>), and
+   custom interactive elements (role="button", labelled checkboxes/radios,
+   summary disclosures) don't get one either. Make every clickable control
+   read as clickable, site-wide. */
+a[href],
+button:not(:disabled),
+[role="button"],
+[type="button"]:not(:disabled),
+[type="submit"]:not(:disabled),
+[type="checkbox"]:not(:disabled),
+[type="radio"]:not(:disabled),
+select:not(:disabled),
+summary,
+label[for] {
+  cursor: pointer;
+}
+
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;

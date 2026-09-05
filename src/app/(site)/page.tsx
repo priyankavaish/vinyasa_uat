@@ -6,6 +6,7 @@ import CottageCard from "@/components/cottage-card";
 import GallerySection from "@/components/gallery-section";
 import CommunitySection from "@/components/community-section";
 import WorkFromFarmSection from "@/components/work-from-farm-section";
+import UpcomingEventsSection from "@/components/upcoming-events-section";
 import PhotoMasonry from "@/components/photo-masonry";
 import ConnectSection from "@/components/connect-section";
 import { LaceDivider } from "@/components/lace-divider";
@@ -58,6 +59,7 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <UpcomingEventsSection />
 
       <PhotoMasonry />
       <GallerySection />

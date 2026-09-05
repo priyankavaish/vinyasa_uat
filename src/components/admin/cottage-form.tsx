@@ -1,5 +1,6 @@
 import { saveCottage } from "@/lib/admin/actions";
 import ImageField from "@/components/admin/image-field";
+import GalleryField from "@/components/admin/gallery-field";
 import RichEditorField from "@/components/admin/rich-editor-field";
 import type { CottageRow } from "@/lib/db/schema";
 
@@ -80,15 +81,7 @@ export default function CottageForm({ cottage }: { cottage?: CottageRow }) {
 
       <ImageField name="imageUrl" label="Main image" defaultValue={cottage?.imageUrl ?? ""} />
 
-      <div>
-        <label className={label}>Gallery image URLs (one per line)</label>
-        <textarea
-          name="gallery"
-          rows={3}
-          defaultValue={(cottage?.gallery ?? []).join("\n")}
-          className={field}
-        />
-      </div>
+      <GalleryField name="gallery" label="Gallery" defaultValue={cottage?.gallery ?? []} />
 
       <RichEditorField name="bodyHtml" label="Detail page content" defaultValue={cottage?.bodyHtml ?? ""} />
 

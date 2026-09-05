@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import RichContent from "@/components/rich-content";
+import GalleryGrid from "@/components/gallery-grid";
 import { getCottage, getCottages } from "@/lib/cms";
 
 export const revalidate = 300;
@@ -78,15 +79,7 @@ export default async function CottageDetailPage({ params }: { params: Promise<{ 
           </div>
         </div>
 
-        {gallery.length > 1 && (
-          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {gallery.map((src, i) => (
-              <div key={i} className="relative aspect-[4/3] overflow-hidden border border-line">
-                <Image src={src} alt="" fill sizes="33vw" className="object-cover" />
-              </div>
-            ))}
-          </div>
-        )}
+        {gallery.length > 1 && <GalleryGrid images={gallery} alt={`${cottage.name} at Vinyasa Earth`} />}
       </section>
     </>
   );
