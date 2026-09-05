@@ -37,7 +37,7 @@ const FAMILY = [
   { name: "Abhishek Gore", role: "Resident", photo: "/seed/family/abhishek.jpg" },
   { name: "Coco", role: "Resident animal", photo: "/seed/family/coco.jpg" },
   { name: "Mojo", role: "Resident animal", photo: "/seed/family/mojo.jpg" },
-  { name: "Diwan", role: "Resident animal", photo: "/seed/family/diwan.jpg" },
+  { name: "Diwan", role: "Resident", photo: "/seed/family/diwan.jpg" },
 ];
 
 export default async function AboutPage() {
