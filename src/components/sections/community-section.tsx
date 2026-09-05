@@ -25,7 +25,7 @@ export default function CommunitySection() {
             exact terms to confirm with the client before this goes live).
           </p>
           <div className="mt-8 flex flex-nowrap gap-2 overflow-x-auto sm:gap-4">
-            <Link href="/events/artist-escape" className="btn btn-secondary shrink-0 whitespace-nowrap !px-4 !text-[11px] sm:!px-7 sm:!text-xs">
+            <Link href="/events#artist-escape" className="btn btn-secondary shrink-0 whitespace-nowrap !px-4 !text-[11px] sm:!px-7 sm:!text-xs">
               Join the Artist Escape Program
             </Link>
             <Link href="/contact" className="btn btn-outline shrink-0 whitespace-nowrap !px-4 !text-[11px] sm:!px-7 sm:!text-xs">

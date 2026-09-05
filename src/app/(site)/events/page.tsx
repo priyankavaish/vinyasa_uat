@@ -90,7 +90,7 @@ export default async function EventsPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+      <section id="artist-escape" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left"><div className="relative aspect-[4/5] overflow-hidden border border-line"><Image src={residencyImg} alt="Resident artists at Vinyasa Earth" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" /></div></Reveal>
           <Reveal variant="right" delay={100}>
