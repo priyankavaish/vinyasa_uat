@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useId, useRef, useState } from "react";
+import { compressImage } from "@/lib/image-compress";
 
 // Accept anything a human might paste — a full Windows path, a file:// URL, a
 // bare filename — and reduce it to something next/image can load: an http(s)
@@ -46,8 +47,9 @@ export default function ImageField({
     setBusy(true);
     setErr(null);
     try {
+      const compressed = await compressImage(file);
       const fd = new FormData();
-      fd.append("file", file);
+      fd.append("file", compressed);
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body?.error ?? "Upload failed.");
@@ -128,7 +130,7 @@ export default function ImageField({
             {busy ? "Uploading…" : "Choose image from computer"}
           </button>
           <p className="mt-2 text-[11px] text-muted">
-            or drag &amp; drop / paste an image here · JPG, PNG, WEBP, GIF up to 8&nbsp;MB
+            or drag &amp; drop / paste an image here · JPG, PNG, WEBP or GIF — large photos are shrunk automatically
           </p>
 
           <input

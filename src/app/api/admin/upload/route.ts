@@ -6,7 +6,7 @@ import path from "node:path";
 
 export const runtime = "nodejs";
 
-const MAX_BYTES = 8 * 1024 * 1024;
+const MAX_BYTES = 4 * 1024 * 1024; // Vercel functions reject bodies over ~4.5MB
 const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
 const EXT: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "No file provided." }, { status: 400 });
   }
   if (file.size > MAX_BYTES) {
-    return NextResponse.json({ error: "File is larger than 8MB." }, { status: 400 });
+    return NextResponse.json({ error: "Image is still over 4MB after compression — please pick a smaller one." }, { status: 400 });
   }
   if (!ALLOWED.includes(file.type)) {
     return NextResponse.json({ error: "Only image files are allowed." }, { status: 400 });

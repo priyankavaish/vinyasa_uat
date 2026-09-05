@@ -13,18 +13,8 @@ const perks: { icon: IconName; label: string }[] = [
 ];
 
 const points = [
-  [
-    "A desk with a horizon",
-    "Open-air studios and shaded common spaces instead of another day between four walls.",
-  ],
-  [
-    "Work, then wander",
-    "Stay connected when you need to, then reset with a farm walk, a shared meal, and easy company.",
-  ],
-  [
-    "Stay for your rhythm",
-    "Take an earth-built cottage or a dorm bed and shape the day around your own work.",
-  ],
+  ["A desk with a horizon", "Open-air studios and shaded common spaces, not four more walls."],
+  ["Work, then wander", "Log off to a farm walk, a shared meal, and easy company."],
 ];
 
 export default function WorkFromFarmSection() {
@@ -34,20 +24,17 @@ export default function WorkFromFarmSection() {
         <Reveal variant="left" className="order-1">
           <SectionEyebrow icon="leaf-outline">A different way to work</SectionEyebrow>
 
-          <h2 className="mt-4 font-display text-4xl leading-[1.03] sm:text-5xl">
+          <h2 className="mt-3 font-display text-4xl leading-[1.03] sm:text-5xl">
             Work From Farm
-            <span className="mt-1 block font-script text-3xl text-accent sm:text-[2.75rem]">
-              at Vinyasa
-            </span>
+            <span className="mt-1 block text-accent">at Vinyasa</span>
           </h2>
 
-          <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-foreground-soft">
-            Step away from the work-from-home routine without stepping away from work. Bring your
-            laptop and your project; find focus among mud cottages, open skies and a living creative
-            community — close to Jaipur, far from its rush.
+          <p className="mt-4 max-w-[46ch] leading-relaxed text-foreground-soft">
+            Step away from the work-from-home routine without stepping away from work — laptop in
+            hand, among mud cottages and open skies, close to Jaipur but far from its rush.
           </p>
 
-          <ul className="mt-6 flex flex-wrap gap-2">
+          <ul className="mt-5 flex flex-wrap gap-2">
             {perks.map((p) => (
               <li
                 key={p.label}
@@ -59,26 +46,26 @@ export default function WorkFromFarmSection() {
             ))}
           </ul>
 
-          <div className="mt-8 space-y-0">
+          <div className="mt-6 space-y-0">
             {points.map(([title, body], i) => (
-              <div key={title} className="flex gap-4 border-t border-line py-4 last:border-b">
-                <span className="font-display text-2xl leading-none text-accent/60 tabular-nums">
+              <div key={title} className="flex gap-4 border-t border-line py-3.5 last:border-b">
+                <span className="font-display text-xl leading-none text-accent/60 tabular-nums">
                   0{i + 1}
                 </span>
                 <div>
-                  <h3 className="font-display text-lg leading-snug text-foreground">{title}</h3>
+                  <h3 className="font-display text-base leading-snug text-foreground">{title}</h3>
                   <p className="mt-1 text-sm leading-6 text-foreground-soft">{body}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/book" className="btn btn-accent inline-flex">
               Plan your work stay
             </Link>
-            <Link href="/contact" className="btn btn-outline inline-flex">
-              Ask us anything
+            <Link href="/work-from-farm" className="btn btn-outline inline-flex">
+              Learn more
             </Link>
           </div>
         </Reveal>
