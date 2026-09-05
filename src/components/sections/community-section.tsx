@@ -1,8 +1,8 @@
 import Image from "next/image";
 import communityGathering from "@/app/assets/community-gathering-2.jpg";
 import Link from "next/link";
-import SectionEyebrow from "./section-eyebrow";
-import { Reveal } from "./reveal";
+import SectionEyebrow from "../ui/section-eyebrow";
+import { Reveal } from "../ui/reveal";
 
 export default function CommunitySection() {
   return (

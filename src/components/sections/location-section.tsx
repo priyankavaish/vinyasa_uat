@@ -1,9 +1,9 @@
 import Image from "next/image";
 import flowerPotBackground from "@/app/assets/bg_flower_pot.png";
-import { Reveal } from "./reveal";
-import { Icon, type IconName } from "./icon";
-import { ParallaxHeroImage } from "./parallax";
-import LeadForm from "./lead-form";
+import { Reveal } from "../ui/reveal";
+import { Icon, type IconName } from "../ui/icon";
+import { ParallaxHeroImage } from "../ui/parallax";
+import LeadForm from "../forms/lead-form";
 import { ADDRESS, CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, GOOGLE_MAPS_EMBED_SRC, GOOGLE_MAPS_LINK, GOOGLE_RATING } from "@/lib/site";
 
 const CONTACT_ITEMS: Array<{ label: string; value: string; icon: IconName; href?: string }> = [

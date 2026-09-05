@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PageHero } from "@/components/hero";
-import SectionEyebrow from "@/components/section-eyebrow";
-import { Reveal } from "@/components/reveal";
-import { Parallax } from "@/components/parallax";
-import { Icon, type IconName } from "@/components/icon";
+import { PageHero } from "@/components/sections/hero";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
+import { Reveal } from "@/components/ui/reveal";
+import { Parallax } from "@/components/ui/parallax";
+import { Icon, type IconName } from "@/components/ui/icon";
 import { getEvents } from "@/lib/cms";
 import { whatsappLink } from "@/lib/site";
 

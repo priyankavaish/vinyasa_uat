@@ -4,7 +4,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Mrs_Saint_Delafield, Bellefair } from "next/font/google";
 import { SITE_ORIGIN } from "@/lib/site";
-import PageViewTracker from "@/components/page-view-tracker";
+import PageViewTracker from "@/components/layout/page-view-tracker";
 
 const displaySerif = localFont({
   src: "../../public/fonts/tt-ramillas.woff2",

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Cottage } from "@/lib/content";
-import { Reveal } from "./reveal";
-import { Parallax } from "./parallax";
+import { Reveal } from "../ui/reveal";
+import { Parallax } from "../ui/parallax";
 
 const IMAGE_ROTATION = [
   "/images/property-cottages-day.jpg",

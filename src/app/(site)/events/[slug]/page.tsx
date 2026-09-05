@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Icon } from "@/components/icon";
-import RichContent from "@/components/rich-content";
+import { Icon } from "@/components/ui/icon";
+import RichContent from "@/components/ui/rich-content";
 import { getEvent, getEvents } from "@/lib/cms";
 
 export const revalidate = 300;

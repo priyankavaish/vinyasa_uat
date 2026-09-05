@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import SectionEyebrow from "@/components/section-eyebrow";
-import { Reveal } from "@/components/reveal";
-import { Parallax, ParallaxHeroImage } from "@/components/parallax";
-import { Icon, type IconName } from "@/components/icon";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
+import { Reveal } from "@/components/ui/reveal";
+import { Parallax, ParallaxHeroImage } from "@/components/ui/parallax";
+import { Icon, type IconName } from "@/components/ui/icon";
 
 import heroAerial from "@/app/assets/new/grounds-06.jpg";
 import galleryA from "@/app/assets/new/grounds-01.jpg";

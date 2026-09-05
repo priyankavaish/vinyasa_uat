@@ -1,16 +1,16 @@
 import Link from "next/link";
-import { HomeHero } from "@/components/hero";
-import MarqueeBar from "@/components/marquee-bar";
-import SectionEyebrow from "@/components/section-eyebrow";
-import CottageCard from "@/components/cottage-card";
-import GallerySection from "@/components/gallery-section";
-import CommunitySection from "@/components/community-section";
-import WorkFromFarmSection from "@/components/work-from-farm-section";
-import UpcomingEventsSection from "@/components/upcoming-events-section";
-import PhotoMasonry from "@/components/photo-masonry";
-import ConnectSection from "@/components/connect-section";
-import { LaceDivider } from "@/components/lace-divider";
-import { Reveal } from "@/components/reveal";
+import { HomeHero } from "@/components/sections/hero";
+import MarqueeBar from "@/components/sections/marquee-bar";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
+import CottageCard from "@/components/cards/cottage-card";
+import GallerySection from "@/components/sections/gallery-section";
+import CommunitySection from "@/components/sections/community-section";
+import WorkFromFarmSection from "@/components/sections/work-from-farm-section";
+import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
+import PhotoMasonry from "@/components/sections/photo-masonry";
+import ConnectSection from "@/components/sections/connect-section";
+import { LaceDivider } from "@/components/ui/lace-divider";
+import { Reveal } from "@/components/ui/reveal";
 import { getCottages, getContent } from "@/lib/cms";
 
 export const metadata = { alternates: { canonical: "/" } };

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { EventProgram } from "@/lib/content";
-import { Reveal } from "./reveal";
-import { Icon } from "./icon";
+import { Reveal } from "../ui/reveal";
+import { Icon } from "../ui/icon";
 
 const IMAGE_ROTATION = [
   "/images/property-night-gathering.jpg",

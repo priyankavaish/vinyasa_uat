@@ -5,9 +5,9 @@ import Image from "next/image";
 import Lightbox from "yet-another-react-lightbox";
 import useEmblaCarousel from "embla-carousel-react";
 import "yet-another-react-lightbox/styles.css";
-import SectionEyebrow from "./section-eyebrow";
-import { Reveal } from "./reveal";
-import { Icon } from "./icon";
+import SectionEyebrow from "../ui/section-eyebrow";
+import { Reveal } from "../ui/reveal";
+import { Icon } from "../ui/icon";
 import { placePhotos } from "@/lib/content";
 
 export default function PhotoMasonry() {

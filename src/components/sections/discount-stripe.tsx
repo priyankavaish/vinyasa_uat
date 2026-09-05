@@ -2,7 +2,7 @@ import Image from "next/image";
 import vine2 from "@/app/assets/vine2.png";
 import vine3 from "@/app/assets/vine3.png";
 import { whatsappLink } from "@/lib/site";
-import { Icon } from "./icon";
+import { Icon } from "../ui/icon";
 
 export default function DiscountStripe() {
   return (

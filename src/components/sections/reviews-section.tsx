@@ -1,9 +1,9 @@
 import Image from "next/image";
 import vine1 from "@/app/assets/vine1.png";
 import vine2 from "@/app/assets/vine2.png";
-import { Reveal } from "./reveal";
-import { Icon, type IconName } from "./icon";
-import { Parallax } from "./parallax";
+import { Reveal } from "../ui/reveal";
+import { Icon, type IconName } from "../ui/icon";
+import { Parallax } from "../ui/parallax";
 import { GOOGLE_RATING, GOOGLE_MAPS_LINK } from "@/lib/site";
 
 function GoogleLogo({ size = 20 }: { size?: number }) {

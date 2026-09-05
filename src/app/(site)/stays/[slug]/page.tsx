@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import RichContent from "@/components/rich-content";
-import GalleryGrid from "@/components/gallery-grid";
+import RichContent from "@/components/ui/rich-content";
+import GalleryGrid from "@/components/ui/gallery-grid";
 import { getCottage, getCottages } from "@/lib/cms";
 
 export const revalidate = 300;

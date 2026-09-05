@@ -1,4 +1,4 @@
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/ui/icon";
 
 const ITEMS = [
   "Six hand-built mud cottages",

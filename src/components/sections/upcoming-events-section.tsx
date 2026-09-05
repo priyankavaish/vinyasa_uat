@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { getEvents } from "@/lib/cms";
 import { parseEventStart } from "@/lib/event-dates";
-import { Icon, type IconName } from "./icon";
-import SectionEyebrow from "./section-eyebrow";
-import { Reveal } from "./reveal";
+import { Icon, type IconName } from "../ui/icon";
+import SectionEyebrow from "../ui/section-eyebrow";
+import { Reveal } from "../ui/reveal";
 
 const KIND_META: Record<string, { icon: IconName; accent: string; label: string }> = {
   residency: { icon: "compass-outline", accent: "#8f3b31", label: "Residency" },

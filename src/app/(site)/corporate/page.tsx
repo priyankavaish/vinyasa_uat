@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PageHero } from "@/components/hero";
-import SectionEyebrow from "@/components/section-eyebrow";
-import { Reveal } from "@/components/reveal";
-import { Parallax } from "@/components/parallax";
-import { Icon } from "@/components/icon";
-import LeadForm from "@/components/lead-form";
+import { PageHero } from "@/components/sections/hero";
+import SectionEyebrow from "@/components/ui/section-eyebrow";
+import { Reveal } from "@/components/ui/reveal";
+import { Parallax } from "@/components/ui/parallax";
+import { Icon } from "@/components/ui/icon";
+import LeadForm from "@/components/forms/lead-form";
 import { volunteerTracks, volunteerInfo } from "@/lib/content";
 
 import heroImg from "@/app/assets/new/community-04.jpg";

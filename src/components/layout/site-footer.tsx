@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components/ui/icon";
 import { ADDRESS, CONTACT_EMAIL, CONTACT_PHONE_DISPLAY } from "@/lib/site";
 
 const exploreLinks = [

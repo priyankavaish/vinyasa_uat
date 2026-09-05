@@ -3,9 +3,9 @@ import eventsTileImage from "@/app/assets/events-tile-community.png";
 import corporateTileImage from "@/app/assets/IMG_2429.jpeg";
 import artistTileImage from "@/app/assets/2N0A9983.JPG";
 import Link from "next/link";
-import SectionEyebrow from "./section-eyebrow";
-import { Reveal } from "./reveal";
-import { Icon } from "./icon";
+import SectionEyebrow from "../ui/section-eyebrow";
+import { Reveal } from "../ui/reveal";
+import { Icon } from "../ui/icon";
 
 // Each block previews the page it links to, so it borrows that page's own
 // hero/identity photo rather than a fresh one — never a photo shown nowhere

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import SectionEyebrow from "./section-eyebrow";
-import { Reveal } from "./reveal";
-import { Parallax } from "./parallax";
+import SectionEyebrow from "../ui/section-eyebrow";
+import { Reveal } from "../ui/reveal";
+import { Parallax } from "../ui/parallax";
 import { galleryPosts } from "@/lib/content";
 
 export default function GallerySection() {

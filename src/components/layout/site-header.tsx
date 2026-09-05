@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Icon } from "./icon";
+import { Icon } from "../ui/icon";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },

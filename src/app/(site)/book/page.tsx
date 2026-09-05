@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { PageHero } from "@/components/hero";
-import BookingForm from "@/components/booking-form";
+import { PageHero } from "@/components/sections/hero";
+import BookingForm from "@/components/forms/booking-form";
 import { getCottages, getEvents } from "@/lib/cms";
 
 export const metadata = {

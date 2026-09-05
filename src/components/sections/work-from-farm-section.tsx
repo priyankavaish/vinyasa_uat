@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import SectionEyebrow from "./section-eyebrow";
-import { Reveal } from "./reveal";
+import SectionEyebrow from "../ui/section-eyebrow";
+import { Reveal } from "../ui/reveal";
 import farmImage from "@/app/assets/IMG_4301-scaled.webp";
 
 const details = [

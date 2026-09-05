@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image, { type StaticImageData } from "next/image";
 import brandLogo from "./white_logo.jpeg";
-import { ParallaxHeroImage } from "./parallax";
+import { ParallaxHeroImage } from "../ui/parallax";
 
 export function HomeHero() {
   const contentRef = useRef<HTMLDivElement>(null);
