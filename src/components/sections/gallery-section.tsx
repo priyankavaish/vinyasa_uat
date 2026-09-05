@@ -6,9 +6,9 @@ import { galleryPosts } from "@/lib/content";
 
 export default function GallerySection() {
   return (
-    <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+    <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
 
-      <Reveal variant="up" className="mb-12 flex flex-wrap items-end justify-between gap-4">
+      <Reveal variant="up" className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <SectionEyebrow icon="camera-outline">From the community</SectionEyebrow>
           <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight">

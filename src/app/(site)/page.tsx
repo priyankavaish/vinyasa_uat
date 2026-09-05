@@ -33,13 +33,13 @@ export default async function HomePage() {
       <HomeHero />
       <MarqueeBar />
       <ConnectSection />
-      <LaceDivider variant="white" className="-mt-14 sm:-mt-16" />
+      <LaceDivider variant="white" className="-mt-8 sm:-mt-10" />
       <WorkFromFarmSection />
       <CommunitySection />
       <LaceDivider variant="white" upsideDown />
 
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
-        <Reveal variant="up" className="mx-auto mb-14 max-w-2xl text-center">
+      <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+        <Reveal variant="up" className="mx-auto mb-10 max-w-2xl text-center">
           <SectionEyebrow icon="home-outline" className="justify-center">
             {copy?.eyebrow ?? "The Cottages"}
           </SectionEyebrow>
@@ -52,7 +52,7 @@ export default async function HomePage() {
             <CottageCard key={c.slug} cottage={c} featured index={i} />
           ))}
         </div>
-        <div className="mt-10 text-center">
+        <div className="mt-8 text-center">
           <Link href="/stays" className="text-xs tracking-[0.08em] uppercase text-accent underline">
             View all stays
           </Link>

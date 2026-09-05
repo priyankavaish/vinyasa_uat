@@ -5,16 +5,25 @@ import { hmac } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
-// Fire-and-forget page-view logger. Called by <PageViewTracker> on every
-// route change. Never blocks the client and never throws upward.
+const ok = () => NextResponse.json({ ok: true });
+
+// Circuit breaker: a broken DB (e.g. a corrupt local PGlite file) must not make
+// every page view hang on a doomed write or spam the logs. After a few
+// consecutive failures, stop writing for a while.
+let consecutiveFailures = 0;
+let mutedUntil = 0;
+const MAX_FAILURES = 3;
+const MUTE_MS = 5 * 60_000;
+const WRITE_TIMEOUT_MS = 2_000;
+
+// Fire-and-forget page-view logger. Called by <PageViewTracker> on every route
+// change. Never blocks the client for long and never throws upward.
 export async function POST(req: NextRequest) {
-  if (!hasDb()) return NextResponse.json({ ok: false });
+  if (!hasDb() || Date.now() < mutedUntil) return ok();
 
   try {
     const { path } = (await req.json()) as { path?: string };
-    if (!path || typeof path !== "string" || path.startsWith("/admin")) {
-      return NextResponse.json({ ok: false });
-    }
+    if (!path || typeof path !== "string" || path.startsWith("/admin")) return ok();
 
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -22,7 +31,7 @@ export async function POST(req: NextRequest) {
       "";
     const ipHash = ip ? (await hmac(ip)).slice(0, 32) : null;
 
-    await getDb()
+    const write = getDb()
       .insert(pageViews)
       .values({
         path: path.slice(0, 512),
@@ -30,8 +39,22 @@ export async function POST(req: NextRequest) {
         ua: req.headers.get("user-agent")?.slice(0, 512) ?? null,
         ipHash,
       });
+
+    await Promise.race([
+      write,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("page-view write timed out")), WRITE_TIMEOUT_MS),
+      ),
+    ]);
+    consecutiveFailures = 0;
   } catch (err) {
-    console.warn("[api/track] skipped", err);
+    if (++consecutiveFailures >= MAX_FAILURES) {
+      mutedUntil = Date.now() + MUTE_MS;
+      consecutiveFailures = 0;
+      console.warn("[api/track] page-view logging paused for 5m after repeated write failures");
+    } else {
+      console.warn("[api/track] skipped:", err instanceof Error ? err.message : err);
+    }
   }
-  return NextResponse.json({ ok: true });
+  return ok();
 }

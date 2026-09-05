@@ -35,10 +35,10 @@ export default function PhotoMasonry() {
   }, [emblaApi]);
 
   return (
-    <section className="relative overflow-hidden py-20 sm:py-28">
+    <section className="relative overflow-hidden py-12 sm:py-16">
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
-        <Reveal variant="up" className="mb-10">
+        <Reveal variant="up" className="mb-7">
           <SectionEyebrow icon="images-outline">The place, in pictures</SectionEyebrow>
           <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight">
             Earth, rooms, gardens, Amer

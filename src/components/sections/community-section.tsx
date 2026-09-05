@@ -8,7 +8,7 @@ export default function CommunitySection() {
   return (
     <section className="relative overflow-hidden">
       <div className="grid items-center gap-0 md:grid-cols-2">
-        <Reveal variant="up" delay={200} className="px-6 py-14 sm:px-12 sm:py-16 md:order-2 md:px-16 lg:px-20">
+        <Reveal variant="up" delay={200} className="px-6 py-9 sm:px-12 sm:py-12 md:order-2 md:px-16 lg:px-20">
           <SectionEyebrow tone="secondary" icon="people-outline">One community, one table</SectionEyebrow>
           <h2 className="mt-4 max-w-[20ch] font-display text-4xl leading-tight sm:text-5xl">
             Volunteers, artists, and strangers, cooking, eating, and living as one
@@ -33,7 +33,7 @@ export default function CommunitySection() {
             </Link>
           </div>
         </Reveal>
-        <Reveal variant="up" delay={0} className="relative aspect-[4/3] w-full sm:aspect-[16/10] md:order-1 md:aspect-square md:min-h-[32rem]">
+        <Reveal variant="up" delay={0} className="relative aspect-[4/3] w-full sm:aspect-[16/10] md:order-1 md:aspect-square md:min-h-[24rem]">
           <Image
             src={communityGathering}
             alt="Travellers from around the world gathered together at Vinyasa Earth"

@@ -12,7 +12,7 @@ const details = [
 
 export default function WorkFromFarmSection() {
   return (
-    <section className="overflow-hidden bg-[#e8dfc8] py-20 sm:py-28">
+    <section className="overflow-hidden bg-[#e8dfc8] pt-12 pb-0 sm:pt-16">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:gap-20">
         <Reveal variant="right" className="relative order-2 lg:order-2">
           <div className="relative aspect-[5/6] overflow-hidden">

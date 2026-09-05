@@ -32,7 +32,7 @@ export default async function UpcomingEventsSection() {
   if (upcoming.length === 0) return null;
 
   return (
-    <section className="organic-section relative overflow-hidden bg-clay-surface py-20 sm:py-28">
+    <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal variant="up" className="mx-auto mb-12 max-w-2xl text-center">
           <SectionEyebrow icon="calendar-outline" className="justify-center">
