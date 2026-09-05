@@ -49,7 +49,7 @@ export default async function HomePage() {
         </Reveal>
         <div className="grid gap-5 sm:grid-cols-2">
           {featured.map((c, i) => (
-            <CottageCard key={c.slug} cottage={c} featured={i === 0} index={i} />
+            <CottageCard key={c.slug} cottage={c} featured index={i} />
           ))}
         </div>
         <div className="mt-10 text-center">

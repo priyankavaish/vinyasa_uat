@@ -45,7 +45,7 @@ export default function CottageCard({
 
   if (featured) {
     return (
-      <Reveal variant="scale" className="sm:col-span-2">
+      <Reveal variant="scale" delay={(index % 3) * 90} className="sm:col-span-2">
         <Link
           href={`/stays/${cottage.slug}`}
           className="stay-card group grid overflow-hidden border border-line bg-surface sm:grid-cols-[1.25fr_1fr]"
