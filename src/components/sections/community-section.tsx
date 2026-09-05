@@ -6,7 +6,7 @@ import { Reveal } from "../ui/reveal";
 
 export default function CommunitySection() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-secondary-surface">
       <div className="grid items-center gap-0 md:grid-cols-2">
         <Reveal variant="up" delay={200} className="px-6 py-9 sm:px-12 sm:py-12 md:order-2 md:px-16 lg:px-20">
           <SectionEyebrow tone="secondary" icon="people-outline">One community, one table</SectionEyebrow>
