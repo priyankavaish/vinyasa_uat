@@ -24,19 +24,23 @@ function slugify(s: string) {
     .slice(0, 80);
 }
 
-// isomorphic-dompurify drags jsdom in at import time, which crashes the
-// serverless bundle on load — and every page that imports this module (via a
-// delete action) 500s before it renders. Pull it in only when a save actually
-// needs to sanitise HTML.
+// isomorphic-dompurify drags in jsdom, which crashes at runtime on Vercel's
+// serverless functions (jsdom's sync-XHR worker file isn't in the trace).
+// sanitize-html is pure JS (htmlparser2), no DOM shim, and safe there.
 async function cleanHtml(html: string) {
-  const { default: DOMPurify } = await import("isomorphic-dompurify");
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: [
+  const { default: sanitizeHtml } = await import("sanitize-html");
+  return sanitizeHtml(html, {
+    allowedTags: [
       "p", "br", "strong", "em", "u", "s", "h2", "h3", "h4", "ul", "ol", "li",
       "blockquote", "a", "img", "span", "hr", "figure", "figcaption",
     ],
-    ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel", "style", "class", "data-btn", "data-variant"],
-    ALLOWED_URI_REGEXP: /^(https?:|mailto:|tel:|\/|#)/i,
+    allowedAttributes: {
+      "*": ["style", "class"],
+      a: ["href", "title", "target", "rel", "data-btn", "data-variant"],
+      img: ["src", "alt", "title"],
+    },
+    allowedSchemes: ["https", "http", "mailto", "tel"],
+    allowProtocolRelative: false,
   });
 }
 
