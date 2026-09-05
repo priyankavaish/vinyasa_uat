@@ -39,7 +39,7 @@ const WAYS = [
 
 export default function ConnectSection() {
   return (
-    <section className="relative overflow-hidden py-12 text-foreground sm:py-16">
+    <section className="relative overflow-hidden text-foreground">
       <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
         <Reveal variant="up">
           <SectionEyebrow tone="secondary" icon="compass-outline" className="justify-center">
