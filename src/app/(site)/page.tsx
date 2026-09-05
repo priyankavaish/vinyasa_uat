@@ -9,7 +9,6 @@ import WorkFromFarmSection from "@/components/sections/work-from-farm-section";
 import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
 import PhotoMasonry from "@/components/sections/photo-masonry";
 import ConnectSection from "@/components/sections/connect-section";
-import { LaceDivider } from "@/components/ui/lace-divider";
 import { Reveal } from "@/components/ui/reveal";
 import { getCottages, getContent } from "@/lib/cms";
 
@@ -33,10 +32,8 @@ export default async function HomePage() {
       <HomeHero />
       <MarqueeBar />
       <ConnectSection />
-      <LaceDivider variant="white" className="-mt-8 sm:-mt-10" />
       <WorkFromFarmSection />
       <CommunitySection />
-      <LaceDivider variant="white" upsideDown />
 
       <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
         <Reveal variant="up" className="mx-auto mb-10 max-w-2xl text-center">
@@ -63,7 +60,6 @@ export default async function HomePage() {
 
       <PhotoMasonry />
       <GallerySection />
-      <LaceDivider variant="white" />
     </div>
   );
 }
