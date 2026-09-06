@@ -112,7 +112,11 @@ export default function SiteHeader() {
             onClick={() => setOpen((v) => !v)}
           >
             <span className="sr-only">Menu</span>
-            <Icon name={open ? "close-outline" : "menu-outline"} size={28} className="text-accent" />
+            <Icon
+              name={open ? "close-outline" : "menu-outline"}
+              size={28}
+              className={transparent ? "text-white" : "text-accent"}
+            />
           </button>
         </div>
       </div>

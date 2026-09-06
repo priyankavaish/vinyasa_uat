@@ -633,13 +633,19 @@ label[for] {
     background: transparent !important;
     backdrop-filter: none !important;
   }
-  /* Keep the mark terracotta on every backdrop (the scrolled state otherwise
-     forces it black) and ring it with a thin warm halo so it stays legible
-     over both the photo hero and light sections — no solid panel. */
+  /* White over the photo hero, terracotta once past it (the scrolled state
+     otherwise forces the icon black). Thicker bars, no drop shadow. */
   .menu-toggle svg {
+    filter: none;
+  }
+  .menu-toggle svg line {
+    stroke-width: 44 !important;
+  }
+  header[data-transparent="true"] .menu-toggle svg {
+    color: #ffffff !important;
+  }
+  header[data-transparent="false"] .menu-toggle svg {
     color: #8f3b31 !important;
-    filter: drop-shadow(0 0 1.5px rgba(255, 244, 224, 0.95))
-      drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
   }
   .mobile-nav {
     background: #e9e7e2 !important;

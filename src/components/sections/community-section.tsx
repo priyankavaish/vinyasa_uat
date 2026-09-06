@@ -33,7 +33,7 @@ export default function CommunitySection() {
             </Link>
           </div>
         </Reveal>
-        <Reveal variant="up" delay={0} className="relative order-1 aspect-[16/11] w-full sm:aspect-[16/10] md:order-1 md:aspect-square md:min-h-[24rem]">
+        <Reveal variant="up" delay={0} className="relative order-1 aspect-[16/11] w-full sm:aspect-[16/10] md:order-1 md:aspect-auto md:h-full md:min-h-[26rem] md:self-stretch">
           <Image
             src={communityGathering}
             alt="Travellers from around the world gathered together at Vinyasa Earth"
