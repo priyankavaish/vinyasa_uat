@@ -63,6 +63,7 @@ export default function SiteHeader() {
 
   return (
     <header
+      data-menu-open={open ? "true" : "false"}
       className={`fixed top-0 z-40 w-full transition-all duration-500 ${scrolled ? "site-header--scrolled" : ""} ${
         transparent
           ? "border-b border-transparent"
@@ -106,20 +107,18 @@ export default function SiteHeader() {
             type="button"
             aria-expanded={open}
             aria-label="Toggle menu"
-            className={`menu-toggle grid h-10 w-10 place-items-center rounded-full border lg:hidden ${
-              transparent ? "border-background/50" : "border-line"
-            }`}
+            className="menu-toggle grid h-10 w-10 place-items-center lg:hidden"
             onClick={() => setOpen((v) => !v)}
           >
             <span className="sr-only">Menu</span>
-            <Icon name={open ? "close-outline" : "menu-outline"} size={18} className={transparent ? "text-background" : "text-foreground"} />
+            <Icon name={open ? "close-outline" : "menu-outline"} size={20} className="text-accent" />
           </button>
         </div>
       </div>
 
       {open && (
-        <nav className="mobile-nav border-t border-line bg-background px-5 py-4 lg:hidden">
-          <ul className="flex flex-col gap-4 text-sm tracking-[0.08em] uppercase text-foreground-soft">
+        <nav className="mobile-nav px-5 py-5 lg:hidden">
+          <ul className="flex flex-col gap-4 text-sm tracking-[0.08em] uppercase text-foreground">
             {NAV_LINKS.map((link) => {
               const active = isActivePath(pathname, link.href);
               return (
