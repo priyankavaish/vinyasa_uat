@@ -109,7 +109,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                 <Link
                   href={`/stays/${r.slug}`}
                   aria-label={`Open ${r.name}`}
-                  className="my-1.5 grid w-9 shrink-0 place-items-center self-center rounded-full border border-line text-accent transition-colors hover:border-accent hover:bg-clay-surface"
+                  className="grid w-10 shrink-0 place-items-center self-stretch text-lg text-accent transition-transform duration-200 hover:translate-x-0.5"
                 >
                   <span aria-hidden>→</span>
                 </Link>

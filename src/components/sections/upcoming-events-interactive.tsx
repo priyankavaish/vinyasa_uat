@@ -95,7 +95,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                   <Link
                     href={`/events/${it.slug}`}
                     aria-label={`Open ${it.name}`}
-                    className="my-3 grid w-9 shrink-0 place-items-center self-center rounded-full border border-foreground/20 text-accent transition-colors hover:border-accent hover:bg-surface"
+                    className="grid w-10 shrink-0 place-items-center self-stretch text-lg text-accent transition-transform duration-200 hover:translate-x-0.5"
                   >
                     <span aria-hidden>→</span>
                   </Link>

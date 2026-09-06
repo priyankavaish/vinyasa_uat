@@ -108,15 +108,11 @@ export default function SiteHeader() {
             type="button"
             aria-expanded={open}
             aria-label="Toggle menu"
-            className="menu-toggle grid h-10 w-10 place-items-center lg:hidden"
+            className="menu-toggle grid h-12 w-12 place-items-center lg:hidden"
             onClick={() => setOpen((v) => !v)}
           >
             <span className="sr-only">Menu</span>
-            <Icon
-              name={open ? "close-outline" : "menu-outline"}
-              size={20}
-              className={transparent ? "text-[#f3e7d3]" : "text-accent"}
-            />
+            <Icon name={open ? "close-outline" : "menu-outline"} size={28} className="text-accent" />
           </button>
         </div>
       </div>
