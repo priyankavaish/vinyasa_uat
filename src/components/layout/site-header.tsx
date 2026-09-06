@@ -64,6 +64,7 @@ export default function SiteHeader() {
   return (
     <header
       data-menu-open={open ? "true" : "false"}
+      data-transparent={transparent ? "true" : "false"}
       className={`fixed top-0 z-40 w-full transition-all duration-500 ${scrolled ? "site-header--scrolled" : ""} ${
         transparent
           ? "border-b border-transparent"
@@ -111,7 +112,11 @@ export default function SiteHeader() {
             onClick={() => setOpen((v) => !v)}
           >
             <span className="sr-only">Menu</span>
-            <Icon name={open ? "close-outline" : "menu-outline"} size={20} className="text-accent" />
+            <Icon
+              name={open ? "close-outline" : "menu-outline"}
+              size={20}
+              className={transparent ? "text-[#f3e7d3]" : "text-accent"}
+            />
           </button>
         </div>
       </div>
