@@ -114,10 +114,10 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
         {/* live preview — image (above the list on mobile) */}
         <Link
           href={`/events/${current.slug}`}
-          className="order-1 block px-5 pb-4 pt-8 md:order-2 md:p-0"
+          className="order-1 flex px-5 py-8 sm:px-12 sm:py-12 md:order-2 md:px-12 md:py-14 lg:px-16"
           aria-label={`Open ${current.name}`}
         >
-          <span className="group relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-full md:min-h-[32rem]">
+          <span className="group relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:min-h-[26rem]">
             {items.map((it, i) => (
               <MediaFrame
                 key={it.slug}
