@@ -114,32 +114,34 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
         {/* live preview — image (above the list on mobile) */}
         <Link
           href={`/events/${current.slug}`}
-          className="group relative order-1 aspect-[4/3] w-full md:order-2 md:aspect-auto md:min-h-[32rem]"
+          className="order-1 block px-5 pb-4 pt-8 md:order-2 md:p-0"
           aria-label={`Open ${current.name}`}
         >
-          {items.map((it, i) => (
-            <MediaFrame
-              key={it.slug}
-              src={it.image}
-              alt={it.name}
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className={`transition-opacity duration-500 ${
-                i === active ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          ))}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-          <div className="absolute inset-x-6 bottom-6 text-white">
-            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/80">
-              {current.month} {current.day}
+          <span className="group relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-full md:min-h-[32rem]">
+            {items.map((it, i) => (
+              <MediaFrame
+                key={it.slug}
+                src={it.image}
+                alt={it.name}
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className={`transition-opacity duration-500 ${
+                  i === active ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+            <span className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+            <span className="absolute inset-x-6 bottom-6 text-white">
+              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/80">
+                {current.month} {current.day}
+              </span>
+              <span className="mt-1 block max-w-[24ch] font-display text-3xl leading-tight">
+                {current.name}
+              </span>
+              <span className="btn btn-outline-light btn-sm mt-3 inline-flex shrink-0">
+                View programme
+              </span>
             </span>
-            <span className="mt-1 block max-w-[24ch] font-display text-3xl leading-tight">
-              {current.name}
-            </span>
-            <span className="btn btn-outline-light btn-sm mt-3 inline-flex shrink-0">
-              View programme
-            </span>
-          </div>
+          </span>
         </Link>
       </div>
     </section>

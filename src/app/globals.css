@@ -46,8 +46,11 @@
 
 html {
   scroll-behavior: smooth;
-  /* iOS rubber-band was exposing the white canvas above/below the page. */
-  background-color: var(--background);
+  /* iOS rubber-band past the footer exposed the white canvas. The page still
+     ends on the footer, so tint the document itself with the footer colour —
+     an overscroll now reveals that instead of white. `body` keeps the real
+     page ground. overscroll-behavior stops the bounce on iOS 16+ outright. */
+  background-color: #302d24;
   overscroll-behavior-y: none;
 }
 
@@ -58,13 +61,6 @@ body {
   -webkit-font-smoothing: antialiased;
   position: relative;
   overscroll-behavior-y: none;
-}
-
-/* Bleed the footer colour into the area an iOS overscroll would reveal below
-   it — a huge box-shadow adds no layout height and stays out of sight until
-   you rubber-band past the end of the page. */
-footer {
-  box-shadow: 0 50vh 0 50vh #302d24;
 }
 
 /* Faint handmade-paper grain — keeps flat colour blocks from reading as
