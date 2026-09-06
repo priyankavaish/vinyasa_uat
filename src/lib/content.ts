@@ -151,6 +151,7 @@ export type EventProgram = {
 export const events: EventProgram[] = [
   {
     slug: "artist-in-residence",
+    image: "/seed/community-05.jpg",
     name: "Artist-in-Residence Program",
     kind: "residency",
     durationLabel: "4 months · Jun–Sep",
@@ -162,6 +163,7 @@ export const events: EventProgram[] = [
   },
   {
     slug: "anhad-ka-baaja",
+    image: "/seed/community-03.jpg",
     name: "Anhad ka Baaja",
     kind: "workshop",
     durationLabel: "One evening · 6:00 pm",
@@ -174,6 +176,7 @@ export const events: EventProgram[] = [
   },
   {
     slug: "the-pause-within",
+    image: "/seed/grounds-04.jpg",
     name: "The Pause Within",
     kind: "retreat",
     durationLabel: "3 days / 2 nights",
@@ -186,6 +189,7 @@ export const events: EventProgram[] = [
   },
   {
     slug: "artist-unite",
+    image: "/seed/community-01.jpg",
     name: "Artist Unite — A Residency of Self Creation",
     kind: "residency",
     durationLabel: "10 days",
@@ -197,6 +201,7 @@ export const events: EventProgram[] = [
   },
   {
     slug: "zariya",
+    image: "/seed/community-02.jpg",
     name: "Zariya — Connecting Creators",
     kind: "workshop",
     durationLabel: "One day · 4:00–11:00 pm",
@@ -208,6 +213,7 @@ export const events: EventProgram[] = [
   },
   {
     slug: "drishti-new-years-retreat",
+    image: "/seed/grounds-08.jpg",
     name: "Drishti — New Year's Retreat",
     kind: "retreat",
     durationLabel: "3 days",
@@ -219,6 +225,7 @@ export const events: EventProgram[] = [
   },
   {
     slug: "performing-lab-retreat",
+    image: "/seed/community-06.jpg",
     name: "Performing Lab Retreat",
     kind: "retreat",
     durationLabel: "5 days",

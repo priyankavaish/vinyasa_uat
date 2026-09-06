@@ -8,9 +8,9 @@ export default function CommunitySection() {
   return (
     <section className="relative overflow-hidden bg-secondary-surface">
       <div className="grid items-center gap-0 md:grid-cols-2">
-        <Reveal variant="up" delay={200} className="px-6 py-9 sm:px-12 sm:py-12 md:order-2 md:px-16 lg:px-20">
+        <Reveal variant="up" delay={200} className="order-2 px-5 py-10 sm:px-12 sm:py-12 md:px-16 lg:px-20">
           <SectionEyebrow tone="secondary" icon="people-outline">One community, one table</SectionEyebrow>
-          <h2 className="mt-4 max-w-[20ch] font-display text-4xl leading-tight sm:text-5xl">
+          <h2 className="mt-4 max-w-[20ch] font-display text-3xl leading-tight sm:text-4xl lg:text-5xl">
             Volunteers, artists, and strangers, cooking, eating, and living as one
           </h2>
           <p className="mt-5 max-w-[48ch] leading-relaxed text-foreground">
@@ -24,16 +24,16 @@ export default function CommunitySection() {
             Skill-exchange and volunteer stays are part of how the community runs (placeholder:
             exact terms to confirm with the client before this goes live).
           </p>
-          <div className="mt-8 flex flex-nowrap gap-2 overflow-x-auto sm:gap-4">
-            <Link href="/events#artist-escape" className="btn btn-secondary shrink-0 whitespace-nowrap !px-4 !text-[11px] sm:!px-7 sm:!text-xs">
-              Join the Artist Escape Program
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/events#artist-escape" className="btn btn-secondary inline-flex !px-5 !text-[11px] sm:!px-7 sm:!text-xs">
+              Join the Artist Escape
             </Link>
-            <Link href="/contact" className="btn btn-outline shrink-0 whitespace-nowrap !px-4 !text-[11px] sm:!px-7 sm:!text-xs">
-              Ask About Volunteering
+            <Link href="/contact" className="btn btn-outline inline-flex !px-5 !text-[11px] sm:!px-7 sm:!text-xs">
+              Ask about volunteering
             </Link>
           </div>
         </Reveal>
-        <Reveal variant="up" delay={0} className="relative aspect-[4/3] w-full sm:aspect-[16/10] md:order-1 md:aspect-square md:min-h-[24rem]">
+        <Reveal variant="up" delay={0} className="relative order-1 aspect-[16/11] w-full sm:aspect-[16/10] md:order-1 md:aspect-square md:min-h-[24rem]">
           <Image
             src={communityGathering}
             alt="Travellers from around the world gathered together at Vinyasa Earth"

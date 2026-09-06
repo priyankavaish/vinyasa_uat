@@ -1,10 +1,11 @@
 import { HomeHero } from "@/components/sections/hero";
 import MarqueeBar from "@/components/sections/marquee-bar";
-import CottagesPreview from "@/components/sections/cottages-preview";
+import NextEventRibbon from "@/components/sections/next-event-ribbon";
+import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
+import CottagesSection from "@/components/sections/cottages-section";
 import GallerySection from "@/components/sections/gallery-section";
 import CommunitySection from "@/components/sections/community-section";
 import WorkFromFarmSection from "@/components/sections/work-from-farm-section";
-import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
 import PhotoMasonry from "@/components/sections/photo-masonry";
 import ConnectSection from "@/components/sections/connect-section";
 
@@ -21,11 +22,12 @@ export default function HomePage() {
       `}</style>
       <HomeHero />
       <MarqueeBar />
+      <NextEventRibbon />
       <ConnectSection />
       <WorkFromFarmSection />
       <CommunitySection />
-      <CottagesPreview />
       <UpcomingEventsSection />
+      <CottagesSection />
       <PhotoMasonry />
       <GallerySection />
     </div>
