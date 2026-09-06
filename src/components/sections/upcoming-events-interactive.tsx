@@ -136,11 +136,8 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
             <span className="mt-1 block max-w-[24ch] font-display text-3xl leading-tight">
               {current.name}
             </span>
-            <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.12em]">
+            <span className="btn btn-outline-light btn-sm mt-3 inline-flex shrink-0">
               View programme
-              <span className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
-                →
-              </span>
             </span>
           </div>
         </Link>
