@@ -46,6 +46,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* iOS rubber-band was exposing the white canvas above/below the page. */
+  background-color: var(--background);
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -54,6 +57,14 @@ body {
   font-family: var(--font-sans), -apple-system, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   position: relative;
+  overscroll-behavior-y: none;
+}
+
+/* Bleed the footer colour into the area an iOS overscroll would reveal below
+   it — a huge box-shadow adds no layout height and stays out of sight until
+   you rubber-band past the end of the page. */
+footer {
+  box-shadow: 0 50vh 0 50vh #302d24;
 }
 
 /* Faint handmade-paper grain — keeps flat colour blocks from reading as
