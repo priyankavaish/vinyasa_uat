@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "../ui/icon";
+import MediaFrame from "../ui/media-frame";
 import SectionEyebrow from "../ui/section-eyebrow";
 import { Reveal } from "../ui/reveal";
 
@@ -110,14 +110,12 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
           aria-label={`Open ${current.name}`}
         >
           {items.map((it, i) => (
-            <Image
+            <MediaFrame
               key={it.slug}
               src={it.image}
               alt={it.name}
-              fill
-              quality={90}
-              sizes="50vw"
-              className={`object-cover transition-opacity duration-500 ${
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className={`transition-opacity duration-500 ${
                 i === active ? "opacity-100" : "opacity-0"
               }`}
             />

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "../ui/icon";
+import MediaFrame from "../ui/media-frame";
 import SectionEyebrow from "../ui/section-eyebrow";
 import { Reveal } from "../ui/reveal";
 
@@ -30,14 +30,12 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
         {/* live preview — left */}
         <div className="relative order-1 aspect-[16/11] w-full sm:aspect-[16/10] md:aspect-auto md:min-h-[34rem]">
           {rooms.map((r, i) => (
-            <Image
+            <MediaFrame
               key={r.slug}
               src={r.image}
               alt={`${r.name} cottage at Vinyasa Earth`}
-              fill
-              quality={90}
               sizes="(min-width: 768px) 50vw, 100vw"
-              className={`object-cover transition-opacity duration-500 ${
+              className={`transition-opacity duration-500 ${
                 i === active ? "opacity-100" : "opacity-0"
               }`}
             />
@@ -53,7 +51,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                 <Icon name={current.icon as IconName} size={11} />
                 {current.element} · {current.tagline}
               </span>
-              <span className="mt-1 block font-display text-3xl leading-none sm:text-4xl">
+              <span className="mt-1 block font-display text-3xl leading-none text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] sm:text-4xl">
                 {current.name}
               </span>
               <span className="mt-1.5 block text-sm text-white/85">
