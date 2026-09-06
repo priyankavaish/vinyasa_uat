@@ -32,8 +32,8 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
   return (
     <section className="relative overflow-hidden bg-clay-surface">
       <div className="grid items-stretch gap-0 md:grid-cols-2">
-        {/* content — left */}
-        <div className="order-1 flex flex-col justify-center px-5 py-12 sm:px-12 sm:py-16 md:px-16 lg:px-20">
+        {/* content — left (below the image on mobile) */}
+        <div className="order-2 flex flex-col justify-center px-5 py-12 sm:px-12 sm:py-16 md:order-1 md:px-16 lg:px-20">
           <Reveal variant="up">
             <SectionEyebrow icon="calendar-outline">What&apos;s coming up</SectionEyebrow>
             <h2 className="mt-3 max-w-[16ch] font-display text-3xl leading-tight sm:text-4xl lg:text-5xl">
@@ -49,13 +49,20 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
             {items.map((it, i) => {
               const meta = KIND_META[it.kind] ?? KIND_META.retreat;
               return (
-                <li key={it.slug}>
-                  <Link
-                    href={`/events/${it.slug}`}
+                <li
+                  key={it.slug}
+                  className={`flex items-stretch gap-2 border-b border-foreground/15 transition-colors duration-200 ${
+                    i === active ? "bg-surface/60" : ""
+                  }`}
+                >
+                  <button
+                    type="button"
+                    aria-pressed={i === active}
+                    onClick={() => setActive(i)}
                     onMouseEnter={() => setActive(i)}
                     onFocus={() => setActive(i)}
-                    className={`group grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-foreground/15 py-4 transition-[padding-left,background-color] duration-200 ${
-                      i === active ? "bg-surface/60 pl-2" : "hover:pl-1"
+                    className={`grid flex-1 grid-cols-[auto_1fr] items-center gap-4 py-4 text-left transition-[padding-left] duration-200 ${
+                      i === active ? "pl-2" : ""
                     }`}
                   >
                     <span className="flex w-12 flex-col items-center rounded border border-line bg-surface py-1 leading-none shadow-sm sm:w-14">
@@ -83,13 +90,14 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                         {it.dateLabel} · {priceText(it.priceFrom)}
                       </span>
                     </span>
+                  </button>
 
-                    <span
-                      className="text-lg text-accent transition-transform duration-300 group-hover:translate-x-1"
-                      aria-hidden
-                    >
-                      →
-                    </span>
+                  <Link
+                    href={`/events/${it.slug}`}
+                    aria-label={`Open ${it.name}`}
+                    className="my-3 grid w-9 shrink-0 place-items-center self-center rounded-full border border-foreground/20 text-accent transition-colors hover:border-accent hover:bg-surface"
+                  >
+                    <span aria-hidden>→</span>
                   </Link>
                 </li>
               );
@@ -103,10 +111,10 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
           </div>
         </div>
 
-        {/* live preview — right (desktop) */}
+        {/* live preview — image (above the list on mobile) */}
         <Link
           href={`/events/${current.slug}`}
-          className="group relative order-2 hidden w-full md:block md:min-h-[32rem]"
+          className="group relative order-1 aspect-[4/3] w-full md:order-2 md:aspect-auto md:min-h-[32rem]"
           aria-label={`Open ${current.name}`}
         >
           {items.map((it, i) => (

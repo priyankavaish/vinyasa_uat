@@ -82,13 +82,15 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
 
           <ul className="mt-6 divide-y divide-line border-y border-line" onMouseLeave={() => setActive(0)}>
             {rooms.map((r, i) => (
-              <li key={r.slug}>
-                <Link
-                  href={`/stays/${r.slug}`}
+              <li key={r.slug} className="flex items-stretch gap-2">
+                <button
+                  type="button"
+                  aria-pressed={i === active}
+                  onClick={() => setActive(i)}
                   onMouseEnter={() => setActive(i)}
                   onFocus={() => setActive(i)}
-                  className={`group flex items-center gap-3 py-3 transition-[padding-left,background-color] duration-200 ${
-                    i === active ? "bg-clay-surface/60 pl-2" : "hover:pl-1"
+                  className={`flex flex-1 items-center gap-3 py-3 text-left transition-[padding-left,background-color] duration-200 ${
+                    i === active ? "bg-clay-surface/60 pl-2" : ""
                   }`}
                 >
                   <span className="shrink-0" style={{ color: r.accent }}>
@@ -103,12 +105,13 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                   <span className="shrink-0 font-display text-sm text-foreground">
                     {inr(r.pricePerNight)}
                   </span>
-                  <span
-                    className="shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1"
-                    aria-hidden
-                  >
-                    →
-                  </span>
+                </button>
+                <Link
+                  href={`/stays/${r.slug}`}
+                  aria-label={`Open ${r.name}`}
+                  className="my-1.5 grid w-9 shrink-0 place-items-center self-center rounded-full border border-line text-accent transition-colors hover:border-accent hover:bg-clay-surface"
+                >
+                  <span aria-hidden>→</span>
                 </Link>
               </li>
             ))}
