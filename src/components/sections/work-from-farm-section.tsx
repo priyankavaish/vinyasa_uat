@@ -38,7 +38,7 @@ export default function WorkFromFarmSection() {
             {perks.map((p) => (
               <li
                 key={p.label}
-                className="inline-flex items-center gap-1.5 rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
+                className="inline-flex items-center gap-1.5 rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
               >
                 <Icon name={p.icon} size={12} />
                 {p.label}
@@ -80,7 +80,7 @@ export default function WorkFromFarmSection() {
               className="object-cover"
             />
             <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent p-4">
-              <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white/90">
+              <span className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em] text-white/90">
                 <Icon name="location-outline" size={12} />
                 Maheshwas · Jaipur
               </span>

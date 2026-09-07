@@ -46,7 +46,7 @@ export default function SiteFooter() {
           </div>
 
           <nav aria-label="Footer navigation">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#d5bb87]">Explore</p>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#d5bb87]">Explore</p>
             <ul className="mt-5 space-y-3">
               {exploreLinks.map((link) => (
                 <li key={link.href}>
@@ -62,7 +62,7 @@ export default function SiteFooter() {
           </nav>
 
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#d5bb87]">Find us</p>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#d5bb87]">Find us</p>
             <p className="mt-5 max-w-[32ch] text-sm leading-6 text-[#f8eedc]/72">{ADDRESS}</p>
             <div className="mt-6 space-y-3 text-sm">
               <a
@@ -92,7 +92,7 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 pt-6 text-[11px] uppercase tracking-[0.12em] text-[#f8eedc]/40 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 pt-6 text-[13px] uppercase tracking-[0.12em] text-[#f8eedc]/40 sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; {new Date().getFullYear()} Vinyasa Earth. Rooted in Rajasthan.</p>
           <div className="flex items-center gap-5">
             <Link href="/admin/login" className="transition-colors hover:text-[#f8eedc]/70">Admin</Link>

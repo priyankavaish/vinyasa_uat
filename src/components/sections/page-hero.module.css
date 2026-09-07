@@ -18,7 +18,7 @@
     linear-gradient(180deg, rgba(18,22,15,.36), transparent 30%);
 }
 .content { position: relative; z-index: 1; width: 100%; max-width: 1216px; margin-inline: auto; padding: 120px 32px 48px; }
-.eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; font-family: var(--font-archivo), Arial, sans-serif; font-size: 11px; font-weight: 600; line-height: 1.6; letter-spacing: .22em; text-transform: uppercase; }
+.eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; font-family: var(--font-archivo), Arial, sans-serif; font-size: 13px; font-weight: 600; line-height: 1.6; letter-spacing: .22em; text-transform: uppercase; }
 .eyebrow::before { content: ""; width: 32px; height: 1px; flex-shrink: 0; background: #dfc6a5; }
 .title { max-width: 22ch; font-family: var(--font-fraunces), Georgia, serif; font-style: normal; font-size: clamp(36px, 4.2vw, 58px); font-weight: 400; line-height: 1.1; letter-spacing: -.035em; text-wrap: balance; }
 .description { max-width: 64ch; margin-top: 20px; font-family: var(--font-archivo), Arial, sans-serif; font-size: 15px; line-height: 1.75; color: #fff8eeeb; }
@@ -29,7 +29,7 @@
   .image { object-position: var(--hero-mobile-position, var(--hero-position, 50% 50%)); }
   .content { padding: 112px 20px 36px; }
   .title { font-size: 34px; }
-  .eyebrow { font-size: 10px; letter-spacing: .16em; margin-bottom: 14px; }
+  .eyebrow { font-size: 12px; letter-spacing: .16em; margin-bottom: 14px; }
   .description { margin-top: 16px; font-size: 14px; line-height: 1.65; }
   .overlay { background: linear-gradient(0deg, rgba(18,22,15,.84), rgba(18,22,15,.28) 85%), linear-gradient(180deg, rgba(18,22,15,.42), transparent 35%); }
 }

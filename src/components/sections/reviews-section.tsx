@@ -81,7 +81,7 @@ export default function ReviewsSection() {
                 href={GOOGLE_MAPS_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2.5 inline-flex items-center gap-1.5 border border-line bg-background/70 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-accent hover:text-accent"
+                className="mt-2.5 inline-flex items-center gap-1.5 border border-line bg-background/70 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-accent hover:text-accent"
               >
                 {GOOGLE_RATING.count} Google reviews
                 <Icon name="arrow-forward-outline" size={11} />
@@ -113,7 +113,7 @@ export default function ReviewsSection() {
                     <span className="grid h-8 w-8 place-items-center border border-current/10 bg-background/80 shadow-sm transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105" style={{ color: style.accent }}>
                       <Icon name={style.icon} size={16} />
                     </span>
-                    <span className="mt-2 text-[11px] font-semibold leading-snug text-foreground">{topic}</span>
+                    <span className="mt-2 text-[13px] font-semibold leading-snug text-foreground">{topic}</span>
                     <span className="mt-2 h-px w-7 opacity-45" style={{ backgroundColor: style.accent }} aria-hidden="true" />
                   </div>
                 </Reveal>

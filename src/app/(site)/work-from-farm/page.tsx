@@ -184,7 +184,7 @@ export default function WorkFromFarmPage() {
             {forWhom.map((w) => (
               <li
                 key={w}
-                className="rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
+                className="rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
               >
                 {w}
               </li>

@@ -68,7 +68,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                   >
                     <span className="flex w-12 flex-col items-center border border-line bg-surface py-1 leading-none shadow-sm sm:w-14">
                       <span
-                        className="text-[9px] font-bold uppercase tracking-[0.1em]"
+                        className="text-[11px] font-bold uppercase tracking-[0.1em]"
                         style={{ color: meta.accent }}
                       >
                         {it.month}
@@ -78,7 +78,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
 
                     <span className="min-w-0">
                       <span
-                        className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.16em]"
+                        className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.16em]"
                         style={{ color: meta.accent }}
                       >
                         <Icon name={meta.icon} size={11} />
@@ -118,7 +118,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
               <MediaFrame key={current.image} src={current.image} alt={current.name} sizes="(min-width: 768px) 50vw, 100vw" />
             </Link>
             <div className="border-t border-line p-5 sm:p-7">
-              <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-accent">{current.dateLabel}</span>
+              <span className="text-[12px] font-bold uppercase tracking-[0.14em] text-accent">{current.dateLabel}</span>
               <h3 className="mt-2 font-display text-3xl leading-tight">{current.name}</h3>
               <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
                 <span className="font-display text-lg">{priceText(current.priceFrom)}</span>

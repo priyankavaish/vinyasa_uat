@@ -25,10 +25,10 @@ export default function CommunitySection() {
             exact terms to confirm with the client before this goes live).
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/events#artist-escape" className="btn btn-secondary inline-flex !px-5 !text-[11px] sm:!px-7 sm:!text-xs">
+            <Link href="/events#artist-escape" className="btn btn-secondary inline-flex !px-5 !text-[13px] sm:!px-7 sm:!text-xs">
               Join the Artist Escape
             </Link>
-            <Link href="/contact" className="btn btn-outline inline-flex !px-5 !text-[11px] sm:!px-7 sm:!text-xs">
+            <Link href="/contact" className="btn btn-outline inline-flex !px-5 !text-[13px] sm:!px-7 sm:!text-xs">
               Ask about volunteering
             </Link>
           </div>

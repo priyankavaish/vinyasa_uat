@@ -66,7 +66,7 @@ export default function LocationSection({ showContactForm = false }: { showConta
               <div key={item.label} className="group flex items-center gap-4">
                 <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[#a84f32]/45 bg-[#fbf7ef]/80 text-[#a84f32] shadow-sm backdrop-blur-sm transition-colors group-hover:bg-[#8f3b31] group-hover:text-white"><Icon name={item.icon} size={20} /></span>
                 <div className="min-w-0 border-l border-[#a84f32]/20 pl-4">
-                  <dt className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#a84f32]">{item.label}</dt>
+                  <dt className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#a84f32]">{item.label}</dt>
                   <dd className="mt-1 max-w-[34ch] text-sm leading-relaxed text-foreground-soft">{item.href ? <a href={item.href} className="transition-colors hover:text-foreground">{item.value}</a> : item.value}</dd>
                 </div>
               </div>
@@ -81,7 +81,7 @@ export default function LocationSection({ showContactForm = false }: { showConta
           <Reveal variant="right" delay={100}>
             <div className="rounded-[1.25rem_4rem_1.25rem_4rem] border border-[#d9cbb6] bg-[#fbf7ef]/95 p-6 shadow-[0_1.5rem_4rem_rgba(78,58,38,0.14)] backdrop-blur-md sm:p-9">
               <div className="mb-7 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#a84f32]">Write to us</p>
+                <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-[#a84f32]">Write to us</p>
                 <h2 className="mt-2 font-display text-3xl italic text-foreground sm:text-4xl">Start a conversation</h2>
               </div>
               <LeadForm source="contact" title="Send a message" />

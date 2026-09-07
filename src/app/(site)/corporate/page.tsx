@@ -68,20 +68,20 @@ export default function VolunteerPage() {
 
                   <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-line py-5 text-sm">
                     <div>
-                      <dt className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted">
+                      <dt className="text-[12px] font-bold uppercase tracking-[0.16em] text-muted">
                         Commitment
                       </dt>
                       <dd className="mt-1 text-foreground">{track.commitment}</dd>
                     </div>
                     <div>
-                      <dt className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted">
+                      <dt className="text-[12px] font-bold uppercase tracking-[0.16em] text-muted">
                         Exchange
                       </dt>
                       <dd className="mt-1 text-foreground">{track.compensation}</dd>
                     </div>
                   </dl>
 
-                  <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+                  <p className="mt-5 text-[12px] font-bold uppercase tracking-[0.16em] text-accent">
                     Roles
                   </p>
                   <ul className="mt-3 space-y-2 text-sm text-foreground-soft">

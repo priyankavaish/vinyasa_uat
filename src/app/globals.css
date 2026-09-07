@@ -877,3 +877,6 @@ label[for] {
 :where(p) { font-size: 1.0625rem; line-height: 1.7; }
 :where(.text-sm) { font-size: 0.9375rem; line-height: 1.6; }
 :where(.text-xs) { font-size: 0.8125rem; }
+
+/* Readable compact buttons on public pages. */
+[data-section-motion] .btn-sm { font-size: 0.8125rem; }

@@ -72,7 +72,7 @@ export default function PhotoMasonry() {
           </div>
         </div>
         <div className="mx-auto mt-5 flex max-w-6xl items-center justify-between px-5 sm:px-8">
-          <span className="text-[10px] font-bold uppercase tracking-[.2em] text-dusk-ink/65 sm:hidden">Swipe to explore</span>
+          <span className="text-[12px] font-bold uppercase tracking-[.2em] text-dusk-ink/65 sm:hidden">Swipe to explore</span>
           <span className="hidden text-xs tabular-nums text-dusk-ink/60 sm:block">{String(selected + 1).padStart(2, "0")} / {String(placePhotos.length).padStart(2, "0")}</span>
           <div className="flex gap-2">
             <button type="button" onClick={scrollPrev} aria-label="Previous photo" className="grid h-10 w-10 place-items-center rounded-full border border-dusk-ink/35 transition-colors hover:bg-dusk-ink hover:text-dusk-surface">

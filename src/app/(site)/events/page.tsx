@@ -69,7 +69,7 @@ export default async function EventsPage() {
                     </div>
                     <div className="flex flex-1 flex-col p-6 sm:p-7">
                       <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: meta.accent }}><Icon name={meta.icon} size={14} />{meta.label}</span>
+                        <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: meta.accent }}><Icon name={meta.icon} size={14} />{meta.label}</span>
                         <Icon name="arrow-forward-outline" size={17} className="text-accent transition-transform group-hover:translate-x-1" />
                       </div>
                       <h3 className="mt-5 font-display italic text-2xl leading-tight text-foreground">{display.name}</h3>

@@ -138,7 +138,7 @@ export default async function AboutPage() {
             &ldquo;Everything at Vinyasa carries the goodness of mother earth — a blend of humanity
             and nature, held with gratitude.&rdquo;
           </p>
-          <p className="mt-7 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">
+          <p className="mt-7 text-[13px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">
             The Vinyasa Earth community
           </p>
         </Reveal>

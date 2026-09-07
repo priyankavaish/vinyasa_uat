@@ -121,7 +121,7 @@ export default async function StaysPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
                     <span
-                      className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-white shadow-[0_2px_12px_rgba(0,0,0,0.35)] backdrop-blur-sm"
+                      className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.18em] text-white shadow-[0_2px_12px_rgba(0,0,0,0.35)] backdrop-blur-sm"
                       style={{ backgroundColor: `${room.accent}e6` }}
                     >
                       <Icon name={room.icon as IconName} size={13} />
@@ -137,7 +137,7 @@ export default async function StaysPage() {
                     </p>
                     <div className="mt-5 flex items-end justify-between border-t border-line pt-4">
                       <span className="text-sm">
-                        <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-muted">
+                        <span className="block text-[12px] font-bold uppercase tracking-[0.14em] text-muted">
                           From
                         </span>
                         <span className="font-display text-2xl text-foreground">
