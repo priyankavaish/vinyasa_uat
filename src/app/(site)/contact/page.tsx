@@ -5,7 +5,6 @@ import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { getContent } from "@/lib/cms";
 
-import heroImg from "@/app/assets/new/grounds-01.jpg";
 
 export const revalidate = 300;
 
@@ -90,7 +89,7 @@ export default async function ContactPage() {
           hero?.description ??
           "Questions about a stay, a retreat, venue hire, or volunteering — send a note and the team will write back."
         }
-        image={heroImg}
+        image="/images/Vinyasa data (Space)/IMG_9265.jpg" imageAlt="A garden path between the earth cottages at Vinyasa Earth" imagePosition="50% 55%" mobileImagePosition="65% 50%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">

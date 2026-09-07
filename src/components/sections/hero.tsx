@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import heroStyles from "./page-hero.module.css";
 import Image, { type StaticImageData } from "next/image";
 import brandLogo from "./white_logo.jpeg";
 import { ParallaxHeroImage } from "../ui/parallax";
@@ -46,7 +47,7 @@ export function HomeHero() {
   }, []);
 
   return (
-    <section className="home-hero relative flex min-h-[100svh] flex-col overflow-hidden text-background">
+    <section data-hero className="home-hero relative flex min-h-[100svh] flex-col overflow-hidden text-background">
       <ParallaxHeroImage>
         <video
           ref={videoRef}
@@ -113,42 +114,32 @@ export function PageHero({
   title,
   description,
   image,
+  imageAlt = "",
+  imagePosition = "50% 50%",
+  mobileImagePosition,
+  children,
 }: {
   eyebrow: string;
   title: string;
   description?: string;
   image?: string | StaticImageData;
+  imageAlt?: string;
+  imagePosition?: string;
+  mobileImagePosition?: string;
+  children?: ReactNode;
 }) {
-  if (image) {
-    return (
-      <section className="relative flex h-[46vh] min-h-[340px] items-end overflow-hidden text-background">
-        <ParallaxHeroImage>
-          <Image src={image} alt="" fill priority sizes="100vw" className="object-cover" />
-        </ParallaxHeroImage>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-black/10" />
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-12 sm:px-8">
-          <p className="mb-3 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] before:h-px before:w-7 before:bg-background/60 before:content-['']">
-            {eyebrow}
-          </p>
-          <h1 className="max-w-[22ch] text-balance font-display italic text-4xl leading-tight sm:text-5xl">
-            {title}
-          </h1>
-          {description && <p className="mt-4 max-w-[60ch] text-background/85 leading-relaxed">{description}</p>}
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section className="border-b border-line bg-surface px-5 pb-16 pt-28 sm:px-8">
-      <div className="mx-auto max-w-6xl">
-        <p className="eyebrow flex items-center gap-3 before:h-px before:w-7 before:bg-accent before:content-['']">
-          {eyebrow}
-        </p>
-        <h1 className="mt-4 max-w-[22ch] text-balance font-display italic text-4xl leading-tight sm:text-5xl">
-          {title}
-        </h1>
-        {description && <p className="mt-4 max-w-[60ch] text-foreground-soft leading-relaxed">{description}</p>}
+    <section data-hero className={heroStyles.hero} style={{
+      "--hero-position": imagePosition,
+      "--hero-mobile-position": mobileImagePosition ?? imagePosition,
+    } as CSSProperties}>
+      {image && <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.image} />}
+      <div className={heroStyles.overlay} aria-hidden="true" />
+      <div className={heroStyles.content}>
+        <p className={heroStyles.eyebrow}>{eyebrow}</p>
+        <h1 className={heroStyles.title}>{title}</h1>
+        {description && <p className={heroStyles.description}>{description}</p>}
+        {children && <div className={heroStyles.actions}>{children}</div>}
       </div>
     </section>
   );

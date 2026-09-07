@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { PageHero } from "@/components/sections/hero";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -81,17 +81,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
   return (
     <>
-      <section className="relative flex h-[52vh] min-h-[380px] items-end text-background">
-        <Image src={image} alt="" fill priority sizes="100vw" className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/5" />
-        <div className="relative z-10 mx-auto w-full max-w-4xl px-5 pb-12 sm:px-8">
-          <p className="mb-3 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] before:h-px before:w-7 before:bg-background/60 before:content-['']">
-            {event.kind}
-          </p>
-          <h1 className="font-display italic text-4xl leading-tight sm:text-5xl">{event.name}</h1>
-          <p className="mt-4 max-w-[60ch] text-background/85 leading-relaxed">{event.description}</p>
-        </div>
-      </section>
+      <PageHero eyebrow={event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"} />
 
       <section className="mx-auto max-w-4xl px-5 py-14 sm:px-8">
         <Link href="/events" className="text-xs uppercase tracking-[0.08em] text-accent underline">

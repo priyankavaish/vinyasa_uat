@@ -8,7 +8,6 @@ import { Icon } from "@/components/ui/icon";
 import LeadForm from "@/components/forms/lead-form";
 import { volunteerTracks, volunteerInfo } from "@/lib/content";
 
-import heroImg from "@/app/assets/new/community-04.jpg";
 import sideImg from "@/app/assets/new/grounds-07.jpg";
 
 export const metadata = {
@@ -25,7 +24,7 @@ export default function VolunteerPage() {
         eyebrow="Volunteering"
         title="Come live on the land, and give something back to it"
         description="Volunteering is how most people first arrive at Vinyasa Earth — and, for many, how they end up staying. Two tracks, both rooted in community living and eco-conscious practice."
-        image={heroImg}
+        image="/images/Vinyasa data (Space)/BM9A6310.jpg" imageAlt="Green farmland and a bamboo walkway at Vinyasa Earth" imagePosition="50% 55%" mobileImagePosition="65% 50%"
       />
 
       <section className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-8">

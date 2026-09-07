@@ -7,7 +7,6 @@ import { Parallax, ParallaxHeroImage } from "@/components/ui/parallax";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { getContent } from "@/lib/cms";
 
-import heroImg from "@/app/assets/new/grounds-05.jpg";
 import bandImg from "@/app/assets/new/about-band.jpg";
 
 export const revalidate = 300;
@@ -56,7 +55,7 @@ export default async function AboutPage() {
           hero?.description ??
           "Vinyasa Earth is an art-residential space in Jaipur, Rajasthan — a safe and non-judgemental abode for everyone to free their inner defences and explore themselves."
         }
-        image={heroImg}
+        image="/images/Vinyasa data (Space)/IMG_9282.jpg" imageAlt="Hand-built earth cottages beneath the trees at Vinyasa Earth" imagePosition="50% 52%" mobileImagePosition="60% 50%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">

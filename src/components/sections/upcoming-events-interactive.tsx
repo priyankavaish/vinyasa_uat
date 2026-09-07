@@ -28,6 +28,7 @@ const priceText = (from: number) => (from === 0 ? "By donation" : `From ₹${fro
 export default function UpcomingEventsInteractive({ items }: { items: EventItem[] }) {
   const [active, setActive] = useState(0);
   const current = items[active] ?? items[0];
+  if (!current) return null;
 
   return (
     <section className="relative overflow-hidden bg-clay-surface">
@@ -65,7 +66,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                       i === active ? "pl-2" : ""
                     }`}
                   >
-                    <span className="flex w-12 flex-col items-center rounded border border-line bg-surface py-1 leading-none shadow-sm sm:w-14">
+                    <span className="flex w-12 flex-col items-center border border-line bg-surface py-1 leading-none shadow-sm sm:w-14">
                       <span
                         className="text-[9px] font-bold uppercase tracking-[0.1em]"
                         style={{ color: meta.accent }}
@@ -111,38 +112,23 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
           </div>
         </div>
 
-        {/* live preview — image (above the list on mobile) */}
-        <Link
-          href={`/events/${current.slug}`}
-          className="order-1 flex px-5 py-8 sm:px-12 sm:py-12 md:order-2 md:px-12 md:py-14 lg:px-16"
-          aria-label={`Open ${current.name}`}
-        >
-          <span className="group relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:min-h-[26rem]">
-            {items.map((it, i) => (
-              <MediaFrame
-                key={it.slug}
-                src={it.image}
-                alt={it.name}
-                sizes="(min-width: 768px) 50vw, 100vw"
-                className={`transition-opacity duration-500 ${
-                  i === active ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            ))}
-            <span className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-            <span className="absolute inset-x-6 bottom-6 text-white">
-              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/80">
-                {current.month} {current.day}
-              </span>
-              <span className="mt-1 block max-w-[24ch] font-display text-3xl leading-tight">
-                {current.name}
-              </span>
-              <span className="btn btn-outline-light btn-sm mt-3 inline-flex shrink-0">
-                View programme
-              </span>
-            </span>
-          </span>
-        </Link>
+        <div className="order-1 flex items-center px-5 py-8 sm:px-12 sm:py-12 md:py-14 lg:px-16 md:order-2">
+          <article className="w-full overflow-hidden border border-line bg-surface">
+            <Link href={`/events/${current.slug}`} className="relative block aspect-square sm:aspect-[6/5] w-full" aria-label={`Open ${current.name}`}>
+              <MediaFrame key={current.image} src={current.image} alt={current.name} sizes="(min-width: 768px) 50vw, 100vw" />
+            </Link>
+            <div className="border-t border-line p-5 sm:p-7">
+              <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-accent">{current.dateLabel}</span>
+              <h3 className="mt-2 font-display text-3xl leading-tight">{current.name}</h3>
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
+                <span className="font-display text-lg">{priceText(current.priceFrom)}</span>
+                <Link href={`/events/${current.slug}`} className="btn btn-accent btn-sm inline-flex">View programme </Link>
+              </div>
+            </div>
+          </article>
+        </div>
+
+
       </div>
     </section>
   );

@@ -51,6 +51,8 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // The site wrapper handles whole sections, avoiding stacked entrance delays.
+    if (el.closest("[data-section-motion]")) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       el.style.opacity = "1";
       el.style.transform = "none";

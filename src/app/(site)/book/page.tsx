@@ -17,7 +17,7 @@ export default async function BookPage() {
 
   return (
     <>
-      <PageHero eyebrow="Booking" title="Check availability & confirm your stay" />
+      <PageHero eyebrow="Booking" title="Check availability & confirm your stay" image="/images/Vinyasa data (Space)/IMG_9276.jpg" imageAlt="A peaceful earth cottage room ready for a stay at Vinyasa Earth" imagePosition="50% 55%" />
       <section className="mx-auto max-w-2xl px-5 py-16 sm:px-8">
         <Suspense fallback={<p className="text-sm text-foreground-soft">Loading…</p>}>
           <BookingForm cottages={cottages} events={events} />

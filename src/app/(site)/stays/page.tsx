@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
-import { Parallax, ParallaxHeroImage } from "@/components/ui/parallax";
+import { Parallax } from "@/components/ui/parallax";
 import { Icon, type IconName } from "@/components/ui/icon";
 
-import heroAerial from "@/app/assets/new/grounds-06.jpg";
+import { PageHero } from "@/components/sections/hero";
 import galleryA from "@/app/assets/new/grounds-01.jpg";
 import galleryB from "@/app/assets/new/community-03.jpg";
 import galleryC from "@/app/assets/new/room-prithvi-2.jpg";
@@ -41,66 +41,18 @@ export default async function StaysPage() {
 
   return (
     <>
-      <section className="relative flex min-h-[640px] items-center overflow-hidden bg-[#241a12] text-background lg:min-h-[760px]">
-        <div className="absolute inset-0">
-          <ParallaxHeroImage>
-            <Image src={heroAerial} alt="" fill priority sizes="100vw" className="object-cover" />
-          </ParallaxHeroImage>
-        </div>
-
-        {/* warm wash — amber/umber, not black */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(100deg, rgba(30,18,10,0.86) 0%, rgba(40,24,14,0.62) 34%, rgba(60,36,20,0.28) 60%, rgba(90,55,30,0.08) 100%), radial-gradient(120% 90% at 12% 30%, rgba(20,12,6,0.55) 0%, rgba(20,12,6,0) 55%)",
-          }}
-        />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/45 to-transparent" />
-        {/* smooth blend into page */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-b from-transparent to-[var(--background)]" />
-
-        <div className="relative z-10 mx-auto w-full max-w-[1180px] px-5 pb-24 pt-36 sm:px-8 sm:pt-44 lg:pb-28">
-          <Parallax speed={-0.03}>
-            <Reveal variant="up">
-              <p className="mb-5 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#f0d9be]/85">
-                <span className="h-px w-10 bg-[#d88b50]" aria-hidden />
-                Cottages · Dorm · Tents
-              </p>
-            </Reveal>
-            <Reveal variant="up" delay={90}>
-              <h1
-                className="text-balance font-display italic leading-[1.03] text-[#fbf3e8]"
-                style={{ maxWidth: "560px", fontSize: "clamp(2.75rem, 2.0rem + 3.1vw, 4.75rem)" }}
-              >
-                Hand-built earth stays in Amer, Jaipur
-              </h1>
-            </Reveal>
-            <Reveal variant="up" delay={180}>
-              <p className="mt-6 max-w-[460px] text-[15px] leading-relaxed text-[#f6ead9]/80">
-                Disconnect from the noise, reconnect with what matters — mud-plastered rooms rooted
-                in nature and crafted for rest.
-              </p>
-            </Reveal>
-            <Reveal variant="up" delay={270}>
-              <div className="mt-9 flex flex-wrap items-center gap-4">
-                <Link
-                  href="/book"
-                  className="inline-flex h-[54px] items-center justify-center rounded-full bg-accent px-8 text-xs font-semibold uppercase tracking-[0.1em] text-accent-ink shadow-[0_12px_30px_rgba(143,59,49,0.4)] transition-all hover:-translate-y-0.5 hover:brightness-110"
-                >
-                  Make a reservation
-                </Link>
-                <a
-                  href="#rooms"
-                  className="inline-flex h-[54px] items-center justify-center rounded-full border border-[#f6ead9]/45 px-8 text-xs font-semibold uppercase tracking-[0.1em] text-[#fbf3e8] transition-all hover:-translate-y-0.5 hover:border-[#fbf3e8] hover:bg-white/5"
-                >
-                  Explore rooms
-                </a>
-              </div>
-            </Reveal>
-          </Parallax>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Cottages &middot; Dorm &middot; Tents"
+        title="Hand-built earth stays in Amer, Jaipur"
+        description="Disconnect from the noise, reconnect with what matters &mdash; mud-plastered rooms rooted in nature and crafted for rest."
+        image="/images/Vinyasa data (Space)/IMG_9259.jpg"
+        imageAlt="A handcrafted earth room with a canopy bed at Vinyasa Earth"
+        imagePosition="50% 55%"
+        mobileImagePosition="60% 50%"
+      >
+        <Link href="/book" className="btn btn-accent">Make a reservation</Link>
+        <a href="#rooms" className="btn btn-outline-light">Explore rooms</a>
+      </PageHero>
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-3xl text-center">

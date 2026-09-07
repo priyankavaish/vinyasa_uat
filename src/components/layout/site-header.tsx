@@ -21,7 +21,7 @@ function isActivePath(pathname: string, href: string) {
 // Routes whose first viewport is a full-bleed photo hero — nav rides
 // transparent over the image on these, like villaskamezi/era-residence.
 // Everywhere else (forms, admin) there's no photo to sit on, so it's solid.
-const HERO_PHOTO_ROUTES = [/^\/$/, /^\/stays(\/|$)/, /^\/events(\/|$)/, /^\/corporate$/, /^\/about$/];
+const HERO_PHOTO_ROUTES = [/^\/$/, /^\/stays(\/|$)/, /^\/events(\/|$)/, /^\/corporate$/, /^\/about$/, /^\/contact$/, /^\/book$/, /^\/work-from-farm$/];
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);

@@ -5,7 +5,6 @@ import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { whatsappLink } from "@/lib/site";
 
-import heroImg from "@/app/assets/new/grounds-07.jpg";
 
 export const metadata = {
   title: "Work From Farm",
@@ -67,7 +66,7 @@ export default function WorkFromFarmPage() {
         eyebrow="Work From Farm"
         title="Stay, work and slow down outside Jaipur"
         description="Step away from the usual work-from-home routine without stepping away from work. There are no designated workstations — just open space where you can work while staying connected to the natural surroundings."
-        image={heroImg}
+        image="/images/Vinyasa data (Space)/BM9A6310.jpg" imageAlt="Quiet green fields beside the Vinyasa Earth farm" imagePosition="50% 55%" mobileImagePosition="30% 50%"
       />
 
       <section className="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8 sm:py-16">
