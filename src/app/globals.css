@@ -355,12 +355,12 @@ label[for] {
 }
 .hero-brand-kicker {
   margin-top: clamp(1rem, 2.2vw, 1.5rem);
-  color: #e2d8c1;
+  color: #d8cdb6;
   font-family: var(--font-fraunces), Georgia, serif;
-  font-style: italic;
-  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  font-style: normal;
+  font-size: clamp(.82rem, 1.2vw, 1rem);
   font-weight: 400;
-  letter-spacing: .04em;
+  letter-spacing: .05em;
   text-transform: none;
   text-shadow: 0 1px 12px rgba(0, 0, 0, .5);
 }
@@ -465,26 +465,22 @@ label[for] {
 }
 .hero-brand-emblem {
   position: relative;
-  display: block;
-  width: clamp(4.6rem, 8vw, 6rem);
-  height: clamp(4.6rem, 8vw, 6rem);
+  display: grid;
+  place-items: center;
+  width: clamp(3.9rem, 6.5vw, 5rem);
+  height: clamp(3.9rem, 6.5vw, 5rem);
   flex: 0 0 auto;
-  padding: .3rem;
-  border: 1px solid rgba(239, 200, 145, .5);
+  padding: .5rem;
+  border: 1px solid rgba(238, 192, 121, .7);
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 40%, rgba(48, 40, 28, .55), rgba(26, 20, 14, .35));
-  box-shadow:
-    0 0 0 .5rem rgba(239, 200, 145, .06),
-    0 0 2.2rem rgba(233, 179, 108, .32),
-    0 1rem 2.75rem rgba(0, 0, 0, .38);
+  box-shadow: 0 0 0 .3rem rgba(238, 192, 121, .08), 0 .5rem 1.6rem rgba(0, 0, 0, .35);
   isolation: isolate;
 }
 .hero-brand-emblem-image {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 50%;
-  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 .7rem rgba(233, 179, 108, .3));
 }
 .hero-brand-name {
   display: flex;
@@ -514,7 +510,6 @@ label[for] {
   font-family: var(--font-script), cursive;
   font-size: clamp(3rem, 7.4vw, 6.4rem);
   font-weight: 400;
-  line-height: 1;
   text-shadow: 0 0 1.4rem rgba(239, 194, 127, .25);
   -webkit-text-fill-color: transparent;
   transform: rotate(-3deg);
@@ -566,13 +561,13 @@ label[for] {
 
 @media (max-width: 639px) {
   .hero-brand { width: 100vw; padding: 1.75rem 1rem; border: 0; background: transparent; backdrop-filter: none; }
-  .hero-brand-emblem { width: 4.4rem; height: 4.4rem; }
+  .hero-brand-emblem { width: 3.9rem; height: 3.9rem; padding: .42rem; }
   .hero-brand-place { gap: .6rem; margin-top: 1rem; font-size: .55rem; letter-spacing: .26em; }
   .hero-brand-place-rule { width: 1.4rem; }
-  .hero-brand-kicker { margin-top: .85rem; font-size: 1rem; }
+  .hero-brand-kicker { margin-top: .85rem; font-size: .85rem; }
   .hero-brand-name { flex-direction: column; gap: .1rem; margin-top: 1rem; }
   .hero-brand-name-primary { font-size: clamp(3.6rem, 18vw, 5rem); line-height: .78; }
-  .hero-brand-name-secondary { font-size: clamp(2.8rem, 14vw, 3.8rem); line-height: 1; }
+  .hero-brand-name-secondary { font-size: clamp(2.8rem, 14vw, 3.8rem); }
   .hero-brand-divider { width: 74%; margin-top: 1rem; }
   .hero-brand-values { gap: .55rem; margin-top: .9rem; font-size: .54rem; letter-spacing: .2em; }
   .price-panel { grid-template-columns: auto 1fr auto; }
@@ -681,7 +676,7 @@ label[for] {
     padding-left: max(1.25rem, env(safe-area-inset-left));
   }
   .hero-brand { width: 100%; padding: 1.35rem 0 1.5rem; }
-  .hero-brand-kicker { margin-top: .85rem; font-size: 1rem; }
+  .hero-brand-kicker { margin-top: .85rem; font-size: .85rem; }
   .hero-brand + p { max-width: 22rem; margin-top: 1.35rem; font-size: .98rem; line-height: 1.5; text-wrap: balance; }
   .hero-actions { width: 100%; margin-top: 1.65rem; flex-direction: column; gap: .8rem; }
   .hero-book-button {

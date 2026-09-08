@@ -3,7 +3,7 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import heroStyles from "./page-hero.module.css";
 import Image, { type StaticImageData } from "next/image";
-import brandLogo from "./white_logo.jpeg";
+import brandLogo from "./emblem-gold.png";
 import { ParallaxHeroImage } from "../ui/parallax";
 
 export function HomeHero() {
