@@ -10,6 +10,10 @@
   border-radius: 0;
 }
 .image { object-fit: cover; object-position: var(--hero-position, 50% 50%); }
+/* contain mode: whole photo visible, blurred copy fills the frame behind it */
+.heroContain { height: 620px; }
+.imageBackdrop { object-fit: cover; object-position: center; transform: scale(1.1); filter: blur(28px) brightness(.55) saturate(1.05); }
+.imageContain { object-fit: contain; object-position: 50% 45%; }
 .overlay {
   position: absolute;
   inset: 0;
@@ -34,7 +38,9 @@
 .actions a { border-radius: 0; }
 @media (max-width: 639px) {
   .hero { height: 600px; }
+  .heroContain { height: 520px; }
   .image { object-position: var(--hero-mobile-position, var(--hero-position, 50% 50%)); }
+  .imageContain { object-position: 50% 40%; }
   .content { padding: 112px 20px 36px; }
   .title { font-size: 34px; }
   .eyebrow { font-size: 12px; letter-spacing: .16em; margin-bottom: 14px; }

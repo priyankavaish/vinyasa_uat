@@ -117,6 +117,7 @@ export function PageHero({
   imageAlt = "",
   imagePosition = "50% 50%",
   mobileImagePosition,
+  contain = false,
   children,
 }: {
   eyebrow: string;
@@ -126,18 +127,24 @@ export function PageHero({
   imageAlt?: string;
   imagePosition?: string;
   mobileImagePosition?: string;
+  contain?: boolean;
   children?: ReactNode;
 }) {
   return (
-    <section data-hero className={heroStyles.hero} style={{
+    <section data-hero className={`${heroStyles.hero} ${contain ? heroStyles.heroContain : ""}`} style={{
       "--hero-position": imagePosition,
       "--hero-mobile-position": mobileImagePosition ?? imagePosition,
     } as CSSProperties}>
-      {image && (
+      {image && (contain ? (
+        <>
+          <Image src={image} alt="" fill priority quality={60} sizes="100vw" className={heroStyles.imageBackdrop} aria-hidden="true" />
+          <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.imageContain} />
+        </>
+      ) : (
         <ParallaxHeroImage>
           <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.image} />
         </ParallaxHeroImage>
-      )}
+      ))}
       <div className={heroStyles.overlay} aria-hidden="true" />
       <div className={heroStyles.content}>
         <p className={heroStyles.eyebrow}>{eyebrow}</p>
