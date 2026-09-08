@@ -117,8 +117,8 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                 <p className="text-xs text-foreground-soft">
                   From <span className="mx-1 font-display text-2xl text-clay-ink">{inr(current.pricePerNight)}</span> / night
                 </p>
-                <Link href={`/stays/${current.slug}`} className="btn btn-accent btn-sm inline-flex items-center gap-3">
-                  View room <Icon name="arrow-forward-outline" size={14} />
+                <Link href={`/stays/${current.slug}`} className="btn btn-accent btn-sm inline-flex items-center">
+                  View room
                 </Link>
               </div>
             </article>
