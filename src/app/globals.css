@@ -475,7 +475,7 @@ label[for] {
   background: radial-gradient(circle at 50% 40%, rgba(48, 40, 28, .55), rgba(26, 20, 14, .35));
   box-shadow:
     0 0 0 .5rem rgba(239, 200, 145, .06),
-    0 0 2.2rem rgba(233, 179, 108, .38),
+    0 0 2.2rem rgba(233, 179, 108, .32),
     0 1rem 2.75rem rgba(0, 0, 0, .38);
   isolation: isolate;
 }
