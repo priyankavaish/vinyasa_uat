@@ -622,9 +622,9 @@ label[for] {
   .menu-toggle {
     border: 0 !important;
     border-radius: 9999px !important;
-    background: transparent !important;
+    background: radial-gradient(circle at 50% 50%, rgba(184, 184, 184, 0.5) 0%, rgba(184, 184, 184, 0.28) 42%, rgba(184, 184, 184, 0) 72%) !important;
     backdrop-filter: none !important;
-    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.18) !important;
+    box-shadow: none !important;
   }
   header[data-menu-open="true"] .menu-toggle {
     background: transparent !important;
@@ -661,7 +661,7 @@ label[for] {
 
 .site-header-inner { min-height: calc(4.75rem + env(safe-area-inset-top)); padding-bottom: .75rem; }
   .site-logo img { width: 2.75rem; height: 2.75rem; }
-  .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: transparent; background: transparent; box-shadow: 0 2px 9px rgba(0,0,0,.18); }
+  .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: transparent; box-shadow: none; background: radial-gradient(circle at 50% 50%, rgba(184,184,184,.5) 0%, rgba(184,184,184,.28) 42%, rgba(184,184,184,0) 72%); }
 
   .home-hero { min-height: 100svh; }
   .hero-content {
@@ -876,7 +876,7 @@ label[for] {
    and `text-sm` copy up a step and lean on the darker --foreground-soft /
    --muted tokens above. Display headings (.font-display) are untouched;
    :where() keeps zero specificity so any explicit utility still wins. */
-:where(p) { font-size: 1.0625rem; line-height: 1.7; }
+:where(p) { font-size: 1.08rem; line-height: 1.7; }
 :where(.text-sm) { font-size: 0.9375rem; line-height: 1.6; }
 :where(.text-xs) { font-size: 0.8125rem; }
 
