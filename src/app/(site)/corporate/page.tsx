@@ -13,7 +13,7 @@ import sideImg from "@/app/assets/new/grounds-07.jpg";
 export const metadata = {
   title: "Volunteer",
   description:
-    "Volunteer at Vinyasa Earth in Amer, Jaipur — community volunteering from one week, or a skill-based exchange from one month. Dorm stay and three vegetarian meals a day included.",
+    "Volunteer at Vinyasa Earth in Jaipur — community volunteering from one week, or a skill-based exchange from one month. Dorm stay and three vegetarian meals a day included.",
   alternates: { canonical: "/corporate" },
 };
 

@@ -254,11 +254,11 @@ export type PropertyPhoto = {
 export const placePhotos: PropertyPhoto[] = [
   { image: "/images/property-cottages-day.jpg", alt: "The hand-built mud cottages by day" },
   { image: "/images/property-lawn-gazebo.jpg", alt: "The lawn and gazebo" },
-  { image: "/images/amer-fort-lake.jpg", alt: "Amer Fort by the lake" },
+  { image: "/images/amer-fort-lake.jpg", alt: "Historic fort by the lake" },
   { image: "/images/property-kitchen-garden.jpg", alt: "The kitchen garden" },
   { image: "/images/hero-desert-dusk.jpg", alt: "Desert dusk near Vinyasa Earth" },
   { image: "/images/hawa-mahal.jpg", alt: "Hawa Mahal, Jaipur" },
-  { image: "/images/amer-fort-portrait.jpg", alt: "Amer Fort" },
+  { image: "/images/amer-fort-portrait.jpg", alt: "Historic hilltop fort" },
 ];
 
 // Pulled directly from @vinyasa.earth's live Instagram feed. The last entry

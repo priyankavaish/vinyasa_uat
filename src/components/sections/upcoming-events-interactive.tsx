@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "../ui/icon";
 import MediaFrame from "../ui/media-frame";
@@ -27,8 +28,20 @@ const priceText = (from: number) => (from === 0 ? "By donation" : `From ₹${fro
 
 export default function UpcomingEventsInteractive({ items }: { items: EventItem[] }) {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || items.length < 2) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % items.length);
+    }, 4500);
+    return () => window.clearInterval(id);
+  }, [paused, items.length]);
+
   const current = items[active] ?? items[0];
   if (!current) return null;
+
+  const currentMeta = KIND_META[current.kind] ?? KIND_META.retreat;
 
   return (
     <section className="relative overflow-hidden bg-clay-surface">
@@ -46,7 +59,11 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
             </p>
           </Reveal>
 
-          <ul className="mt-7 border-t border-foreground/15" onMouseLeave={() => setActive(0)}>
+          <ul
+            className="mt-7 border-t border-foreground/15"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
             {items.map((it, i) => {
               const meta = KIND_META[it.kind] ?? KIND_META.retreat;
               return (
@@ -66,6 +83,12 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                       i === active ? "pl-2" : ""
                     }`}
                   >
+                    <span className="flex items-center gap-3">
+                    {i === active && it.image && (
+                      <span className="relative hidden h-14 w-14 shrink-0 overflow-hidden border border-line sm:block">
+                        <Image src={it.image} alt="" fill sizes="56px" className="object-cover" />
+                      </span>
+                    )}
                     <span className="flex w-12 flex-col items-center border border-line bg-surface py-1 leading-none shadow-sm sm:w-14">
                       <span
                         className="text-[11px] font-bold uppercase tracking-[0.1em]"
@@ -74,6 +97,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                         {it.month}
                       </span>
                       <span className="font-display text-xl text-foreground sm:text-2xl">{it.day}</span>
+                    </span>
                     </span>
 
                     <span className="min-w-0">
@@ -112,20 +136,54 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
           </div>
         </div>
 
-        <div className="order-1 flex items-center px-5 py-8 sm:px-12 sm:py-12 md:py-14 lg:px-16 md:order-2">
-          <article className="w-full overflow-hidden border border-line bg-surface">
-            <Link href={`/events/${current.slug}`} className="relative block aspect-square sm:aspect-[6/5] w-full" aria-label={`Open ${current.name}`}>
-              <MediaFrame key={current.image} src={current.image} alt={current.name} sizes="(min-width: 768px) 50vw, 100vw" />
-            </Link>
-            <div className="border-t border-line p-5 sm:p-7">
-              <span className="text-[12px] font-bold uppercase tracking-[0.14em] text-accent">{current.dateLabel}</span>
-              <h3 className="mt-2 font-display text-3xl leading-tight">{current.name}</h3>
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
+        <div
+          className="order-1 flex items-center px-5 py-8 sm:px-12 sm:py-12 md:py-14 lg:px-16 md:order-2"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          <div className="w-full">
+            <article className="w-full overflow-hidden border border-foreground/12 bg-surface">
+              <Link href={`/events/${current.slug}`} className="group relative block aspect-square w-full sm:aspect-[6/5]" aria-label={`Open ${current.name}`}>
+                <MediaFrame key={current.image} src={current.image} alt={current.name} sizes="(min-width: 768px) 50vw, 100vw" />
+                <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                <span
+                  className="absolute left-4 top-4 inline-flex items-center gap-1.5 border border-white/60 bg-black/25 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm"
+                >
+                  <Icon name={currentMeta.icon} size={12} />
+                  {currentMeta.label}
+                </span>
+                <span className="absolute inset-x-4 bottom-4">
+                  <span className="block text-[11px] font-bold uppercase tracking-[0.16em] text-white/80">
+                    {current.dateLabel}
+                  </span>
+                  <span className="mt-1 block font-display text-2xl leading-tight text-white sm:text-3xl">
+                    {current.name}
+                  </span>
+                </span>
+              </Link>
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-foreground/12 p-5 sm:p-7">
                 <span className="font-display text-lg">{priceText(current.priceFrom)}</span>
-                <Link href={`/events/${current.slug}`} className="btn btn-accent btn-sm inline-flex">View programme </Link>
+                <Link href={`/events/${current.slug}`} className="btn btn-accent btn-sm inline-flex">
+                  View programme
+                </Link>
               </div>
-            </div>
-          </article>
+            </article>
+            {items.length > 1 && (
+              <div className="mt-4 flex gap-2" role="tablist" aria-label="Upcoming events">
+                {items.map((it, i) => (
+                  <button
+                    key={it.slug}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === active}
+                    aria-label={it.name}
+                    onClick={() => setActive(i)}
+                    className={`h-1 flex-1 transition-colors ${i === active ? "bg-accent" : "bg-foreground/15 hover:bg-foreground/30"}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
 

@@ -133,7 +133,11 @@ export function PageHero({
       "--hero-position": imagePosition,
       "--hero-mobile-position": mobileImagePosition ?? imagePosition,
     } as CSSProperties}>
-      {image && <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.image} />}
+      {image && (
+        <ParallaxHeroImage>
+          <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.image} />
+        </ParallaxHeroImage>
+      )}
       <div className={heroStyles.overlay} aria-hidden="true" />
       <div className={heroStyles.content}>
         <p className={heroStyles.eyebrow}>{eyebrow}</p>

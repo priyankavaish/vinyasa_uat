@@ -56,7 +56,7 @@ export default function LocationSection({ showContactForm = false }: { showConta
           <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.22em] text-[#a84f32]">
             <Icon name="location-outline" size={17} /> Find us
           </p>
-          <h2 className="mt-5 max-w-[18ch] font-display text-5xl italic leading-[1.06] text-[#342d24] sm:text-6xl">In the folds of Amer, minutes from the fort</h2>
+          <h2 className="mt-5 max-w-[18ch] font-display text-5xl italic leading-[1.06] text-[#342d24] sm:text-6xl">Close to nature, rooted in Rajasthan</h2>
           <div className="mt-7 flex items-center gap-3 text-[#a84f32]/70" aria-hidden="true">
             <span className="h-px w-32 bg-gradient-to-r from-[#a84f32]/70 to-transparent" />
             <Icon name="leaf-outline" size={18} />

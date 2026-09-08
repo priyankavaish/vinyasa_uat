@@ -13,7 +13,7 @@ export default function SiteFooter() {
   const phoneHref = CONTACT_PHONE_DISPLAY.replace(/\s/g, "");
 
   return (
-    <footer className="relative isolate overflow-hidden bg-[#302d24] text-[#f8eedc]">
+    <footer className="relative isolate overflow-hidden pb-[env(safe-area-inset-bottom)] bg-[#302d24] text-[#f8eedc]">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-32 -top-36 h-80 w-80 rounded-full border border-[#d5bb87]/15"
@@ -34,7 +34,7 @@ export default function SiteFooter() {
             <p className="mt-5 font-display text-4xl leading-none sm:text-5xl">Vinyasa Earth</p>
             <p className="mt-5 max-w-md text-sm leading-7 text-[#f8eedc]/68">
               A hand-built home for slow stays, creative practice, and meaningful gatherings in the
-              quiet landscape of Amer.
+              quiet landscape of Rajasthan.
             </p>
             <Link
               href="/book"

@@ -26,7 +26,7 @@ export const revalidate = 300;
 export const metadata = {
   title: "Stays at Vinyasa Earth in Jaipur",
   description:
-    "Hand-built rooms named for the elements — Agni, Jal, Chandrama, Prithvi, Vayu, Shunya, and a shared dorm — at Vinyasa Earth in Amer, Jaipur.",
+    "Hand-built rooms named for the elements — Agni, Jal, Chandrama, Prithvi, Vayu, Shunya, and a shared dorm — at Vinyasa Earth in Jaipur.",
   alternates: { canonical: "/stays" },
 };
 
@@ -43,7 +43,7 @@ export default async function StaysPage() {
     <>
       <PageHero
         eyebrow="Cottages &middot; Dorm &middot; Tents"
-        title="Hand-built earth stays in Amer, Jaipur"
+        title="Hand-built earth stays in Jaipur"
         description="Disconnect from the noise, reconnect with what matters &mdash; mud-plastered rooms rooted in nature and crafted for rest."
         image="/images/Vinyasa data (Space)/IMG_9259.jpg"
         imageAlt="A handcrafted earth room with a canopy bed at Vinyasa Earth"
@@ -59,7 +59,7 @@ export default async function StaysPage() {
           <p className="leading-relaxed text-foreground-soft">
             We give our guests a unique perspective on the beauty of nature — a chance to disconnect
             from the outside world and immerse in the wonders that surround us. Our cottages are a
-            comfortable, relaxing place to unwind after a day exploring the scenery around Amer.
+            comfortable, relaxing place to unwind after a day exploring the surrounding countryside.
           </p>
         </Reveal>
 

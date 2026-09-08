@@ -2,6 +2,7 @@ import { HomeHero } from "@/components/sections/hero";
 import MarqueeBar from "@/components/sections/marquee-bar";
 import NextEventRibbon from "@/components/sections/next-event-ribbon";
 import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
+import TestimonialsSection from "@/components/sections/testimonials-section";
 import CottagesSection from "@/components/sections/cottages-section";
 import GallerySection from "@/components/sections/gallery-section";
 import CommunitySection from "@/components/sections/community-section";
@@ -27,6 +28,7 @@ export default function HomePage() {
       <WorkFromFarmSection />
       <CommunitySection />
       <UpcomingEventsSection />
+      <TestimonialsSection />
       <CottagesSection />
       <PhotoMasonry />
       <GallerySection />

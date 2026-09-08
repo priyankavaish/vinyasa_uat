@@ -16,6 +16,7 @@ export default async function CottagesSection() {
     accent: c.accent,
     pricePerNight: c.pricePerNight,
     image: c.image || FALLBACK,
+    gallery: (c.gallery?.length ? c.gallery : [c.image]).filter(Boolean).slice(0, 6),
   }));
 
   return <CottagesInteractive rooms={rooms} />;

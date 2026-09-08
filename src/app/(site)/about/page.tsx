@@ -19,7 +19,7 @@ import craftImg from "@/app/assets/new/grounds-09.jpg";
 export const metadata = {
   title: "About",
   description:
-    "The story behind Vinyasa Earth — an art-residential space in Amer, Jaipur, founded by dancer Sankalp Sharma as a safe, non-judgemental home for artists to live, create, and belong.",
+    "The story behind Vinyasa Earth — an art-residential space in Jaipur, founded by dancer Sankalp Sharma as a safe, non-judgemental home for artists to live, create, and belong.",
   alternates: { canonical: "/about" },
 };
 

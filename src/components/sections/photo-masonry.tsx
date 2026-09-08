@@ -41,7 +41,7 @@ export default function PhotoMasonry() {
         <Reveal variant="up" className="mb-7">
           <SectionEyebrow icon="images-outline">The place, in pictures</SectionEyebrow>
           <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight">
-            Earth, rooms, gardens, Amer
+            Earth, rooms, gardens
           </h2>
         </Reveal>
       </div>

@@ -43,7 +43,7 @@ const samarkan = localFont({
 });
 
 const description =
-  "Stay in hand-built mud cottages, join artist residencies and retreats, or host a thoughtful team offsite in Amer, Jaipur.";
+  "Stay in hand-built mud cottages, join artist residencies and retreats, or host a thoughtful team offsite in Jaipur.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   category: "Travel and hospitality",
   keywords: [
     "Vinyasa Earth", "mud house stay Jaipur", "artist residency India",
-    "eco retreat Jaipur", "Amer Jaipur stay", "creative retreat Rajasthan",
+    "eco retreat Jaipur", "Jaipur cottage stay", "creative retreat Rajasthan",
     "corporate offsite Jaipur", "wellness retreat Rajasthan",
   ],
   alternates: { canonical: "/" },
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     siteName: "Vinyasa Earth",
     title: "Vinyasa Earth | Stay · Create · Connect",
     description,
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Vinyasa Earth in Amer, Jaipur" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Vinyasa Earth in Jaipur" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -93,7 +93,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f3f1ea",
+  viewportFit: "cover",
+  themeColor: "#302d24",
   colorScheme: "light",
 };
 
@@ -116,7 +117,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "Maheshwas Khurd",
-                addressLocality: "Amer",
+                addressLocality: "Jaipur",
                 addressRegion: "Rajasthan",
                 postalCode: "302012",
                 addressCountry: "IN",

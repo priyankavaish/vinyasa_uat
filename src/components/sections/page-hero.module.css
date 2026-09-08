@@ -13,9 +13,9 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(21,24,16,.72), rgba(21,24,16,.36) 55%, rgba(21,24,16,.08)),
-    linear-gradient(0deg, rgba(18,22,15,.64), transparent 75%),
-    linear-gradient(180deg, rgba(18,22,15,.36), transparent 30%);
+  background: linear-gradient(90deg, rgba(43,26,15,.74), rgba(43,26,15,.36) 55%, rgba(43,26,15,.08)),
+    linear-gradient(0deg, rgba(58,32,17,.68), rgba(107,63,34,.12) 55%, transparent 78%),
+    linear-gradient(180deg, rgba(34,22,13,.34), transparent 32%);
 }
 .content { position: relative; z-index: 1; width: 100%; max-width: 1216px; margin-inline: auto; padding: 120px 32px 48px; }
 .eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; font-family: var(--font-archivo), Arial, sans-serif; font-size: 13px; font-weight: 600; line-height: 1.6; letter-spacing: .22em; text-transform: uppercase; }
@@ -31,6 +31,6 @@
   .title { font-size: 34px; }
   .eyebrow { font-size: 12px; letter-spacing: .16em; margin-bottom: 14px; }
   .description { margin-top: 16px; font-size: 14px; line-height: 1.65; }
-  .overlay { background: linear-gradient(0deg, rgba(18,22,15,.84), rgba(18,22,15,.28) 85%), linear-gradient(180deg, rgba(18,22,15,.42), transparent 35%); }
+  .overlay { background: linear-gradient(0deg, rgba(43,26,15,.86), rgba(43,26,15,.3) 85%), linear-gradient(180deg, rgba(34,22,13,.44), transparent 35%); }
 }
 @media (max-width: 359px) { .title { font-size: 30px; } }

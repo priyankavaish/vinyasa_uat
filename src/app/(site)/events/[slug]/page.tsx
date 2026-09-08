@@ -109,7 +109,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               )}
               <div className="flex items-center gap-3">
                 <Icon name="location-outline" size={15} className="text-accent" />
-                <span>Vinyasa Earth, Amer, Jaipur</span>
+                <span>Vinyasa Earth, Jaipur</span>
               </div>
             </dl>
                         {event.bodyHtml ? <RichContent html={event.bodyHtml} className="mt-8" /> : details && (

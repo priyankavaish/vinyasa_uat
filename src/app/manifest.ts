@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Vinyasa Earth",
     short_name: "Vinyasa Earth",
-    description: "Mud cottage stays, artist residencies and retreats in Amer, Jaipur.",
+    description: "Mud cottage stays, artist residencies and retreats in Jaipur.",
     start_url: "/",
     display: "standalone",
     background_color: "#f3f1ea",
