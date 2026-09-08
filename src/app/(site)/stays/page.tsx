@@ -45,7 +45,7 @@ export default async function StaysPage() {
         eyebrow="Cottages &middot; Dorm &middot; Tents"
         title="Hand-built earth stays in Jaipur"
         description="Disconnect from the noise, reconnect with what matters &mdash; mud-plastered rooms rooted in nature and crafted for rest."
-        image="/images/Vinyasa data (Space)/IMG_9259.jpg"
+        image="/images/2N0A9839.JPG"
         imageAlt="A handcrafted earth room with a canopy bed at Vinyasa Earth"
         imagePosition="50% 55%"
         mobileImagePosition="60% 50%"
