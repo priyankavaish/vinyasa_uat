@@ -2,54 +2,57 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-/** Plays an animate.css entrance once the block scrolls into view.
- *  Kept subtle on purpose — short duration, plays once, and respects
- *  prefers-reduced-motion (content just shows, no motion). */
+/** Plays an animate.css entrance once, *before* the block reaches the
+ *  viewport, so the motion finishes off-screen and scrolling stays smooth.
+ *  Plays once, clears itself when done, and respects prefers-reduced-motion. */
 export default function AnimateInView({
   children,
   className = "",
   animation = "animate__slideInUp",
-  threshold = 0.12,
 }: {
   children: ReactNode;
   className?: string;
   animation?: string;
-  threshold?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
+  const [phase, setPhase] = useState<"pre" | "playing" | "done">("pre");
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
+      setPhase("done");
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setShown(true);
+            setPhase("playing");
             io.disconnect();
           }
         }
       },
-      { threshold, rootMargin: "0px 0px -6% 0px" },
+      // fire while the block is still ~35% of a screen below the fold
+      { threshold: 0, rootMargin: "0px 0px 35% 0px" },
     );
     io.observe(el);
-    // Failsafe: never leave a block hidden if the observer misses.
-    const t = window.setTimeout(() => setShown(true), 4000);
+    const t = window.setTimeout(() => setPhase("done"), 3500);
     return () => {
       io.disconnect();
       window.clearTimeout(t);
     };
-  }, [threshold]);
+  }, []);
 
   return (
     <div
       ref={ref}
-      className={`${className} ${shown ? `animate__animated ${animation}` : "aiv-pre"}`.trim()}
+      onAnimationEnd={(e) => {
+        if (e.target === e.currentTarget) setPhase("done");
+      }}
+      className={`${className} ${
+        phase === "pre" ? "aiv-pre" : phase === "playing" ? `animate__animated ${animation}` : ""
+      }`.trim()}
     >
       {children}
     </div>

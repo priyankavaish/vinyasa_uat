@@ -883,17 +883,19 @@ label[for] {
 /* Readable compact buttons on public pages. */
 [data-section-motion] .btn-sm { font-size: 0.8125rem; }
 
-/* animate.css entrance for sections — kept subtle: short, gentle, once. */
+/* animate.css entrance for sections — subtle, once, and finished before the
+   block scrolls into view so it never jitters mid-scroll. */
 .aiv-pre { opacity: 0; }
-.animate__animated { --animate-duration: 620ms; }
+.animate__animated { --animate-duration: 560ms; }
 /* tone the slide down to a small nudge instead of a full-height slide */
 @keyframes aivSlideInUp {
-  from { opacity: 0; transform: translate3d(0, 40px, 0); }
+  from { opacity: 0; transform: translate3d(0, 20px, 0); }
   to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 .animate__slideInUp {
   animation-name: aivSlideInUp !important;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  backface-visibility: hidden;
 }
 @media (prefers-reduced-motion: reduce) {
   .aiv-pre { opacity: 1; }
