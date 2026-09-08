@@ -14,5 +14,5 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
-  return className ? <div className={className}>{children}</div> : <>{children}</>;
+  return <div className={className}>{children}</div>;
 }
