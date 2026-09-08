@@ -64,7 +64,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
           onMouseLeave={() => setPaused(false)}
           onFocusCapture={() => setPaused(true)}
           onBlurCapture={() => setPaused(false)}
-          className="mt-10 grid items-center gap-10 sm:mt-14 lg:grid-cols-[1.25fr_1fr] lg:gap-16"
+          className="mt-10 grid items-center gap-10 sm:mt-14 lg:grid-cols-[1fr_1.05fr] lg:gap-14"
         >
           <div className="min-w-0">
             <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} cottage`} className="relative block aspect-[4/3] overflow-hidden bg-transparent">
@@ -90,9 +90,9 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
 
           <div className="min-w-0 border border-clay-ink/10 bg-clay-surface/50 p-6 sm:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay-ink">Find your little home</p>
-            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-b border-clay-ink/20 pb-5" aria-label="Choose a cottage">
+            <div className="-mx-1 mt-4 flex flex-nowrap gap-x-3 overflow-x-auto border-b border-clay-ink/20 px-1 pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Choose a cottage">
               {rooms.map((room, index) => (
-                <button key={room.slug} type="button" aria-pressed={active === index} aria-controls="cottage-preview" onClick={() => setActive(index)} className={`min-h-11 border-b px-1 py-2 font-display text-lg transition-colors sm:text-xl ${active === index ? "border-accent text-accent" : "border-transparent text-foreground-soft hover:border-clay-ink/40 hover:text-clay-ink"}`}>
+                <button key={room.slug} type="button" aria-pressed={active === index} aria-controls="cottage-preview" onClick={() => setActive(index)} className={`min-h-11 shrink-0 whitespace-nowrap border-b px-1 py-2 font-display text-base transition-colors sm:text-lg ${active === index ? "border-accent text-accent" : "border-transparent text-foreground-soft hover:border-clay-ink/40 hover:text-clay-ink"}`}>
                   {room.name}
                 </button>
               ))}
