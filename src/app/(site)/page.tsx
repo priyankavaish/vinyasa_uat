@@ -9,6 +9,7 @@ import CommunitySection from "@/components/sections/community-section";
 import WorkFromFarmSection from "@/components/sections/work-from-farm-section";
 import PhotoMasonry from "@/components/sections/photo-masonry";
 import ConnectSection from "@/components/sections/connect-section";
+import AnimateInView from "@/components/ui/animate-in-view";
 
 export const metadata = { alternates: { canonical: "/" } };
 export const revalidate = 300;
@@ -24,14 +25,14 @@ export default function HomePage() {
       <HomeHero />
       <MarqueeBar />
       <NextEventRibbon />
-      <ConnectSection />
-      <WorkFromFarmSection />
-      <CommunitySection />
-      <UpcomingEventsSection />
-      <TestimonialsSection />
-      <CottagesSection />
-      <PhotoMasonry />
-      <GallerySection />
+      <AnimateInView><ConnectSection /></AnimateInView>
+      <AnimateInView><WorkFromFarmSection /></AnimateInView>
+      <AnimateInView><CommunitySection /></AnimateInView>
+      <AnimateInView><UpcomingEventsSection /></AnimateInView>
+      <AnimateInView><TestimonialsSection /></AnimateInView>
+      <AnimateInView><CottagesSection /></AnimateInView>
+      <AnimateInView><PhotoMasonry /></AnimateInView>
+      <AnimateInView><GallerySection /></AnimateInView>
     </div>
   );
 }

@@ -621,10 +621,10 @@ label[for] {
   }
   .menu-toggle {
     border: 0 !important;
-    border-radius: 9999px !important;
-    background: radial-gradient(circle at 50% 50%, rgba(184, 184, 184, 0.5) 0%, rgba(184, 184, 184, 0.28) 42%, rgba(184, 184, 184, 0) 72%) !important;
+    border-radius: 0px !important;
+    background: rgb(104 97 97 / 10%) !important;
     backdrop-filter: none !important;
-    box-shadow: none !important;
+    box-shadow: 0 1px 7px 0 rgba(150, 150, 150, 0.22) !important;
   }
   header[data-menu-open="true"] .menu-toggle {
     background: transparent !important;
@@ -661,7 +661,7 @@ label[for] {
 
 .site-header-inner { min-height: calc(4.75rem + env(safe-area-inset-top)); padding-bottom: .75rem; }
   .site-logo img { width: 2.75rem; height: 2.75rem; }
-  .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: transparent; box-shadow: none; background: radial-gradient(circle at 50% 50%, rgba(184,184,184,.5) 0%, rgba(184,184,184,.28) 42%, rgba(184,184,184,0) 72%); }
+  .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: transparent; border-radius: 0px; background: rgb(104 97 97 / 10%); box-shadow: 0 1px 7px 0 rgba(150,150,150,.22); }
 
   .home-hero { min-height: 100svh; }
   .hero-content {
@@ -882,3 +882,20 @@ label[for] {
 
 /* Readable compact buttons on public pages. */
 [data-section-motion] .btn-sm { font-size: 0.8125rem; }
+
+/* animate.css entrance for sections — kept subtle: short, gentle, once. */
+.aiv-pre { opacity: 0; }
+.animate__animated { --animate-duration: 620ms; }
+/* tone the slide down to a small nudge instead of a full-height slide */
+@keyframes aivSlideInUp {
+  from { opacity: 0; transform: translate3d(0, 40px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.animate__slideInUp {
+  animation-name: aivSlideInUp !important;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .aiv-pre { opacity: 1; }
+  .animate__animated { animation: none !important; }
+}
