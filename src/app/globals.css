@@ -622,12 +622,14 @@ label[for] {
   .menu-toggle {
     border: 0 !important;
     border-radius: 9999px !important;
-    background: rgba(28, 19, 11, 0.32) !important;
-    backdrop-filter: blur(6px) !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.18) !important;
   }
   header[data-menu-open="true"] .menu-toggle {
     background: transparent !important;
     backdrop-filter: none !important;
+    box-shadow: none !important;
   }
   /* White over the photo hero, terracotta once past it (the scrolled state
      otherwise forces the icon black). Thicker bars, no drop shadow. */
@@ -659,7 +661,7 @@ label[for] {
 
 .site-header-inner { min-height: calc(4.75rem + env(safe-area-inset-top)); padding-bottom: .75rem; }
   .site-logo img { width: 2.75rem; height: 2.75rem; }
-  .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: rgba(255,255,255,.48); background: rgba(20,25,18,.18); }
+  .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: transparent; background: transparent; box-shadow: 0 2px 9px rgba(0,0,0,.18); }
 
   .home-hero { min-height: 100svh; }
   .hero-content {
