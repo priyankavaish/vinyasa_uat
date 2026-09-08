@@ -13,7 +13,7 @@
 /* contain mode: full-bleed cover sized to the viewport so there is no filler
    and the heading sits in the first view without scrolling */
 .heroContain { height: calc(100svh - 10px); min-height: 560px; max-height: 900px; align-items: flex-start; }
-.heroContain .content { padding-top: 104px; padding-bottom: 40px; }
+.heroContain .content { padding-top: 168px; padding-bottom: 40px; }
 .imageContain { object-fit: cover; object-position: var(--hero-position, 50% 50%); }
 /* text now rides the top, so anchor the dark scrim there for contrast */
 .heroContain .overlay {
@@ -47,7 +47,7 @@
 @media (max-width: 639px) {
   .hero { height: 600px; }
   .heroContain { min-height: 300px; }
-  .heroContain .content { padding-top: 92px; }
+  .heroContain .content { padding-top: 124px; }
   .image { object-position: var(--hero-mobile-position, var(--hero-position, 50% 50%)); }
   .content { padding: 112px 20px 36px; }
   .title { font-size: 34px; }
