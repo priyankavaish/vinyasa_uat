@@ -69,29 +69,40 @@ export function HomeHero() {
         ref={contentRef}
         className="hero-content relative z-10 flex w-full flex-1 flex-col items-center justify-center px-5 pt-28 text-center sm:px-8"
       >
-        <p className="mt-2 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-background/80">
-          <span className="h-px w-6 bg-background/50" aria-hidden />
-           Jaipur, Rajasthan
-          <span className="h-px w-6 bg-background/50" aria-hidden />
-        </p>
         <div className="hero-brand">
+          <span className="hero-brand-emblem" aria-hidden="true">
+            <Image
+              src={brandLogo}
+              alt=""
+              priority
+              sizes="(max-width: 639px) 96px, 128px"
+              className="hero-brand-emblem-image"
+            />
+          </span>
+
+          <p className="hero-brand-place">
+            <span className="hero-brand-place-rule" aria-hidden />
+            Jaipur, Rajasthan
+            <span className="hero-brand-place-rule" aria-hidden />
+          </p>
+
           <span className="hero-brand-kicker">A retreat for curious minds</span>
-          <h1 className="hero-brand-lockup">
-            <span className="hero-brand-emblem" aria-hidden="true">
-              <Image
-                src={brandLogo}
-                alt=""
-                priority
-                sizes="(max-width: 639px) 84px, 112px"
-                className="hero-brand-emblem-image"
-              />
-            </span>
-            <span className="hero-brand-name">
-              <span className="hero-brand-name-primary">Vinyasa</span>
-              <span className="hero-brand-name-secondary">Earth</span>
-            </span>
+
+          <h1 className="hero-brand-name">
+            <span className="hero-brand-name-primary">Vinyasa</span>
+            <span className="hero-brand-name-secondary">Earth</span>
           </h1>
-          <span className="hero-brand-rule" aria-hidden />
+
+          <span className="hero-brand-divider" aria-hidden="true">
+            <span className="hero-brand-divider-rule" />
+            <svg className="hero-brand-lotus" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 19s-7-4-7-11c0-3 3-6 7-6s7 3 7 6c0 7-7 11-7 11Z" fill="currentColor" opacity=".9" />
+              <path d="M16 19S4 17 2 10c-1-3 1-6 4-6 4 0 10 8 10 15Z" fill="currentColor" opacity=".55" />
+              <path d="M16 19s12-2 14-9c1-3-1-6-4-6-4 0-10 8-10 15Z" fill="currentColor" opacity=".55" />
+            </svg>
+            <span className="hero-brand-divider-rule" />
+          </span>
+
           <span className="hero-brand-values">Stay <i /> Create <i /> Connect</span>
         </div>
 
