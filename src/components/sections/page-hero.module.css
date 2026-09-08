@@ -13,9 +13,17 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(43,26,15,.74), rgba(43,26,15,.36) 55%, rgba(43,26,15,.08)),
-    linear-gradient(0deg, rgba(58,32,17,.68), rgba(107,63,34,.12) 55%, transparent 78%),
-    linear-gradient(180deg, rgba(34,22,13,.34), transparent 32%);
+  background:
+    /* warm terracotta glow, top-right — keeps it from going flat/grey */
+    radial-gradient(70% 55% at 88% 12%, rgba(143,59,49,.16), transparent 62%),
+    /* deep espresso pool anchored to the text, bottom-left */
+    radial-gradient(125% 95% at 12% 100%, rgba(26,15,7,.86), rgba(26,15,7,.2) 55%, transparent 82%),
+    /* bottom-to-top scrim for legibility */
+    linear-gradient(to top, rgba(22,13,6,.92) 0%, rgba(34,21,11,.52) 30%, rgba(43,28,16,.12) 60%, transparent 82%),
+    /* soft top scrim so the transparent header reads */
+    linear-gradient(to bottom, rgba(22,13,6,.46) 0%, transparent 30%),
+    /* gentle left-side directional shade */
+    linear-gradient(100deg, rgba(26,15,7,.5) 0%, transparent 56%);
 }
 .content { position: relative; z-index: 1; width: 100%; max-width: 1216px; margin-inline: auto; padding: 120px 32px 48px; }
 .eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; font-family: var(--font-archivo), Arial, sans-serif; font-size: 13px; font-weight: 600; line-height: 1.6; letter-spacing: .22em; text-transform: uppercase; }
@@ -31,6 +39,11 @@
   .title { font-size: 34px; }
   .eyebrow { font-size: 12px; letter-spacing: .16em; margin-bottom: 14px; }
   .description { margin-top: 16px; font-size: 14px; line-height: 1.65; }
-  .overlay { background: linear-gradient(0deg, rgba(43,26,15,.86), rgba(43,26,15,.3) 85%), linear-gradient(180deg, rgba(34,22,13,.44), transparent 35%); }
+  .overlay {
+    background:
+      radial-gradient(60% 45% at 85% 10%, rgba(143,59,49,.16), transparent 60%),
+      linear-gradient(to top, rgba(22,13,6,.94) 0%, rgba(34,21,11,.55) 32%, rgba(43,28,16,.14) 66%, transparent 88%),
+      linear-gradient(to bottom, rgba(22,13,6,.5) 0%, transparent 34%);
+  }
 }
 @media (max-width: 359px) { .title { font-size: 30px; } }
