@@ -28,15 +28,14 @@ const priceText = (from: number) => (from === 0 ? "By donation" : `From ₹${fro
 
 export default function UpcomingEventsInteractive({ items }: { items: EventItem[] }) {
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (paused || items.length < 2) return;
+    if (items.length < 2) return;
     const id = window.setInterval(() => {
       setActive((i) => (i + 1) % items.length);
     }, 4500);
     return () => window.clearInterval(id);
-  }, [paused, items.length]);
+  }, [items.length]);
 
   const current = items[active] ?? items[0];
   if (!current) return null;
@@ -59,11 +58,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
             </p>
           </Reveal>
 
-          <ul
-            className="mt-7 border-t border-foreground/15"
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-          >
+          <ul className="mt-7 border-t border-foreground/15">
             {items.map((it, i) => {
               const meta = KIND_META[it.kind] ?? KIND_META.retreat;
               return (
@@ -136,11 +131,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
           </div>
         </div>
 
-        <div
-          className="order-1 flex items-center px-5 py-8 sm:px-12 sm:py-12 md:py-14 lg:px-16 md:order-2"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-        >
+        <div className="order-1 flex items-center px-5 py-8 sm:px-12 sm:py-12 md:py-14 lg:px-16 md:order-2">
           <div className="w-full">
             <article className="w-full overflow-hidden border border-foreground/12 bg-surface">
               <Link href={`/events/${current.slug}`} className="group relative block aspect-square w-full sm:aspect-[6/5]" aria-label={`Open ${current.name}`}>

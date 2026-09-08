@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "../ui/icon";
@@ -23,7 +23,6 @@ const inr = (n: number) => `\u20b9${n.toLocaleString("en-IN")}`;
 export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
   const [active, setActive] = useState(0);
   const [shot, setShot] = useState(0);
-  const [paused, setPaused] = useState(false);
   const current = rooms[active] ?? rooms[0];
   const gallery = current?.gallery?.length ? current.gallery : current ? [current.image] : [];
   const hero = gallery[shot] ?? current?.image;
@@ -33,14 +32,12 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
   }, [active]);
 
   useEffect(() => {
-    if (paused || rooms.length < 2) return;
+    if (rooms.length < 2) return;
     const id = window.setInterval(() => {
       setActive((i) => (i + 1) % rooms.length);
     }, 4500);
     return () => window.clearInterval(id);
-  }, [paused, rooms.length]);
-
-  const hoverRef = useRef<HTMLDivElement>(null);
+  }, [rooms.length]);
 
   if (!current) return null;
 
@@ -58,14 +55,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
           </p>
         </div>
 
-        <div
-          ref={hoverRef}
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-          onFocusCapture={() => setPaused(true)}
-          onBlurCapture={() => setPaused(false)}
-          className="mt-10 grid items-center gap-10 sm:mt-14 lg:grid-cols-[1fr_1.05fr] lg:gap-14"
-        >
+        <div className="mt-10 grid items-center gap-10 sm:mt-14 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
           <div className="min-w-0">
             <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} cottage`} className="relative block aspect-[4/3] overflow-hidden bg-transparent">
               <Image key={hero} src={hero} alt={`Inside ${current.name}, a hand-built cottage at Vinyasa Earth`} fill quality={95} sizes="(min-width: 1280px) 620px, (min-width: 1024px) 55vw, 100vw" className="object-contain" />
