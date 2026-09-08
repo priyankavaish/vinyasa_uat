@@ -46,8 +46,8 @@
 .actions a { border-radius: 0; }
 @media (max-width: 639px) {
   .hero { height: 600px; }
-  .heroContain { height: 33svh; min-height: 240px; max-height: 420px; }
-  .heroContain .content { padding-top: 84px; padding-bottom: 20px; }
+  .heroContain { height: 68svh; min-height: 380px; max-height: 560px; }
+  .heroContain .content { padding-top: 128px; }
   .image { object-position: var(--hero-mobile-position, var(--hero-position, 50% 50%)); }
   .content { padding: 112px 20px 36px; }
   .title { font-size: 34px; }
