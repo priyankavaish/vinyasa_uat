@@ -36,11 +36,10 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   const [selected, setSelected] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [focused, setFocused] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const autoplay = !paused && !focused && !dragging && !reducedMotion;
+  const autoplay = !focused && !dragging && !reducedMotion;
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
 
   useEffect(() => {
@@ -144,13 +143,6 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        {!reducedMotion && (
-          <div className="mt-4 flex justify-end">
-            <button type="button" onClick={() => setPaused((value) => !value)} aria-controls="testimonial-slides" className="min-h-11 px-3 text-xs text-accent underline underline-offset-4">
-              {paused ? "Resume slideshow" : "Pause slideshow"}
-            </button>
-          </div>
-        )}
         <div className="mt-5 flex items-center justify-between gap-3">
           <p aria-live={autoplay ? "off" : "polite"} aria-atomic="true" className="text-xs tabular-nums text-muted">
             {String(selected + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
