@@ -10,10 +10,18 @@
   border-radius: 0;
 }
 .image { object-fit: cover; object-position: var(--hero-position, 50% 50%); }
-/* contain mode: whole photo visible, blurred copy fills the frame behind it */
-.heroContain { height: 620px; }
-.imageBackdrop { object-fit: cover; object-position: center; transform: scale(1.1); filter: blur(28px) brightness(.55) saturate(1.05); }
-.imageContain { object-fit: contain; object-position: 50% 45%; }
+/* contain mode: full-bleed cover sized to the viewport so there is no filler
+   and the heading sits in the first view without scrolling */
+.heroContain { height: calc(100svh - 10px); min-height: 560px; max-height: 900px; align-items: flex-start; }
+.heroContain .content { padding-top: 104px; padding-bottom: 40px; }
+.imageContain { object-fit: cover; object-position: var(--hero-position, 50% 50%); }
+/* text now rides the top, so anchor the dark scrim there for contrast */
+.heroContain .overlay {
+  background:
+    radial-gradient(70% 55% at 88% 90%, rgba(143,59,49,.16), transparent 62%),
+    linear-gradient(to bottom, rgba(20,12,5,.82) 0%, rgba(32,20,10,.5) 26%, rgba(43,28,16,.12) 52%, transparent 74%),
+    linear-gradient(100deg, rgba(24,14,6,.5) 0%, transparent 56%);
+}
 .overlay {
   position: absolute;
   inset: 0;
@@ -38,9 +46,9 @@
 .actions a { border-radius: 0; }
 @media (max-width: 639px) {
   .hero { height: 600px; }
-  .heroContain { height: 520px; }
+  .heroContain { min-height: 300px; }
+  .heroContain .content { padding-top: 92px; }
   .image { object-position: var(--hero-mobile-position, var(--hero-position, 50% 50%)); }
-  .imageContain { object-position: 50% 40%; }
   .content { padding: 112px 20px 36px; }
   .title { font-size: 34px; }
   .eyebrow { font-size: 12px; letter-spacing: .16em; margin-bottom: 14px; }

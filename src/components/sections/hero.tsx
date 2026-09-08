@@ -136,10 +136,7 @@ export function PageHero({
       "--hero-mobile-position": mobileImagePosition ?? imagePosition,
     } as CSSProperties}>
       {image && (contain ? (
-        <>
-          <Image src={image} alt="" fill priority quality={75} sizes="100vw" className={heroStyles.imageBackdrop} aria-hidden="true" />
-          <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.imageContain} />
-        </>
+        <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.imageContain} />
       ) : (
         <ParallaxHeroImage>
           <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.image} />

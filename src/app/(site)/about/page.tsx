@@ -55,7 +55,7 @@ export default async function AboutPage() {
           hero?.description ??
           "Vinyasa Earth is an art-residential space in Jaipur, Rajasthan — a safe and non-judgemental abode for everyone to free their inner defences and explore themselves."
         }
-        image="/images/IMG_9278.jpg" imageAlt="Stone-and-mud interior with woven rug and dried grasses at Vinyasa Earth" contain
+        image="/images/IMG_1084.JPG" imageAlt="Hand-painted mud cottage framed by a neem tree and marigolds at Vinyasa Earth" contain imagePosition="50% 42%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
