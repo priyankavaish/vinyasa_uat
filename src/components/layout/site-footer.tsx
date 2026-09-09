@@ -9,6 +9,41 @@ const exploreLinks = [
   { href: "/about", label: "Our Story" },
 ] as const;
 
+// Sourced from vinyasa.earth/frequent-links — the handful guests actually reach for.
+const usefulLinks = [
+  {
+    label: "Check in",
+    href: "https://docs.google.com/forms/d/e/1FAIpQLSd8cvRcZ3jD1e--9ydBTe7K00nBEqFlfK09heSp0TUZGueTnw/viewform",
+  },
+  { label: "Make a payment", href: "https://razorpay.me/@vinyasaverse" },
+  {
+    label: "Schedule a call",
+    href: "https://calendly.com/vinyasa-earth/connect_call",
+  },
+  { label: "Leave a Google review", href: "https://g.page/r/CZ31HyYgcIyDEBM/review" },
+  {
+    label: "Event details template",
+    href: "https://docs.google.com/document/d/1MVugxj2JRDGTwBleAM3ysXOg15FWXMbB8SEVYKKC6o4/copy",
+  },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/vinyasa-earth/" },
+  { label: "YouTube", href: "https://www.youtube.com/@VinyasaEarth" },
+] as const;
+
+// Reference: vinyasa.earth/blogs
+const blogLinks = [
+  { label: "Settling In…", href: "https://www.vinyasa.earth/settling-in/" },
+  { label: "The Shift", href: "https://www.vinyasa.earth/the-shift/" },
+  { label: "The Real Hustle!", href: "https://www.vinyasa.earth/the-real-hustle/" },
+  { label: "New Beginnings!", href: "https://www.vinyasa.earth/new-beginnings/" },
+  { label: "Memories of Vinyasa", href: "https://www.vinyasa.earth/memories-of-vinyasa/" },
+  {
+    label: "Washing Your Own Dishes: A Practice in Presence",
+    href: "https://www.vinyasa.earth/washing-your-own-dishes-at-vinyasa-earth/",
+  },
+] as const;
+
+const BLOG_INDEX = "https://www.vinyasa.earth/blogs/";
+
 export default function SiteFooter() {
   const phoneHref = CONTACT_PHONE_DISPLAY.replace(/\s/g, "");
 
@@ -89,6 +124,63 @@ export default function SiteFooter() {
                 @vinyasa.earth
               </a>
             </div>
+          </div>
+        </div>
+
+        <div className="grid gap-10 border-b border-[#f8eedc]/15 py-12 sm:grid-cols-2 lg:gap-16">
+          <div>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#d5bb87]">
+              Useful Links
+            </p>
+            <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-1 xl:grid-cols-2">
+              {usefulLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 text-sm text-[#f8eedc]/72 transition-colors hover:text-[#f3dba9]"
+                  >
+                    {link.label}
+                    <span
+                      aria-hidden="true"
+                      className="text-[10px] text-[#d5bb87]/60 transition-transform group-hover:-translate-y-px group-hover:translate-x-px"
+                    >
+                      &#8599;
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#d5bb87]">
+              Blogs
+            </p>
+            <ul className="mt-5 space-y-3">
+              {blogLinks.map((post) => (
+                <li key={post.href}>
+                  <a
+                    href={post.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-[#f8eedc]/72 transition-colors hover:text-[#f3dba9]"
+                  >
+                    {post.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a
+              href={BLOG_INDEX}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-3 border-b border-[#d5bb87]/70 pb-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#f3dba9] transition-all hover:gap-5 hover:text-white"
+            >
+              Read the journal
+              <Icon name="arrow-forward-outline" size={14} />
+            </a>
           </div>
         </div>
 
