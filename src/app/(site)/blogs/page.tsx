@@ -63,7 +63,7 @@ const POSTS: Array<{ title: string; href: string; blurb: string }> = [
 export default function BlogsPage() {
   return (
     <>
-      <section className="border-b border-line bg-clay-surface px-5 py-16 text-center sm:px-8 sm:py-20">
+      <section className="border-b border-line bg-clay-surface px-5 pb-14 pt-28 text-center sm:px-8 sm:pb-20 sm:pt-36">
         <div className="mx-auto max-w-2xl">
           <SectionEyebrow icon="sparkles-outline" className="justify-center">
             The journal
