@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { getDb, hasDb } from "@/lib/db";
 import * as t from "@/lib/db/schema";
 import {
@@ -209,4 +209,66 @@ export const getContent = unstable_cache(
   },
   ["cms:content"],
   { tags: ["content"] }
+);
+
+// --- builder pages ------------------------------------------------------
+
+export type BuilderPage = {
+  id: string;
+  slug: string;
+  title: string;
+  layout: string;
+  blocks: unknown[];
+  seoTitle: string;
+  seoDescription: string;
+};
+
+export const getBuilderPages = unstable_cache(
+  async (): Promise<BuilderPage[]> => {
+    if (!hasDb()) return [];
+    try {
+      const rows = await getDb().select().from(t.pages).orderBy(desc(t.pages.updatedAt));
+      return rows.map((r) => ({
+        id: r.id,
+        slug: r.slug,
+        title: r.title,
+        layout: r.layout,
+        blocks: (r.blocks ?? []) as unknown[],
+        seoTitle: r.seoTitle,
+        seoDescription: r.seoDescription,
+      }));
+    } catch {
+      return [];
+    }
+  },
+  ["cms:pages"],
+  { tags: ["pages"] },
+);
+
+/** A single published page by slug (null if missing or still a draft). */
+export const getPublishedPage = unstable_cache(
+  async (slug: string): Promise<BuilderPage | null> => {
+    if (!hasDb()) return null;
+    try {
+      const [r] = await getDb()
+        .select()
+        .from(t.pages)
+        .where(and(eq(t.pages.slug, slug), eq(t.pages.status, "published")))
+        .limit(1);
+      if (!r) return null;
+      return {
+        id: r.id,
+        slug: r.slug,
+        title: r.title,
+        layout: r.layout,
+        blocks: (r.blocks ?? []) as unknown[],
+        seoTitle: r.seoTitle,
+        seoDescription: r.seoDescription,
+      };
+    } catch {
+      return null;
+    }
+  },
+  ["cms:page"],
+  { tags: ["pages"] },
 );

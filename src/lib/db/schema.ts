@@ -139,6 +139,20 @@ export const siteContent = pgTable("site_content", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
+// Builder-made pages: a JSON list of typed blocks rendered at /<slug>.
+export const pages = pgTable("pages", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  status: text("status").notNull().default("draft"), // draft | published
+  layout: text("layout").notNull().default("boxed"), // boxed | full | narrow
+  blocks: jsonb("blocks").$type<unknown[]>().notNull().default([]),
+  seoTitle: text("seo_title").notNull().default(""),
+  seoDescription: text("seo_description").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
 export type CottageRow = typeof cottages.$inferSelect;
 export type EventRow = typeof events.$inferSelect;
 export type BlogRow = typeof blogs.$inferSelect;
@@ -146,3 +160,4 @@ export type VisitOptionRow = typeof visitOptions.$inferSelect;
 export type PartnerRow = typeof partners.$inferSelect;
 export type BookingRow = typeof bookings.$inferSelect;
 export type LeadRow = typeof leads.$inferSelect;
+export type PageRow = typeof pages.$inferSelect;

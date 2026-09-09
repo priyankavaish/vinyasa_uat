@@ -295,3 +295,62 @@ export async function deletePartner(id: string) {
   revalidateTag("partners");
   revalidatePath("/stays");
 }
+
+// --------------------------------------------------------------------------
+// Builder pages
+// --------------------------------------------------------------------------
+
+function stripDangerous(html: string) {
+  return html
+    .replace(/<\s*script[\s\S]*?<\s*\/\s*script\s*>/gi, "")
+    .replace(/<\s*script[^>]*>/gi, "")
+    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    .replace(/javascript\s*:/gi, "")
+    .slice(0, 200_000);
+}
+
+export async function savePage(form: FormData) {
+  await assertAdmin();
+  const db = getDb();
+  const { coerceBlocks } = await import("@/lib/blocks");
+
+  const id = String(form.get("id") ?? "").trim();
+  const title = String(form.get("title") ?? "").trim() || "Untitled page";
+  const slug = slugify(String(form.get("slug") ?? "").trim() || title);
+  const status = String(form.get("status") ?? "draft") === "published" ? "published" : "draft";
+  const layoutRaw = String(form.get("layout") ?? "boxed");
+  const layout = ["boxed", "full", "narrow"].includes(layoutRaw) ? layoutRaw : "boxed";
+  const seoTitle = String(form.get("seoTitle") ?? "").trim();
+  const seoDescription = String(form.get("seoDescription") ?? "").trim();
+
+  let parsed: unknown = [];
+  try {
+    parsed = JSON.parse(String(form.get("blocks") ?? "[]"));
+  } catch {
+    parsed = [];
+  }
+  const blocks = coerceBlocks(parsed).map((b) => {
+    if (b.type === "rich-text" || b.type === "html") return { ...b, html: stripDangerous(b.html) };
+    return b;
+  });
+
+  const values = { slug, title, status, layout, blocks, seoTitle, seoDescription, updatedAt: new Date() };
+
+  if (id) {
+    await db.update(t.pages).set(values).where(eq(t.pages.id, id));
+  } else {
+    await db.insert(t.pages).values(values);
+  }
+
+  revalidateTag("pages");
+  revalidatePath("/", "layout");
+  revalidatePath(`/${slug}`);
+  redirect("/admin/pages");
+}
+
+export async function deletePage(id: string) {
+  await assertAdmin();
+  await getDb().delete(t.pages).where(eq(t.pages.id, id));
+  revalidateTag("pages");
+  revalidatePath("/", "layout");
+}
