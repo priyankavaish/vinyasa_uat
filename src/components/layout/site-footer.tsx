@@ -7,12 +7,8 @@ const exploreLinks = [
   { href: "/events", label: "Events & Retreats" },
   { href: "/corporate", label: "Corporate Offsites" },
   { href: "/about", label: "Our Story" },
-] as const;
-
-// Quick links out to the wider Vinyasa Earth site.
-const quickLinks = [
-  { href: "https://www.vinyasa.earth/frequent-links/", label: "Useful Links" },
-  { href: "https://www.vinyasa.earth/blogs/", label: "Blogs" },
+  { href: "/useful-links", label: "Useful Links" },
+  { href: "/blogs", label: "Blogs" },
 ] as const;
 
 export default function SiteFooter() {
@@ -62,24 +58,6 @@ export default function SiteFooter() {
                   >
                     {link.label}
                   </Link>
-                </li>
-              ))}
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5 text-sm text-[#f8eedc]/72 transition-colors hover:text-[#f3dba9]"
-                  >
-                    {link.label}
-                    <span
-                      aria-hidden="true"
-                      className="text-[10px] text-[#d5bb87]/60 transition-transform group-hover:-translate-y-px group-hover:translate-x-px"
-                    >
-                      &#8599;
-                    </span>
-                  </a>
                 </li>
               ))}
             </ul>
