@@ -30,7 +30,7 @@ const WAYS = [
   {
     number: "03",
     title: "Artist Escapes",
-    href: "/events#artist-escape",
+    href: "/stays#artist-escape",
     image: artistTileImage,
     blurb:
       "Weeks to build, paint, or write alongside a resident community — an affordable stay-with-meals program for creative practitioners.",

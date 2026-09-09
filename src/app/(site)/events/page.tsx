@@ -6,9 +6,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { getEvents } from "@/lib/cms";
-import { whatsappLink } from "@/lib/site";
 
-import residencyImg from "@/app/assets/new/community-05.jpg";
 import gatherImg from "@/app/assets/new/community-02.jpg";
 
 export const revalidate = 300;
@@ -86,22 +84,6 @@ export default async function EventsPage() {
               );
             })}
           </div>
-        </div>
-      </section>
-
-      <section id="artist-escape" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:px-8">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <Reveal variant="left"><div className="relative aspect-[4/5] overflow-hidden border border-line"><Image src={residencyImg} alt="Resident artists at Vinyasa Earth" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" /></div></Reveal>
-          <Reveal variant="right" delay={100}>
-            <SectionEyebrow icon="compass-outline">The Artist Escape</SectionEyebrow>
-            <h2 className="mt-3 font-display italic text-4xl leading-tight">An affordable home for artists at work</h2>
-            <p className="mt-4 leading-relaxed text-foreground-soft">Outside the dated calendar, the Artist Escape runs year-round: an affordable stay with meals included, in a supportive creative environment. Paint, write, choreograph or build alongside the resident community for a week or a season.</p>
-            <p className="mt-3 leading-relaxed text-foreground-soft">Applications and residency queries go straight to the team.</p>
-            <div className="mt-7 flex flex-wrap gap-4">
-              <a href={whatsappLink("Hi Vinyasa Earth, I'd like to apply for the Artist Escape.")} className="btn btn-accent inline-flex">Enquire on WhatsApp</a>
-              <Link href="/contact" className="btn btn-outline inline-flex">Write to us</Link>
-            </div>
-          </Reveal>
         </div>
       </section>
     </>

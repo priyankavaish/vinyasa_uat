@@ -419,7 +419,7 @@ export const siteContentSeed: Record<string, unknown> = {
   "home.hero": {
     kicker: "A retreat for curious minds",
     location: "Jaipur, Rajasthan",
-    values: "Stay · Create · Connect",
+    values: "Live · Create · Belong",
   },
   "home.cottages": {
     eyebrow: "The Cottages",

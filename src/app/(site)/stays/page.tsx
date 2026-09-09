@@ -9,14 +9,15 @@ import { PageHero } from "@/components/sections/hero";
 import galleryA from "@/app/assets/new/grounds-01.jpg";
 import galleryC from "@/app/assets/new/room-prithvi-2.jpg";
 import galleryD from "@/app/assets/new/grounds-04.jpg";
-import vine3 from "@/app/assets/vine3.png";
-import vine4 from "@/app/assets/vine4.png";
 import expA from "@/app/assets/new/community-06.jpg";
 import expD from "@/app/assets/new/grounds-08.jpg";
 import expE from "@/app/assets/new/community-07.jpg";
 import expF from "@/app/assets/new/grounds-09.jpg";
 
+import residencyImg from "@/app/assets/new/community-05.jpg";
+
 import { getCottages, getVisitOptions, getPartners } from "@/lib/cms";
+import { whatsappLink } from "@/lib/site";
 
 export const revalidate = 300;
 
@@ -78,13 +79,6 @@ export default async function StaysPage() {
       </section>
 
       <section id="rooms" className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
-        <Parallax speed={-0.03} className="pointer-events-none absolute -left-16 -top-10 w-[13rem] opacity-[0.15] sm:w-[17rem]" aria-hidden="true">
-          <Image src={vine3} alt="" className="w-full -rotate-[100deg]" />
-        </Parallax>
-        <Parallax speed={0.03} className="pointer-events-none absolute -bottom-16 -right-16 w-[13rem] opacity-[0.15] sm:w-[17rem]" aria-hidden="true">
-          <Image src={vine4} alt="" className="w-full rotate-[165deg]" />
-        </Parallax>
-
         <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
             <SectionEyebrow icon="home-outline">Choose a stay experience</SectionEyebrow>
@@ -183,6 +177,22 @@ export default async function StaysPage() {
               </Parallax>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      <section id="artist-escape" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:px-8">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal variant="left"><div className="relative aspect-[4/5] overflow-hidden border border-line"><Image src={residencyImg} alt="Resident artists at Vinyasa Earth" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" /></div></Reveal>
+          <Reveal variant="right" delay={100}>
+            <SectionEyebrow icon="compass-outline">The Artist Escape</SectionEyebrow>
+            <h2 className="mt-3 font-display italic text-4xl leading-tight">An affordable home for artists at work</h2>
+            <p className="mt-4 leading-relaxed text-foreground-soft">Outside the dated calendar, the Artist Escape runs year-round: an affordable stay with meals included, in a supportive creative environment. Paint, write, choreograph or build alongside the resident community for a week or a season.</p>
+            <p className="mt-3 leading-relaxed text-foreground-soft">Applications and residency queries go straight to the team.</p>
+            <div className="mt-7 flex flex-wrap gap-4">
+              <a href={whatsappLink("Hi Vinyasa Earth, I'd like to apply for the Artist Escape.")} className="btn btn-accent inline-flex">Enquire on WhatsApp</a>
+              <Link href="/contact" className="btn btn-outline inline-flex">Write to us</Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 

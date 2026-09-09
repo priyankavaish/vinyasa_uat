@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "../ui/icon";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "The Vinyasa Way" },
   { href: "/stays", label: "Stays" },
   { href: "/events", label: "Events & Retreats" },
   { href: "/corporate", label: "Volunteer" },
@@ -73,7 +74,26 @@ export default function SiteHeader() {
       style={{ backgroundColor: transparent ? "transparent" : "#ffffff" }}
     >
       <div className="site-header-inner mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-4 sm:px-8">
-        <span className="hidden lg:block" aria-hidden />
+        <Link
+          href="/"
+          aria-label="Vinyasa Earth — home"
+          className="flex items-center justify-self-start"
+        >
+          <span
+            className={`grid place-items-center rounded-full bg-white p-0.5 ring-1 ring-white/70 transition-all duration-500 ${
+              transparent ? "shadow-[0_2px_12px_rgba(0,0,0,0.4)]" : "shadow-sm"
+            }`}
+          >
+            <Image
+              src="/images/logo-transparent.png"
+              alt="Vinyasa Earth"
+              width={64}
+              height={64}
+              priority
+              className="h-14 w-14"
+            />
+          </span>
+        </Link>
 
         <ul
           className={`hidden items-center justify-center gap-6 text-xs font-semibold tracking-[0.12em] uppercase lg:flex ${

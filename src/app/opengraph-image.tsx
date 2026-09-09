@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Vinyasa Earth — Stay, Create, Connect in Jaipur";
+export const alt = "Vinyasa Earth — Live, Create, Belong in Jaipur";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -11,7 +11,7 @@ export default function OpenGraphImage() {
       <div style={{ fontSize: 22, letterSpacing: 8, textTransform: "uppercase", color: "#edb678" }}>Jaipur</div>
       <div style={{ marginTop: 36, fontFamily: "serif", fontSize: 112, lineHeight: .9, letterSpacing: -5 }}>Vinyasa Earth</div>
       <div style={{ width: 390, height: 2, marginTop: 40, background: "#edb678" }} />
-      <div style={{ marginTop: 28, fontSize: 24, letterSpacing: 7, textTransform: "uppercase" }}>Stay · Create · Connect</div>
+      <div style={{ marginTop: 28, fontSize: 24, letterSpacing: 7, textTransform: "uppercase" }}>Live · Create · Belong</div>
       <div style={{ marginTop: 62, fontSize: 24, color: "rgba(251,249,243,.78)" }}>Mud cottages · Artist residencies · Thoughtful retreats</div>
     </div>,
     size,

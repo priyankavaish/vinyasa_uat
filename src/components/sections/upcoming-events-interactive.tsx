@@ -49,12 +49,13 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
         <div className="order-2 flex flex-col justify-center px-5 py-12 sm:px-12 sm:py-16 md:order-1 md:px-16 lg:px-20">
           <Reveal variant="up">
             <SectionEyebrow icon="calendar-outline">What&apos;s coming up</SectionEyebrow>
-            <h2 className="mt-3 max-w-[16ch] font-display text-3xl leading-tight sm:text-4xl lg:text-5xl">
+            <h2 className="mt-4 max-w-[15ch] font-display text-4xl italic leading-[1.05] tracking-tight text-accent sm:text-5xl lg:text-[3.4rem]">
               The next dates on the calendar
             </h2>
-            <p className="mt-4 max-w-[46ch] text-sm leading-relaxed text-foreground-soft">
-              Residencies, retreats and workshops — closest first. Small by design, so write early to
-              hold a place.
+            <span aria-hidden className="mt-5 block h-[3px] w-16 rounded-full bg-accent" />
+            <p className="mt-5 max-w-[44ch] text-[17px] font-medium leading-relaxed text-foreground">
+              Residencies, retreats and workshops &mdash; closest first.{" "}
+              <span className="text-clay-ink">Small by design, so write early to hold a place.</span>
             </p>
           </Reveal>
 
