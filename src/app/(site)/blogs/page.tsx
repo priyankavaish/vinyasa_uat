@@ -1,4 +1,3 @@
-import { PageHero } from "@/components/sections/hero";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
@@ -64,29 +63,27 @@ const POSTS: Array<{ title: string; href: string; blurb: string }> = [
 export default function BlogsPage() {
   return (
     <>
-      <PageHero
-        eyebrow="The journal"
-        title="Notes from a shared home"
-        description="Long-form writing from residents and the team — on community life, creative practice, and the small habits that make Vinyasa Earth what it is."
-        image="/seed/community-02.jpg"
-        imageAlt="Residents gathered in the courtyard at Vinyasa Earth"
-        imagePosition="50% 45%"
-      />
+      <section className="border-b border-line bg-clay-surface px-5 py-16 text-center sm:px-8 sm:py-20">
+        <div className="mx-auto max-w-2xl">
+          <SectionEyebrow icon="sparkles-outline" className="justify-center">
+            The journal
+          </SectionEyebrow>
+          <h1 className="mt-3 font-display text-4xl italic leading-tight text-clay-ink sm:text-5xl">
+            Notes from a shared home
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-foreground-soft">
+            Long-form writing from residents and the team &mdash; on community life, creative
+            practice, and the small habits that make Vinyasa Earth what it is.
+          </p>
+          <span aria-hidden="true" className="mx-auto mt-6 block h-[3px] w-16 rounded-full bg-accent" />
+          <p className="mt-6 text-xs uppercase tracking-[0.16em] text-muted">
+            Each piece opens on the journal in a new tab
+          </p>
+        </div>
+      </section>
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
-        <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon="sparkles-outline" className="justify-center">
-            Recent writing
-          </SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-4xl leading-tight">
-            Stories from the land
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed text-foreground-soft">
-            Each piece opens on the Vinyasa Earth journal in a new tab.
-          </p>
-        </Reveal>
-
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {POSTS.map((post, i) => (
             <Reveal key={post.href} variant="up" delay={(i % 3) * 80}>
               <a
@@ -98,7 +95,7 @@ export default function BlogsPage() {
                 <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
                   Journal
                 </span>
-                <h3 className="mt-3 font-display italic text-xl leading-snug text-foreground">
+                <h3 className="mt-3 font-display italic text-xl leading-snug text-clay-ink">
                   {post.title}
                 </h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground-soft">

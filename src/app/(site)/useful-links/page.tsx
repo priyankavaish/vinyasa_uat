@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { PageHero } from "@/components/sections/hero";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
@@ -123,7 +122,7 @@ function LinkRow({ item }: { item: LinkItem }) {
           <Icon name={item.icon} size={18} />
         </span>
         <span className="min-w-0">
-          <span className="block font-display text-lg leading-tight text-foreground">
+          <span className="block font-display text-lg leading-tight text-clay-ink">
             {item.label}
           </span>
           {item.note && (
@@ -160,20 +159,29 @@ function LinkRow({ item }: { item: LinkItem }) {
 export default function UsefulLinksPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Quick links"
-        title="Everything in one place"
-        description="The handful of links guests and partners reach for most — check-in, payments, a call with the team, and the corners of Vinyasa Earth worth a wander."
-        image="/seed/grounds-05.jpg"
-        imageAlt="Garden path through the grounds at Vinyasa Earth"
-        imagePosition="50% 55%"
-      />
+      <section className="border-b border-line bg-clay-surface px-5 py-16 text-center sm:px-8 sm:py-20">
+        <div className="mx-auto max-w-2xl">
+          <SectionEyebrow icon="compass-outline" className="justify-center">
+            Quick links
+          </SectionEyebrow>
+          <h1 className="mt-3 font-display text-4xl italic leading-tight text-clay-ink sm:text-5xl">
+            Everything in one place
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-foreground-soft">
+            The handful of links guests and partners reach for most &mdash; check-in, payments, a
+            call with the team, and the corners of Vinyasa Earth worth a wander.
+          </p>
+          <span aria-hidden="true" className="mx-auto mt-6 block h-[3px] w-16 rounded-full bg-accent" />
+        </div>
+      </section>
 
       <section className="mx-auto max-w-4xl px-5 py-16 sm:px-8 sm:py-20">
         {GROUPS.map((group, i) => (
           <Reveal key={group.heading} variant="up" delay={(i % 3) * 80} className={i > 0 ? "mt-14" : ""}>
             <SectionEyebrow icon={group.icon}>{group.eyebrow}</SectionEyebrow>
-            <h2 className="mt-3 font-display italic text-3xl leading-tight">{group.heading}</h2>
+            <h2 className="mt-3 font-display italic text-3xl leading-tight text-clay-ink">
+              {group.heading}
+            </h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {group.items.map((item) => (
                 <LinkRow key={item.label} item={item} />
