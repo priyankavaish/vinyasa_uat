@@ -41,7 +41,7 @@
 .eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; font-family: var(--font-archivo), Arial, sans-serif; font-size: 13px; font-weight: 600; line-height: 1.6; letter-spacing: .22em; text-transform: uppercase; }
 .eyebrow::before { content: ""; width: 32px; height: 1px; flex-shrink: 0; background: #dfc6a5; }
 .title { max-width: 22ch; font-family: var(--font-fraunces), Georgia, serif; font-style: normal; font-size: clamp(36px, 4.2vw, 58px); font-weight: 400; line-height: 1.1; letter-spacing: -.035em; text-wrap: balance; }
-.description { max-width: 64ch; margin-top: 20px; font-family: var(--font-archivo), Arial, sans-serif; font-size: 15px; line-height: 1.75; color: #fff8eeeb; }
+.description { max-width: 64ch; margin-top: 20px; font-family: var(--font-archivo), Arial, sans-serif; font-size: 15.5px; line-height: 1.75; color: #fff9f0; text-shadow: 0 1px 3px rgba(0,0,0,.6), 0 2px 16px rgba(0,0,0,.45); }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
 .actions a { border-radius: 0; }
 @media (max-width: 639px) {
