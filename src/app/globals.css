@@ -52,6 +52,15 @@ html {
      page ground. overscroll-behavior stops the bounce on iOS 16+ outright. */
   background-color: #302d24;
   overscroll-behavior-y: none;
+  /* Hide the OS scrollbar chrome — scrolling still works (wheel/touch/keys). */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 body {
