@@ -1,5 +1,5 @@
 import { HomeHero } from "@/components/sections/hero";
-import MarqueeBar from "@/components/sections/marquee-bar";
+// import MarqueeBar from "@/components/sections/marquee-bar";
 import NextEventRibbon from "@/components/sections/next-event-ribbon";
 import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
 import TestimonialsSection from "@/components/sections/testimonials-section";
@@ -23,7 +23,7 @@ export default function HomePage() {
         }
       `}</style>
       <HomeHero />
-      <MarqueeBar />
+      {/* <MarqueeBar /> */}
       <NextEventRibbon />
       <AnimateInView><ConnectSection /></AnimateInView>
       <AnimateInView><WorkFromFarmSection /></AnimateInView>
