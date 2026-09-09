@@ -27,27 +27,26 @@ export default async function NextEventRibbon() {
       aria-label={`Next event: ${next.e.name}, ${next.e.dateLabel}`}
       className="group block border-b border-t-2 border-b-black/20 border-t-[#e7b878] bg-gradient-to-r from-[#7d3128] via-[#9a3f31] to-[#7d3128] text-accent-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:via-[#ad4636]"
     >
-      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-3 gap-y-2 px-4 py-3 sm:flex-nowrap sm:justify-center sm:gap-5 sm:py-3.5">
-        <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-[#e7b878] px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#5a2015] sm:text-sm">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-3 gap-y-2.5 px-4 py-3.5 sm:flex-nowrap sm:justify-center sm:gap-5 sm:py-3.5">
+        {/* kicker — its own line on mobile, inline on desktop */}
+        <span className="order-1 basis-full text-[10px] font-semibold uppercase tracking-[0.22em] text-[#f0c58c] sm:order-2 sm:basis-auto sm:text-xs sm:tracking-[0.18em]">
+          Next at Vinyasa
+        </span>
+
+        <span className="order-2 flex shrink-0 items-center gap-1.5 rounded-full bg-[#e7b878] px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#5a2015] sm:order-1 sm:text-sm">
           <Icon name="calendar-outline" size={14} />
           {month} {day}
         </span>
 
-        <span className="order-last flex w-full min-w-0 basis-full items-baseline gap-x-3 sm:order-none sm:w-auto sm:flex-none sm:basis-auto sm:flex-wrap sm:justify-center">
-          <span className="hidden shrink-0 text-xs font-semibold uppercase tracking-[0.18em] text-[#f0c58c] sm:inline">
-            Next at Vinyasa
-          </span>
-          <span className="min-w-0 font-display text-[15px] font-medium leading-snug text-white sm:truncate sm:text-xl">
-            {next.e.name}
-          </span>
+        <span className="order-3 min-w-0 flex-1 font-display text-base font-medium leading-snug text-white sm:flex-none sm:truncate sm:text-xl">
+          {next.e.name}
         </span>
 
-        <span className="ml-auto flex shrink-0 items-center gap-2.5 text-sm text-white/85 sm:ml-0">
-          <span aria-hidden className="hidden text-white/40 sm:inline">
-            &middot;
-          </span>
-          <span className="hidden sm:inline">{next.e.dateLabel}</span>
-          <span className="flex shrink-0 items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_12px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)] sm:text-sm">
+        <span aria-hidden className="order-4 hidden text-white/40 sm:inline">&middot;</span>
+        <span className="order-4 hidden text-sm text-white/85 sm:inline">{next.e.dateLabel}</span>
+
+        <span className="order-5 basis-full sm:basis-auto">
+          <span className="flex w-full items-center justify-center gap-1.5 bg-white px-3.5 py-2 text-xs font-bold uppercase tracking-[0.14em] text-accent shadow-[0_2px_12px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)] sm:w-auto sm:py-1.5 sm:text-sm">
             Book Now
             <Icon
               name="arrow-forward-outline"
