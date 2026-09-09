@@ -47,8 +47,8 @@ export default async function NextEventRibbon() {
             &middot;
           </span>
           <span className="hidden sm:inline">{next.e.dateLabel}</span>
-          <span className="flex items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_12px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)] sm:text-sm">
-            <span className="hidden sm:inline">Book</span>
+          <span className="flex shrink-0 items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_12px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)] sm:text-sm">
+            Book Now
             <Icon
               name="arrow-forward-outline"
               size={16}
