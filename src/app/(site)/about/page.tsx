@@ -14,7 +14,6 @@ export const revalidate = 300;
 type Copy = Record<string, string>;
 const paras = (s = "") => s.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
 import storyImg from "@/app/assets/new/community-01.jpg";
-import craftImg from "@/app/assets/new/grounds-09.jpg";
 
 export const metadata = {
   title: "About",
@@ -31,7 +30,7 @@ const PRINCIPLES: Array<{ icon: IconName; title: string; body: string }> = [
 ];
 
 const FAMILY = [
-  { name: "Sankalp Sharma", role: "Founder · dancer", photo: "/seed/family/sankalp.jpg" },
+  { name: "Sankalp Sharma", role: "Founder", photo: "/seed/family/sankalp.jpg" },
   { name: "Ankita Sharma", role: "Resident", photo: "/seed/family/ankita.jpg" },
   { name: "Abhishek Gore", role: "Resident", photo: "/seed/family/abhishek.jpg" },
   { name: "Coco", role: "Resident animal", photo: "/seed/family/coco.jpg" },
@@ -145,7 +144,7 @@ export default async function AboutPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-stretch gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
             <SectionEyebrow icon="home-outline">Built from the ground</SectionEyebrow>
             <h2 className="mt-3 font-display italic text-4xl leading-tight">
@@ -163,18 +162,18 @@ export default async function AboutPage() {
               </p>
             ))}
           </Reveal>
-          <Reveal variant="right" delay={100}>
-            <Parallax speed={0.05}>
-              <div className="relative aspect-[4/5] overflow-hidden border border-line">
+          <Reveal variant="right" delay={100} className="h-full">
+            <div className="relative aspect-[4/5] h-full overflow-hidden border border-line lg:aspect-auto">
+              <Parallax enabled speed={0.06} className="absolute inset-[-9%]">
                 <Image
-                  src={craftImg}
-                  alt="Earthen architecture at Vinyasa Earth"
+                  src="/images/2N0A9797.JPG"
+                  alt="A grinding stone by a bamboo window inside a hand-built mud room at Vinyasa Earth"
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   className="object-cover"
                 />
-              </div>
-            </Parallax>
+              </Parallax>
+            </div>
           </Reveal>
         </div>
       </section>
