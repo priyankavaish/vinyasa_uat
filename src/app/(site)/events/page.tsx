@@ -42,7 +42,7 @@ export default async function EventsPage() {
   const events = await getEvents();
   return (
     <>
-      <PageHero eyebrow="Residencies / Retreats / Workshops" title="Time and space to make what matters" description="From a single evening of Kabir bhajans to a four-month residency, every programme follows the rhythm of the land and its community." image="/images/Vinyasa data (Space)/BM9A6438.jpg" imageAlt="Open-air gathering space and white arches at Vinyasa Earth" imagePosition="50% 55%" mobileImagePosition="60% 50%" />
+      <PageHero eyebrow="Residencies / Retreats / Workshops" title="Time and space to make what matters" description="From a single evening of Kabir bhajans to a four-month residency, every programme follows the rhythm of the land and its community." image="/images/events-hero.jpg" imageAlt="A large mural of clasped hands on a mud-plastered wall at Vinyasa Earth" imagePosition="60% 45%" mobileImagePosition="62% 45%" contain />
 
       <section className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-8">
         <Reveal variant="fade">

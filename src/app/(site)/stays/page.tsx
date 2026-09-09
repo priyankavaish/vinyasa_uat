@@ -45,10 +45,11 @@ export default async function StaysPage() {
         eyebrow="Cottages &middot; Dorm &middot; Tents"
         title="Hand-built earth stays in Jaipur"
         description="Disconnect from the noise, reconnect with what matters &mdash; mud-plastered rooms rooted in nature and crafted for rest."
-        image="/images/2N0A9839.JPG"
-        imageAlt="A handcrafted earth room with a canopy bed at Vinyasa Earth"
-        imagePosition="50% 55%"
-        mobileImagePosition="60% 50%"
+        image="/images/stays-hero.jpg"
+        imageAlt="Flowering garden courtyard with stone wells and shade trees at Vinyasa Earth"
+        imagePosition="50% 60%"
+        mobileImagePosition="50% 55%"
+        contain
       >
         <Link href="/book" className="btn btn-accent">Make a reservation</Link>
         <a href="#rooms" className="btn btn-outline-light">Explore rooms</a>

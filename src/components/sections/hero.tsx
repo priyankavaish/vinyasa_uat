@@ -155,10 +155,34 @@ export function PageHero({
       ))}
       <div className={heroStyles.overlay} aria-hidden="true" />
       <div className={heroStyles.content}>
-        <p className={heroStyles.eyebrow}>{eyebrow}</p>
-        <h1 className={heroStyles.title}>{title}</h1>
-        {description && <p className={heroStyles.description}>{description}</p>}
-        {children && <div className={heroStyles.actions}>{children}</div>}
+        <p
+          className={`${heroStyles.eyebrow} animate__animated animate__fadeInLeft`}
+          style={{ animationDuration: "0.7s" }}
+        >
+          {eyebrow}
+        </p>
+        <h1
+          className={`${heroStyles.title} animate__animated animate__fadeInLeft`}
+          style={{ animationDuration: "0.7s", animationDelay: "0.12s" }}
+        >
+          {title}
+        </h1>
+        {description && (
+          <p
+            className={`${heroStyles.description} animate__animated animate__fadeInLeft`}
+            style={{ animationDuration: "0.7s", animationDelay: "0.24s" }}
+          >
+            {description}
+          </p>
+        )}
+        {children && (
+          <div
+            className={`${heroStyles.actions} animate__animated animate__fadeInLeft`}
+            style={{ animationDuration: "0.7s", animationDelay: "0.36s" }}
+          >
+            {children}
+          </div>
+        )}
       </div>
     </section>
   );

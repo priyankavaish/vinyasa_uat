@@ -89,7 +89,7 @@ export default async function ContactPage() {
           hero?.description ??
           "Questions about a stay, a retreat, venue hire, or volunteering — send a note and the team will write back."
         }
-        image="/images/Vinyasa data (Space)/IMG_9265.jpg" imageAlt="A garden path between the earth cottages at Vinyasa Earth" imagePosition="50% 55%" mobileImagePosition="65% 50%"
+        image="/images/contact-hero.jpg" imageAlt="Sunlit mud cottages with bamboo doors and a grass path at Vinyasa Earth" imagePosition="50% 62%" mobileImagePosition="55% 60%" contain
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">

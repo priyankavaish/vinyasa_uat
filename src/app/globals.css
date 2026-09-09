@@ -895,6 +895,15 @@ label[for] {
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   backface-visibility: hidden;
 }
+/* hero copy slides in from the left — small nudge, not a full-width fly-in */
+@keyframes heroFadeInLeft {
+  from { opacity: 0; transform: translate3d(-28px, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.animate__fadeInLeft {
+  animation-name: heroFadeInLeft !important;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
 @media (prefers-reduced-motion: reduce) {
   .aiv-pre { opacity: 1; }
   .animate__animated { animation: none !important; }
