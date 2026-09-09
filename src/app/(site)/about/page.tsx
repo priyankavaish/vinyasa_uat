@@ -61,13 +61,15 @@ export default async function AboutPage() {
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
             <div className="relative aspect-[4/5] overflow-hidden border border-line">
-              <Image
-                src={storyImg}
-                alt="Community gathering at Vinyasa Earth"
-                fill
-                sizes="(min-width: 1024px) 45vw, 100vw"
-                className="object-cover"
-              />
+              <Parallax enabled speed={-0.06} className="absolute inset-[-9%]">
+                <Image
+                  src={storyImg}
+                  alt="Community gathering at Vinyasa Earth"
+                  fill
+                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  className="object-cover"
+                />
+              </Parallax>
             </div>
           </Reveal>
           <Reveal variant="right" delay={100}>

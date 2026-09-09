@@ -13,7 +13,6 @@ import galleryD from "@/app/assets/new/grounds-04.jpg";
 import vine3 from "@/app/assets/vine3.png";
 import vine4 from "@/app/assets/vine4.png";
 import expA from "@/app/assets/new/community-06.jpg";
-import expB from "@/app/assets/new/grounds-07.jpg";
 import expC from "@/app/assets/new/community-05.jpg";
 import expD from "@/app/assets/new/grounds-08.jpg";
 import expE from "@/app/assets/new/community-07.jpg";
@@ -30,7 +29,7 @@ export const metadata = {
   alternates: { canonical: "/stays" },
 };
 
-const EXPERIENCE_PHOTOS = [expA, expB, expC, expD, expE, expF];
+const EXPERIENCE_PHOTOS = [expA, "/images/2N0A9839.JPG", expC, expD, expE, expF];
 
 export default async function StaysPage() {
   const [rooms, visitOptions, partners] = await Promise.all([
