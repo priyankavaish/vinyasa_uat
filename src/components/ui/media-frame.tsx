@@ -13,8 +13,8 @@ export default function MediaFrame({
   sizes?: string;
 }) {
   return (
-    <div className={`absolute inset-0 overflow-hidden bg-[#eae5da] ${className}`}>
-      <Image src={src} alt={alt} fill quality={95} sizes={sizes} className="object-contain p-3 sm:p-5" />
+    <div className={`absolute inset-0 overflow-hidden bg-clay-ink ${className}`}>
+      <Image src={src} alt={alt} fill quality={95} sizes={sizes} className="object-cover" />
     </div>
   );
 }

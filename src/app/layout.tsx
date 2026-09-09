@@ -102,7 +102,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${displaySerif.variable} ${archivo.variable} ${script.variable} ${samarkan.variable} ${bellefair.variable}`}>
-      <body className="min-h-screen flex flex-col">
+      <body className="flex min-h-dvh flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

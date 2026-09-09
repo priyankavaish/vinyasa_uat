@@ -655,7 +655,10 @@ label[for] {
 }
 
 @media (max-width: 639px) {
-  html, body { max-width: 100%; overflow-x: clip; }
+  /* Clip horizontal overflow on <body>, never <html>: any non-visible overflow
+     on the root element stops its background painting the full canvas, so iOS
+     shows a white strip below the footer on overscroll. */
+  body { max-width: 100%; overflow-x: clip; }
   main > * { max-width: 100%; }
   .site-header--scrolled {
   background-color: #fff !important;
