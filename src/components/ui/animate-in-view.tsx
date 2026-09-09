@@ -47,6 +47,7 @@ export default function AnimateInView({
   return (
     <div
       ref={ref}
+      data-animate-inview
       onAnimationEnd={(e) => {
         if (e.target === e.currentTarget) setPhase("done");
       }}

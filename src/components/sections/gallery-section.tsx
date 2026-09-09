@@ -32,7 +32,7 @@ export default function GallerySection() {
             delay={150 + (i % 4) * 80}
             className={i % 4 === 1 || i % 4 === 3 ? "sm:mt-8" : ""}
           >
-            <Parallax speed={i % 2 === 0 ? 0.06 : -0.06}>
+            <Parallax enabled speed={i % 2 === 0 ? 0.06 : -0.06}>
               <a
                 href={post.permalink}
                 target="_blank"

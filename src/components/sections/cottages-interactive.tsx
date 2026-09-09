@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "../ui/icon";
@@ -27,8 +27,16 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
   const gallery = current?.gallery?.length ? current.gallery : current ? [current.image] : [];
   const hero = gallery[shot] ?? current?.image;
 
+  const tabsRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setShot(0);
+    // keep the active cottage tab in view on the horizontally-scrolling strip
+    const nav = tabsRef.current;
+    const el = nav?.children[active] as HTMLElement | undefined;
+    if (!nav || !el) return;
+    const target = el.offsetLeft - nav.clientWidth / 2 + el.clientWidth / 2;
+    nav.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
   }, [active]);
 
   useEffect(() => {
@@ -80,7 +88,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
 
           <div className="min-w-0 border border-clay-ink/10 bg-clay-surface/50 p-6 sm:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay-ink">Find your little home</p>
-            <div className="-mx-1 mt-4 flex flex-nowrap gap-x-3 overflow-x-auto border-b border-clay-ink/20 px-1 pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Choose a cottage">
+            <div ref={tabsRef} className="-mx-1 mt-4 flex flex-nowrap gap-x-3 overflow-x-auto scroll-smooth border-b border-clay-ink/20 px-1 pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Choose a cottage">
               {rooms.map((room, index) => (
                 <button key={room.slug} type="button" aria-pressed={active === index} aria-controls="cottage-preview" onClick={() => setActive(index)} className={`min-h-11 shrink-0 whitespace-nowrap border-b px-1 py-2 font-display text-base transition-colors sm:text-lg ${active === index ? "border-accent text-accent" : "border-transparent text-foreground-soft hover:border-clay-ink/40 hover:text-clay-ink"}`}>
                   {room.name}

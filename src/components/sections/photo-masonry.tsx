@@ -7,6 +7,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import "yet-another-react-lightbox/styles.css";
 import SectionEyebrow from "../ui/section-eyebrow";
 import { Reveal } from "../ui/reveal";
+import { Parallax } from "../ui/parallax";
 import { Icon } from "../ui/icon";
 import { placePhotos } from "@/lib/content";
 
@@ -56,13 +57,15 @@ export default function PhotoMasonry() {
                   onClick={() => setLightboxIndex(i)}
                   className="group relative block h-64 w-full cursor-pointer overflow-hidden rounded-none border border-line sm:h-80"
                 >
-                  <Image
-                    src={photo.image}
-                    alt={photo.alt}
-                    fill
-                    sizes="(min-width: 1024px) 31vw, (min-width: 640px) 43vw, 82vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+                  <Parallax enabled speed={i % 2 === 0 ? 0.045 : -0.045} className="absolute inset-[-9%]">
+                    <Image
+                      src={photo.image}
+                      alt={photo.alt}
+                      fill
+                      sizes="(min-width: 1024px) 31vw, (min-width: 640px) 43vw, 82vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </Parallax>
                   <span className="absolute bottom-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-black/45 text-white backdrop-blur-sm" aria-hidden>
                     <Icon name="expand-outline" size={14} />
                   </span>

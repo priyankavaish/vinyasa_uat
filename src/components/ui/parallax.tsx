@@ -7,21 +7,25 @@ function prefersReducedMotion() {
 }
 
 /** Translates its content vertically as the page scrolls, slower or faster than
- *  natural scroll depending on `speed` (negative drifts up, positive drifts down). */
+ *  natural scroll depending on `speed` (negative drifts up, positive drifts down).
+ *  Off by default — the per-frame transform writes stutter on busy pages; pass
+ *  `enabled` only where the drift genuinely adds something. */
 export function Parallax({
   children,
   speed = 0.15,
   className = "",
+  enabled = false,
 }: {
   children: React.ReactNode;
   speed?: number;
   className?: string;
+  enabled?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
+    if (!el || !enabled || prefersReducedMotion()) return;
 
     let raf = 0;
     const update = () => {
@@ -43,10 +47,10 @@ export function Parallax({
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [speed]);
+  }, [speed, enabled]);
 
   return (
-    <div ref={ref} className={className} style={{ willChange: "transform" }}>
+    <div ref={ref} className={className} style={enabled ? { willChange: "transform" } : undefined}>
       {children}
     </div>
   );

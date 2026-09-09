@@ -562,14 +562,14 @@ label[for] {
 @media (max-width: 639px) {
   .hero-brand { width: 100vw; padding: 1.75rem 1rem; border: 0; background: transparent; backdrop-filter: none; }
   .hero-brand-emblem { width: 3.9rem; height: 3.9rem; padding: .42rem; }
-  .hero-brand-place { gap: .6rem; margin-top: 1rem; font-size: .55rem; letter-spacing: .26em; }
+  .hero-brand-place { gap: .6rem; margin-top: 1rem; font-size: .62rem; letter-spacing: .26em; }
   .hero-brand-place-rule { width: 1.4rem; }
-  .hero-brand-kicker { margin-top: .85rem; font-size: .85rem; }
+  .hero-brand-kicker { margin-top: .85rem; font-size: .98rem; }
   .hero-brand-name { flex-direction: column; gap: .1rem; margin-top: 1rem; }
-  .hero-brand-name-primary { font-size: clamp(3.6rem, 18vw, 5rem); line-height: .78; }
-  .hero-brand-name-secondary { font-size: clamp(2.8rem, 14vw, 3.8rem); }
+  .hero-brand-name-primary { font-size: clamp(4rem, 20vw, 5.6rem); line-height: .78; }
+  .hero-brand-name-secondary { font-size: clamp(3.1rem, 16vw, 4.2rem); }
   .hero-brand-divider { width: 74%; margin-top: 1rem; }
-  .hero-brand-values { gap: .55rem; margin-top: .9rem; font-size: .54rem; letter-spacing: .2em; }
+  .hero-brand-values { gap: .55rem; margin-top: .9rem; font-size: .6rem; letter-spacing: .2em; }
   .price-panel { grid-template-columns: auto 1fr auto; }
   .price-panel .price-value { font-size: 2.15rem; }
 }
@@ -676,7 +676,7 @@ label[for] {
     padding-left: max(1.25rem, env(safe-area-inset-left));
   }
   .hero-brand { width: 100%; padding: 1.35rem 0 1.5rem; }
-  .hero-brand-kicker { margin-top: .85rem; font-size: .85rem; }
+  .hero-brand-kicker { margin-top: .85rem; font-size: .98rem; }
   .hero-brand + p { max-width: 22rem; margin-top: 1.35rem; font-size: .98rem; line-height: 1.5; text-wrap: balance; }
   .hero-actions { width: 100%; margin-top: 1.65rem; flex-direction: column; gap: .8rem; }
   .hero-book-button {
@@ -885,15 +885,14 @@ label[for] {
    block scrolls into view so it never jitters mid-scroll. */
 .aiv-pre { opacity: 0; }
 .animate__animated { --animate-duration: 560ms; }
-/* tone the slide down to a small nudge instead of a full-height slide */
+/* opacity-only — a moving section reads as "shake" while the page scrolls */
 @keyframes aivSlideInUp {
-  from { opacity: 0; transform: translate3d(0, 20px, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .animate__slideInUp {
   animation-name: aivSlideInUp !important;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  backface-visibility: hidden;
+  animation-timing-function: ease-out;
 }
 /* hero copy slides in from the left — small nudge, not a full-width fly-in */
 @keyframes heroFadeInLeft {
