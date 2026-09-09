@@ -876,7 +876,7 @@ label[for] {
    :where() keeps zero specificity so any explicit utility still wins. */
 :where(p) { font-size: 1.08rem; line-height: 1.7; }
 :where(.text-sm) { font-size: 0.9375rem; line-height: 1.6; }
-:where(.text-xs) { font-size: 0.8125rem; }
+:where(.text-xs) { font-size: 0.9rem; }
 
 /* Readable compact buttons on public pages. */
 [data-section-motion] .btn-sm { font-size: 0.8125rem; }

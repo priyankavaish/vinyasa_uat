@@ -52,8 +52,10 @@ export function Parallax({
   );
 }
 
-/** Full-bleed hero image that drifts slower than scroll and eases back to rest as the
- *  hero scrolls out, paired with a subtle zoom so the drift never exposes an edge. */
+/** Full-bleed hero media that drifts slower than scroll and eases back to rest as
+ *  the hero scrolls out. The layer is oversized via negative insets (not a CSS
+ *  scale) so the drift never exposes an edge AND the media is never upscaled —
+ *  scaling a <video>/<img> up is what made it look soft. */
 export function ParallaxHeroImage({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -65,7 +67,7 @@ export function ParallaxHeroImage({ children, className = "" }: { children: Reac
     const update = () => {
       const rect = el.parentElement!.getBoundingClientRect();
       const progress = Math.min(Math.max(-rect.top / (rect.height || 1), 0), 1);
-      el.style.transform = `translate3d(0, ${(progress * 60).toFixed(2)}px, 0) scale(${(1.12 - progress * 0.04).toFixed(3)})`;
+      el.style.transform = `translate3d(0, ${(progress * 56).toFixed(2)}px, 0)`;
       raf = 0;
     };
     const onScroll = () => {
@@ -84,7 +86,11 @@ export function ParallaxHeroImage({ children, className = "" }: { children: Reac
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      <div ref={wrapRef} className={`absolute inset-0 scale-[1.12] ${className}`} style={{ willChange: "transform" }}>
+      <div
+        ref={wrapRef}
+        className={`absolute ${className}`}
+        style={{ inset: "-9%", willChange: "transform" }}
+      >
         {children}
       </div>
     </div>
