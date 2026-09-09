@@ -20,7 +20,7 @@ export default function MarqueeBar() {
       <div className="marquee-track relative flex w-max items-center py-2 sm:py-2.5">
         {loop.map((item, index) => (
           <span key={`${item}-${index}`} className="flex shrink-0 items-center">
-            <span className="px-5 font-display text-xs font-semibold tracking-[0.06em] text-clay-ink whitespace-nowrap sm:px-7 sm:text-sm">
+            <span className="px-5 font-display text-sm uppercase tracking-[0.14em] text-clay-ink whitespace-nowrap sm:px-7 sm:text-base">
               {item}
             </span>
             <span aria-hidden="true" className="grid place-items-center text-accent">
