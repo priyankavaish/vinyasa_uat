@@ -7,13 +7,11 @@ import { Icon, type IconName } from "@/components/ui/icon";
 
 import { PageHero } from "@/components/sections/hero";
 import galleryA from "@/app/assets/new/grounds-01.jpg";
-import galleryB from "@/app/assets/new/community-03.jpg";
 import galleryC from "@/app/assets/new/room-prithvi-2.jpg";
 import galleryD from "@/app/assets/new/grounds-04.jpg";
 import vine3 from "@/app/assets/vine3.png";
 import vine4 from "@/app/assets/vine4.png";
 import expA from "@/app/assets/new/community-06.jpg";
-import expC from "@/app/assets/new/community-05.jpg";
 import expD from "@/app/assets/new/grounds-08.jpg";
 import expE from "@/app/assets/new/community-07.jpg";
 import expF from "@/app/assets/new/grounds-09.jpg";
@@ -29,7 +27,7 @@ export const metadata = {
   alternates: { canonical: "/stays" },
 };
 
-const EXPERIENCE_PHOTOS = [expA, "/images/2N0A9839.JPG", expC, expD, expE, expF];
+const EXPERIENCE_PHOTOS = [expA, "/images/2N0A9839.JPG", "/images/DJI_20240924131352_0562_D.jpg", expD, expE, expF];
 
 export default async function StaysPage() {
   const [rooms, visitOptions, partners] = await Promise.all([
@@ -65,14 +63,14 @@ export default async function StaysPage() {
 
         <Reveal variant="fade" delay={120}>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[galleryA, galleryB, galleryC, galleryD].map((img, i) => (
+            {[galleryA, "/images/2N0A9945.jpg", galleryC, galleryD].map((img, i) => (
               <div
                 key={i}
                 className={`relative aspect-[3/4] overflow-hidden border border-line ${
                   i % 2 === 1 ? "sm:mt-6" : ""
                 }`}
               >
-                <Image src={img} alt="" fill sizes="25vw" placeholder="blur" className="object-cover transition-transform duration-500 hover:scale-105" />
+                <Image src={img} alt="" fill sizes="25vw" placeholder={typeof img === "string" ? "empty" : "blur"} className="object-cover transition-transform duration-500 hover:scale-105" />
               </div>
             ))}
           </div>
