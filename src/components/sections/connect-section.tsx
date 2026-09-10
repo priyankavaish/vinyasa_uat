@@ -59,24 +59,26 @@ export default function ConnectSection() {
         {WAYS.map((way, i) => (
           <div key={way.href} className="mx-auto max-w-[100rem]">
             <div
-              className={`grid items-center gap-0 md:grid-cols-2 ${
+              className={`grid items-center gap-2 md:grid-cols-2 md:gap-6 lg:gap-10 ${
                 i > 0 ? "border-t border-line" : ""
               }`}
             >
               <Reveal
                 variant="up"
-                className={`relative aspect-[4/3] w-full sm:aspect-[16/10] md:aspect-[4/3] ${
+                className={`w-full p-5 sm:p-10 md:p-12 lg:p-16 ${
                   i % 2 === 1 ? "md:order-2" : ""
                 }`}
               >
-                <Image
-                  src={way.image}
-                  alt=""
-                  fill
-                  quality={90}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover"
-                />
+                <div className="relative aspect-[4/3] w-full overflow-hidden border border-line shadow-[0_20px_50px_-28px_rgba(45,35,25,0.35)] sm:aspect-[16/10] md:aspect-[4/3]">
+                  <Image
+                    src={way.image}
+                    alt=""
+                    fill
+                    quality={90}
+                    sizes="(min-width: 768px) 45vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
               </Reveal>
 
               <Reveal
