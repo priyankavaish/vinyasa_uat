@@ -14,7 +14,7 @@ const NAV_LINKS = [
   { href: "/about", label: "The Vinyasa Way" },
   { href: "/stays", label: "Stays" },
   { href: "/events", label: "Events & Retreats" },
-  { href: "/corporate", label: "Volunteer" },
+  { href: "/volunteering", label: "Volunteering" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -25,7 +25,7 @@ function isActivePath(pathname: string, href: string) {
 // Routes whose first viewport is a full-bleed photo hero — nav rides
 // transparent over the image on these, like villaskamezi/era-residence.
 // Everywhere else (forms, admin) there's no photo to sit on, so it's solid.
-const HERO_PHOTO_ROUTES = [/^\/$/, /^\/events\/./, /^\/corporate$/, /^\/about$/, /^\/book$/, /^\/work-from-farm$/];
+const HERO_PHOTO_ROUTES = [/^\/$/, /^\/events\/./, /^\/about$/, /^\/book$/, /^\/work-from-farm$/];
 
 export default function SiteHeader() {
   const content = useEditorial("components/layout/site-header", editorialDefaults);

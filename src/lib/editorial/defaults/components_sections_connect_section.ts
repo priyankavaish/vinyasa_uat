@@ -18,7 +18,7 @@ const PAIR = [
   },
   {
     title: "Corporate Offsites",
-    href: "/corporate",
+    href: "/volunteering",
     image: corporateTileImage,
     blurb:
       "Team retreats grounded in the desert, not a boardroom — slow mornings, shared meals, and the conversations that don't happen back at the office.",

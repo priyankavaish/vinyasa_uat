@@ -3,7 +3,6 @@ import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__sit
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
 import Link from "next/link";
-import { PageHero } from "@/components/sections/hero";
 import SectionWave from "@/components/ui/section-wave";
 import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
@@ -11,6 +10,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
 import { Icon } from "@/components/ui/icon";
 import LeadForm from "@/components/forms/lead-form";
+import GalleryCarouselGrid from "@/components/ui/gallery-carousel-grid";
 import { volunteerTracks, volunteerInfo } from "@/lib/content";
 
 import sideImg from "@/app/assets/new/grounds-07.jpg";
@@ -26,12 +26,27 @@ export default async function VolunteerPage() {
 
   return (
     <div className={styles.page}>
-      <PageHero
-        eyebrow={content.eyebrow_1}
-        title={content.title_2}
-        description={content.description_3}
-        image={content.image_4} imageAlt={content.imageAlt_5} imagePosition="50% 55%" mobileImagePosition="65% 50%"
-      />
+      <section className="bg-clay-surface px-5 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-32">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid items-start gap-8 sm:grid-cols-[1fr_1.2fr] sm:gap-10">
+            <div>
+              <SectionEyebrow icon="people-outline">{content.eyebrow_1}</SectionEyebrow>
+              <h1 className="mt-3 font-display text-4xl italic leading-tight text-clay-ink sm:text-5xl">{content.title_2}</h1>
+              <p className="mt-4 max-w-md leading-relaxed text-foreground-soft">{content.description_3}</p>
+              <span aria-hidden="true" className="mt-6 block h-[3px] w-16 rounded-full bg-accent" />
+            </div>
+            <div className="sm:-mt-4">
+              <GalleryCarouselGrid
+                images={content.galleryImages}
+                alt="Volunteers and residents at Vinyasa Earth"
+              />
+            </div>
+          </div>
+
+          <div className={`${styles.availability} ${styles.availabilityInline}`}>{content.text_7}<span aria-hidden="true">·</span>{content.text_8}<a href={content.href_9}>{content.text_10}</a></div>
+        </div>
+      </section>
+      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
 
       <AnimateInView delay={60}><section className="mx-auto max-w-3xl px-5 py-10 text-center sm:px-8">
         <Reveal variant="fade">
@@ -41,8 +56,6 @@ export default async function VolunteerPage() {
           </p>
         </Reveal>
       </section></AnimateInView>
-
-      <div className={styles.availability}>{content.text_7}<span aria-hidden="true">·</span>{content.text_8}<a href={content.href_9}>{content.text_10}</a></div>
       <SectionWave from="#f3f1ea" to="#f3e6d8" variant="wave" />
       <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-16 sm:py-20">
         <Parallax
@@ -106,6 +119,7 @@ export default async function VolunteerPage() {
           <div className={styles.roles}><span>{content.text_30}</span><span>{content.text_31}</span><span>{content.text_32}</span><span>{content.text_33}</span></div>
         </div>
       </section></AnimateInView>
+
       <AnimateInView delay={100}><section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:gap-16">
           <Reveal variant="left">

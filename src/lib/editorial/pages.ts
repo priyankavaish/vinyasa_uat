@@ -8,7 +8,7 @@ export const managedPages: ManagedPage[] = [
   { id: "about", title: "About / The Vinyasa Way", path: "/about", sections: [page("about"), section("family-bookshelf")] },
   { id: "stays", title: "Stays", path: "/stays", sections: [page("stays"), section("stays-hero-gallery"), section("stay-collection"), section("partner-cards")] },
   { id: "events", title: "Events & Retreats", path: "/events", sections: [page("events"), section("stays-hero-gallery")] },
-  { id: "volunteer", title: "Volunteer", path: "/corporate", sections: [page("corporate"), "components/forms/lead-form"] },
+  { id: "volunteer", title: "Volunteering", path: "/volunteering", sections: [page("corporate"), "components/forms/lead-form"] },
   { id: "contact", title: "Contact", path: "/contact", sections: [page("contact"), section("location-section"), "components/forms/lead-form"] },
   { id: "work-from-farm", title: "Work from Farm", path: "/work-from-farm", sections: [page("work-from-farm")] },
   { id: "book", title: "Book Your Stay", path: "/book", sections: [page("book"), "components/forms/booking-form"] },

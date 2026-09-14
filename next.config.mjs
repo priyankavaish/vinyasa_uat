@@ -12,6 +12,10 @@ const nextConfig = {
       { protocol: "https", hostname: "*.blob.vercel-storage.com" },
     ],
   },
+  async redirects() {
+    // /corporate was renamed to /volunteering — keep old links/bookmarks working.
+    return [{ source: "/corporate", destination: "/volunteering", permanent: true }];
+  },
 };
 
 export default nextConfig;

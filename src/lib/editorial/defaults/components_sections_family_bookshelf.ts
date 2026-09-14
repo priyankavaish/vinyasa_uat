@@ -16,7 +16,7 @@ export const defaults = {
 "text_2": "Vinyasa is not just a space, it is",
 "text_3": "HOME",
 "text_4": "A collaborative journey with family members across the globe — volunteering is the way in, and for many the path to full-time residency.",
-"href_5": "/corporate",
+"href_5": "/volunteering",
 "text_6": "Volunteer with us",
 "text_7": "Since ",
 "text_8": "Vinyasa Earth",

@@ -2,7 +2,7 @@ import { ADDRESS, CONTACT_EMAIL, CONTACT_PHONE_DISPLAY } from "@/lib/site";
 const exploreLinks = [
   { href: "/stays", label: "Stays" },
   { href: "/events", label: "Events & Retreats" },
-  { href: "/corporate", label: "Corporate Offsites" },
+  { href: "/volunteering", label: "Corporate Offsites" },
   { href: "/about", label: "Our Story" },
   { href: "/useful-links", label: "Useful Links" },
   { href: "/blogs", label: "Blogs" },
