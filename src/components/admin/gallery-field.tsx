@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/editorial/image";
 import { useRef, useState } from "react";
 import { compressImage } from "@/lib/image-compress";
 

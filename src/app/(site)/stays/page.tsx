@@ -1,11 +1,19 @@
-import Image from "next/image";
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__stays_page";
+import { getEditorial } from "@/lib/editorial/server";
+import Image from "@/components/editorial/image";
 import Link from "next/link";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
-import { Icon, type IconName } from "@/components/ui/icon";
+import StayCollection from "@/components/sections/stay-collection";
 
-import { PageHero } from "@/components/sections/hero";
+import StaysHeroGallery from "@/components/sections/stays-hero-gallery";
+import PartnerCards from "@/components/sections/partner-cards";
+import texauraLogo from "@/app/assets/stays/IMG_1554-600x112.png";
+import carpetLiveLogo from "@/app/assets/stays/carpetlive-trimmed.png";
+import dheerLogo from "@/app/assets/stays/DHEER-LOGO.png";
+import SectionWave from "@/components/ui/section-wave";
 import galleryA from "@/app/assets/new/grounds-01.jpg";
 import galleryC from "@/app/assets/new/room-prithvi-2.jpg";
 import galleryD from "@/app/assets/new/grounds-04.jpg";
@@ -16,159 +24,92 @@ import expF from "@/app/assets/new/grounds-09.jpg";
 
 import residencyImg from "@/app/assets/new/community-05.jpg";
 
-import { getCottages, getVisitOptions, getPartners } from "@/lib/cms";
+import { getCottages, getVisitOptions } from "@/lib/cms";
 import { whatsappLink } from "@/lib/site";
+
+const ACCESSORY_PARTNERS = [
+  {
+    name: "Texaura",
+    logo: texauraLogo.src,
+    blurb:
+      "A modern bed, bath, and living brand from Jaipur, crafting refined collections in certified organic cotton for homes, boutique hotels, and wellness retreats worldwide — quiet, considered, and naturally lived-in.",
+    about: [
+      "Texaura is a modern bed, bath, and living brand creating thoughtfully crafted collections for homes and hospitality spaces around the world.",
+      "Rooted in the belief that the spaces we live in shape the way we feel, rest, and experience everyday life, Texaura brings together refined comfort, timeless design, certified organic cotton, and conscious craftsmanship into one considered expression of modern living.",
+      "Founded in Jaipur, India — a city long celebrated for its textile heritage, craftsmanship, and artistic culture — Texaura combines this rich foundation with a contemporary global design language defined by simplicity, balance, warmth, and understated elegance.",
+      "Our collections include bedding, blankets, throws, towels, bathrobes, and hospitality linen designed for modern homes, boutique hotels, wellness retreats, luxury villas, and thoughtfully curated spaces. Every product is created with careful attention to softness, breathability, texture, durability, and lasting comfort — allowing each collection to feel elevated, welcoming, and naturally lived in.",
+      "At the heart of Texaura is a deep appreciation for material integrity and thoughtful creation. We work with certified organic cotton sourced through responsible farming ecosystems and collaborate with ethically managed manufacturing partners who value skilled craftsmanship, fair wages, safe working environments, and responsible production practices.",
+      "We believe exceptional quality is experienced through the complete character of a product — the quality of fibre, the refinement of yarn, the weave, finishing, texture, and the way fabric performs over time. This philosophy guides every Texaura collection.",
+      "For hospitality spaces, Texaura partners with properties that value rest, wellbeing, and elevated guest experiences. Our hospitality collections bring together timeless aesthetics, operational durability, and refined comfort for hotels, resorts, retreats, and modern hospitality environments.",
+      "Sustainability at Texaura is approached through responsibility, long-term thinking, and conscious decision-making across every stage of creation — from certified organic cotton and thoughtful production planning to recyclable packaging and products designed for lasting use.",
+      "Guided by a philosophy of quiet refinement and thoughtful simplicity, Texaura is building a global lifestyle brand where comfort, craftsmanship, wellbeing, and conscious luxury come together seamlessly — a more thoughtful expression of modern luxury, designed around how people live, rest, and feel every day.",
+    ],
+  },
+  {
+    name: "Carpet Live",
+    logo: carpetLiveLogo.src,
+    blurb:
+      "Rooted in Bhadohi's weaving legacy, Carpet Live brings export-quality flatweaves — kilims and dhurries — into contemporary homes. Lightweight, tactile, and built to last. Crafted. Curated. Enduring.",
+    about: [
+      "Rooted in Bhadohi's legacy of craftsmanship, Carpet Live brings export-quality rugs into contemporary homes. Built on generations of weaving expertise, the brand balances heritage techniques with modern design sensibilities to create pieces that feel timeless, functional, and quietly refined.",
+      "At Carpet Live, rugs are not treated as decorative afterthoughts, but as foundational elements that shape the feeling of a space. Every piece is designed with an emphasis on texture, materiality, and longevity — crafted to feel lived-in, effortless, and enduring over time.",
+      "Known for one of India's largest collections of kilims and dhurries, Carpet Live focuses on flatweaves that work naturally within contemporary homes: lightweight and versatile, easy to maintain, functional for everyday living, and designed for warmth without visual heaviness.",
+      "The brand aesthetic leans minimal, tactile, and grounded — blending traditional craftsmanship with modern interiors in a way that feels elevated yet deeply personal. Crafted. Curated. Enduring.",
+    ],
+  },
+  {
+    name: "Dheer Exports",
+    logo: dheerLogo.src,
+    blurb:
+      "A Jaipur family business since 2010, Dheer Exports grew from two weavers to three hundred — building one of India's largest collections of handcrafted rugs, dhurries, and carpets while creating dignified livelihoods for artisans.",
+    about: [
+      "In 2010, this organisation was formed with a resolve to work for artisans — handing them a way to earn a livelihood and lead a respectful life, and in turn contributing to the larger ambition of rebuilding and serving the nation. With this goal, Dheer Exports came into existence.",
+      "It's a family business that combines the pursuit of positive wealth creation with spreading kindness in a way that benefits all stakeholders — consumers, artisans, employees, suppliers, and channel partners. Manufacturing rugs since 2010, it began with a single loom and two weavers in the family home, and the dreams of Mr Kunal and Mrs Sujata Shah. It has been a tough journey from two weavers to three hundred.",
+      "Today Dheer Exports makes one of the largest collections of rugs and carpets, and designs and develops home-furnishing items of every kind. The range — dhurries, cotton stone-wash dhurries, chenille rugs, hemp and jute rugs, cotton-wool rugs, hand-tufted carpets, cushion covers, shaggy rugs, cotton throws, stools and poufs — comes in many attractive colour combinations.",
+      "At Dheer Rugs, we serve a community of designers, decorators, and homebodies — people who care deeply about the objects they bring into their homes, from the materials we source to the textures we develop. Our carpets and rugs are known for their elegant designs and quality.",
+    ],
+  },
+] as const;
 
 export const revalidate = 300;
 
-export const metadata = {
-  title: "Stays at Vinyasa Earth in Jaipur",
-  description:
-    "Hand-built rooms named for the elements — Agni, Jal, Chandrama, Prithvi, Vayu, Shunya, and a shared dorm — at Vinyasa Earth in Jaipur.",
-  alternates: { canonical: "/stays" },
-};
+export async function generateMetadata(): Promise<import("next").Metadata> {
+  return (await getEditorial("app/(site)/stays/page", editorialDefaults)).seo;
+}
 
 const EXPERIENCE_PHOTOS = [expA, "/images/2N0A9839.JPG", "/images/DJI_20240924131352_0562_D.jpg", expD, expE, expF];
 
 export default async function StaysPage() {
-  const [rooms, visitOptions, partners] = await Promise.all([
-    getCottages(),
-    getVisitOptions(),
-    getPartners(),
-  ]);
+  const content = await getEditorial("app/(site)/stays/page", editorialDefaults);
+
+  const [rooms, visitOptions] = await Promise.all([getCottages(), getVisitOptions()]);
 
   return (
     <>
-      <PageHero
-        eyebrow="Cottages &middot; Dorm &middot; Tents"
-        title="Hand-built earth stays in Jaipur"
-        description="Disconnect from the noise, reconnect with what matters &mdash; mud-plastered rooms rooted in nature and crafted for rest."
-        image="/images/stays-hero.jpg"
-        imageAlt="Flowering garden courtyard with stone wells and shade trees at Vinyasa Earth"
-        imagePosition="50% 60%"
-        mobileImagePosition="50% 55%"
-        contain
-      >
-        <Link href="/book" className="btn btn-accent">Make a reservation</Link>
-        <a href="#rooms" className="btn btn-outline-light">Explore rooms</a>
-      </PageHero>
+      <StaysHeroGallery photos={rooms.map((room) => ({ src: room.gallery[1] || room.gallery[0] || room.image, name: room.name, slug: room.slug, element: room.element }))} />
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+      <section id="stays-intro" className="mx-auto max-w-6xl px-5 pb-7 pt-4 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-3xl text-center">
-          <p className="leading-relaxed text-foreground-soft">
-            We give our guests a unique perspective on the beauty of nature — a chance to disconnect
-            from the outside world and immerse in the wonders that surround us. Our cottages are a
-            comfortable, relaxing place to unwind after a day exploring the surrounding countryside.
-          </p>
+          <p className="leading-relaxed text-foreground-soft">{content.text_1}</p>
         </Reveal>
 
-        <Reveal variant="fade" delay={120}>
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[galleryA, "/images/2N0A9945.jpg", galleryC, galleryD].map((img, i) => (
-              <div
-                key={i}
-                className={`relative aspect-[3/4] overflow-hidden border border-line ${
-                  i % 2 === 1 ? "sm:mt-6" : ""
-                }`}
-              >
-                <Image src={img} alt="" fill sizes="25vw" placeholder={typeof img === "string" ? "empty" : "blur"} className="object-cover transition-transform duration-500 hover:scale-105" />
-              </div>
-            ))}
-          </div>
-        </Reveal>
+
       </section>
 
-      <section id="rooms" className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
-        <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
-          <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-            <SectionEyebrow icon="home-outline">Choose a stay experience</SectionEyebrow>
-            <h2 className="mt-2 font-display italic text-3xl leading-tight sm:text-4xl">
-              Rooms named for the elements
-            </h2>
-            <p className="mt-3 text-sm text-foreground-soft leading-relaxed">
-              Every room at Vinyasa is hand-plastered and one of a kind. Pick the element that suits
-              your stay, or book the dorm and meet everyone at once.
-            </p>
-          </Reveal>
+      <SectionWave from="#f3f1ea" to="var(--footer-background)" variant="wave" className="h-6 sm:h-8" />
+      <StayCollection rooms={rooms} />
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {rooms.map((room, i) => (
-              <Reveal
-                key={room.slug}
-                variant="up"
-                delay={(i % 3) * 90}
-                className={i % 3 === 1 ? "lg:mt-12" : ""}
-              >
-                <Link
-                  href={`/stays/${room.slug}`}
-                  className="group flex h-full flex-col overflow-hidden border border-line bg-surface shadow-[0_10px_30px_rgba(45,35,25,0.06)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(45,35,25,0.16)]"
-                >
-                  <div className="relative aspect-[4/3] shrink-0 overflow-hidden">
-                    <Image
-                      src={room.image}
-                      alt={`${room.name} at Vinyasa Earth`}
-                      fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
-                    <span
-                      className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.18em] text-white shadow-[0_2px_12px_rgba(0,0,0,0.35)] backdrop-blur-sm"
-                      style={{ backgroundColor: `${room.accent}e6` }}
-                    >
-                      <Icon name={room.icon as IconName} size={13} />
-                      {room.element}
-                    </span>
-                    <h3 className="absolute bottom-3 left-4 right-4 font-display italic text-3xl leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-                      {room.name}
-                    </h3>
-                  </div>
-                  <div className="flex flex-1 flex-col p-5 sm:p-6">
-                    <p className="flex-1 text-sm leading-relaxed text-foreground-soft">
-                      {room.description}
-                    </p>
-                    <div className="mt-5 flex items-end justify-between border-t border-line pt-4">
-                      <span className="text-sm">
-                        <span className="block text-[12px] font-bold uppercase tracking-[0.14em] text-muted">
-                          From
-                        </span>
-                        <span className="font-display text-2xl text-foreground">
-                          ₹{room.pricePerNight.toLocaleString("en-IN")}
-                        </span>
-                        <span className="ml-1 text-xs text-foreground-soft">/ night</span>
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent">
-                        View
-                        <span className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
-                          →
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      <SectionWave from="var(--footer-background)" to="#f3f1ea" variant="arch" />
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon="sparkles-outline">Experiences</SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-4xl leading-tight">Days built around making things</h2>
-          <p className="mt-4 text-foreground-soft leading-relaxed">
-            Vinyasa is a space for self-engaging activities — nature walks, hikes, and one-on-one
-            sessions with an artist in residence — woven into our daily life. Experiences are
-            seasonal; write to{" "}
-            <a href="mailto:vinyasa.ashram@gmail.com" className="text-accent underline">
-              vinyasa.ashram@gmail.com
-            </a>{" "}
-            to enquire.
-          </p>
+          <SectionEyebrow icon="sparkles-outline">{content.text_2}</SectionEyebrow>
+          <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_3}</h2>
+          <p className="mt-4 text-foreground-soft leading-relaxed">{content.text_4}{" "}
+            <a href={content.href_5} className="text-accent underline">{content.text_6}</a>{" "}{content.text_7}</p>
         </Reveal>
 
         <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {EXPERIENCE_PHOTOS.map((img, i) => (
+          {content.EXPERIENCE_PHOTOS.map((img, i) => (
             <Reveal key={i} variant="clip" delay={(i % 3) * 80} className={i % 3 === 1 ? "sm:mt-8" : ""}>
               <Parallax speed={i % 2 === 0 ? 0.05 : -0.05}>
                 <div className="relative aspect-square overflow-hidden border border-line">
@@ -182,28 +123,46 @@ export default async function StaysPage() {
 
       <section id="artist-escape" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <Reveal variant="left"><div className="relative aspect-[4/5] overflow-hidden border border-line"><Image src={residencyImg} alt="Resident artists at Vinyasa Earth" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" /></div></Reveal>
+          <Reveal variant="left"><div className="relative aspect-[4/5] overflow-hidden border border-line"><Image src={content.residencyImg} alt={content.alt_9} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" /></div></Reveal>
           <Reveal variant="right" delay={100}>
-            <SectionEyebrow icon="compass-outline">The Artist Escape</SectionEyebrow>
-            <h2 className="mt-3 font-display italic text-4xl leading-tight">An affordable home for artists at work</h2>
-            <p className="mt-4 leading-relaxed text-foreground-soft">Outside the dated calendar, the Artist Escape runs year-round: an affordable stay with meals included, in a supportive creative environment. Paint, write, choreograph or build alongside the resident community for a week or a season.</p>
-            <p className="mt-3 leading-relaxed text-foreground-soft">Applications and residency queries go straight to the team.</p>
+            <SectionEyebrow icon="compass-outline">{content.text_10}</SectionEyebrow>
+            <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_11}</h2>
+            <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_12}</p>
+            <p className="mt-3 leading-relaxed text-foreground-soft">{content.text_13}</p>
             <div className="mt-7 flex flex-wrap gap-4">
-              <a href={whatsappLink("Hi Vinyasa Earth, I'd like to apply for the Artist Escape.")} className="btn btn-accent inline-flex">Enquire on WhatsApp</a>
-              <Link href="/contact" className="btn btn-outline inline-flex">Write to us</Link>
+              <a href={whatsappLink("Hi Vinyasa Earth, I'd like to apply for the Artist Escape.")} className="btn btn-accent inline-flex">{content.text_14}</a>
+              <Link href={content.href_15} className="btn btn-outline inline-flex">{content.text_16}</Link>
             </div>
           </Reveal>
         </div>
       </section>
 
+      <section id="artist-escape-gallery" aria-label={content.aria_label_17} className="mx-auto max-w-6xl px-5 pb-20 sm:px-8">
+        <Reveal variant="fade" delay={120}>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {[content.galleryA, "/images/2N0A9945.jpg", content.galleryC, content.galleryD].map((img, i) => (
+              <div
+                key={i}
+                className={`relative aspect-[3/4] overflow-hidden border border-line ${
+                  i % 2 === 1 ? "sm:mt-6" : ""
+                }`}
+              >
+                <Image src={img} alt="" fill sizes="25vw" placeholder={typeof img === "string" ? "empty" : "blur"} className="object-cover transition-transform duration-500 hover:scale-105" />
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      {visitOptions.length > 0 && (
+        <SectionWave from="#f3f1ea" to="#e7ebdd" variant="slant" />
+      )}
       {visitOptions.length > 0 && (
         <section className="organic-section relative overflow-hidden bg-dusk-surface py-20">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-              <SectionEyebrow icon="calendar-outline">More ways to visit</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">
-                You don&apos;t have to stay the night
-              </h2>
+              <SectionEyebrow icon="calendar-outline">{content.text_23}</SectionEyebrow>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_24}</h2>
             </Reveal>
 
             <div className="mt-10 grid gap-5 sm:grid-cols-2">
@@ -226,35 +185,19 @@ export default async function StaysPage() {
           </div>
         </section>
       )}
-
-      {partners.length > 0 && (
-        <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-          <Reveal variant="fade" className="text-center">
-            <SectionEyebrow>Accessory partners</SectionEyebrow>
-            <h2 className="mt-3 font-display italic text-3xl leading-tight">
-              Brands that align with how we build
-            </h2>
-          </Reveal>
-
-          <div className="mt-10 grid gap-5 sm:grid-cols-3">
-            {partners.map((partner, i) => (
-              <Reveal key={partner.name} variant="up" delay={i * 90}>
-                <div className="flex h-full flex-col items-center justify-between gap-4 border border-line bg-surface px-6 py-8 text-center">
-                  {partner.logo && (
-                    <div className="relative h-14 w-full">
-                      <Image src={partner.logo} alt={partner.name} fill className="object-contain" />
-                    </div>
-                  )}
-                  <p className="text-sm text-foreground-soft">{partner.description}</p>
-                  <Link href={partner.link} className="text-xs font-semibold uppercase tracking-[0.14em] text-accent underline">
-                    Enquire
-                  </Link>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
+      {visitOptions.length > 0 && (
+        <SectionWave from="#e7ebdd" to="#f3f1ea" variant="wave" />
       )}
+
+      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+        <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
+          <SectionEyebrow icon="ribbon-outline" className="justify-center">{content.text_25}</SectionEyebrow>
+          <h2 className="mt-3 font-display italic text-3xl leading-tight">{content.text_26}</h2>
+          <p className="mx-auto mt-3 text-sm leading-relaxed text-foreground-soft">{content.text_27}</p>
+        </Reveal>
+
+        <PartnerCards partners={content.ACCESSORY_PARTNERS} />
+      </section>
     </>
   );
 }

@@ -1,7 +1,10 @@
 "use client";
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_layout_site_header";
+import { useEditorial } from "@/components/editorial/provider";
+
 
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/components/editorial/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "../ui/icon";
@@ -22,9 +25,11 @@ function isActivePath(pathname: string, href: string) {
 // Routes whose first viewport is a full-bleed photo hero — nav rides
 // transparent over the image on these, like villaskamezi/era-residence.
 // Everywhere else (forms, admin) there's no photo to sit on, so it's solid.
-const HERO_PHOTO_ROUTES = [/^\/$/, /^\/stays(\/|$)/, /^\/events(\/|$)/, /^\/corporate$/, /^\/about$/, /^\/contact$/, /^\/book$/, /^\/work-from-farm$/];
+const HERO_PHOTO_ROUTES = [/^\/$/, /^\/events\/./, /^\/corporate$/, /^\/about$/, /^\/book$/, /^\/work-from-farm$/];
 
 export default function SiteHeader() {
+  const content = useEditorial("components/layout/site-header", editorialDefaults);
+
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname() ?? "/";
@@ -73,10 +78,10 @@ export default function SiteHeader() {
       }`}
       style={{ backgroundColor: transparent ? "transparent" : "#ffffff" }}
     >
-      <div className="site-header-inner mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-4 sm:px-8">
+      <div className="site-header-inner mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-2.5 sm:px-8">
         <Link
-          href="/"
-          aria-label="Vinyasa Earth — home"
+          href={content.href_5}
+          aria-label={content.aria_label_6}
           className="flex items-center justify-self-start"
         >
           <span
@@ -85,12 +90,12 @@ export default function SiteHeader() {
             }`}
           >
             <Image
-              src="/images/logo-transparent.png"
-              alt="Vinyasa Earth"
-              width={64}
-              height={64}
+              src={content.src_7}
+              alt={content.alt_8}
+              width={60}
+              height={60}
               priority
-              className="h-14 w-14"
+              className="h-[3.25rem] w-[3.25rem]"
             />
           </span>
         </Link>
@@ -100,12 +105,13 @@ export default function SiteHeader() {
             transparent ? "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.65)]" : "text-black"
           }`}
         >
-          {NAV_LINKS.map((link) => {
+          {content.NAV_LINKS.map((link) => {
             const active = isActivePath(pathname, link.href);
             return (
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  style={{ fontSize: "0.8rem" }}
                   aria-current={active ? "page" : undefined}
                   className={`${linkClass} ${active ? activeClass : ""}`}
                 >
@@ -118,20 +124,18 @@ export default function SiteHeader() {
 
         <div className="col-start-3 flex shrink-0 items-center justify-self-end gap-3 lg:col-start-3">
           <Link
-            href="/book"
-            className="hidden items-center justify-center px-5 py-3 text-xs font-semibold tracking-[0.12em] text-white uppercase transition-all hover:-translate-y-0.5 hover:brightness-110 lg:inline-flex"
-            style={{ backgroundColor: "#8f3b31", color: "#ffffff" }}
-          >
-            Book Your Stay
-          </Link>
+            href={content.href_11}
+            className="hidden items-center justify-center px-5 py-2.5 text-xs font-semibold tracking-[0.12em] text-white uppercase transition-all hover:-translate-y-0.5 hover:brightness-110 lg:inline-flex"
+            style={{ backgroundColor: "#8f3b31", color: "#ffffff", fontSize: "0.8rem" }}
+          >{content.text_12}</Link>
           <button
             type="button"
             aria-expanded={open}
-            aria-label="Toggle menu"
+            aria-label={content.aria_label_13}
             className="menu-toggle grid h-12 w-12 place-items-center lg:hidden"
             onClick={() => setOpen((v) => !v)}
           >
-            <span className="sr-only">Menu</span>
+            <span className="sr-only">{content.text_14}</span>
             <Icon
               name={open ? "close-outline" : "menu-outline"}
               size={28}
@@ -144,12 +148,13 @@ export default function SiteHeader() {
       {open && (
         <nav className="mobile-nav px-5 py-5 lg:hidden">
           <ul className="flex flex-col gap-4 text-sm tracking-[0.08em] uppercase text-foreground">
-            {NAV_LINKS.map((link) => {
+            {content.NAV_LINKS.map((link) => {
               const active = isActivePath(pathname, link.href);
               return (
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                  style={{ fontSize: "0.8rem" }}
                     onClick={() => setOpen(false)}
                     aria-current={active ? "page" : undefined}
                     className={
@@ -165,13 +170,11 @@ export default function SiteHeader() {
             })}
             <li>
               <Link
-                href="/book"
+                href={content.href_20}
                 onClick={() => setOpen(false)}
                 className="inline-flex px-5 py-3 font-semibold text-white"
-                style={{ backgroundColor: "#8f3b31", color: "#ffffff" }}
-              >
-                Book Your Stay
-              </Link>
+                style={{ backgroundColor: "#8f3b31", color: "#ffffff", fontSize: "0.8rem" }}
+              >{content.text_21}</Link>
             </li>
           </ul>
         </nav>

@@ -1,11 +1,12 @@
+import SearchableTable from "@/components/admin/searchable-table";
 import Link from "next/link";
 import { asc } from "drizzle-orm";
 import { getDb, hasDb } from "@/lib/db";
-import { cottages, visitOptions as voT, partners as pT } from "@/lib/db/schema";
+import { cottages, visitOptions as voT } from "@/lib/db/schema";
 import { deleteCottage } from "@/lib/admin/actions";
 import DeleteButton from "@/components/admin/delete-button";
 import VisitOptionsEditor from "@/components/admin/visit-options-editor";
-import PartnersEditor from "@/components/admin/partners-editor";
+
 
 export const dynamic = "force-dynamic";
 
@@ -13,10 +14,9 @@ export default async function AdminStaysPage() {
   if (!hasDb()) return <p className="text-sm text-foreground-soft">Database not configured.</p>;
 
   const db = getDb();
-  const [rows, vo, pr] = await Promise.all([
+  const [rows, vo] = await Promise.all([
     db.select().from(cottages).orderBy(asc(cottages.sort)),
     db.select().from(voT).orderBy(asc(voT.sort)),
-    db.select().from(pT).orderBy(asc(pT.sort)),
   ]);
 
   return (
@@ -29,9 +29,7 @@ export default async function AdminStaysPage() {
           </Link>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-lg border border-line bg-white">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
+        <SearchableTable label="stays" columns={6} emptyMessage="No cottages yet. Add a cottage to get started." header={<thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
               <tr>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Element</th>
@@ -40,10 +38,7 @@ export default async function AdminStaysPage() {
                 <th className="px-4 py-3">Live</th>
                 <th className="px-4 py-3" />
               </tr>
-            </thead>
-            <tbody>
-              {rows.map((c) => (
-                <tr key={c.id} className="border-t border-line">
+            </thead>} items={rows.map((c) => ({ id: c.id, search: [c.name, c.slug, c.element, c.published ? "published live yes" : "draft"].join(" "), content: (<tr key={c.id} className="border-t border-line">
                   <td className="px-4 py-3 font-medium">
                     <Link href={`/admin/stays/${c.id}`} className="text-accent underline">
                       {c.name}
@@ -57,22 +52,11 @@ export default async function AdminStaysPage() {
                   <td className="px-4 py-3 text-right">
                     <DeleteButton id={c.id} action={deleteCottage} label="Delete cottage?" />
                   </td>
-                </tr>
-              ))}
-              {rows.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-sm text-foreground-soft">
-                    No cottages yet. Run <code>npm run db:seed</code> or add one.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                </tr>) }))} />
       </div>
 
       <VisitOptionsEditor items={vo} />
-      <PartnersEditor items={pr} />
+      <div className="border border-line bg-white p-6"><h2 className="text-xl">Partner logos & stay page content</h2><p className="mt-2 text-sm text-foreground-soft">Edit partner names, logos, descriptions and gallery images in the website content editor.</p><Link href="/admin/content?section=app%2F(site)%2Fstays%2Fpage" className="btn btn-outline mt-4">Edit stays page content</Link></div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import { useId, useRef, useState } from "react";
+import Image from "@/components/editorial/image";
+import { useEffect, useId, useRef, useState } from "react";
 import { compressImage } from "@/lib/image-compress";
 
 // Accept anything a human might paste — a full Windows path, a file:// URL, a
@@ -27,12 +27,28 @@ export default function ImageField({
   name,
   label = "Image",
   defaultValue = "",
+  value,
+  onChange,
 }: {
-  name: string;
+  name?: string;
   label?: string;
   defaultValue?: string;
+  /** Controlled mode: pass value + onChange instead of name/defaultValue (used
+   *  outside a plain <form>, e.g. the block-builder's React state). */
+  value?: string;
+  onChange?: (v: string) => void;
 }) {
-  const [url, setUrl] = useState(() => toWebPath(defaultValue));
+  const controlled = value !== undefined;
+  const [internal, setInternal] = useState(() => toWebPath(defaultValue));
+  useEffect(() => {
+    if (!controlled) setInternal(toWebPath(defaultValue));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultValue, controlled]);
+  const url = controlled ? value : internal;
+  const setUrl = (v: string) => {
+    if (controlled) onChange?.(v);
+    else setInternal(v);
+  };
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [drag, setDrag] = useState(false);
@@ -66,7 +82,7 @@ export default function ImageField({
       <label className="block text-xs font-semibold uppercase tracking-[0.1em] text-foreground-soft">
         {label}
       </label>
-      <input type="hidden" name={name} value={url} />
+      {name ? <input type="hidden" name={name} value={url} /> : null}
 
       <div className="mt-1.5 flex flex-wrap items-start gap-4">
         <div className="relative h-28 w-40 shrink-0 overflow-hidden rounded border border-line bg-[#f4efe6]">

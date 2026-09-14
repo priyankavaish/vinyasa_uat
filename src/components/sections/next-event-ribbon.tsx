@@ -1,3 +1,6 @@
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_next_event_ribbon";
+import { getEditorial } from "@/lib/editorial/server";
 import Link from "next/link";
 import { getEvents } from "@/lib/cms";
 import { parseEventStart } from "@/lib/event-dates";
@@ -7,6 +10,8 @@ import { Icon } from "../ui/icon";
 // Desktop shows it as a calm centred bar; mobile scrolls it as a marquee so a
 // long event name is always readable in full.
 export default async function NextEventRibbon() {
+  const content = await getEditorial("components/sections/next-event-ribbon", editorialDefaults);
+
   const events = await getEvents();
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
@@ -29,16 +34,12 @@ export default async function NextEventRibbon() {
         <Icon name="calendar-outline" size={13} />
         {month} {day}
       </span>
-      <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#f0c58c]">
-        Next at Vinyasa
-      </span>
+      <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#f0c58c]">{content.text_1}</span>
       <span className="font-display text-base font-medium leading-none text-white lg:text-lg">
         {next.e.name}
       </span>
       <span className="text-xs text-white/65">{next.e.dateLabel}</span>
-      <span className="flex items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_10px_rgba(0,0,0,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5">
-        Book Now
-        <Icon name="arrow-forward-outline" size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+      <span className="flex items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_10px_rgba(0,0,0,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5">{content.text_2}<Icon name="arrow-forward-outline" size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
       </span>
     </>
   );
@@ -47,10 +48,10 @@ export default async function NextEventRibbon() {
     <Link
       href={`/events/${next.e.slug}`}
       aria-label={`Next event: ${next.e.name}, ${next.e.dateLabel} — book now`}
-      className="group relative block overflow-hidden border-b border-t-2 border-b-black/20 border-t-[#5a2015] bg-gradient-to-r from-[#7d3128] via-[#9a3f31] to-[#7d3128] text-accent-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background] duration-300 hover:via-[#ad4636]"
+      className="group relative block overflow-hidden border-t-2 border-t-[#5a2015] bg-gradient-to-r from-[#7d3128] via-[#9a3f31] to-[#7d3128] text-accent-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background] duration-300 hover:via-[#ad4636]"
     >
       {/* desktop — calm centred bar */}
-      <div className="hidden items-center justify-center gap-4 py-3.5 md:flex">
+      <div className="hidden items-center justify-center gap-4 py-2.5 md:flex">
         {Pieces}
       </div>
 
@@ -58,7 +59,7 @@ export default async function NextEventRibbon() {
       <div className="md:hidden">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-[#7d3128] to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-[#7d3128] to-transparent" />
-        <div aria-hidden="true" className="marquee-track flex w-max items-center py-3">
+        <div aria-hidden="true" className="marquee-track flex w-max items-center py-2.5">
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <span key={i} className="flex shrink-0 items-center gap-4 pr-6">
               {Pieces}

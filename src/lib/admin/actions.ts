@@ -217,7 +217,8 @@ export async function saveBlog(form: FormData) {
     });
   }
   revalidateTag("blogs");
-  revalidatePath("/blog");
+  revalidatePath("/blogs");
+  revalidatePath(`/blogs/${slug}`);
   redirect("/admin/blog");
 }
 
@@ -225,7 +226,7 @@ export async function deleteBlog(id: string) {
   await assertAdmin();
   await getDb().delete(t.blogs).where(eq(t.blogs.id, id));
   revalidateTag("blogs");
-  revalidatePath("/blog");
+  revalidatePath("/blogs");
 }
 
 // --------------------------------------------------------------------------

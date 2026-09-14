@@ -1,4 +1,7 @@
-import Image from "next/image";
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_work_from_farm_section";
+import { getEditorial } from "@/lib/editorial/server";
+import Image from "@/components/editorial/image";
 import Link from "next/link";
 import SectionEyebrow from "../ui/section-eyebrow";
 import { Reveal } from "../ui/reveal";
@@ -17,25 +20,22 @@ const points = [
   ["Work, then wander", "Log off to a farm walk, a shared meal, and easy company."],
 ];
 
-export default function WorkFromFarmSection() {
+export default async function WorkFromFarmSection() {
+  const content = await getEditorial("components/sections/work-from-farm-section", editorialDefaults);
+
   return (
-    <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
+    <section className="organic-section relative overflow-hidden bg-clay-surface py-10 sm:py-14">
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-2 lg:gap-16">
         <Reveal variant="left" className="order-1">
-          <SectionEyebrow icon="leaf-outline">A different way to work</SectionEyebrow>
+          <SectionEyebrow icon="leaf-outline">{content.text_1}</SectionEyebrow>
 
-          <h2 className="mt-3 font-display text-4xl leading-[1.03] sm:text-5xl">
-            Work From Farm
-            <span className="mt-1 block text-accent">at Vinyasa</span>
+          <h2 className="mt-3 font-display text-4xl leading-[1.03] sm:text-5xl">{content.text_2}<span className="mt-1 block text-accent">{content.text_3}</span>
           </h2>
 
-          <p className="mt-4 max-w-[46ch] leading-relaxed text-foreground-soft">
-            Step away from the work-from-home routine without stepping away from work — laptop in
-            hand, among mud cottages and open skies, close to Jaipur but far from its rush.
-          </p>
+          <p className="mt-4 max-w-[46ch] leading-relaxed text-foreground-soft">{content.text_4}</p>
 
           <ul className="mt-5 flex flex-wrap gap-2">
-            {perks.map((p) => (
+            {content.perks.map((p) => (
               <li
                 key={p.label}
                 className="inline-flex items-center gap-1.5 rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
@@ -49,8 +49,7 @@ export default function WorkFromFarmSection() {
           <div className="mt-6 space-y-0">
             {points.map(([title, body], i) => (
               <div key={title} className="flex gap-4 border-t border-line py-3.5 last:border-b">
-                <span className="font-display text-xl leading-none text-accent/60 tabular-nums">
-                  0{i + 1}
+                <span className="font-display text-xl leading-none text-accent/60 tabular-nums">{content.text_5}{i + 1}
                 </span>
                 <div>
                   <h3 className="font-display text-base leading-snug text-foreground">{title}</h3>
@@ -61,29 +60,23 @@ export default function WorkFromFarmSection() {
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/book" className="btn btn-accent inline-flex">
-              Plan your work stay
-            </Link>
-            <Link href="/work-from-farm" className="btn btn-outline inline-flex">
-              Learn more
-            </Link>
+            <Link href={content.href_6} className="btn btn-accent inline-flex">{content.text_7}</Link>
+            <Link href={content.href_8} className="btn btn-outline inline-flex">{content.text_9}</Link>
           </div>
         </Reveal>
 
         <Reveal variant="right" delay={100} className="order-2">
-          <figure className="relative aspect-[4/5] w-full overflow-hidden border border-line shadow-[0_1.5rem_3.5rem_rgba(74,52,35,0.14)]">
+          <figure className="relative aspect-[4/5] w-full overflow-hidden shadow-[0_20px_50px_-28px_rgba(45,35,25,0.35)]">
             <Image
-              src={farmImage}
-              alt="Working from the grounds at Vinyasa Earth"
+              src={content.farmImage}
+              alt={content.alt_10}
               fill
               sizes="(min-width: 1024px) 46vw, 100vw"
               className="object-cover"
             />
             <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent p-4">
               <span className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em] text-white/90">
-                <Icon name="location-outline" size={12} />
-                Maheshwas · Jaipur
-              </span>
+                <Icon name="location-outline" size={12} />{content.text_11}</span>
             </figcaption>
           </figure>
         </Reveal>

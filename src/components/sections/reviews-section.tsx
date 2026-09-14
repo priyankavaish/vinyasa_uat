@@ -1,4 +1,7 @@
-import Image from "next/image";
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_reviews_section";
+import { getEditorial } from "@/lib/editorial/server";
+import Image from "@/components/editorial/image";
 import vine1 from "@/app/assets/vine1.png";
 import vine2 from "@/app/assets/vine2.png";
 import { Reveal } from "../ui/reveal";
@@ -17,7 +20,9 @@ function GoogleLogo({ size = 20 }: { size?: number }) {
   );
 }
 
-function Stars({ score }: { score: number }) {
+async function Stars({ score }: { score: number }) {
+  const content = await getEditorial("components/sections/reviews-section", editorialDefaults);
+
   const full = Math.round(score);
   return (
     <span aria-hidden className="flex items-center justify-center gap-1.5">
@@ -43,26 +48,26 @@ const TOPIC_CARD_STYLE = [
 ] as const;
 const pullQuote = GOOGLE_RATING.summary.split(/(?<=\.)\s+/)[0]!.replace(/\.$/, "");
 
-export default function ReviewsSection() {
+export default async function ReviewsSection() {
+  const content = await getEditorial("components/sections/reviews-section", editorialDefaults);
+
   return (
     <section className="relative isolate overflow-hidden py-12 sm:py-16">
       <Parallax speed={-0.025} className="pointer-events-none absolute -left-16 -top-16 z-[1] w-[13rem] opacity-25 sm:-left-20 sm:-top-20 sm:w-[18rem]" aria-hidden="true">
-        <Image src={vine2} alt="" className="w-full -rotate-12" />
+        <Image src={content.vine2} alt="" className="w-full -rotate-12" />
       </Parallax>
       <Parallax speed={0.02} className="pointer-events-none absolute -bottom-16 -right-16 z-[1] w-[13rem] scale-x-[-1] opacity-25 sm:-bottom-20 sm:-right-20 sm:w-[18rem]" aria-hidden="true">
-        <Image src={vine1} alt="" className="w-full rotate-6" />
+        <Image src={content.vine1} alt="" className="w-full rotate-6" />
       </Parallax>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal variant="up" className="relative mx-auto max-w-2xl border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
           <div className="flex flex-wrap items-center justify-center gap-2">
             <GoogleLogo size={20} />
-            <span className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">
-              Verified on Google
-            </span>
+            <span className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">{content.text_5}</span>
           </div>
           <p className="mt-1.5 text-xs text-foreground-soft">
-            {GOOGLE_RATING.category} <span className="mx-1.5 text-line">&middot;</span> {GOOGLE_RATING.hours}
+            {content.GOOGLE_RATING.category} <span className="mx-1.5 text-line">{content.text_6}</span> {content.GOOGLE_RATING.hours}
           </p>
 
           <Parallax speed={-0.025} className="relative">
@@ -71,20 +76,19 @@ export default function ReviewsSection() {
                 <span className="h-px w-14 bg-gradient-to-r from-transparent to-secondary/45 sm:w-24" aria-hidden="true" />
                 <Icon name="leaf-outline" size={20} className="-rotate-45 text-secondary/70" />
                 <span className="font-display text-5xl leading-none text-secondary-ink sm:text-6xl">
-                  {GOOGLE_RATING.score}
+                  {content.GOOGLE_RATING.score}
                 </span>
                 <Icon name="leaf-outline" size={20} className="rotate-45 scale-x-[-1] text-secondary/70" />
                 <span className="h-px w-14 bg-gradient-to-l from-transparent to-secondary/45 sm:w-24" aria-hidden="true" />
               </div>
               <div className="mt-2.5"><Stars score={GOOGLE_RATING.score} /></div>
               <a
-                href={GOOGLE_MAPS_LINK}
+                href={content.GOOGLE_MAPS_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-2.5 inline-flex items-center gap-1.5 border border-line bg-background/70 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-accent hover:text-accent"
               >
-                {GOOGLE_RATING.count} Google reviews
-                <Icon name="arrow-forward-outline" size={11} />
+                {content.GOOGLE_RATING.count}{content.text_7}<Icon name="arrow-forward-outline" size={11} />
               </a>
             </Reveal>
           </Parallax>
@@ -105,7 +109,7 @@ export default function ReviewsSection() {
           </Parallax>
 
           <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-            {GOOGLE_RATING.topics.map((topic, i) => {
+            {content.GOOGLE_RATING.topics.map((topic, i) => {
               const style = TOPIC_STYLE[topic] ?? { icon: "sparkles-outline" as IconName, accent: "#8f3b31" };
               return (
                 <Reveal key={topic} variant="up" delay={220 + i * 70}>

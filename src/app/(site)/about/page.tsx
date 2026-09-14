@@ -1,6 +1,10 @@
-import Image from "next/image";
-import Link from "next/link";
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__about_page";
+import { getEditorial } from "@/lib/editorial/server";
+import Image from "@/components/editorial/image";
 import { PageHero } from "@/components/sections/hero";
+
+import SectionWave from "@/components/ui/section-wave";
+import FamilyBookshelf from "@/components/sections/family-bookshelf";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax, ParallaxHeroImage } from "@/components/ui/parallax";
@@ -8,19 +12,17 @@ import { Icon, type IconName } from "@/components/ui/icon";
 import { getContent } from "@/lib/cms";
 
 import bandImg from "@/app/assets/new/about-band.jpg";
+import storyImg from "@/app/assets/new/community-01.jpg";
 
 export const revalidate = 300;
 
 type Copy = Record<string, string>;
-const paras = (s = "") => s.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
-import storyImg from "@/app/assets/new/community-01.jpg";
 
-export const metadata = {
-  title: "About",
-  description:
-    "The story behind Vinyasa Earth — an art-residential space in Jaipur, founded by dancer Sankalp Sharma as a safe, non-judgemental home for artists to live, create, and belong.",
-  alternates: { canonical: "/about" },
-};
+
+
+export async function generateMetadata(): Promise<import("next").Metadata> {
+  return (await getEditorial("app/(site)/about/page", editorialDefaults)).seo;
+}
 
 const PRINCIPLES: Array<{ icon: IconName; title: string; body: string }> = [
   { icon: "home-outline", title: "Safe space", body: "Where you can create." },
@@ -29,32 +31,79 @@ const PRINCIPLES: Array<{ icon: IconName; title: string; body: string }> = [
   { icon: "people-outline", title: "Community living", body: "Where you collaborate." },
 ];
 
+// Placeholder portraits + copy for now — swap `photo`, `blurb`, `since` for
+// real bios later. Using hi-res community shots so the leaves don't look blurry.
 const FAMILY = [
-  { name: "Sankalp Sharma", role: "Founder", photo: "/seed/family/sankalp.jpg" },
-  { name: "Ankita Sharma", role: "Resident", photo: "/seed/family/ankita.jpg" },
-  { name: "Abhishek Gore", role: "Resident", photo: "/seed/family/abhishek.jpg" },
-  { name: "Coco", role: "Resident animal", photo: "/seed/family/coco.jpg" },
-  { name: "Mojo", role: "Resident animal", photo: "/seed/family/mojo.jpg" },
-  { name: "Diwan", role: "Resident", photo: "/seed/family/diwan.jpg" },
+  {
+    name: "Sankalp Sharma",
+    role: "Founder",
+    photo: "/seed/community-01.jpg",
+    position: "50% 35%",
+    blurb:
+      "A dancer who traded the stage for the soil. Sankalp started Vinyasa as a home where artists could live, make, and belong without asking permission.",
+    since: "2018",
+  },
+  {
+    name: "Ankita Sharma",
+    role: "Resident",
+    photo: "/seed/community-05.jpg",
+    position: "50% 40%",
+    blurb:
+      "Came for a week of quiet, stayed for the mornings. Now keeps the kitchen garden and the residency calendar running in step.",
+    since: "2020",
+  },
+  {
+    name: "Abhishek Gore",
+    role: "Resident",
+    photo: "/seed/community-06.jpg",
+    position: "50% 40%",
+    blurb:
+      "Builder, tinkerer, night-owl. If a wall is drying or a light needs fixing, it is usually his hands on it.",
+    since: "2021",
+  },
+  {
+    name: "Coco",
+    role: "Resident animal",
+    photo: "/seed/community-04.jpg",
+    position: "50% 45%",
+    blurb:
+      "Chief greeter. Escorts every new guest from the gate to the courtyard and expects a scratch as payment.",
+    since: "2019",
+  },
+  {
+    name: "Mojo",
+    role: "Resident animal",
+    photo: "/seed/grounds-03.jpg",
+    position: "50% 50%",
+    blurb:
+      "Sun-spot specialist. Can be found wherever the light lands warmest, supervising from a respectful distance.",
+    since: "2019",
+  },
+  {
+    name: "Diwan",
+    role: "Resident",
+    photo: "/seed/community-07.jpg",
+    position: "50% 40%",
+    blurb:
+      "Holds the long view — logistics, land, and the slow work of keeping a shared home actually shared.",
+    since: "2020",
+  },
 ];
 
 export default async function AboutPage() {
-  const [hero, story, craft] = (await Promise.all([
-    getContent<Copy>("about.hero"),
-    getContent<Copy>("about.story"),
-    getContent<Copy>("about.craft"),
-  ])) as [Copy | null, Copy | null, Copy | null];
+  const content = await getEditorial("app/(site)/about/page", editorialDefaults);
+
+
 
   return (
     <>
       <PageHero
-        eyebrow={hero?.eyebrow ?? "Our story"}
-        title={hero?.title ?? "Start your journey inwards"}
-        description={
-          hero?.description ??
-          "Vinyasa Earth is an art-residential space in Jaipur, Rajasthan — a safe and non-judgemental abode for everyone to free their inner defences and explore themselves."
-        }
-        image="/images/IMG_1084.JPG" imageAlt="Hand-painted mud cottage framed by a neem tree and marigolds at Vinyasa Earth" contain imagePosition="50% 42%"
+        eyebrow={content.text_1}
+        title={content.text_2}
+        description={content.text_3}
+        image={content.image_4}
+        imageAlt={content.imageAlt_5}
+        contain imagePosition="50% 42%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
@@ -63,8 +112,8 @@ export default async function AboutPage() {
             <div className="relative aspect-[4/5] overflow-hidden border border-line">
               <Parallax enabled speed={-0.06} className="absolute inset-[-9%]">
                 <Image
-                  src={storyImg}
-                  alt="Community gathering at Vinyasa Earth"
+                  src={content.storyImg}
+                  alt={content.alt_6}
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   className="object-cover"
@@ -73,17 +122,11 @@ export default async function AboutPage() {
             </div>
           </Reveal>
           <Reveal variant="right" delay={100}>
-            <SectionEyebrow icon="compass-outline">How it began</SectionEyebrow>
+            <SectionEyebrow icon="compass-outline">{content.text_7}</SectionEyebrow>
             <h2 className="mt-3 font-display italic text-4xl leading-tight">
-              {story?.heading ?? "An artist village, imagined in lockdown"}
+              {content.text_8}
             </h2>
-            {(paras(story?.body).length
-              ? paras(story?.body)
-              : [
-                  "Sankalp Sharma, a professional dancer, was abroad on a dance scholarship when the 2020 pandemic was announced and sent him back to India. Out of that pause came Vinyasa Earth: a village built around the practical realities artists face — long commutes, cramped rooms, nowhere to perform, and the basic question of the next meal.",
-                  "The idea was simple. Give artists quality sleep, nutritious food, and real support, and the creative work takes care of itself.",
-                ]
-            ).map((p, i) => (
+            {content.list_1.map((p, i) => (
               <p key={i} className={`${i === 0 ? "mt-4" : "mt-3"} leading-relaxed text-foreground-soft`}>
                 {p}
               </p>
@@ -92,16 +135,18 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      <SectionWave from="#f3f1ea" to="#ece0c9" variant="wave" className="h-8 sm:h-12" />
+      <FamilyBookshelf members={content.FAMILY} />
+
+      <SectionWave from="#d4bd96" to="#f3e6d8" variant="hill" className="h-8 sm:h-12" />
       <section className="organic-section bg-clay-surface py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-            <SectionEyebrow icon="leaf-outline" className="justify-center">
-              What we stand on
-            </SectionEyebrow>
-            <h2 className="mt-3 font-display italic text-4xl leading-tight">Four principles</h2>
+            <SectionEyebrow icon="leaf-outline" className="justify-center">{content.text_11}</SectionEyebrow>
+            <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_12}</h2>
           </Reveal>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {PRINCIPLES.map((p, i) => (
+            {content.PRINCIPLES.map((p, i) => (
               <Reveal key={p.title} variant="up" delay={(i % 4) * 80}>
                 <div className="flex h-full flex-col items-center border border-line bg-surface px-6 py-8 text-center">
                   <span className="grid h-12 w-12 place-items-center rounded-full border border-accent/40 text-accent">
@@ -118,7 +163,7 @@ export default async function AboutPage() {
 
       <section className="relative flex min-h-[62vh] items-center overflow-hidden bg-[#241a12] text-background">
         <ParallaxHeroImage>
-          <Image src={bandImg} alt="" fill sizes="100vw" className="object-cover" />
+          <Image src={content.bandImg} alt="" fill sizes="100vw" className="object-cover" />
         </ParallaxHeroImage>
         <div
           className="pointer-events-none absolute inset-0"
@@ -135,30 +180,19 @@ export default async function AboutPage() {
           className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center sm:px-8"
         >
           <span className="mx-auto mb-7 block h-10 w-px bg-[#d88b50]/70" aria-hidden />
-          <p className="font-display text-[1.9rem] leading-snug text-[#fbf3e8] sm:text-[2.6rem]">
-            &ldquo;Everything at Vinyasa carries the goodness of mother earth — a blend of humanity
-            and nature, held with gratitude.&rdquo;
-          </p>
-          <p className="mt-7 text-[13px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">
-            The Vinyasa Earth community
-          </p>
+          <p className="font-display text-[1.9rem] leading-snug text-[#fbf3e8] sm:text-[2.6rem]">{content.text_13}</p>
+          <p className="mt-7 text-[13px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">{content.text_14}</p>
         </Reveal>
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid items-stretch gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
-            <SectionEyebrow icon="home-outline">Built from the ground</SectionEyebrow>
+            <SectionEyebrow icon="home-outline">{content.text_15}</SectionEyebrow>
             <h2 className="mt-3 font-display italic text-4xl leading-tight">
-              {craft?.heading ?? "Rajasthan's own way of building"}
+              {content.text_16}
             </h2>
-            {(paras(craft?.body).length
-              ? paras(craft?.body)
-              : [
-                  "Mud plaster and jaali screens instead of concrete. Kitchen-garden meals instead of a restaurant menu. Block-print textiles and hand-painted mandalas on the cottage walls. It is a working example of the sustainable, earth-first living the community here practises every day.",
-                  "Everything at Vinyasa carries the goodness of mother earth — a blend of humanity and nature, held with gratitude.",
-                ]
-            ).map((p, i) => (
+            {content.list_2.map((p, i) => (
               <p key={i} className={`${i === 0 ? "mt-4" : "mt-3"} leading-relaxed text-foreground-soft`}>
                 {p}
               </p>
@@ -168,8 +202,8 @@ export default async function AboutPage() {
             <div className="relative aspect-[4/5] h-full overflow-hidden border border-line lg:aspect-auto">
               <Parallax enabled speed={0.06} className="absolute inset-[-9%]">
                 <Image
-                  src="/images/2N0A9797.JPG"
-                  alt="A grinding stone by a bamboo window inside a hand-built mud room at Vinyasa Earth"
+                  src={content.src_19}
+                  alt={content.alt_20}
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   className="object-cover"
@@ -180,46 +214,8 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section className="organic-section bg-dusk-surface py-20">
-        <div className="mx-auto max-w-6xl px-5 text-center sm:px-8">
-          <Reveal variant="fade">
-            <SectionEyebrow icon="people-outline" className="justify-center">
-              The family
-            </SectionEyebrow>
-            <h2 className="mt-3 font-display italic text-4xl leading-tight">
-              Vinyasa is not just a space, it is <span className="not-italic">HOME</span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-foreground-soft">
-              A collaborative journey with family members across the globe. Volunteering is the way
-              in — and, for many, the path to full-time residency.
-            </p>
-          </Reveal>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {FAMILY.map((m, i) => (
-              <Reveal key={m.name} variant="up" delay={(i % 3) * 80}>
-                <div className="flex flex-col items-center border border-line bg-surface px-5 py-8 text-center">
-                  <div className="relative h-28 w-28 overflow-hidden rounded-full border border-line">
-                    <Image
-                      src={m.photo}
-                      alt={m.name}
-                      fill
-                      sizes="112px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <p className="mt-4 font-display italic text-xl leading-tight">{m.name}</p>
-                  <p className="mt-1.5 text-xs uppercase tracking-[0.14em] text-muted">{m.role}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal variant="up" delay={200} className="mt-12">
-            <Link href="/corporate" className="btn btn-accent inline-flex">
-              Volunteer with us
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+
+
     </>
   );
 }

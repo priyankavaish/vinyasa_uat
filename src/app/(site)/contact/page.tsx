@@ -1,5 +1,8 @@
-import { PageHero } from "@/components/sections/hero";
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__contact_page";
+import { getEditorial } from "@/lib/editorial/server";
 import LocationSection from "@/components/sections/location-section";
+import SectionWave from "@/components/ui/section-wave";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
@@ -12,12 +15,9 @@ type Hero = { eyebrow?: string; title?: string; description?: string };
 type Service = { icon: string; title: string; body: string };
 type Faq = { q: string; a: string };
 
-export const metadata = {
-  title: "Contact",
-  description:
-    "Contact Vinyasa Earth in Jaipur about stays, retreats, residencies, venue hire and volunteering. Phone +91 77376 07227, vinyasa.ashram@gmail.com.",
-  alternates: { canonical: "/contact" },
-};
+export async function generateMetadata(): Promise<import("next").Metadata> {
+  return (await getEditorial("app/(site)/contact/page", editorialDefaults)).seo;
+}
 
 const SERVICES_FALLBACK: Array<{ icon: IconName; title: string; body: string }> = [
   {
@@ -70,38 +70,47 @@ const FAQ_FALLBACK = [
 ];
 
 export default async function ContactPage() {
-  const [hero, servicesRaw, faqRaw] = await Promise.all([
-    getContent<Hero>("contact.hero"),
-    getContent<Service[]>("contact.services"),
-    getContent<Faq[]>("contact.faq"),
-  ]);
-  const SERVICES = (Array.isArray(servicesRaw) && servicesRaw.length
-    ? servicesRaw
-    : SERVICES_FALLBACK) as Array<{ icon: IconName; title: string; body: string }>;
-  const FAQ = Array.isArray(faqRaw) && faqRaw.length ? faqRaw : FAQ_FALLBACK;
+  const content = await getEditorial("app/(site)/contact/page", editorialDefaults);
+
+  const SERVICES = content.SERVICES_FALLBACK;
+  const FAQ = content.FAQ_FALLBACK;
 
   return (
     <>
-      <PageHero
-        eyebrow={hero?.eyebrow ?? "Get in touch"}
-        title={hero?.title ?? "We'd love to hear from you"}
-        description={
-          hero?.description ??
-          "Questions about a stay, a retreat, venue hire, or volunteering — send a note and the team will write back."
-        }
-        image="/images/contact-hero.jpg" imageAlt="Sunlit mud cottages with bamboo doors and a grass path at Vinyasa Earth" imagePosition="50% 62%" mobileImagePosition="55% 60%" contain
-      />
-
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-        <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
+      <section className="relative overflow-hidden bg-clay-surface px-5 pb-4 pt-24 text-center sm:px-8 sm:pt-28">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-24 text-surface sm:h-32"
+        >
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" className="h-full w-full">
+            <path
+              fill="currentColor"
+              d="M0 0 H1440 V54 C 1160 118 880 26 560 74 C 360 104 150 90 0 100 Z"
+            />
+          </svg>
+        </span>
+        <div className="relative z-10 mx-auto max-w-2xl">
           <SectionEyebrow icon="sparkles-outline" className="justify-center">
-            What we can help with
+            {content.text_1}
           </SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-4xl leading-tight">
-            Tell us why you&apos;re writing
-          </h2>
+          <h1 className="mt-2 font-display text-3xl italic leading-tight text-clay-ink sm:text-4xl">
+            {content.text_2}
+          </h1>
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-foreground-soft sm:text-base">
+            {content.text_3}
+          </p>
+        </div>
+      </section>
+
+      <LocationSection showContactForm />
+
+      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
+      <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
+        <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
+          <SectionEyebrow icon="sparkles-outline" className="justify-center">{content.text_4}</SectionEyebrow>
+          <h2 className="mt-3 font-display italic text-3xl leading-tight sm:text-4xl">{content.text_5}</h2>
         </Reveal>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s, i) => (
             <Reveal key={s.title} variant="up" delay={(i % 4) * 80}>
               <div className="flex h-full flex-col border border-line bg-surface px-6 py-7">
@@ -116,14 +125,10 @@ export default async function ContactPage() {
         </div>
       </section>
 
-      <LocationSection showContactForm />
-
-      <section className="mx-auto max-w-3xl px-5 py-20 sm:px-8">
+      <section className="mx-auto max-w-3xl px-5 pb-16 pt-2 sm:px-8">
         <Reveal variant="fade" className="text-center">
-          <SectionEyebrow icon="compass-outline" className="justify-center">
-            Good to know
-          </SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-4xl leading-tight">Common questions</h2>
+          <SectionEyebrow icon="compass-outline" className="justify-center">{content.text_6}</SectionEyebrow>
+          <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_7}</h2>
         </Reveal>
         <div className="mt-10 divide-y divide-line border-y border-line">
           {FAQ.map((item, i) => (

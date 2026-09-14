@@ -1,3 +1,6 @@
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
+import { getEditorial } from "@/lib/editorial/server";
 import { PageHero } from "@/components/sections/hero";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -72,11 +75,13 @@ export async function generateMetadata({
 }
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const content = await getEditorial("app/(site)/events/[slug]/page", editorialDefaults);
+
   const { slug } = await params;
   const event = await getEvent(slug);
   if (!event) notFound();
-  const image = event.image || EVENT_IMAGES[event.slug] || "/seed/grounds-06.jpg";
-  const details = EVENT_DETAILS[event.slug];
+  const image = event.image || content.EVENT_IMAGES[event.slug] || "/seed/grounds-06.jpg";
+  const details = content.EVENT_DETAILS[event.slug];
   const priceLabel = event.priceFrom === 0 ? "By donation" : `Ã¢â€šÂ¹${event.priceFrom.toLocaleString("en-IN")}`;
 
   return (
@@ -84,12 +89,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
       <PageHero eyebrow={event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"} />
 
       <section className="mx-auto max-w-4xl px-5 py-14 sm:px-8">
-        <Link href="/events" className="text-xs uppercase tracking-[0.08em] text-accent underline">
-          Ã¢â€ Â All programmes
-        </Link>
+        <Link href={content.href_1} className="text-xs uppercase tracking-[0.08em] text-accent underline">{content.text_2}</Link>
         <div className="mt-8 grid gap-10 sm:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="font-display italic text-2xl">Details</h2>
+            <h2 className="font-display italic text-2xl">{content.text_3}</h2>
             <dl className="mt-4 space-y-3 text-sm text-foreground-soft">
               {event.dateLabel && (
                 <div className="flex items-center gap-3">
@@ -104,19 +107,19 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               {event.facilitator && (
                 <div className="flex items-center gap-3">
                   <Icon name="people-outline" size={15} className="text-accent" />
-                  <span>Facilitated by {event.facilitator}</span>
+                  <span>{content.text_4}{event.facilitator}</span>
                 </div>
               )}
               <div className="flex items-center gap-3">
                 <Icon name="location-outline" size={15} className="text-accent" />
-                <span>Vinyasa Earth, Jaipur</span>
+                <span>{content.text_5}</span>
               </div>
             </dl>
                         {event.bodyHtml ? <RichContent html={event.bodyHtml} className="mt-8" /> : details && (
               <div className="mt-10 border-t border-line pt-8">
                 <h2 className="font-display italic text-3xl">{details.heading}</h2>
                 {details.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 leading-7 text-foreground-soft">{paragraph}</p>)}
-                <h3 className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-accent">What to expect</h3>
+                <h3 className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-accent">{content.text_6}</h3>
                 <ul className="mt-4 grid gap-3 sm:grid-cols-2">
                   {details.highlights.map((item) => <li key={item} className="border-l-2 border-accent/50 bg-clay-surface px-4 py-3 text-sm text-foreground-soft">{item}</li>)}
                 </ul>
@@ -124,11 +127,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             )}
           </div>
           <div className="border border-line bg-surface p-6">
-            <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft">Contribution</p>
+            <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_7}</p>
             <p className="mt-1 font-sans text-3xl font-bold tracking-tight tabular-nums">{priceLabel}</p>
-            <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent mt-5 block text-center">
-              Reserve a spot
-            </Link>
+            <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent mt-5 block text-center">{content.text_8}</Link>
           </div>
         </div>
       </section>

@@ -1,16 +1,17 @@
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__useful_links_page";
+import { getEditorial } from "@/lib/editorial/server";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
+import SectionWave from "@/components/ui/section-wave";
 import CopyField from "./copy-field";
 
 export const revalidate = 300;
 
-export const metadata = {
-  title: "Useful Links",
-  description:
-    "The frequently-used links for Vinyasa Earth — check-in, payments, booking a call, reviews, plus bank and GST details.",
-  alternates: { canonical: "/useful-links" },
-};
+export async function generateMetadata(): Promise<import("next").Metadata> {
+  return (await getEditorial("app/(site)/useful-links/page", editorialDefaults)).seo;
+}
 
 type ActionLink = { label: string; href: string; note: string; icon: IconName };
 
@@ -54,33 +55,38 @@ const BANK = [
   { label: "GST", value: "08AALCV7206K1ZV" },
 ];
 
-export default function UsefulLinksPage() {
+export default async function UsefulLinksPage() {
+  const content = await getEditorial("app/(site)/useful-links/page", editorialDefaults);
+
   return (
     <>
-      <section className="border-b border-line bg-clay-surface px-5 pb-14 pt-28 text-center sm:px-8 sm:pb-20 sm:pt-36">
+      <section className="bg-clay-surface px-5 pb-12 pt-28 text-center sm:px-8 sm:pb-16 sm:pt-36">
         <div className="mx-auto max-w-2xl">
-          <SectionEyebrow icon="compass-outline" className="justify-center">
-            Frequently used
-          </SectionEyebrow>
-          <h1 className="mt-3 font-display text-4xl italic leading-tight text-clay-ink sm:text-5xl">
-            Useful links
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-foreground-soft">
-            The handful of links and details that come up again and again &mdash; pinned in one
-            place for guests and partners.
-          </p>
+          <SectionEyebrow icon="compass-outline" className="justify-center">{content.text_1}</SectionEyebrow>
+          <h1 className="mt-3 font-display text-4xl italic leading-tight text-clay-ink sm:text-5xl">{content.text_2}</h1>
+          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-foreground-soft">{content.text_3}</p>
           <span aria-hidden="true" className="mx-auto mt-6 block h-[3px] w-16 rounded-full bg-accent" />
         </div>
       </section>
+      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
 
       <section className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
         <Reveal variant="up">
-          <SectionEyebrow icon="compass-outline">Quick actions</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl italic leading-tight text-clay-ink">
-            Get things done
-          </h2>
+          <SectionEyebrow icon="ribbon-outline">{content.text_4}</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl italic leading-tight text-clay-ink">{content.text_5}</h2>
+          <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{content.text_6}</p>
+          <div className="mt-6 border border-line bg-surface px-5 py-2 sm:px-6">
+            {content.BANK.map((row) => (
+              <CopyField key={row.label} label={row.label} value={row.value} />
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal variant="up" delay={120} className="mt-14">
+          <SectionEyebrow icon="compass-outline">{content.text_7}</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl italic leading-tight text-clay-ink">{content.text_8}</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {ACTIONS.map((item) => (
+            {content.ACTIONS.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
@@ -107,22 +113,6 @@ export default function UsefulLinksPage() {
                   className="-rotate-45 shrink-0 text-accent transition-transform group-hover:translate-x-1"
                 />
               </a>
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal variant="up" delay={120} className="mt-14">
-          <SectionEyebrow icon="ribbon-outline">Bank &amp; tax details</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl italic leading-tight text-clay-ink">
-            For direct transfers
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-foreground-soft">
-            Payments to Vinyasaverse Private Limited. Please share the reference with us after
-            transferring.
-          </p>
-          <div className="mt-6 border border-line bg-surface px-5 py-2 sm:px-6">
-            {BANK.map((row) => (
-              <CopyField key={row.label} label={row.label} value={row.value} />
             ))}
           </div>
         </Reveal>

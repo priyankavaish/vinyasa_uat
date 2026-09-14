@@ -1,20 +1,26 @@
-import Image from "next/image";
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__events_page";
+import { getEditorial } from "@/lib/editorial/server";
+import Image from "@/components/editorial/image";
 import Link from "next/link";
 import { PageHero } from "@/components/sections/hero";
+import type { EventSlide } from "@/components/sections/events-hero-carousel";
+import StaysHeroGallery from "@/components/sections/stays-hero-gallery";
+import EventsCalendar, { type CalEntry } from "@/components/sections/events-calendar";
+import SectionWave from "@/components/ui/section-wave";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { getEvents } from "@/lib/cms";
+import { parseEventStart } from "@/lib/event-dates";
 
 import gatherImg from "@/app/assets/new/community-02.jpg";
 
 export const revalidate = 300;
-export const metadata = {
-  title: "Events & Retreats",
-  description: "Artist residencies, retreats, workshops and gatherings at Vinyasa Earth.",
-  alternates: { canonical: "/events" },
-};
+export async function generateMetadata(): Promise<import("next").Metadata> {
+  return (await getEditorial("app/(site)/events/page", editorialDefaults)).seo;
+}
 
 const KIND_META: Record<string, { icon: IconName; accent: string; label: string }> = {
   residency: { icon: "compass-outline", accent: "#8f3b31", label: "Residency" },
@@ -36,56 +42,202 @@ function priceText(from: number) {
   return from === 0 ? "By donation" : `From INR ${from.toLocaleString("en-IN")}`;
 }
 
+// Rough end-date from a range label ("18-20 Sep 2026" -> 20 Sep 2026); falls
+// back to the start when there's no range.
+function parseEventEnd(label: string, start: Date): Date {
+  const [, restRaw] = label.split(/\s*[–-]\s*/);
+  if (!restRaw) return start;
+  const m = restRaw.trim().match(/(\d{1,2})\s+([A-Za-z]{3,})(?:\s+(\d{4}))?/);
+  if (!m) return start;
+  const months: Record<string, number> = {
+    jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+    jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+  };
+  const month = months[m[2].slice(0, 3).toLowerCase()];
+  if (month === undefined) return start;
+  const year = m[3] ? Number(m[3]) : start.getUTCFullYear();
+  const d = new Date(Date.UTC(year, month, Number(m[1])));
+  return Number.isNaN(d.getTime()) || d < start ? start : d;
+}
+
+function ymd(d: Date) {
+  return `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, "0")}${String(
+    d.getUTCDate(),
+  ).padStart(2, "0")}`;
+}
+
+// A "Add to Google Calendar" template link for an all-day event.
+function gcalUrl(name: string, start: Date, end: Date, details: string) {
+  const endExclusive = new Date(end.getTime() + 24 * 60 * 60 * 1000);
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: `${name} — Vinyasa Earth`,
+    dates: `${ymd(start)}/${ymd(endExclusive)}`,
+    details: `${details}\n\nhttps://vinyasa.earth`,
+    location: "Vinyasa Earth, Maheshwas Khurd, Jalsu, Jaipur 303701, Rajasthan",
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
 export default async function EventsPage() {
+  const content = await getEditorial("app/(site)/events/page", editorialDefaults);
+
   const events = await getEvents();
+
+  const slides: EventSlide[] = events.map((event) => {
+    const meta = content.KIND_META[event.kind] ?? content.KIND_META.retreat;
+    const display = content.EVENT_DISPLAY[event.slug];
+    return {
+      slug: event.slug,
+      name: event.name,
+      date: event.dateLabel ?? "",
+      image: event.image || display?.image || "/images/events-hero.jpg",
+      label: meta.label,
+      icon: meta.icon,
+      accent: meta.accent,
+    };
+  });
+
+  const calEntries: CalEntry[] = events
+    .map((event) => {
+      const meta = content.KIND_META[event.kind] ?? content.KIND_META.retreat;
+      const label = event.dateLabel || "";
+      const start = parseEventStart(label);
+      if (!start) return null;
+      const end = parseEventEnd(label, start);
+      return {
+        slug: event.slug,
+        name: event.name,
+        accent: meta.accent,
+        start: start.toISOString(),
+        end: end.toISOString(),
+      } satisfies CalEntry;
+    })
+    .filter((x): x is CalEntry => x !== null);
+
   return (
     <>
-      <PageHero eyebrow="Residencies / Retreats / Workshops" title="Time and space to make what matters" description="From a single evening of Kabir bhajans to a four-month residency, every programme follows the rhythm of the land and its community." image="/images/events-hero.jpg" imageAlt="A large mural of clasped hands on a mud-plastered wall at Vinyasa Earth" imagePosition="60% 45%" mobileImagePosition="62% 45%" contain />
+      {slides.length ? (
+        <>
+          <StaysHeroGallery variant="events" photos={slides.map((slide) => ({ src: slide.image, name: slide.name, slug: slide.slug, element: slide.label, date: slide.date }))} />
+          <section className="mx-auto max-w-3xl px-5 pb-4 pt-4 text-center sm:px-8">
+            <p className="text-sm leading-relaxed text-foreground-soft sm:text-base">{content.text_1}</p>
+          </section>
+        </>
+      ) : (
+        <PageHero
+          eyebrow={content.eyebrow_2}
+          title={content.title_3}
+          description={content.description_4}
+          image={content.image_5}
+          imageAlt={content.imageAlt_6}
+          imagePosition="60% 45%"
+          mobileImagePosition="62% 45%"
+          contain
+        />
+      )}
 
-      <section className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-8">
+      <section id="events-calendar" className="mx-auto max-w-3xl scroll-mt-24 px-5 pb-8 pt-8 text-center sm:px-8">
         <Reveal variant="fade">
-          <SectionEyebrow icon="calendar-outline" className="justify-center">The 2026-27 calendar</SectionEyebrow>
-          <p className="mt-4 leading-relaxed text-foreground-soft">Vinyasa Earth hosts programmes lasting anywhere from a few hours to several months, created for artistic practice, personal growth and meaningful connection. Each gathering is seasonal and intentionally small.</p>
+          <SectionEyebrow icon="calendar-outline" className="justify-center">{content.text_7}</SectionEyebrow>
+          <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{content.text_8}</p>
         </Reveal>
       </section>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-16 sm:py-20">
+      <SectionWave from="#f3f1ea" to="#f3e6d8" variant="wave" />
+      <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
         <Parallax speed={-0.04} className="pointer-events-none absolute -right-24 -top-16 hidden w-[22rem] opacity-[0.14] sm:block" aria-hidden="true">
-          <Image src={gatherImg} alt="" className="w-full rounded-full" />
+          <Image src={content.gatherImg} alt="" className="w-full rounded-full" />
         </Parallax>
-        <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
-          <div className="grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8">
+          <Reveal variant="up">
+            <div className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-soft">
+              {Object.values(content.KIND_META).map((k) => (
+                <span key={k.label} className="inline-flex items-center gap-2">
+                  <span className="h-3 w-3" style={{ backgroundColor: k.accent }} />
+                  {k.label}
+                </span>
+              ))}
+            </div>
+            <EventsCalendar entries={calEntries} />
+          </Reveal>
+
+          <ul className="mt-12 border-t border-line">
             {events.map((event, i) => {
-              const meta = KIND_META[event.kind];
-              const display = EVENT_DISPLAY[event.slug] ?? { name: event.name, date: event.dateLabel ?? "", duration: event.durationLabel, facilitator: event.facilitator, description: event.description, image: event.image ?? "/seed/grounds-06.jpg" };
+              const meta = content.KIND_META[event.kind] ?? content.KIND_META.retreat;
+              const display =
+                {
+                  name: event.name,
+                  date: event.dateLabel ?? "",
+                  duration: event.durationLabel ?? "",
+                  facilitator: event.facilitator,
+                  description: event.description ?? "",
+                  image: event.image ?? "/seed/grounds-06.jpg",
+                };
+              const label = display.date || event.dateLabel || "";
+              const start = parseEventStart(label);
+              const end = start ? parseEventEnd(label, start) : null;
+              const month = start
+                ? start.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" }).toUpperCase()
+                : "";
+              const day = start ? start.getUTCDate() : "";
               return (
-                <Reveal key={event.slug} variant="up" delay={(i % 3) * 90} className="h-full">
-                  <Link href={`/events/${event.slug}`} className="group flex h-full min-h-[34rem] flex-col overflow-hidden border border-line bg-surface transition-all hover:-translate-y-1 hover:shadow-xl" style={{ borderTopColor: meta.accent, borderTopWidth: 3 }}>
-                    <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-clay-surface">
-                      <Image src={event.image || display.image} alt={`${display.name} at Vinyasa Earth`} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/5" />
+                <Reveal key={event.slug} variant="up" delay={(i % 4) * 70}>
+                  <li className="flex flex-col gap-4 border-b border-line py-6 sm:flex-row sm:items-center sm:gap-6">
+                    <span
+                      className="flex w-14 shrink-0 flex-col items-center border border-line bg-surface py-1.5 leading-none"
+                      style={{ borderTopColor: meta.accent, borderTopWidth: 3 }}
+                    >
+                      <span
+                        className="text-[10px] font-bold uppercase tracking-[0.12em]"
+                        style={{ color: meta.accent }}
+                      >
+                        {month || "—"}
+                      </span>
+                      <span className="font-display text-xl text-foreground">{day || "?"}</span>
+                    </span>
+
+                    <div className="min-w-0 flex-1">
+                      <span
+                        className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.16em]"
+                        style={{ color: meta.accent }}
+                      >
+                        <Icon name={meta.icon} size={12} />
+                        {meta.label}
+                      </span>
+                      <h3 className="mt-1 font-display text-lg italic leading-tight text-foreground">
+                        {display.name}
+                      </h3>
+                      <p className="mt-1 text-xs text-foreground-soft">
+                        {label}
+                        {display.duration ? ` · ${display.duration}` : ""} · {priceText(event.priceFrom)}
+                      </p>
                     </div>
-                    <div className="flex flex-1 flex-col p-6 sm:p-7">
-                      <div className="flex items-center justify-between">
-                        <span className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: meta.accent }}><Icon name={meta.icon} size={14} />{meta.label}</span>
-                        <Icon name="arrow-forward-outline" size={17} className="text-accent transition-transform group-hover:translate-x-1" />
-                      </div>
-                      <h3 className="mt-5 font-display italic text-2xl leading-tight text-foreground">{display.name}</h3>
-                      <p className="mt-3 flex-1 text-sm leading-6 text-foreground-soft">{display.description}</p>
-                      <dl className="mt-6 space-y-2 border-t border-line pt-5 text-xs text-foreground-soft">
-                        <div className="flex items-center gap-2"><Icon name="calendar-outline" size={13} className="text-muted" /><span>{display.date}</span></div>
-                        <div className="flex items-center gap-2"><Icon name="sunny-outline" size={13} className="text-muted" /><span>{display.duration}</span></div>
-                        {display.facilitator && <div className="flex items-center gap-2"><Icon name="people-outline" size={13} className="text-muted" /><span>With {display.facilitator}</span></div>}
-                      </dl>
-                      <p className="mt-5 text-sm font-semibold tabular-nums" style={{ color: meta.accent }}>{priceText(event.priceFrom)}</p>
+
+                    <div className="flex shrink-0 flex-wrap items-center gap-2">
+                      {start && end && (
+                        <a
+                          href={gcalUrl(display.name, start, end, display.description)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 border border-line bg-surface px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-clay-ink transition-colors hover:border-accent hover:text-accent"
+                        >
+                          <Icon name="calendar-outline" size={12} />{content.text_9}</a>
+                      )}
+                      <Link
+                        href={`/events/${event.slug}`}
+                        className="inline-flex items-center gap-1.5 bg-accent px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-accent-ink transition-transform hover:-translate-y-0.5"
+                      >{content.text_10}<Icon name="arrow-forward-outline" size={12} />
+                      </Link>
                     </div>
-                  </Link>
+                  </li>
                 </Reveal>
               );
             })}
-          </div>
+          </ul>
         </div>
       </section>
+      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="arch" />
     </>
   );
 }
