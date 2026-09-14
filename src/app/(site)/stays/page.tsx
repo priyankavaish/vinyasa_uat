@@ -14,6 +14,7 @@ import texauraLogo from "@/app/assets/stays/IMG_1554-600x112.png";
 import carpetLiveLogo from "@/app/assets/stays/carpetlive-trimmed.png";
 import dheerLogo from "@/app/assets/stays/DHEER-LOGO.png";
 import SectionWave from "@/components/ui/section-wave";
+import AnimateInView from "@/components/ui/animate-in-view";
 import galleryA from "@/app/assets/new/grounds-01.jpg";
 import galleryC from "@/app/assets/new/room-prithvi-2.jpg";
 import galleryD from "@/app/assets/new/grounds-04.jpg";
@@ -88,19 +89,19 @@ export default async function StaysPage() {
     <>
       <StaysHeroGallery photos={rooms.map((room) => ({ src: room.gallery[1] || room.gallery[0] || room.image, name: room.name, slug: room.slug, element: room.element }))} />
 
-      <section id="stays-intro" className="mx-auto max-w-6xl px-5 pb-7 pt-4 sm:px-8">
+      <AnimateInView delay={60}><section id="stays-intro" className="mx-auto max-w-6xl px-5 pb-7 pt-4 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-3xl text-center">
           <p className="leading-relaxed text-foreground-soft">{content.text_1}</p>
         </Reveal>
 
 
-      </section>
+      </section></AnimateInView>
 
       <SectionWave from="#f3f1ea" to="var(--footer-background)" variant="wave" className="h-6 sm:h-8" />
-      <StayCollection rooms={rooms} />
+      <AnimateInView delay={80}><StayCollection rooms={rooms} /></AnimateInView>
 
       <SectionWave from="var(--footer-background)" to="#f3f1ea" variant="arch" />
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+      <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
           <SectionEyebrow icon="sparkles-outline">{content.text_2}</SectionEyebrow>
           <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_3}</h2>
@@ -119,9 +120,9 @@ export default async function StaysPage() {
             </Reveal>
           ))}
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section id="artist-escape" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:px-8">
+      <AnimateInView delay={100}><section id="artist-escape" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left"><div className="group relative aspect-[4/5] overflow-hidden border border-line"><Image src={content.residencyImg} alt={content.alt_9} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" /></div></Reveal>
           <Reveal variant="right" delay={100}>
@@ -135,9 +136,9 @@ export default async function StaysPage() {
             </div>
           </Reveal>
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section id="artist-escape-gallery" aria-label={content.aria_label_17} className="mx-auto max-w-6xl px-5 pb-20 sm:px-8">
+      <AnimateInView delay={80}><section id="artist-escape-gallery" aria-label={content.aria_label_17} className="mx-auto max-w-6xl px-5 pb-20 sm:px-8">
         <Reveal variant="fade" delay={120}>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[content.galleryA, "/images/2N0A9945.jpg", content.galleryC, content.galleryD].map((img, i) => (
@@ -152,13 +153,13 @@ export default async function StaysPage() {
             ))}
           </div>
         </Reveal>
-      </section>
+      </section></AnimateInView>
 
       {visitOptions.length > 0 && (
         <SectionWave from="#f3f1ea" to="#e7ebdd" variant="slant" />
       )}
       {visitOptions.length > 0 && (
-        <section className="organic-section relative overflow-hidden bg-dusk-surface py-20">
+        <AnimateInView delay={100}><section className="organic-section relative overflow-hidden bg-dusk-surface py-20">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
               <SectionEyebrow icon="calendar-outline">{content.text_23}</SectionEyebrow>
@@ -167,29 +168,41 @@ export default async function StaysPage() {
 
             <div className="mt-10 grid gap-5 sm:grid-cols-2">
               {visitOptions.map((option, i) => (
-                <Reveal key={option.title} variant="up" delay={i * 90}>
-                  <div className="group flex gap-4 border border-line bg-surface p-4 transition-shadow hover:shadow-lg sm:p-5">
-                    {option.image && (
-                      <div className="relative h-28 w-28 shrink-0 overflow-hidden sm:h-32 sm:w-32">
-                        <Image src={option.image} alt="" fill sizes="150px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                      </div>
+                <Reveal
+                  key={option.title}
+                  variant="up"
+                  delay={i * 90}
+                  className={i % 2 === 1 ? "sm:mt-10" : ""}
+                >
+                  <div className="group relative aspect-[4/3] overflow-hidden border border-line transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)] sm:aspect-[16/10]">
+                    {option.image ? (
+                      <Image
+                        src={option.image}
+                        alt=""
+                        fill
+                        sizes="(min-width: 640px) 50vw, 100vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-clay-surface" />
                     )}
-                    <div>
-                      <h3 className="font-display italic text-xl leading-tight">{option.title}</h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-foreground-soft">{option.description}</p>
+                    <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                      <h3 className="font-display italic text-xl leading-tight text-white sm:text-2xl">{option.title}</h3>
+                      <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-white/85">{option.description}</p>
                     </div>
                   </div>
                 </Reveal>
               ))}
             </div>
           </div>
-        </section>
+        </section></AnimateInView>
       )}
       {visitOptions.length > 0 && (
         <SectionWave from="#e7ebdd" to="#f3f1ea" variant="wave" />
       )}
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+      <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
           <SectionEyebrow icon="ribbon-outline" className="justify-center">{content.text_25}</SectionEyebrow>
           <h2 className="mt-3 font-display italic text-3xl leading-tight">{content.text_26}</h2>
@@ -197,7 +210,7 @@ export default async function StaysPage() {
         </Reveal>
 
         <PartnerCards partners={content.ACCESSORY_PARTNERS} />
-      </section>
+      </section></AnimateInView>
     </>
   );
 }

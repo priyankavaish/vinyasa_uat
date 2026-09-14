@@ -5,6 +5,7 @@ import Image from "@/components/editorial/image";
 import Link from "next/link";
 import { PageHero } from "@/components/sections/hero";
 import SectionWave from "@/components/ui/section-wave";
+import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
@@ -32,18 +33,18 @@ export default async function VolunteerPage() {
         image={content.image_4} imageAlt={content.imageAlt_5} imagePosition="50% 55%" mobileImagePosition="65% 50%"
       />
 
-      <section className="mx-auto max-w-3xl px-5 py-10 text-center sm:px-8">
+      <AnimateInView delay={60}><section className="mx-auto max-w-3xl px-5 py-10 text-center sm:px-8">
         <Reveal variant="fade">
           <SectionEyebrow icon="leaf-outline" className="justify-center">{content.text_6}</SectionEyebrow>
           <p className="mt-4 leading-relaxed text-foreground-soft">
             {content.volunteerInfo.note}
           </p>
         </Reveal>
-      </section>
+      </section></AnimateInView>
 
       <div className={styles.availability}>{content.text_7}<span aria-hidden="true">·</span>{content.text_8}<a href={content.href_9}>{content.text_10}</a></div>
       <SectionWave from="#f3f1ea" to="#f3e6d8" variant="wave" />
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-16 sm:py-20">
+      <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-16 sm:py-20">
         <Parallax
           speed={0.04}
           className="pointer-events-none absolute -left-24 bottom-0 hidden w-[20rem] opacity-[0.12] sm:block"
@@ -93,9 +94,10 @@ export default async function VolunteerPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="arch" />      <section className={styles.life}>
+      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="arch" />
+      <AnimateInView delay={80}><section className={styles.life}>
         <div className={styles.photo}><Image src={content.communityImg} alt={content.alt_25} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" /></div>
         <div>
           <SectionEyebrow icon="leaf-outline">{content.text_26}</SectionEyebrow>
@@ -103,8 +105,8 @@ export default async function VolunteerPage() {
           <p>{content.text_29}</p>
           <div className={styles.roles}><span>{content.text_30}</span><span>{content.text_31}</span><span>{content.text_32}</span><span>{content.text_33}</span></div>
         </div>
-      </section>
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+      </section></AnimateInView>
+      <AnimateInView delay={100}><section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
             <SectionEyebrow icon="home-outline">{content.text_34}</SectionEyebrow>
@@ -129,20 +131,20 @@ export default async function VolunteerPage() {
             </ul>
           </Reveal>
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section className={styles.promises}>
+      <AnimateInView delay={80}><section className={styles.promises}>
         <SectionEyebrow icon="home-outline">{content.text_36}</SectionEyebrow>
         <h2>{content.text_37}</h2>
         <p>{content.text_38}</p>
-      </section>
-      <section className={styles.faq}>
+      </section></AnimateInView>
+      <AnimateInView delay={80}><section className={styles.faq}>
         <SectionEyebrow icon="compass-outline">{content.text_39}</SectionEyebrow>
         <h2>{content.text_40}</h2>
         {content.list_1.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}
-      </section>
+      </section></AnimateInView>
       <SectionWave from="#f3f1ea" to="#e7ebdd" variant="slant" />
-      <section id="apply" className="organic-section relative scroll-mt-24 overflow-hidden bg-dusk-surface py-20">
+      <AnimateInView delay={100}><section id="apply" className="organic-section relative scroll-mt-24 overflow-hidden bg-dusk-surface py-20">
         <div className="mx-auto grid max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <Reveal variant="left">
             <SectionEyebrow icon="ribbon-outline">{content.text_41}</SectionEyebrow>
@@ -166,7 +168,7 @@ export default async function VolunteerPage() {
             </div>
           </Reveal>
         </div>
-      </section>
+      </section></AnimateInView>
       <SectionWave from="#e7ebdd" to="#f3f1ea" variant="wave" />
     </div>
   );

@@ -91,7 +91,7 @@ export default function EventsHeroCarousel({ slides }: { slides: EventSlide[] })
             {cur.name}
           </h2>
           {cur.date && (
-            <p className="mt-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white/75 sm:text-xs">
+            <p className="mt-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white/90 sm:text-xs">
               {cur.date}
             </p>
           )}

@@ -3,6 +3,7 @@ import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__sit
 import { getEditorial } from "@/lib/editorial/server";
 import LocationSection from "@/components/sections/location-section";
 import SectionWave from "@/components/ui/section-wave";
+import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
@@ -102,10 +103,10 @@ export default async function ContactPage() {
         </div>
       </section>
 
-      <LocationSection showContactForm />
+      <AnimateInView delay={60}><LocationSection showContactForm /></AnimateInView>
 
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
+      <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
           <SectionEyebrow icon="sparkles-outline" className="justify-center">{content.text_4}</SectionEyebrow>
           <h2 className="mt-3 font-display italic text-3xl leading-tight sm:text-4xl">{content.text_5}</h2>
@@ -123,9 +124,9 @@ export default async function ContactPage() {
             </Reveal>
           ))}
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section className="mx-auto max-w-3xl px-5 pb-16 pt-2 sm:px-8">
+      <AnimateInView delay={80}><section className="mx-auto max-w-3xl px-5 pb-16 pt-2 sm:px-8">
         <Reveal variant="fade" className="text-center">
           <SectionEyebrow icon="compass-outline" className="justify-center">{content.text_6}</SectionEyebrow>
           <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_7}</h2>
@@ -147,7 +148,7 @@ export default async function ContactPage() {
             </Reveal>
           ))}
         </div>
-      </section>
+      </section></AnimateInView>
     </>
   );
 }

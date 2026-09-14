@@ -5,6 +5,7 @@ import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
 import SectionWave from "@/components/ui/section-wave";
+import AnimateInView from "@/components/ui/animate-in-view";
 import CopyField from "./copy-field";
 
 export const revalidate = 300;
@@ -70,7 +71,7 @@ export default async function UsefulLinksPage() {
       </section>
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
 
-      <section className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
+      <AnimateInView delay={60}><section className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
         <Reveal variant="up">
           <SectionEyebrow icon="ribbon-outline">{content.text_4}</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl italic leading-tight text-clay-ink">{content.text_5}</h2>
@@ -116,7 +117,7 @@ export default async function UsefulLinksPage() {
             ))}
           </div>
         </Reveal>
-      </section>
+      </section></AnimateInView>
     </>
   );
 }

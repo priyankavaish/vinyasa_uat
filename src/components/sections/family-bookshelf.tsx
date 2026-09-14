@@ -217,7 +217,7 @@ export default function FamilyBookshelf({ members, hero = false }: { members: Fa
         >{content.text_17}<span aria-hidden>&rarr;</span>
         </button>
         </div>
-        <p className="mt-3 text-center text-[12px] font-semibold uppercase tracking-[0.18em] text-clay-ink/55">{content.text_18}</p>
+        <p className="mt-3 text-center text-[12px] font-semibold uppercase tracking-[0.18em] text-clay-ink">{content.text_18}</p>
         </div>
       </div>
     </section>

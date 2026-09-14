@@ -40,7 +40,7 @@ export default async function SiteFooter() {
               <Icon name="leaf-outline" size={18} />
             </div>
             <p className="mt-4 font-display text-4xl leading-none text-clay-ink sm:text-[2.75rem]">{content.text_1}</p>
-            <p className="mt-4 max-w-md text-sm leading-6 text-clay-ink/70">{content.text_2}</p>
+            <p className="mt-4 max-w-md text-sm leading-6 text-clay-ink/85">{content.text_2}</p>
             <Link
               href={content.href_3}
               className="mt-6 inline-flex items-center gap-4 border-b border-secondary/60 pb-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary-ink transition-all hover:gap-6 hover:text-accent"
@@ -55,7 +55,7 @@ export default async function SiteFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-clay-ink/75 transition-colors hover:text-accent"
+                    className="text-sm text-clay-ink/85 transition-colors hover:text-accent"
                   >
                     {link.label}
                   </Link>
@@ -66,18 +66,18 @@ export default async function SiteFooter() {
 
           <div>
             <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-secondary">{content.text_7}</p>
-            <p className="mt-4 max-w-[32ch] text-sm leading-6 text-clay-ink/75">{content.ADDRESS}</p>
+            <p className="mt-4 max-w-[32ch] text-sm leading-6 text-clay-ink/85">{content.ADDRESS}</p>
             <div className="mt-4 space-y-2.5 text-sm">
               <a
                 href={`mailto:${content.CONTACT_EMAIL}`}
-                className="flex w-fit items-center gap-3 text-clay-ink/75 transition-colors hover:text-accent"
+                className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
                 <Icon name="ribbon-outline" size={16} className="text-secondary" />
                 {content.CONTACT_EMAIL}
               </a>
               <a
                 href={`tel:${phoneHref}`}
-                className="flex w-fit items-center gap-3 text-clay-ink/75 transition-colors hover:text-accent"
+                className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
                 <Icon name="circle-outline" size={16} className="text-secondary" />
                 {content.CONTACT_PHONE_DISPLAY}
@@ -86,20 +86,20 @@ export default async function SiteFooter() {
                 href={content.href_8}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-fit items-center gap-3 text-clay-ink/75 transition-colors hover:text-accent"
+                className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
                 <Icon name="images-outline" size={16} className="text-secondary" />{content.text_9}</a>
             </div>
           </div>
         </div>
 
-        <div className="pt-5 text-[13px] uppercase tracking-[0.12em] text-clay-ink/50">
+        <div className="pt-5 text-[13px] uppercase tracking-[0.12em] text-clay-ink/85">
           <p>{content.text_10}{new Date().getFullYear()}{content.text_11}</p>
         </div>
       </div>
 
       <div className="border-t border-clay-ink/10 bg-[#ddcaa9]">
-        <p className="mx-auto max-w-7xl px-5 py-3 text-center text-xs font-medium tracking-[0.06em] text-clay-ink/60 sm:px-8">{content.text_12}{" "}
+        <p className="mx-auto max-w-7xl px-5 py-3 text-center text-xs font-medium tracking-[0.06em] text-clay-ink/85 sm:px-8">{content.text_12}{" "}
           <a
             href={content.href_13}
             target="_blank"

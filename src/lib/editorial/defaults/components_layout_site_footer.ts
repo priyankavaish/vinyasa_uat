@@ -24,7 +24,7 @@ export const defaults = {
 "text_7": "Find us",
 "href_8": "https://www.instagram.com/vinyasa.earth/",
 "text_9": "@vinyasa.earth",
-"text_10": "&copy; ",
+"text_10": "© ",
 "text_11": " Vinyasa Earth. Rooted in Rajasthan.",
 "text_12": "Crafted with care by",
 "href_13": "https://lexabiz.in/",

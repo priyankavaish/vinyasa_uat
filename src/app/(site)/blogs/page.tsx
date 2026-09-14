@@ -6,6 +6,7 @@ import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
 import SectionWave from "@/components/ui/section-wave";
+import AnimateInView from "@/components/ui/animate-in-view";
 import Image from "@/components/editorial/image";
 import { getPublishedBlogs } from "@/lib/cms";
 
@@ -82,7 +83,7 @@ export default async function BlogsPage() {
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="arch" />
 
       {posts.length > 0 && (
-        <section className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-20">
+        <AnimateInView delay={60}><section className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-20">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((post, i) => (
               <Reveal key={post.slug} variant="up" delay={(i % 3) * 80}>
@@ -110,10 +111,10 @@ export default async function BlogsPage() {
               </Reveal>
             ))}
           </div>
-        </section>
+        </section></AnimateInView>
       )}
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+      <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
         {posts.length > 0 ? (
           <p className="mb-6 text-xs font-semibold uppercase tracking-[0.16em] text-muted">Archive — earlier posts</p>
         ) : null}
@@ -143,7 +144,7 @@ export default async function BlogsPage() {
             </Reveal>
           ))}
         </div>
-      </section>
+      </section></AnimateInView>
     </>
   );
 }

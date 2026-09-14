@@ -4,6 +4,7 @@ import Image from "@/components/editorial/image";
 import { PageHero } from "@/components/sections/hero";
 
 import SectionWave from "@/components/ui/section-wave";
+import AnimateInView from "@/components/ui/animate-in-view";
 import FamilyBookshelf from "@/components/sections/family-bookshelf";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
@@ -106,7 +107,7 @@ export default async function AboutPage() {
         contain imagePosition="50% 42%"
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+      <AnimateInView delay={60}><section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
             <div className="group relative aspect-[4/5] overflow-hidden border border-line">
@@ -133,13 +134,13 @@ export default async function AboutPage() {
             ))}
           </Reveal>
         </div>
-      </section>
+      </section></AnimateInView>
 
       <SectionWave from="#f3f1ea" to="#ece0c9" variant="wave" className="h-8 sm:h-12" />
-      <FamilyBookshelf members={content.FAMILY} />
+      <AnimateInView delay={60}><FamilyBookshelf members={content.FAMILY} /></AnimateInView>
 
       <SectionWave from="#d4bd96" to="#f3e6d8" variant="hill" className="h-8 sm:h-12" />
-      <section className="organic-section bg-clay-surface py-16 sm:py-20">
+      <AnimateInView delay={80}><section className="organic-section bg-clay-surface py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
             <SectionEyebrow icon="leaf-outline" className="justify-center">{content.text_11}</SectionEyebrow>
@@ -159,9 +160,9 @@ export default async function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section className="relative flex min-h-[62vh] items-center overflow-hidden bg-[#241a12] text-background">
+      <AnimateInView delay={80}><section className="relative flex min-h-[62vh] items-center overflow-hidden bg-[#241a12] text-background">
         <ParallaxHeroImage>
           <Image src={content.bandImg} alt="" fill sizes="100vw" className="object-cover" />
         </ParallaxHeroImage>
@@ -183,9 +184,9 @@ export default async function AboutPage() {
           <p className="font-display text-[1.9rem] leading-snug text-[#fbf3e8] sm:text-[2.6rem]">{content.text_13}</p>
           <p className="mt-7 text-[13px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">{content.text_14}</p>
         </Reveal>
-      </section>
+      </section></AnimateInView>
 
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+      <AnimateInView delay={100}><section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid items-stretch gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
             <SectionEyebrow icon="home-outline">{content.text_15}</SectionEyebrow>
@@ -212,8 +213,7 @@ export default async function AboutPage() {
             </div>
           </Reveal>
         </div>
-      </section>
-
+      </section></AnimateInView>
 
 
     </>

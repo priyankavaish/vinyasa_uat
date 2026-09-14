@@ -8,6 +8,7 @@ import type { EventSlide } from "@/components/sections/events-hero-carousel";
 import StaysHeroGallery from "@/components/sections/stays-hero-gallery";
 import EventsCalendar, { type CalEntry } from "@/components/sections/events-calendar";
 import SectionWave from "@/components/ui/section-wave";
+import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
@@ -137,15 +138,15 @@ export default async function EventsPage() {
         />
       )}
 
-      <section id="events-calendar" className="mx-auto max-w-3xl scroll-mt-24 px-5 pb-8 pt-8 text-center sm:px-8">
+      <AnimateInView delay={60}><section id="events-calendar" className="mx-auto max-w-3xl scroll-mt-24 px-5 pb-8 pt-8 text-center sm:px-8">
         <Reveal variant="fade">
           <SectionEyebrow icon="calendar-outline" className="justify-center">{content.text_7}</SectionEyebrow>
           <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{content.text_8}</p>
         </Reveal>
-      </section>
+      </section></AnimateInView>
 
       <SectionWave from="#f3f1ea" to="#f3e6d8" variant="wave" />
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
+      <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
         <Parallax speed={-0.04} className="pointer-events-none absolute -right-24 -top-16 hidden w-[22rem] opacity-[0.14] sm:block" aria-hidden="true">
           <Image src={content.gatherImg} alt="" className="w-full rounded-full" />
         </Parallax>
@@ -236,7 +237,7 @@ export default async function EventsPage() {
             })}
           </ul>
         </div>
-      </section>
+      </section></AnimateInView>
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="arch" />
     </>
   );

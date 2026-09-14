@@ -6,6 +6,7 @@ import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { whatsappLink } from "@/lib/site";
+import AnimateInView from "@/components/ui/animate-in-view";
 
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
@@ -70,14 +71,14 @@ export default async function WorkFromFarmPage() {
         image={content.image_4} imageAlt={content.imageAlt_5} imagePosition="50% 55%" mobileImagePosition="30% 50%"
       />
 
-      <section className="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8 sm:py-16">
+      <AnimateInView delay={60}><section className="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8 sm:py-16">
         <Reveal variant="fade">
           <SectionEyebrow icon="leaf-outline" className="justify-center">{content.text_6}</SectionEyebrow>
           <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_7}</p>
         </Reveal>
-      </section>
+      </section></AnimateInView>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
+      <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="up" className="mx-auto mb-10 max-w-2xl text-center">
             <SectionEyebrow icon="compass-outline" className="justify-center">{content.text_8}</SectionEyebrow>
@@ -92,9 +93,9 @@ export default async function WorkFromFarmPage() {
             ))}
           </ul>
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+      <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
         <Reveal variant="up" className="mx-auto mb-10 max-w-2xl text-center">
           <SectionEyebrow icon="home-outline" className="justify-center">{content.text_10}</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_11}</h2>
@@ -130,9 +131,9 @@ export default async function WorkFromFarmPage() {
           </ul>
         </div>
         <p className="mt-4 text-xs text-muted">{content.text_13}</p>
-      </section>
+      </section></AnimateInView>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
+      <AnimateInView delay={100}><section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <Reveal variant="left">
             <SectionEyebrow icon="sparkles-outline">{content.text_14}</SectionEyebrow>
@@ -151,9 +152,9 @@ export default async function WorkFromFarmPage() {
             </ul>
           </Reveal>
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section className="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8 sm:py-20">
+      <AnimateInView delay={80}><section className="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8 sm:py-20">
         <Reveal variant="fade">
           <SectionEyebrow icon="people-outline" className="justify-center">{content.text_18}</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_19}</h2>
@@ -168,9 +169,9 @@ export default async function WorkFromFarmPage() {
             ))}
           </ul>
         </Reveal>
-      </section>
+      </section></AnimateInView>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-16 text-center sm:py-20">
+      <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-16 text-center sm:py-20">
         <Reveal variant="up" className="mx-auto max-w-2xl px-5 sm:px-8">
           <h2 className="font-display text-3xl leading-tight sm:text-4xl">{content.text_20}</h2>
           <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_21}</p>
@@ -182,7 +183,7 @@ export default async function WorkFromFarmPage() {
             >{content.text_24}</a>
           </div>
         </Reveal>
-      </section>
+      </section></AnimateInView>
     </>
   );
 }
