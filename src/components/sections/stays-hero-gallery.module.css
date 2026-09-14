@@ -93,7 +93,7 @@
 .eventsHero::before { inset: 180px -8% 0; opacity: .72; }
 .eventsHero .container { display: flex; flex-direction: column; height: 100%; min-height: 0; }
 .eventsHero .footer { order: -1; width: min(100%, 1216px); margin: 0 auto 8px; padding: 0 32px; align-items: flex-end; flex-shrink: 0; }
-.eventsHero .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .2em; margin-bottom: 10px; }
+.eventsHero .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .2em; margin-bottom: 10px; }
 .eventsHero .footer h1 { max-width: 23ch; font-size: clamp(28px, 2.6vw, 38px); line-height: 1.12; letter-spacing: -.045em; }
 .eventsHero .explore { font-size: 12px; font-weight: 500; gap: 18px; margin-top: 8px; }
 .eventsHero .track { flex: 1; min-height: 0; height: auto; overflow: hidden; }

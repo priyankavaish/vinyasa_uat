@@ -69,7 +69,7 @@ export default function EventsCalendar({ entries }: { entries: CalEntry[] }) {
             <p className="font-display text-sm font-semibold uppercase tracking-[0.14em] text-clay-ink">
               {label}
             </p>
-            <div className="mt-3 grid grid-cols-7 gap-1 text-center text-[10px] font-bold uppercase text-muted">
+            <div className="mt-3 grid grid-cols-7 gap-1 text-center text-[12px] font-bold uppercase text-muted">
               {WEEKDAYS.map((d, i) => (
                 <span key={i}>{d}</span>
               ))}

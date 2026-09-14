@@ -78,7 +78,7 @@ export default function EventsHeroCarousel({ slides }: { slides: EventSlide[] })
 
       <div className="absolute inset-x-0 bottom-0 z-10">
         <div className="px-6 pb-12 pt-14 sm:px-10 sm:pb-14">
-          <span className="inline-flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/90 sm:text-[11px]">
+          <span className="inline-flex items-center gap-2.5 text-[12px] font-bold uppercase tracking-[0.2em] text-white/90 sm:text-[11px]">
             <span
               className="grid h-5 w-5 place-items-center rounded-full"
               style={{ backgroundColor: cur.accent }}

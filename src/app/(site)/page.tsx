@@ -36,19 +36,19 @@ export default function HomePage() {
         variant="wave"
         className="h-6 sm:h-10"
       />
-      <AnimateInView><CottagesSection /></AnimateInView>
+      <AnimateInView delay={60}><CottagesSection /></AnimateInView>
       <SectionWave from="#fffaf2" to="#fff1e0" variant="arch" />
-      <AnimateInView><ConnectSection afterFirst={<WorkFromFarmSection />} /></AnimateInView>
+      <AnimateInView delay={80}><ConnectSection afterFirst={<WorkFromFarmSection />} /></AnimateInView>
       <SectionWave from="#fff1e0" to="#eef0e4" variant="slant" />
-      <AnimateInView><CommunitySection /></AnimateInView>
+      <AnimateInView delay={80}><CommunitySection /></AnimateInView>
       <SectionWave from="#eef0e4" to="#f3e6d8" variant="wave" />
-      <AnimateInView><UpcomingEventsSection /></AnimateInView>
+      <AnimateInView delay={100}><UpcomingEventsSection /></AnimateInView>
       <SectionWave from="#f3e6d8" to="#e8dbc6" variant="arch" />
-      <AnimateInView><TestimonialsSection /></AnimateInView>
+      <AnimateInView delay={100}><TestimonialsSection /></AnimateInView>
       <SectionWave from="#e8dbc6" to="#e7ebdd" variant="hill" />
-      <AnimateInView><PhotoMasonry /></AnimateInView>
+      <AnimateInView delay={80}><PhotoMasonry /></AnimateInView>
       <SectionWave from="#e7ebdd" to="#fff1e0" variant="slant" />
-      <AnimateInView><GallerySection /></AnimateInView>
+      <AnimateInView delay={80}><GallerySection /></AnimateInView>
     </div>
   );
 }

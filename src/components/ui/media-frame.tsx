@@ -14,7 +14,14 @@ export default function MediaFrame({
 }) {
   return (
     <div className={`absolute inset-0 overflow-hidden bg-clay-ink ${className}`}>
-      <Image src={src} alt={alt} fill quality={95} sizes={sizes} className="object-cover" />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        quality={95}
+        sizes={sizes}
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
+      />
     </div>
   );
 }

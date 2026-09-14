@@ -109,14 +109,14 @@ export default async function AboutPage() {
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
-            <div className="relative aspect-[4/5] overflow-hidden border border-line">
+            <div className="group relative aspect-[4/5] overflow-hidden border border-line">
               <Parallax enabled speed={-0.06} className="absolute inset-[-9%]">
                 <Image
                   src={content.storyImg}
                   alt={content.alt_6}
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </Parallax>
             </div>
@@ -199,14 +199,14 @@ export default async function AboutPage() {
             ))}
           </Reveal>
           <Reveal variant="right" delay={100} className="h-full">
-            <div className="relative aspect-[4/5] h-full overflow-hidden border border-line lg:aspect-auto">
+            <div className="group relative aspect-[4/5] h-full overflow-hidden border border-line lg:aspect-auto">
               <Parallax enabled speed={0.06} className="absolute inset-[-9%]">
                 <Image
                   src={content.src_19}
                   alt={content.alt_20}
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </Parallax>
             </div>

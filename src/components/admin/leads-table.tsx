@@ -79,7 +79,7 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
                             <Detail label="Received" value={new Date(l.createdAt).toLocaleString("en-IN")} />
                           </dl>
                           <div className="mt-3">
-                            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted">
+                            <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-muted">
                               Message
                             </p>
                             <p className="mt-1 whitespace-pre-wrap text-sm text-foreground">
@@ -103,7 +103,7 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
 function Detail({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted">{label}</dt>
+      <dt className="text-[12px] font-bold uppercase tracking-[0.14em] text-muted">{label}</dt>
       <dd className="mt-0.5 text-sm capitalize-none">{value}</dd>
     </div>
   );

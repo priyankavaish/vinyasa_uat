@@ -59,14 +59,14 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
       <div className="mt-10 sm:mt-14">
         <div className="mx-auto grid max-w-[100rem] items-center gap-0 md:grid-cols-2 md:gap-4 lg:gap-6">
           <Reveal variant="up" className="w-full md:p-4 lg:p-6">
-            <div className="relative aspect-[4/3] w-full overflow-hidden shadow-[0_20px_50px_-28px_rgba(45,35,25,0.35)] sm:aspect-[16/10] md:aspect-[4/3]">
+            <div className="group relative aspect-[4/3] w-full overflow-hidden shadow-[0_20px_50px_-28px_rgba(45,35,25,0.35)] sm:aspect-[16/10] md:aspect-[4/3]">
               <Image
                 src={content.FEATURE.image}
                 alt=""
                 fill
                 quality={90}
                 sizes="(min-width: 768px) 45vw, 100vw"
-                className="object-cover"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
           </Reveal>

@@ -189,7 +189,7 @@ export default async function EventsPage() {
                       style={{ borderTopColor: meta.accent, borderTopWidth: 3 }}
                     >
                       <span
-                        className="text-[10px] font-bold uppercase tracking-[0.12em]"
+                        className="text-[12px] font-bold uppercase tracking-[0.12em]"
                         style={{ color: meta.accent }}
                       >
                         {month || "—"}

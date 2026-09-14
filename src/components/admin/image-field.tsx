@@ -92,13 +92,13 @@ export default function ImageField({
               <button
                 type="button"
                 onClick={() => setUrl("")}
-                className="absolute right-1 top-1 rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-semibold text-white"
+                className="absolute right-1 top-1 rounded bg-black/55 px-1.5 py-0.5 text-[12px] font-semibold text-white"
               >
                 Remove
               </button>
             </>
           ) : (
-            <span className="grid h-full w-full place-items-center text-[10px] text-muted">
+            <span className="grid h-full w-full place-items-center text-[12px] text-muted">
               no image
             </span>
           )}

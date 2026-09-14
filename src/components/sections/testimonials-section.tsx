@@ -122,7 +122,7 @@ export default async function TestimonialsSection() {
                     <span className="block font-script text-2xl leading-none text-[#8f3b31]">
                       {testimonial.name}
                     </span>
-                    <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7a5c3f]">
+                    <span className="mt-1 block text-[12px] font-semibold uppercase tracking-[0.16em] text-[#7a5c3f]">
                       {testimonial.role}
                     </span>
                   </span>

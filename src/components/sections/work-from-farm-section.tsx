@@ -66,13 +66,13 @@ export default async function WorkFromFarmSection() {
         </Reveal>
 
         <Reveal variant="right" delay={100} className="order-2">
-          <figure className="relative aspect-[4/5] w-full overflow-hidden shadow-[0_20px_50px_-28px_rgba(45,35,25,0.35)]">
+          <figure className="group relative aspect-[4/5] w-full overflow-hidden shadow-[0_20px_50px_-28px_rgba(45,35,25,0.35)]">
             <Image
               src={content.farmImage}
               alt={content.alt_10}
               fill
               sizes="(min-width: 1024px) 46vw, 100vw"
-              className="object-cover"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent p-4">
               <span className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em] text-white/90">

@@ -34,7 +34,7 @@ export default async function NextEventRibbon() {
         <Icon name="calendar-outline" size={13} />
         {month} {day}
       </span>
-      <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#f0c58c]">{content.text_1}</span>
+      <span className="text-[12px] font-semibold uppercase tracking-[0.24em] text-[#f0c58c]">{content.text_1}</span>
       <span className="font-display text-base font-medium leading-none text-white lg:text-lg">
         {next.e.name}
       </span>

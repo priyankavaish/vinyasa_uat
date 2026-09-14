@@ -11,7 +11,7 @@
 .filters { display: flex; gap: 26px; }
 .filters button { display: flex; align-items: center; gap: 8px; padding: 19px 0 17px; border-bottom: 2px solid transparent; margin-bottom: -1px; color: #655c50; font-size: 13px; cursor: pointer; white-space: nowrap; }
 .filters button[aria-pressed="true"] { border-bottom-color: #8f3b31; color: #8f3b31; font-weight: 600; }
-.filters button span { font-size: 10px; opacity: .75; }
+.filters button span { font-size: 12px; opacity: .75; }
 .filters button:hover { color: #8f3b31; }
 .results { font-size: 12px; color: #655c50; }
 .grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 56px; padding-top: 12px; }
@@ -22,24 +22,24 @@
 .imageLink { display: block; position: absolute; inset: 0; }
 .image { object-fit: cover; transition: transform .55s ease; }
 .imageLink:hover .image { transform: scale(1.035); }
-.type { position: absolute; top: 16px; left: 16px; background: #fffaf0ed; color: #43382c; font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 9px 12px; pointer-events: none; }
+.type { position: absolute; top: 16px; left: 16px; background: #fffaf0ed; color: #43382c; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 9px 12px; pointer-events: none; }
 .photoControls { position: absolute; left: 14px; bottom: 14px; display: flex; align-items: center; background: #fffaf2; color: #302b23; }
 .photoControls button { display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; }
 .photoControls button:hover { background: #ecdfcd; }
-.photoControls > span { font-size: 10px; font-weight: 500; font-variant-numeric: tabular-nums; padding: 0 4px; }
+.photoControls > span { font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; padding: 0 4px; }
 .previous { transform: rotate(180deg); display: flex; }
 .info { position: relative; z-index: 1; min-width: 0; justify-content: center; margin: 30px 0 0 -38px; padding: 30px; background: linear-gradient(135deg, #fffaf2 0%, #faf2e8 65%, #f5ecdf 100%); border-top: 2px solid #b38b69; display: flex; flex: 1; flex-direction: column; }
 .titleRow { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.category { color: #8f3b31; font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 7px; }
+.category { color: #8f3b31; font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 7px; }
 .titleRow h3 { font-size: 34px; font-weight: 500; line-height: 1.2; letter-spacing: -.035em; }
 .titleRow h3 a:hover { color: #8f3b31; }
 .occupancy { display: flex; align-items: center; gap: 7px; font-size: 11px; color: #655c50; white-space: nowrap; }
 .description { font-size: 13px; line-height: 1.7; color: #655c50; margin-top: 12px; max-width: 58ch; }
 .bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; border-top: 1px solid #302b231a; padding-top: 14px; margin-top: 18px; }
 .price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px; }
-.price > span { font-size: 10px; color: #655c50; }
+.price > span { font-size: 12px; color: #655c50; }
 .price strong { font-size: 23px; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-.price small { font-size: 10px; color: #655c50; }
+.price small { font-size: 12px; color: #655c50; }
 .explore { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 4px 0; min-height: 44px; color: #8f3b31; font-size: 11px; font-weight: 600; transition: background .2s, color .2s; }
 .explore svg { box-sizing: content-box; padding: 10px; background: #8f3b31; color: #fffaf2; transition: background .2s; }
 .explore:hover { color: #54231d; }

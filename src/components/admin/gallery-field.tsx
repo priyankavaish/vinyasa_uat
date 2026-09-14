@@ -108,7 +108,7 @@ export default function GalleryField({
                 <button
                   type="button"
                   onClick={() => remove(i)}
-                  className="absolute right-1 top-1 rounded bg-black/55 px-1.5 py-0.5 text-[10px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100"
+                  className="absolute right-1 top-1 rounded bg-black/55 px-1.5 py-0.5 text-[12px] font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100"
                 >
                   Remove
                 </button>

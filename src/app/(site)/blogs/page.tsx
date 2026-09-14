@@ -91,8 +91,8 @@ export default async function BlogsPage() {
                   className="group flex h-full flex-col overflow-hidden border border-line bg-surface transition-all hover:-translate-y-1 hover:border-accent hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)]"
                 >
                   {post.coverUrl ? (
-                    <div className="relative aspect-[16/10] w-full">
-                      <Image src={post.coverUrl} alt={post.title} fill sizes="400px" className="object-cover" />
+                    <div className="relative aspect-[16/10] w-full overflow-hidden">
+                      <Image src={post.coverUrl} alt={post.title} fill sizes="400px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                     </div>
                   ) : null}
                   <div className="flex flex-1 flex-col p-6 sm:p-7">
