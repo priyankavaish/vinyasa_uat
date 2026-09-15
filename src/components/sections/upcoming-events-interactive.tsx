@@ -134,7 +134,10 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
 
         <div className="order-1 flex items-center px-5 py-8 sm:px-12 sm:py-12 md:py-14 lg:px-16 md:order-2">
           <div className="w-full">
-            <article className="w-full overflow-hidden border border-foreground/12 bg-surface">
+          <div className="relative w-full">
+            <div aria-hidden className="absolute -bottom-4 -right-4 hidden h-full w-full border border-clay-ink/15 bg-clay-surface sm:block" />
+            <div aria-hidden className="absolute -bottom-2 -right-2 hidden h-full w-full bg-accent/10 sm:block" />
+            <article className="relative w-full overflow-hidden border border-foreground/12 bg-surface shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
               <Link href={`/events/${current.slug}`} className="group relative block aspect-square w-full sm:aspect-[6/5]" aria-label={`Open ${current.name}`}>
                 <MediaFrame key={current.image} src={current.image} alt={current.name} sizes="(min-width: 768px) 50vw, 100vw" />
                 <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
@@ -153,11 +156,12 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                   </span>
                 </span>
               </Link>
-              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-foreground/12 p-5 sm:p-7">
+              <div className="flex flex-wrap items-center justify-between gap-4 p-5 sm:p-7">
                 <span className="font-display text-lg">{priceText(current.priceFrom)}</span>
                 <Link href={`/events/${current.slug}`} className="btn btn-accent btn-sm inline-flex">{content.text_9}</Link>
               </div>
             </article>
+          </div>
             {items.length > 1 && (
               <div className="mt-4 flex gap-2" role="tablist" aria-label={content.aria_label_12}>
                 {items.map((it, i) => (

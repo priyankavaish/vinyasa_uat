@@ -39,9 +39,9 @@ export default function HomePage() {
       <AnimateInView delay={60}><CottagesSection /></AnimateInView>
       <SectionWave from="#fffaf2" to="#fff1e0" variant="arch" />
       <AnimateInView delay={80}><ConnectSection afterFirst={<WorkFromFarmSection />} /></AnimateInView>
-      <SectionWave from="#fff1e0" to="#eef0e4" variant="slant" />
+      <SectionWave from="#fff1e0" to="#f3f1ea" variant="slant" />
       <AnimateInView delay={80}><CommunitySection /></AnimateInView>
-      <SectionWave from="#eef0e4" to="#f3e6d8" variant="wave" />
+      <SectionWave from="#f3f1ea" to="#f3e6d8" variant="wave" />
       <AnimateInView delay={100}><UpcomingEventsSection /></AnimateInView>
       <SectionWave from="#f3e6d8" to="#e8dbc6" variant="arch" />
       <AnimateInView delay={100}><TestimonialsSection /></AnimateInView>

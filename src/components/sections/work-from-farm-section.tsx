@@ -65,8 +65,10 @@ export default async function WorkFromFarmSection() {
           </div>
         </Reveal>
 
-        <Reveal variant="right" delay={100} className="order-2">
-          <figure className="group relative aspect-[4/5] w-full overflow-hidden shadow-[0_20px_50px_-28px_rgba(45,35,25,0.35)]">
+        <Reveal variant="right" delay={100} className="order-2 relative">
+          <div aria-hidden className="absolute -bottom-4 -right-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
+          <div aria-hidden className="absolute -bottom-2 -right-2 h-full w-full bg-accent/10" />
+          <figure className="group relative aspect-[4/5] w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(45,35,25,0.4)]">
             <Image
               src={content.farmImage}
               alt={content.alt_10}

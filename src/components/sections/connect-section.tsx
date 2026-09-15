@@ -58,8 +58,10 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
       {/* feature — one full-bleed row */}
       <div className="mt-10 sm:mt-14">
         <div className="mx-auto grid max-w-[100rem] items-center gap-0 md:grid-cols-2 md:gap-4 lg:gap-6">
-          <Reveal variant="up" className="w-full md:p-4 lg:p-6">
-            <div className="group relative aspect-[4/3] w-full overflow-hidden shadow-[0_20px_50px_-28px_rgba(45,35,25,0.35)] sm:aspect-[16/10] md:aspect-[4/3]">
+          <Reveal variant="up" className="relative w-full md:p-4 lg:p-6">
+            <div aria-hidden className="absolute -bottom-4 -right-4 hidden h-[calc(100%-2rem)] w-[calc(100%-2rem)] border border-clay-ink/15 bg-clay-surface md:block lg:-bottom-5 lg:-right-5 lg:h-[calc(100%-3rem)] lg:w-[calc(100%-3rem)]" />
+            <div aria-hidden className="absolute -bottom-2 -right-2 hidden h-[calc(100%-2rem)] w-[calc(100%-2rem)] bg-accent/10 md:block lg:-bottom-3 lg:-right-3 lg:h-[calc(100%-3rem)] lg:w-[calc(100%-3rem)]" />
+            <div className="group relative aspect-[4/3] w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(45,35,25,0.4)] sm:aspect-[16/10] md:aspect-[4/3]">
               <Image
                 src={content.FEATURE.image}
                 alt=""
@@ -118,8 +120,11 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
                   i === 1 ? "md:[&>*:first-child]:order-2" : ""
                 }`}
               >
-                <div className="relative aspect-[16/10] w-full overflow-hidden shadow-[0_20px_50px_-28px_rgba(45,35,25,0.3)]">
-                  <Parallax enabled speed={i === 0 ? 0.05 : -0.05} className="absolute inset-[-9%]">
+                <div className="relative">
+                  <div aria-hidden className={`absolute -bottom-4 h-full w-full border border-clay-ink/15 bg-clay-surface ${i === 1 ? "-left-4" : "-right-4"}`} />
+                  <div aria-hidden className={`absolute -bottom-2 h-full w-full bg-accent/10 ${i === 1 ? "-left-2" : "-right-2"}`} />
+                  <div className="relative aspect-[16/10] w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(45,35,25,0.4)]">
+                    <Parallax enabled speed={i === 0 ? 0.05 : -0.05} className="absolute inset-[-9%]">
                     <Image
                       src={card.image}
                       alt=""
@@ -129,6 +134,7 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </Parallax>
+                  </div>
                 </div>
                 <div>
                   <span className="font-display text-sm italic text-accent/70">
