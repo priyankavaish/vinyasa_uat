@@ -738,10 +738,7 @@ label[for] {
   .hero-video { animation: none !important; }
 }
 
-.place-carousel-slide { flex-basis: min(82vw, 22rem); }
 .place-carousel-track { backface-visibility: hidden; }
-@media (min-width: 640px) { .place-carousel-slide { flex-basis: 44%; } }
-@media (min-width: 1024px) { .place-carousel-slide { flex-basis: 32%; } }
 
 .lexabiz-credit {
   position: relative;
