@@ -86,7 +86,7 @@ export default function SiteHeader() {
         >
           <span
             className={`grid place-items-center rounded-full bg-white p-0.5 ring-1 ring-white/70 transition-all duration-500 ${
-              transparent ? "shadow-[0_2px_12px_rgba(0,0,0,0.4)]" : "shadow-sm"
+              transparent ? "shadow-[0_2px_12px_rgba(0,0,0,0.4),0_0_22px_6px_rgba(255,255,255,0.35)]" : "shadow-[0_0_14px_2px_rgba(255,255,255,0.45)]"
             }`}
           >
             <Image
