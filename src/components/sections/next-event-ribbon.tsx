@@ -39,7 +39,7 @@ export default async function NextEventRibbon() {
         {next.e.name}
       </span>
       <span className="text-xs text-white/65">{next.e.dateLabel}</span>
-      <span className="flex items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_10px_rgba(0,0,0,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5">{content.text_2}<Icon name="arrow-forward-outline" size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
+      <span className="flex items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_10px_rgba(0,0,0,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5">{content.text_2}<span className="arrow-nudge"><Icon name="arrow-forward-outline" size={14} className="transition-transform duration-300 group-hover:translate-x-1" /></span>
       </span>
     </>
   );
@@ -48,7 +48,7 @@ export default async function NextEventRibbon() {
     <Link
       href={`/events/${next.e.slug}`}
       aria-label={`Next event: ${next.e.name}, ${next.e.dateLabel} — book now`}
-      className="group relative block overflow-hidden border-t-2 border-t-[#5a2015] bg-gradient-to-r from-[#7d3128] via-[#9a3f31] to-[#7d3128] text-accent-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background] duration-300 hover:via-[#ad4636]"
+      className="next-event-link group relative block overflow-hidden border-t-2 border-t-[#5a2015] bg-gradient-to-r from-[#7d3128] via-[#9a3f31] to-[#7d3128] text-accent-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[background] duration-300 hover:via-[#ad4636]"
     >
       {/* desktop — calm centred bar */}
       <div className="hidden items-center justify-center gap-4 py-2.5 md:flex">

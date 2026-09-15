@@ -143,7 +143,13 @@ label[for] {
   text-transform: uppercase;
   border-radius: 0;
   white-space: nowrap;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn:hover { transform: translateY(-2px) rotate(-0.4deg); }
+.btn:active { transform: translateY(0) scale(0.96); transition-duration: 0.08s; }
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover, .btn:active { transform: none; }
 }
 
 .btn-outline {
@@ -772,6 +778,53 @@ label[for] {
 @keyframes gentle-bob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-0.08em); }
+}
+
+/* A continuous little nudge on a CTA's arrow — "look, click me" — instead of
+   only moving on hover. A smooth, unbroken back-and-forth (no snap, no
+   pause), small amplitude so it reads as a gentle hint, not a glitch. */
+@keyframes arrow-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+.arrow-nudge {
+  display: inline-flex;
+  animation: arrow-nudge 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrow-nudge { animation: none; }
+}
+
+/* The two ring shapes in the footer's top-right corner — a slow, continuous
+   grow/shrink breathing so the footer doesn't sit completely still. */
+@keyframes footer-shape-grow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.12); opacity: 0.7; }
+}
+.footer-shape {
+  animation: footer-shape-grow 6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-shape { animation: none; }
+}
+.next-event-link:hover + .next-event-wave {
+  background: linear-gradient(to right, #7d3128, #ad4636, #7d3128) !important;
+}
+
+/* A small, slow sway on every section eyebrow's icon — used sitewide via
+   SectionEyebrow, so the whole site gets a touch of ambient life instead of
+   only the home hero. Small amplitude, on purpose: it should read as
+   "breathing", not "wobbling". */
+@keyframes eyebrow-sway {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(8deg) translateY(-1px); }
+}
+.eyebrow-icon {
+  display: inline-flex;
+  animation: eyebrow-sway 3.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow-icon { animation: none; }
 }
 
 /* Slow hue-cycle through earthy tones — terracotta, marigold, sage, clay,

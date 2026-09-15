@@ -34,7 +34,7 @@ export default function HomePage() {
         from="linear-gradient(to right, #7d3128, #9a3f31, #7d3128)"
         to="#fffaf2"
         variant="wave"
-        className="h-6 sm:h-10"
+        className="next-event-wave h-6 sm:h-10"
       />
       <AnimateInView delay={60}><CottagesSection /></AnimateInView>
       <SectionWave from="#fffaf2" to="#fff1e0" variant="arch" />

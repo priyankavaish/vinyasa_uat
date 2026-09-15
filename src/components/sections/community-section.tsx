@@ -23,14 +23,14 @@ export default async function CommunitySection() {
             <Link href={content.href_7} className="btn btn-outline inline-flex !px-5 !text-[13px] sm:!px-7 sm:!text-xs">{content.text_8}</Link>
           </div>
         </Reveal>
-        <Reveal variant="up" delay={0} className="relative order-1 aspect-[16/11] w-full sm:aspect-[16/10] md:order-1 md:aspect-auto md:h-full md:min-h-[26rem] md:self-stretch">
+        <Reveal variant="up" delay={0} className="group relative order-1 aspect-[16/11] w-full overflow-hidden sm:aspect-[16/10] md:order-1 md:aspect-auto md:h-full md:min-h-[26rem] md:self-stretch">
           <Image
             src={content.communityGathering}
             alt={content.alt_9}
             fill
             quality={95}
             sizes="(min-width: 768px) 50vw, 100vw"
-            className="object-cover shadow-[inset_0_0_70px_rgba(20,15,10,0.18)]"
+            className="object-cover shadow-[inset_0_0_70px_rgba(20,15,10,0.18)] transition-transform duration-500 group-hover:scale-105"
           />
         </Reveal>
       </div>

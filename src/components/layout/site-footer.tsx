@@ -26,11 +26,12 @@ export default async function SiteFooter() {
     <footer className="relative isolate overflow-hidden bg-[var(--footer-background)] pb-[env(safe-area-inset-bottom)] text-clay-ink">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-32 -top-36 h-80 w-80 rounded-full border border-secondary/25"
+        className="footer-shape pointer-events-none absolute -right-32 -top-36 h-80 w-80 rounded-full border border-secondary/25"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border border-secondary/15"
+        className="footer-shape pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border border-secondary/15"
+        style={{ animationDelay: "1.2s" }}
       />
       <div className="relative mx-auto max-w-7xl px-5 pb-5 pt-10 sm:px-8 sm:pt-14">
         <div className="grid gap-8 border-b border-clay-ink/15 pb-9 lg:grid-cols-[1.35fr_0.7fr_1fr] lg:gap-14">
@@ -44,7 +45,7 @@ export default async function SiteFooter() {
             <Link
               href={content.href_3}
               className="mt-6 inline-flex items-center gap-4 border-b border-secondary/60 pb-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary-ink transition-all hover:gap-6 hover:text-accent"
-            >{content.text_4}<Icon name="arrow-forward-outline" size={15} />
+            >{content.text_4}<span className="arrow-nudge"><Icon name="arrow-forward-outline" size={15} /></span>
             </Link>
           </div>
 
