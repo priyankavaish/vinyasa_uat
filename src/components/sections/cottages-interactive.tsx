@@ -28,6 +28,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
 
   const [active, setActive] = useState(0);
   const [shot, setShot] = useState(0);
+  const [heroRatio, setHeroRatio] = useState(4 / 3);
   const current = rooms[active] ?? rooms[0];
   const gallery = current?.gallery?.length ? current.gallery : current ? [current.image] : [];
   const hero = gallery[shot] ?? current?.image;
@@ -65,9 +66,26 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
 
         <div className="mt-10 grid items-center gap-10 sm:mt-14 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
           <div className="min-w-0">
-            <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} cottage`} className="group relative block aspect-[4/3] overflow-hidden bg-transparent">
-              <Image key={hero} src={hero} alt={`Inside ${current.name}, a hand-built cottage at Vinyasa Earth`} fill quality={95} sizes="(min-width: 1280px) 620px, (min-width: 1024px) 55vw, 100vw" className="object-contain transition-transform duration-500 group-hover:scale-105" />
-            </Link>
+            <div className="relative mx-auto max-h-[32rem] transition-[aspect-ratio] duration-500 ease-out" style={{ aspectRatio: heroRatio }}>
+              <div aria-hidden className="absolute -bottom-4 -right-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
+              <div aria-hidden className="absolute -bottom-2 -right-2 h-full w-full bg-accent/10" />
+              <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} cottage`} className="group relative block h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
+                <Image
+                  src={hero}
+                  alt={`Inside ${current.name}, a hand-built cottage at Vinyasa Earth`}
+                  fill
+                  quality={95}
+                  sizes="(min-width: 1280px) 620px, (min-width: 1024px) 55vw, 100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  onLoad={(e) => {
+                    const img = e.currentTarget;
+                    if (img.naturalWidth && img.naturalHeight) {
+                      setHeroRatio(img.naturalWidth / img.naturalHeight);
+                    }
+                  }}
+                />
+              </Link>
+            </div>
             {gallery.length > 1 && (
               <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-5 sm:gap-3" aria-label={`${current.name} gallery`}>
                 {gallery.map((src, index) => (
