@@ -10,10 +10,11 @@
   justify-content: center;
   text-align: center;
   border: 1px solid #e6c9a0;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #fdf1de, #fbe6c8);
+  border-radius: 0;
+  background: #fff;
   padding: 18px 24px;
   box-shadow: 0 10px 26px -18px rgba(143, 59, 49, 0.35);
+  color: #2b2620;
 }
 .availabilityInline a {
   display: inline-flex;
@@ -23,7 +24,7 @@
   color: #fffaf2;
   font-size: 14px;
   padding: 9px 18px;
-  border-radius: 999px;
+  border-radius: 0;
   text-decoration: none;
   box-shadow: 0 8px 18px -8px rgba(143, 59, 49, 0.55);
   transition: transform 200ms ease, background 200ms ease;
