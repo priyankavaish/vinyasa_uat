@@ -97,7 +97,7 @@ export default async function AboutPage() {
 
 
   return (
-    <>
+    <div>
       <PageHero
         eyebrow={content.text_1}
         title={content.text_2}
@@ -107,7 +107,7 @@ export default async function AboutPage() {
         contain imagePosition="50% 42%"
       />
 
-      <AnimateInView delay={60}><section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+      <AnimateInView delay={60}><section className="texture-linen mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
             <div className="group relative aspect-[4/5] overflow-hidden border border-line">
@@ -181,7 +181,7 @@ export default async function AboutPage() {
           className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center sm:px-8"
         >
           <span className="mx-auto mb-7 block h-10 w-px bg-[#d88b50]/70" aria-hidden />
-          <p className="font-display text-[1.9rem] leading-snug text-[#fbf3e8] sm:text-[2.6rem]">{content.text_13}</p>
+          <p className="font-display text-[2.1rem] leading-snug text-[#fbf3e8] sm:text-[2.9rem]">{content.text_13}</p>
           <p className="mt-7 text-[13px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">{content.text_14}</p>
         </Reveal>
       </section></AnimateInView>
@@ -216,6 +216,6 @@ export default async function AboutPage() {
       </section></AnimateInView>
 
 
-    </>
+    </div>
   );
 }

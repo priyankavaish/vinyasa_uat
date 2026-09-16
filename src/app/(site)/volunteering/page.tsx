@@ -7,13 +7,11 @@ import SectionWave from "@/components/ui/section-wave";
 import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
-import { Parallax } from "@/components/ui/parallax";
 import { Icon } from "@/components/ui/icon";
 import LeadForm from "@/components/forms/lead-form";
 import GalleryCarouselGrid from "@/components/ui/gallery-carousel-grid";
 import { volunteerTracks, volunteerInfo } from "@/lib/content";
 
-import sideImg from "@/app/assets/new/grounds-07.jpg";
 import communityImg from "@/app/assets/new/community-05.jpg";
 import styles from "./volunteer.module.css";
 
@@ -26,7 +24,7 @@ export default async function VolunteerPage() {
 
   return (
     <div className={styles.page}>
-      <section className="bg-clay-surface px-5 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-32">
+      <section className="texture-linen bg-clay-surface px-5 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-32">
         <div className="mx-auto max-w-6xl">
           <div className="grid items-start gap-8 sm:grid-cols-[1fr_1.2fr] sm:gap-10">
             <div>
@@ -58,14 +56,6 @@ export default async function VolunteerPage() {
       </section></AnimateInView>
       <SectionWave from="#f3f1ea" to="#f3e6d8" variant="wave" />
       <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-16 sm:py-20">
-        <Parallax
-          speed={0.04}
-          className="pointer-events-none absolute -left-24 bottom-0 hidden w-[20rem] opacity-[0.12] sm:block"
-          aria-hidden="true"
-        >
-          <Image src={content.sideImg} alt="" className="w-full rounded-full" />
-        </Parallax>
-
         <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="left" className="mx-auto mb-12 max-w-2xl text-center">
             <SectionEyebrow icon="people-outline" className="justify-center">{content.text_11}</SectionEyebrow>

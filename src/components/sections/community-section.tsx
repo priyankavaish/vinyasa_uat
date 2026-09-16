@@ -11,7 +11,7 @@ export default async function CommunitySection() {
   const content = await getEditorial("components/sections/community-section", editorialDefaults);
 
   return (
-    <section className="relative overflow-hidden bg-background">
+    <section className="texture-linen relative overflow-hidden bg-background">
       <div className="grid items-center gap-0 md:grid-cols-2">
         <Reveal variant="up" delay={200} className="order-2 px-5 py-10 sm:px-12 sm:py-12 md:px-16 lg:px-20">
           <SectionEyebrow tone="secondary" icon="people-outline">{content.text_1}</SectionEyebrow>

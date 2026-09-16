@@ -159,7 +159,7 @@ export default async function StaysPage() {
         <SectionWave from="#f3f1ea" to="#e7ebdd" variant="slant" />
       )}
       {visitOptions.length > 0 && (
-        <AnimateInView delay={100}><section className="organic-section relative overflow-hidden bg-dusk-surface py-20">
+        <AnimateInView delay={100}><section className="organic-section texture-linen relative overflow-hidden bg-dusk-surface py-20">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
               <SectionEyebrow icon="calendar-outline">{content.text_23}</SectionEyebrow>

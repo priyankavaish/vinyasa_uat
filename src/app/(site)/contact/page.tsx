@@ -77,8 +77,8 @@ export default async function ContactPage() {
   const FAQ = content.FAQ_FALLBACK;
 
   return (
-    <>
-      <section className="relative overflow-hidden bg-clay-surface px-5 pb-4 pt-24 text-center sm:px-8 sm:pt-28">
+    <div>
+      <section className="texture-linen relative overflow-hidden bg-clay-surface px-5 pb-4 pt-24 text-center sm:px-8 sm:pt-28">
         <span
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-24 text-surface sm:h-32"
@@ -149,6 +149,6 @@ export default async function ContactPage() {
           ))}
         </div>
       </section></AnimateInView>
-    </>
+    </div>
   );
 }

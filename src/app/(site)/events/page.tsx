@@ -117,7 +117,7 @@ export default async function EventsPage() {
     .filter((x): x is CalEntry => x !== null);
 
   return (
-    <>
+    <div>
       {slides.length ? (
         <>
           <StaysHeroGallery variant="events" photos={slides.map((slide) => ({ src: slide.image, name: slide.name, slug: slide.slug, element: slide.label, date: slide.date }))} />
@@ -138,7 +138,7 @@ export default async function EventsPage() {
         />
       )}
 
-      <AnimateInView delay={60}><section id="events-calendar" className="mx-auto max-w-3xl scroll-mt-24 px-5 pb-8 pt-8 text-center sm:px-8">
+      <AnimateInView delay={60}><section id="events-calendar" className="texture-linen mx-auto max-w-3xl scroll-mt-24 px-5 pb-8 pt-8 text-center sm:px-8">
         <Reveal variant="fade">
           <SectionEyebrow icon="calendar-outline" className="justify-center">{content.text_7}</SectionEyebrow>
           <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{content.text_8}</p>
@@ -239,6 +239,6 @@ export default async function EventsPage() {
         </div>
       </section></AnimateInView>
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="arch" />
-    </>
+    </div>
   );
 }

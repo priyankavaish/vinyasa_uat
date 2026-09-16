@@ -88,6 +88,25 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* A subtle linen weave — used behind whole pages (about/volunteer/contact/
+   events/home) to keep flat colour blocks from feeling generic. Warm, faint,
+   and tiled small enough to read as texture rather than a visible pattern. */
+.texture-linen {
+  position: relative;
+  isolation: isolate;
+}
+.texture-linen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M0 8h64M0 24h64M0 40h64M0 56h64' stroke='%236b3f22' stroke-width='1' opacity='.5'/%3E%3Cpath d='M8 0v64M24 0v64M40 0v64M56 0v64' stroke='%236b3f22' stroke-width='1' opacity='.5'/%3E%3C/svg%3E");
+  background-size: 64px 64px;
+}
+
 a {
   color: inherit;
 }
