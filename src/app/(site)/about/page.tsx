@@ -110,16 +110,20 @@ export default async function AboutPage() {
       <AnimateInView delay={60}><section className="texture-linen mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
-            <div className="group relative aspect-[4/5] overflow-hidden border border-line">
-              <Parallax enabled speed={-0.06} className="absolute inset-[-9%]">
-                <Image
-                  src={content.storyImg}
-                  alt={content.alt_6}
-                  fill
-                  sizes="(min-width: 1024px) 45vw, 100vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </Parallax>
+            <div className="relative aspect-[4/5]">
+              <div aria-hidden className="absolute -bottom-4 -right-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
+              <div aria-hidden className="absolute -bottom-2 -right-2 h-full w-full bg-accent/10" />
+              <div className="group relative h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
+                <Parallax enabled speed={-0.06} className="absolute inset-[-9%]">
+                  <Image
+                    src={content.storyImg}
+                    alt={content.alt_6}
+                    fill
+                    sizes="(min-width: 1024px) 45vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </Parallax>
+              </div>
             </div>
           </Reveal>
           <Reveal variant="right" delay={100}>
