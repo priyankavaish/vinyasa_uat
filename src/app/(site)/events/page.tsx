@@ -118,6 +118,7 @@ export default async function EventsPage() {
 
   return (
     <div>
+      <style>{`:root { --wave-lead: #f3e6d8; }`}</style>
       {slides.length ? (
         <>
           <StaysHeroGallery variant="events" photos={slides.map((slide) => ({ src: slide.image, name: slide.name, slug: slide.slug, element: slide.label, date: slide.date }))} />
@@ -238,7 +239,6 @@ export default async function EventsPage() {
           </ul>
         </div>
       </section></AnimateInView>
-      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="arch" />
     </div>
   );
 }

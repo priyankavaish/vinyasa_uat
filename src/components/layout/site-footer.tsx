@@ -22,7 +22,7 @@ export default async function SiteFooter() {
 
   return (
     <>
-    <SectionWave from="transparent" to="var(--footer-background)" variant="wave" className="h-8 sm:h-12" />
+    <SectionWave from="var(--wave-lead, transparent)" to="var(--footer-background)" variant="wave" className="h-8 sm:h-12" />
     <footer className="relative isolate overflow-hidden bg-[var(--footer-background)] pb-[env(safe-area-inset-bottom)] text-clay-ink">
       <div
         aria-hidden="true"

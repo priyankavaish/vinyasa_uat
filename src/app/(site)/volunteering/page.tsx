@@ -24,6 +24,7 @@ export default async function VolunteerPage() {
 
   return (
     <div className={styles.page}>
+      <style>{`:root { --wave-lead: #e7ebdd; }`}</style>
       <section className="texture-linen bg-clay-surface px-5 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-32">
         <div className="mx-auto max-w-6xl">
           <div className="grid items-start gap-8 sm:grid-cols-[1fr_1.2fr] sm:gap-10">
@@ -173,7 +174,6 @@ export default async function VolunteerPage() {
           </Reveal>
         </div>
       </section></AnimateInView>
-      <SectionWave from="#e7ebdd" to="#f3f1ea" variant="wave" />
     </div>
   );
 }
