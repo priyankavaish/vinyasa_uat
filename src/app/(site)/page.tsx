@@ -26,6 +26,9 @@ export default function HomePage() {
         .home-page-theme {
           background-color: #fff1e0;
         }
+        :root {
+          --wave-lead: #fff1e0;
+        }
       `}</style>
       <HomeHero />
       {/* <MarqueeBar /> */}
