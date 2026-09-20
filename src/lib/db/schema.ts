@@ -139,7 +139,9 @@ export const siteContent = pgTable("site_content", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
-// Builder-made pages: a JSON list of typed blocks rendered at /<slug>.
+// Simple pages: title + one rich-text body, edited exactly like a blog post
+// (Stage 6 — replaced the block-builder; `layout`/`blocks` are legacy, kept
+// only so old rows still have somewhere to live. See CMS_PAGE_BUILDER.md.)
 export const pages = pgTable("pages", {
   id: uuid("id").defaultRandom().primaryKey(),
   slug: text("slug").notNull().unique(),
@@ -147,10 +149,50 @@ export const pages = pgTable("pages", {
   status: text("status").notNull().default("draft"), // draft | published
   layout: text("layout").notNull().default("boxed"), // boxed | full | narrow
   blocks: jsonb("blocks").$type<unknown[]>().notNull().default([]),
+  coverUrl: text("cover_url").notNull().default(""),
+  bodyHtml: text("body_html").notNull().default(""),
   seoTitle: text("seo_title").notNull().default(""),
   seoDescription: text("seo_description").notNull().default(""),
+  // Stage 3 — scheduling: page is only live when published AND (no window, or now falls in it).
+  publishAt: timestamp("publish_at", { withTimezone: true }),
+  unpublishAt: timestamp("unpublish_at", { withTimezone: true }),
+  // Stage 3 — per-page theme: optional CSS custom-property overrides, e.g. { "--accent": "#123456" }.
+  themeTokens: jsonb("theme_tokens").$type<Record<string, string>>().notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// Stage 3 — reusable sections: a named, standalone block that can be inserted
+// into any builder page and edited in one place. Not synced after insert —
+// inserting copies the block's current JSON into the page (matches how the
+// rest of the block model works: page.blocks is the single source of truth).
+export const pageSections = pgTable("page_sections", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  block: jsonb("block").$type<unknown>().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// Stage 4 — revisions: a full snapshot of a page's editable columns, taken
+// right before an update overwrites them. One-click rollback restores a
+// snapshot back onto the live row.
+export const pageRevisions = pgTable("page_revisions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  pageId: uuid("page_id").notNull(),
+  snapshot: jsonb("snapshot").$type<unknown>().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// Stage 4 — form block submissions: freeform field data keyed by the block's
+// own field ids, so no schema change is needed when an editor adds a field.
+export const formSubmissions = pgTable("form_submissions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  pageSlug: text("page_slug").notNull(),
+  blockId: text("block_id").notNull(),
+  data: jsonb("data").$type<Record<string, string>>().notNull(),
+  ipHash: text("ip_hash"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
 export type CottageRow = typeof cottages.$inferSelect;
@@ -161,3 +203,6 @@ export type PartnerRow = typeof partners.$inferSelect;
 export type BookingRow = typeof bookings.$inferSelect;
 export type LeadRow = typeof leads.$inferSelect;
 export type PageRow = typeof pages.$inferSelect;
+export type PageSectionRow = typeof pageSections.$inferSelect;
+export type PageRevisionRow = typeof pageRevisions.$inferSelect;
+export type FormSubmissionRow = typeof formSubmissions.$inferSelect;

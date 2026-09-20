@@ -17,7 +17,9 @@ export default function SectionEyebrow({
       className={`flex items-center gap-2 text-[0.8125rem] font-semibold uppercase tracking-[0.18em] ${className}`}
       style={{ color }}
     >
-      <Icon name={icon} size={14} />
+      <span className="eyebrow-icon">
+        <Icon name={icon} size={14} />
+      </span>
       {children}
     </p>
   );

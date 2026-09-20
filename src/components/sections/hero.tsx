@@ -1,11 +1,16 @@
 "use client";
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_hero";
+import { useEditorial } from "@/components/editorial/provider";
+
 
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import heroStyles from "./page-hero.module.css";
-import Image, { type StaticImageData } from "next/image";
+import Image, { type StaticImageData } from "@/components/editorial/image";
 import { ParallaxHeroImage } from "../ui/parallax";
 
 export function HomeHero() {
+  const content = useEditorial("components/sections/hero", editorialDefaults);
+
   const contentRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -56,10 +61,10 @@ export function HomeHero() {
           playsInline
           preload="auto"
           disablePictureInPicture
-          poster="/images/hero-video-poster.jpg"
+          poster={content.poster_1}
           className="hero-video absolute inset-0 h-full w-full object-cover"
         >
-          <source src="/videos/hero.mp4" type="video/mp4" />
+          <source src={content.src_2} type="video/mp4" />
         </video>
       </ParallaxHeroImage>
       <div className="hero-video-overlay absolute inset-0" />
@@ -70,23 +75,21 @@ export function HomeHero() {
       >
         <div className="hero-brand">
           <p className="hero-brand-place">
-            <span className="hero-brand-place-rule" aria-hidden />
-            Jaipur, Rajasthan
-            <span className="hero-brand-place-rule" aria-hidden />
+            <span className="hero-brand-place-rule" aria-hidden />{content.text_3}<span className="hero-brand-place-rule" aria-hidden />
           </p>
 
-          <span className="hero-brand-kicker">A retreat for curious minds</span>
+          <span className="hero-brand-kicker">{content.text_4}</span>
 
           <h1 className="hero-brand-name">
-            <span className="hero-brand-name-primary">Vinyasa</span>
-            <span className="hero-brand-name-primary">Earth</span>
+            <span className="hero-brand-name-primary">{content.text_5}</span>
+            <span className="hero-brand-name-primary">{content.text_6}</span>
           </h1>
 
           <span className="hero-brand-divider" aria-hidden="true">
             <span className="hero-brand-divider-rule" />
           </span>
 
-          <span className="hero-brand-values">Live <i /> Create <i /> Belong</span>
+          <span className="hero-brand-values">{content.text_7}<i />{content.text_8}<i />{content.text_9}</span>
         </div>
 
         {/* <p className="mt-7 max-w-[44ch] text-base leading-relaxed text-background/90">

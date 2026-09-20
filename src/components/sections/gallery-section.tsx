@@ -1,31 +1,32 @@
-import Image from "next/image";
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_gallery_section";
+import { getEditorial } from "@/lib/editorial/server";
+import Image from "@/components/editorial/image";
 import SectionEyebrow from "../ui/section-eyebrow";
 import { Reveal } from "../ui/reveal";
 import { Parallax } from "../ui/parallax";
 import { galleryPosts } from "@/lib/content";
 
-export default function GallerySection() {
+export default async function GallerySection() {
+  const content = await getEditorial("components/sections/gallery-section", editorialDefaults);
+
   return (
     <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
 
       <Reveal variant="up" className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <SectionEyebrow icon="camera-outline">From the community</SectionEyebrow>
-          <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight">
-            Days at Vinyasa Earth
-          </h2>
+          <SectionEyebrow icon="camera-outline">{content.text_1}</SectionEyebrow>
+          <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight">{content.text_2}</h2>
         </div>
         <a
-          href="https://www.instagram.com/vinyasa.earth/"
+          href={content.href_3}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs tracking-[0.08em] uppercase text-accent underline"
-        >
-          @vinyasa.earth on Instagram
-        </a>
+        >{content.text_4}</a>
       </Reveal>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {galleryPosts.map((post, i) => (
+        {content.galleryPosts.map((post, i) => (
           <Reveal
             key={post.permalink}
             variant="up"

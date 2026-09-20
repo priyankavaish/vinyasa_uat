@@ -1,17 +1,17 @@
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__work_from_farm_page";
+import { getEditorial } from "@/lib/editorial/server";
 import Link from "next/link";
 import { PageHero } from "@/components/sections/hero";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { whatsappLink } from "@/lib/site";
+import AnimateInView from "@/components/ui/animate-in-view";
 
 
-export const metadata = {
-  title: "Work From Farm",
-  description:
-    "Work From Farm at Vinyasa Earth — stay, work and slow down outside Jaipur. Wi-Fi and open shared spaces, community meals, and a bed in an earthen cottage or the dorm, by the night or the season.",
-  alternates: { canonical: "/work-from-farm" },
-};
+export async function generateMetadata(): Promise<import("next").Metadata> {
+  return (await getEditorial("app/(site)/work-from-farm/page", editorialDefaults)).seo;
+}
 
 const findHere: { icon: IconName; text: string }[] = [
   { icon: "wind-outline", text: "Wi-Fi and open shared spaces to work from — no fixed desks or coworking cubicles" },
@@ -59,41 +59,33 @@ const forWhom = [
   "Researchers", "Workation seekers", "Community-living enthusiasts",
 ];
 
-export default function WorkFromFarmPage() {
+export default async function WorkFromFarmPage() {
+  const content = await getEditorial("app/(site)/work-from-farm/page", editorialDefaults);
+
   return (
     <>
       <PageHero
-        eyebrow="Work From Farm"
-        title="Stay, work and slow down outside Jaipur"
-        description="Step away from the usual work-from-home routine without stepping away from work. There are no designated workstations — just open space where you can work while staying connected to the natural surroundings."
-        image="/images/Vinyasa data (Space)/BM9A6310.jpg" imageAlt="Quiet green fields beside the Vinyasa Earth farm" imagePosition="50% 55%" mobileImagePosition="30% 50%"
+        eyebrow={content.eyebrow_1}
+        title={content.title_2}
+        description={content.description_3}
+        image={content.image_4} imageAlt={content.imageAlt_5} imagePosition="50% 55%" mobileImagePosition="30% 50%"
       />
 
-      <section className="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8 sm:py-16">
+      <AnimateInView delay={60}><section className="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8 sm:py-16">
         <Reveal variant="fade">
-          <SectionEyebrow icon="leaf-outline" className="justify-center">
-            A different way to work
-          </SectionEyebrow>
-          <p className="mt-4 leading-relaxed text-foreground-soft">
-            Bring your laptop and your current project. Find focus among mud cottages, open skies
-            and a living creative community — close enough to Jaipur, yet far from its rush. Stay a
-            few nights or settle in for a season.
-          </p>
+          <SectionEyebrow icon="leaf-outline" className="justify-center">{content.text_6}</SectionEyebrow>
+          <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_7}</p>
         </Reveal>
-      </section>
+      </section></AnimateInView>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
+      <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <Reveal variant="up" className="mx-auto mb-10 max-w-2xl text-center">
-            <SectionEyebrow icon="compass-outline" className="justify-center">
-              What you&apos;ll find here
-            </SectionEyebrow>
-            <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">
-              Room to work, and room to breathe
-            </h2>
+            <SectionEyebrow icon="compass-outline" className="justify-center">{content.text_8}</SectionEyebrow>
+            <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_9}</h2>
           </Reveal>
           <ul className="grid gap-4 sm:grid-cols-2">
-            {findHere.map((f) => (
+            {content.findHere.map((f) => (
               <li key={f.text} className="flex gap-3 border border-line bg-surface p-5">
                 <Icon name={f.icon} size={18} className="mt-0.5 shrink-0 text-accent" />
                 <span className="text-sm leading-6 text-foreground-soft">{f.text}</span>
@@ -101,20 +93,16 @@ export default function WorkFromFarmPage() {
             ))}
           </ul>
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+      <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
         <Reveal variant="up" className="mx-auto mb-10 max-w-2xl text-center">
-          <SectionEyebrow icon="home-outline" className="justify-center">
-            Choose your stay
-          </SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">
-            By the night, or by the season
-          </h2>
+          <SectionEyebrow icon="home-outline" className="justify-center">{content.text_10}</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_11}</h2>
         </Reveal>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          {stays.map((s) => (
+          {content.stays.map((s) => (
             <div key={s.name} className="border border-line bg-surface p-6 sm:p-7">
               <div className="flex items-center gap-2 text-accent">
                 <Icon name={s.icon} size={16} />
@@ -133,36 +121,30 @@ export default function WorkFromFarmPage() {
         </div>
 
         <div className="mt-8 grid gap-4 border-t border-line pt-6 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-8">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">Meals, added on</p>
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">{content.text_12}</p>
           <ul className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-foreground-soft">
-            {meals.map((m) => (
+            {content.meals.map((m) => (
               <li key={m.label} className="tabular-nums">
                 {m.label} <span className="font-semibold text-foreground">{m.price}</span>
               </li>
             ))}
           </ul>
         </div>
-        <p className="mt-4 text-xs text-muted">All prices are exclusive of GST.</p>
-      </section>
+        <p className="mt-4 text-xs text-muted">{content.text_13}</p>
+      </section></AnimateInView>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
+      <AnimateInView delay={100}><section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <Reveal variant="left">
-            <SectionEyebrow icon="sparkles-outline">The Vinyasa way</SectionEyebrow>
-            <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">
-              A few shared agreements
-            </h2>
-            <p className="mt-4 leading-relaxed text-foreground-soft">
-              The farm runs on care taken by everyone who stays. Nothing complicated — just the
-              habits that keep a shared home calm and light on the land.
-            </p>
+            <SectionEyebrow icon="sparkles-outline">{content.text_14}</SectionEyebrow>
+            <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_15}</h2>
+            <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_16}</p>
           </Reveal>
           <Reveal variant="right" delay={100}>
             <ul className="space-y-0">
               {vinyasaWay.map((v, i) => (
                 <li key={v} className="flex gap-4 border-t border-line py-4 last:border-b">
-                  <span className="font-display text-lg leading-none text-accent/60 tabular-nums">
-                    0{i + 1}
+                  <span className="font-display text-lg leading-none text-accent/60 tabular-nums">{content.text_17}{i + 1}
                   </span>
                   <span className="text-sm leading-6 text-foreground-soft">{v}</span>
                 </li>
@@ -170,16 +152,12 @@ export default function WorkFromFarmPage() {
             </ul>
           </Reveal>
         </div>
-      </section>
+      </section></AnimateInView>
 
-      <section className="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8 sm:py-20">
+      <AnimateInView delay={80}><section className="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8 sm:py-20">
         <Reveal variant="fade">
-          <SectionEyebrow icon="people-outline" className="justify-center">
-            Who it&apos;s for
-          </SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">
-            If you can bring your work with you, you can bring it here
-          </h2>
+          <SectionEyebrow icon="people-outline" className="justify-center">{content.text_18}</SectionEyebrow>
+          <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_19}</h2>
           <ul className="mt-6 flex flex-wrap justify-center gap-2">
             {forWhom.map((w) => (
               <li
@@ -191,29 +169,21 @@ export default function WorkFromFarmPage() {
             ))}
           </ul>
         </Reveal>
-      </section>
+      </section></AnimateInView>
 
-      <section className="organic-section relative overflow-hidden bg-clay-surface py-16 text-center sm:py-20">
+      <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-16 text-center sm:py-20">
         <Reveal variant="up" className="mx-auto max-w-2xl px-5 sm:px-8">
-          <h2 className="font-display text-3xl leading-tight sm:text-4xl">
-            Book your Work From Farm stay
-          </h2>
-          <p className="mt-4 leading-relaxed text-foreground-soft">
-            Tell us your dates and how long you&apos;d like to stay, and we&apos;ll hold a place.
-          </p>
+          <h2 className="font-display text-3xl leading-tight sm:text-4xl">{content.text_20}</h2>
+          <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_21}</p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Link href="/book" className="btn btn-accent inline-flex">
-              Request a booking
-            </Link>
+            <Link href={content.href_22} className="btn btn-accent inline-flex">{content.text_23}</Link>
             <a
               href={whatsappLink("Hi Vinyasa Earth, I'd like to book a Work From Farm stay.")}
               className="btn btn-outline inline-flex"
-            >
-              Ask on WhatsApp
-            </a>
+            >{content.text_24}</a>
           </div>
         </Reveal>
-      </section>
+      </section></AnimateInView>
     </>
   );
 }

@@ -1,7 +1,10 @@
 "use client";
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_cottages_interactive";
+import { useEditorial } from "@/components/editorial/provider";
+
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/editorial/image";
 import Link from "next/link";
 import { Icon, type IconName } from "../ui/icon";
 import SectionEyebrow from "../ui/section-eyebrow";
@@ -21,8 +24,11 @@ export type RoomItem = {
 const inr = (n: number) => `\u20b9${n.toLocaleString("en-IN")}`;
 
 export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
+  const content = useEditorial("components/sections/cottages-interactive", editorialDefaults);
+
   const [active, setActive] = useState(0);
   const [shot, setShot] = useState(0);
+  const [heroRatio, setHeroRatio] = useState(4 / 3);
   const current = rooms[active] ?? rooms[0];
   const gallery = current?.gallery?.length ? current.gallery : current ? [current.image] : [];
   const hero = gallery[shot] ?? current?.image;
@@ -50,24 +56,36 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
   if (!current) return null;
 
   return (
-    <section aria-labelledby="cottages-heading" className="relative isolate overflow-hidden bg-surface py-16 sm:py-20 lg:py-24">
+    <section aria-labelledby="cottages-heading" className="relative isolate overflow-hidden bg-surface py-12 sm:py-16 lg:py-20">
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon="home-outline" className="justify-center">The Cottages</SectionEyebrow>
-          <h2 id="cottages-heading" className="mt-3 font-display text-3xl leading-tight text-clay-ink sm:text-4xl lg:text-5xl">
-            Shaped by hand. Rooted in earth.
-          </h2>
-          <p className="mx-auto mt-4 max-w-[48ch] text-sm leading-relaxed text-foreground-soft">
-            Mud walls, wooden beams, and the quiet beauty of things made by hand.
-            A little home in the landscape of Rajasthan.
-          </p>
+          <SectionEyebrow icon="home-outline" className="justify-center">{content.text_1}</SectionEyebrow>
+          <h2 id="cottages-heading" className="mt-3 font-display text-3xl leading-tight text-clay-ink sm:text-4xl lg:text-5xl">{content.text_2}</h2>
+          <p className="mx-auto mt-4 max-w-[48ch] text-sm leading-relaxed text-foreground-soft">{content.text_3}</p>
         </div>
 
         <div className="mt-10 grid items-center gap-10 sm:mt-14 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
           <div className="min-w-0">
-            <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} cottage`} className="relative block aspect-[4/3] overflow-hidden bg-transparent">
-              <Image key={hero} src={hero} alt={`Inside ${current.name}, a hand-built cottage at Vinyasa Earth`} fill quality={95} sizes="(min-width: 1280px) 620px, (min-width: 1024px) 55vw, 100vw" className="object-contain" />
-            </Link>
+            <div className="relative mx-auto max-h-[32rem] transition-[aspect-ratio] duration-500 ease-out" style={{ aspectRatio: heroRatio }}>
+              <div aria-hidden className="absolute -bottom-4 -right-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
+              <div aria-hidden className="absolute -bottom-2 -right-2 h-full w-full bg-accent/10" />
+              <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} cottage`} className="group relative block h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
+                <Image
+                  src={hero}
+                  alt={`Inside ${current.name}, a hand-built cottage at Vinyasa Earth`}
+                  fill
+                  quality={95}
+                  sizes="(min-width: 1280px) 620px, (min-width: 1024px) 55vw, 100vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  onLoad={(e) => {
+                    const img = e.currentTarget;
+                    if (img.naturalWidth && img.naturalHeight) {
+                      setHeroRatio(img.naturalWidth / img.naturalHeight);
+                    }
+                  }}
+                />
+              </Link>
+            </div>
             {gallery.length > 1 && (
               <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-5 sm:gap-3" aria-label={`${current.name} gallery`}>
                 {gallery.map((src, index) => (
@@ -87,8 +105,8 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
           </div>
 
           <div className="min-w-0 border border-clay-ink/10 bg-clay-surface/50 p-6 sm:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay-ink">Find your little home</p>
-            <div ref={tabsRef} className="-mx-1 mt-4 flex flex-nowrap gap-x-3 overflow-x-auto scroll-smooth border-b border-clay-ink/20 px-1 pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Choose a cottage">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay-ink">{content.text_12}</p>
+            <div ref={tabsRef} className="-mx-1 mt-4 flex flex-nowrap gap-x-3 overflow-x-auto scroll-smooth border-b border-clay-ink/20 px-1 pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label={content.aria_label_13}>
               {rooms.map((room, index) => (
                 <button key={room.slug} type="button" aria-pressed={active === index} aria-controls="cottage-preview" onClick={() => setActive(index)} className={`min-h-11 shrink-0 whitespace-nowrap border-b px-1 py-2 font-display text-base transition-colors sm:text-lg ${active === index ? "border-accent text-accent" : "border-transparent text-foreground-soft hover:border-clay-ink/40 hover:text-clay-ink"}`}>
                   {room.name}
@@ -107,21 +125,13 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                 <h3 className="mt-4 font-display text-3xl leading-tight text-clay-ink sm:text-4xl">{current.name}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{current.tagline}</p>
               </div>
-              <p className="mt-6 max-w-[40ch] text-sm leading-relaxed text-foreground-soft">
-                Follow the textures of mud and wood, the curves of the walls,
-                and the small details that make each space its own.
-              </p>
+              <p className="mt-6 max-w-[40ch] text-sm leading-relaxed text-foreground-soft">{content.text_16}</p>
               <div className="mt-7 flex flex-wrap items-end justify-between gap-5">
-                <p className="text-xs text-foreground-soft">
-                  From <span className="mx-1 font-display text-2xl text-clay-ink">{inr(current.pricePerNight)}</span> / night
-                </p>
-                <Link href={`/stays/${current.slug}`} className="btn btn-accent btn-sm inline-flex items-center">
-                  View room
-                </Link>
+                <p className="text-xs text-foreground-soft">{content.text_17}<span className="mx-1 font-display text-2xl text-clay-ink">{inr(current.pricePerNight)}</span>{content.text_18}</p>
+                <Link href={`/stays/${current.slug}`} className="btn btn-accent btn-sm inline-flex items-center">{content.text_19}</Link>
               </div>
             </article>
-            <Link href="/stays" className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-clay-ink/30 text-xs font-semibold uppercase tracking-[0.12em] text-clay-ink transition-colors hover:text-accent">
-              Discover all {rooms.length} rooms <Icon name="arrow-forward-outline" size={14} />
+            <Link href={content.href_20} className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-clay-ink/30 text-xs font-semibold uppercase tracking-[0.12em] text-clay-ink transition-colors hover:text-accent">{content.text_21}{rooms.length}{content.text_22}<Icon name="arrow-forward-outline" size={14} />
             </Link>
           </div>
         </div>

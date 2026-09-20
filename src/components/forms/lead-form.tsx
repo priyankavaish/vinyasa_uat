@@ -1,4 +1,7 @@
 "use client";
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_forms_lead_form";
+import { useEditorial } from "@/components/editorial/provider";
+
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -15,6 +18,8 @@ type Props = {
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function LeadForm({ source, title, submitLabel = "Send", showMessage = true }: Props) {
+  const content = useEditorial("components/forms/lead-form", editorialDefaults);
+
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -52,15 +57,13 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
   if (status === "success") {
     return (
       <div className="border border-line bg-surface p-8 text-center">
-        <p className="font-display italic text-2xl">Thank you, message sent.</p>
-        <p className="mt-2 text-sm text-foreground-soft">We'll get back to you shortly.</p>
+        <p className="font-display italic text-2xl">{content.text_1}</p>
+        <p className="mt-2 text-sm text-foreground-soft">{content.text_2}</p>
         <button
           type="button"
           className="mt-5 text-xs tracking-[0.08em] uppercase text-accent underline"
           onClick={() => setStatus("idle")}
-        >
-          Send another
-        </button>
+        >{content.text_3}</button>
       </div>
     );
   }
@@ -70,9 +73,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
       <h3 className="font-display italic text-xl">{title}</h3>
 
       <div>
-        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-name`}>
-          Name
-        </label>
+        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-name`}>{content.text_4}</label>
         <input
           id={`${source}-name`}
           className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
@@ -82,9 +83,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
       </div>
 
       <div>
-        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-email`}>
-          Email
-        </label>
+        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-email`}>{content.text_5}</label>
         <input
           id={`${source}-email`}
           type="email"
@@ -95,9 +94,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
       </div>
 
       <div>
-        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-phone`}>
-          Phone (optional)
-        </label>
+        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-phone`}>{content.text_6}</label>
         <input
           id={`${source}-phone`}
           className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
@@ -108,9 +105,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
 
       {showMessage && (
         <div>
-          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-message`}>
-            Message
-          </label>
+          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-message`}>{content.text_7}</label>
           <textarea
             id={`${source}-message`}
             rows={4}
@@ -132,7 +127,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
         disabled={status === "submitting"}
         className="btn btn-accent w-full transition-opacity disabled:opacity-60"
       >
-        {status === "submitting" ? "Sending…" : submitLabel}
+        {status === "submitting" ? content.text_8 : submitLabel}
       </button>
     </form>
   );

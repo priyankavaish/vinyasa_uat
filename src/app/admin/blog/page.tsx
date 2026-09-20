@@ -1,3 +1,4 @@
+import SearchableTable from "@/components/admin/searchable-table";
 import Link from "next/link";
 import { desc } from "drizzle-orm";
 import { getDb, hasDb } from "@/lib/db";
@@ -20,19 +21,14 @@ export default async function AdminBlogPage() {
         </Link>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-lg border border-line bg-white">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
+      <SearchableTable label="blogs" columns={4} emptyMessage="No posts yet." header={<thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
             <tr>
               <th className="px-4 py-3">Title</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Updated</th>
               <th className="px-4 py-3" />
             </tr>
-          </thead>
-          <tbody>
-            {rows.map((b) => (
-              <tr key={b.id} className="border-t border-line">
+          </thead>} items={rows.map((b) => ({ id: b.id, search: [b.title, b.slug, b.status].join(" "), content: (<tr key={b.id} className="border-t border-line">
                 <td className="px-4 py-3 font-medium">
                   <Link href={`/admin/blog/${b.id}`} className="text-accent underline">
                     {b.title}
@@ -56,18 +52,7 @@ export default async function AdminBlogPage() {
                 <td className="px-4 py-3 text-right">
                   <DeleteButton id={b.id} action={deleteBlog} label="Delete this post?" />
                 </td>
-              </tr>
-            ))}
-            {rows.length === 0 && (
-              <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-sm text-foreground-soft">
-                  No posts yet.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+              </tr>) }))} />
     </div>
   );
 }

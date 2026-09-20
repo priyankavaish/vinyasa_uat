@@ -3,7 +3,7 @@ import { cottages, events } from "@/lib/content";
 import { SITE_ORIGIN } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/about", "/stays", "/events", "/corporate", "/contact", "/book"];
+  const routes = ["", "/about", "/stays", "/events", "/volunteering", "/contact", "/book"];
   return [
     ...routes.map((route) => ({ url: `${SITE_ORIGIN}${route}`, changeFrequency: "monthly" as const, priority: route === "" ? 1 : 0.8 })),
     ...cottages.map((c) => ({ url: `${SITE_ORIGIN}/stays/${c.slug}`, changeFrequency: "monthly" as const, priority: 0.7 })),

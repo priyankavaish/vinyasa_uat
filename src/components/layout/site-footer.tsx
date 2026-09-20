@@ -1,60 +1,62 @@
+
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_layout_site_footer";
+import { getEditorial } from "@/lib/editorial/server";
 import Link from "next/link";
+import SectionWave from "@/components/ui/section-wave";
 import { Icon } from "@/components/ui/icon";
 import { ADDRESS, CONTACT_EMAIL, CONTACT_PHONE_DISPLAY } from "@/lib/site";
 
 const exploreLinks = [
   { href: "/stays", label: "Stays" },
   { href: "/events", label: "Events & Retreats" },
-  { href: "/corporate", label: "Corporate Offsites" },
+  { href: "/volunteering", label: "Corporate Offsites" },
   { href: "/about", label: "Our Story" },
   { href: "/useful-links", label: "Useful Links" },
   { href: "/blogs", label: "Blogs" },
 ] as const;
 
-export default function SiteFooter() {
-  const phoneHref = CONTACT_PHONE_DISPLAY.replace(/\s/g, "");
+export default async function SiteFooter() {
+  const content = await getEditorial("components/layout/site-footer", editorialDefaults);
+
+  const phoneHref = content.CONTACT_PHONE_DISPLAY.replace(/\s/g, "");
 
   return (
-    <footer className="relative isolate overflow-hidden pb-[env(safe-area-inset-bottom)] bg-[#302d24] text-[#f8eedc]">
+    <>
+    <SectionWave from="transparent" to="var(--footer-background)" variant="wave" className="h-8 sm:h-12" />
+    <footer className="relative isolate overflow-hidden bg-[var(--footer-background)] pb-[env(safe-area-inset-bottom)] text-clay-ink">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-32 -top-36 h-80 w-80 rounded-full border border-[#d5bb87]/15"
+        className="footer-shape pointer-events-none absolute -right-32 -top-36 h-80 w-80 rounded-full border border-secondary/25"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border border-[#d5bb87]/10"
+        className="footer-shape pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border border-secondary/15"
+        style={{ animationDelay: "1.2s" }}
       />
-      <div className="h-px bg-gradient-to-r from-transparent via-[#d5bb87]/55 to-transparent" />
-
-      <div className="relative mx-auto max-w-7xl px-5 pb-7 pt-14 sm:px-8 sm:pt-20">
-        <div className="grid gap-12 border-b border-[#f8eedc]/15 pb-14 lg:grid-cols-[1.35fr_0.7fr_1fr] lg:gap-16">
+      <div className="relative mx-auto max-w-7xl px-5 pb-5 pt-10 sm:px-8 sm:pt-14">
+        <div className="grid gap-8 border-b border-clay-ink/15 pb-9 lg:grid-cols-[1.35fr_0.7fr_1fr] lg:gap-14">
           <div>
-            <div className="flex items-center gap-3 text-[#d5bb87]">
+            <div className="flex items-center gap-3 text-secondary">
               <span className="h-px w-9 bg-current" />
               <Icon name="leaf-outline" size={18} />
             </div>
-            <p className="mt-5 font-display text-4xl leading-none sm:text-5xl">Vinyasa Earth</p>
-            <p className="mt-5 max-w-md text-sm leading-7 text-[#f8eedc]/68">
-              A hand-built home for slow stays, creative practice, and meaningful gatherings in the
-              quiet landscape of Rajasthan.
-            </p>
+            <p className="mt-4 font-display text-4xl leading-none text-clay-ink sm:text-[2.75rem]">{content.text_1}</p>
+            <p className="mt-4 max-w-md text-sm leading-6 text-clay-ink/85">{content.text_2}</p>
             <Link
-              href="/book"
-              className="mt-8 inline-flex items-center gap-4 border-b border-[#d5bb87]/70 pb-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#f3dba9] transition-all hover:gap-6 hover:text-white"
-            >
-              Plan your stay
-              <Icon name="arrow-forward-outline" size={15} />
+              href={content.href_3}
+              className="mt-6 inline-flex items-center gap-4 border-b border-secondary/60 pb-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary-ink transition-all hover:gap-6 hover:text-accent"
+            >{content.text_4}<span className="arrow-nudge"><Icon name="arrow-forward-outline" size={15} /></span>
             </Link>
           </div>
 
-          <nav aria-label="Footer navigation">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#d5bb87]">Explore</p>
-            <ul className="mt-5 space-y-3">
-              {exploreLinks.map((link) => (
+          <nav aria-label={content.aria_label_5}>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-secondary">{content.text_6}</p>
+            <ul className="mt-4 space-y-2.5">
+              {content.exploreLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#f8eedc]/72 transition-colors hover:text-[#f3dba9]"
+                    className="text-sm text-clay-ink/85 transition-colors hover:text-accent"
                   >
                     {link.label}
                   </Link>
@@ -64,51 +66,50 @@ export default function SiteFooter() {
           </nav>
 
           <div>
-            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#d5bb87]">Find us</p>
-            <p className="mt-5 max-w-[32ch] text-sm leading-6 text-[#f8eedc]/72">{ADDRESS}</p>
-            <div className="mt-6 space-y-3 text-sm">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-secondary">{content.text_7}</p>
+            <p className="mt-4 max-w-[32ch] text-sm leading-6 text-clay-ink/85">{content.ADDRESS}</p>
+            <div className="mt-4 space-y-2.5 text-sm">
               <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="flex w-fit items-center gap-3 text-[#f8eedc]/72 transition-colors hover:text-[#f3dba9]"
+                href={`mailto:${content.CONTACT_EMAIL}`}
+                className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
-                <Icon name="ribbon-outline" size={16} className="text-[#d5bb87]" />
-                {CONTACT_EMAIL}
+                <Icon name="ribbon-outline" size={16} className="text-secondary" />
+                {content.CONTACT_EMAIL}
               </a>
               <a
                 href={`tel:${phoneHref}`}
-                className="flex w-fit items-center gap-3 text-[#f8eedc]/72 transition-colors hover:text-[#f3dba9]"
+                className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
-                <Icon name="circle-outline" size={16} className="text-[#d5bb87]" />
-                {CONTACT_PHONE_DISPLAY}
+                <Icon name="circle-outline" size={16} className="text-secondary" />
+                {content.CONTACT_PHONE_DISPLAY}
               </a>
               <a
-                href="https://www.instagram.com/vinyasa.earth/"
+                href={content.href_8}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-fit items-center gap-3 text-[#f8eedc]/72 transition-colors hover:text-[#f3dba9]"
+                className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
-                <Icon name="images-outline" size={16} className="text-[#d5bb87]" />
-                @vinyasa.earth
-              </a>
+                <Icon name="images-outline" size={16} className="text-secondary" />{content.text_9}</a>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 pt-6 text-[13px] uppercase tracking-[0.12em] text-[#f8eedc]/40 sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} Vinyasa Earth. Rooted in Rajasthan.</p>
-          <div className="flex items-center gap-5">
-            <Link href="/admin/login" className="transition-colors hover:text-[#f8eedc]/70">Admin</Link>
-            <a
-              href="https://lexabiz.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-[#f3dba9]"
-            >
-              Crafted by Lexabiz
-            </a>
-          </div>
+        <div className="pt-5 text-[13px] uppercase tracking-[0.12em] text-clay-ink/85">
+          <p>{content.text_10}{new Date().getFullYear()}{content.text_11}</p>
         </div>
       </div>
+
+      <div className="border-t border-clay-ink/10 bg-[#ddcaa9]">
+        <p className="mx-auto max-w-7xl px-5 py-3 text-center text-xs font-medium tracking-[0.06em] text-clay-ink/85 sm:px-8">{content.text_12}{" "}
+          <a
+            href={content.href_13}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-secondary-ink transition-colors hover:text-accent"
+          >{content.text_14}</a>
+        </p>
+      </div>
     </footer>
+    </>
   );
 }

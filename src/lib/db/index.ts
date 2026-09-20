@@ -12,7 +12,12 @@ const url = process.env.DATABASE_URL?.trim() || "";
 // happy with the Neon type. (PGlite's type is structurally compatible here.)
 type Db = NeonHttpDatabase<typeof schema>;
 
-let _db: Db | null = null;
+// Next.js reloads server modules during development. Keep one connection per
+// URL for the lifetime of this process so PGlite never opens the same files twice.
+const databaseGlobal = globalThis as typeof globalThis & {
+  vinyasaDatabases?: Map<string, Db>;
+};
+const databases = databaseGlobal.vinyasaDatabases ??= new Map<string, Db>();
 
 function isPglite(u: string) {
   return u === "pglite" || u.startsWith("pglite:") || u.startsWith("file:");
@@ -33,7 +38,8 @@ export function getDb(): Db {
       "DATABASE_URL is not set. Use a Neon connection string, or `pglite` for a local database."
     );
   }
-  if (!_db) {
+  let db = databases.get(url);
+  if (!db) {
     if (isPglite(url)) {
       const dir = pgliteDir(url);
       // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -42,14 +48,15 @@ export function getDb(): Db {
       const { PGlite } = require("@electric-sql/pglite");
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { drizzle } = require("drizzle-orm/pglite");
-      _db = drizzle(new PGlite(dir), { schema }) as unknown as Db;
+      db = drizzle(new PGlite(dir), { schema }) as unknown as Db;
     } else {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { neon } = require("@neondatabase/serverless");
-      _db = drizzleNeon(neon(url), { schema });
+      db = drizzleNeon(neon(url), { schema });
     }
   }
-  return _db;
+  databases.set(url, db);
+  return db;
 }
 
 export function hasDb(): boolean {

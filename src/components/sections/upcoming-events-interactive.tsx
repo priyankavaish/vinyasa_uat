@@ -1,7 +1,10 @@
 "use client";
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_upcoming_events_interactive";
+import { useEditorial } from "@/components/editorial/provider";
+
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/editorial/image";
 import Link from "next/link";
 import { Icon, type IconName } from "../ui/icon";
 import MediaFrame from "../ui/media-frame";
@@ -27,6 +30,8 @@ const KIND_META: Record<string, { icon: IconName; accent: string; label: string 
 const priceText = (from: number) => (from === 0 ? "By donation" : `From ₹${from.toLocaleString("en-IN")}`);
 
 export default function UpcomingEventsInteractive({ items }: { items: EventItem[] }) {
+  const content = useEditorial("components/sections/upcoming-events-interactive", editorialDefaults);
+
   const [active, setActive] = useState(0);
 
   useEffect(() => {
@@ -40,7 +45,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
   const current = items[active] ?? items[0];
   if (!current) return null;
 
-  const currentMeta = KIND_META[current.kind] ?? KIND_META.retreat;
+  const currentMeta = content.KIND_META[current.kind] ?? content.KIND_META.retreat;
 
   return (
     <section className="relative overflow-hidden bg-clay-surface">
@@ -48,20 +53,17 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
         {/* content — left (below the image on mobile) */}
         <div className="order-2 flex flex-col justify-center px-5 py-12 sm:px-12 sm:py-16 md:order-1 md:px-16 lg:px-20">
           <Reveal variant="up">
-            <SectionEyebrow icon="calendar-outline">What&apos;s coming up</SectionEyebrow>
-            <h2 className="mt-4 max-w-[15ch] font-display text-4xl italic leading-[1.05] tracking-tight text-accent sm:text-5xl lg:text-[3.4rem]">
-              The next dates on the calendar
-            </h2>
+            <SectionEyebrow icon="calendar-outline">{content.text_1}</SectionEyebrow>
+            <h2 className="mt-4 max-w-[15ch] font-display text-4xl italic leading-[1.05] tracking-tight text-accent sm:text-5xl lg:text-[3.4rem]">{content.text_2}</h2>
             <span aria-hidden className="mt-5 block h-[3px] w-16 rounded-full bg-accent" />
-            <p className="mt-5 max-w-[44ch] text-[17px] font-medium leading-relaxed text-foreground">
-              Residencies, retreats and workshops &mdash; closest first.{" "}
-              <span className="text-clay-ink">Small by design, so write early to hold a place.</span>
+            <p className="mt-5 max-w-[44ch] text-[17px] font-medium leading-relaxed text-foreground">{content.text_3}{" "}
+              <span className="text-clay-ink">{content.text_4}</span>
             </p>
           </Reveal>
 
           <ul className="mt-7 border-t border-foreground/15">
             {items.map((it, i) => {
-              const meta = KIND_META[it.kind] ?? KIND_META.retreat;
+              const meta = content.KIND_META[it.kind] ?? content.KIND_META.retreat;
               return (
                 <li
                   key={it.slug}
@@ -126,15 +128,16 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
           </ul>
 
           <div className="mt-8">
-            <Link href="/events" className="btn btn-accent inline-flex">
-              See the full calendar
-            </Link>
+            <Link href={content.href_7} className="btn btn-accent inline-flex">{content.text_8}</Link>
           </div>
         </div>
 
         <div className="order-1 flex items-center px-5 py-8 sm:px-12 sm:py-12 md:py-14 lg:px-16 md:order-2">
           <div className="w-full">
-            <article className="w-full overflow-hidden border border-foreground/12 bg-surface">
+          <div className="relative w-full">
+            <div aria-hidden className="absolute -bottom-4 -right-4 hidden h-full w-full border border-clay-ink/15 bg-clay-surface sm:block" />
+            <div aria-hidden className="absolute -bottom-2 -right-2 hidden h-full w-full bg-accent/10 sm:block" />
+            <article className="relative w-full overflow-hidden border border-foreground/12 bg-surface shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
               <Link href={`/events/${current.slug}`} className="group relative block aspect-square w-full sm:aspect-[6/5]" aria-label={`Open ${current.name}`}>
                 <MediaFrame key={current.image} src={current.image} alt={current.name} sizes="(min-width: 768px) 50vw, 100vw" />
                 <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
@@ -153,15 +156,14 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                   </span>
                 </span>
               </Link>
-              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-foreground/12 p-5 sm:p-7">
+              <div className="flex flex-wrap items-center justify-between gap-4 p-5 sm:p-7">
                 <span className="font-display text-lg">{priceText(current.priceFrom)}</span>
-                <Link href={`/events/${current.slug}`} className="btn btn-accent btn-sm inline-flex">
-                  View programme
-                </Link>
+                <Link href={`/events/${current.slug}`} className="btn btn-accent btn-sm inline-flex">{content.text_9}</Link>
               </div>
             </article>
+          </div>
             {items.length > 1 && (
-              <div className="mt-4 flex gap-2" role="tablist" aria-label="Upcoming events">
+              <div className="mt-4 flex gap-2" role="tablist" aria-label={content.aria_label_12}>
                 {items.map((it, i) => (
                   <button
                     key={it.slug}

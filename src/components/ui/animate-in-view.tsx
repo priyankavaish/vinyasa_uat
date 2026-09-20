@@ -9,10 +9,14 @@ export default function AnimateInView({
   children,
   className = "",
   animation = "animate__slideInUp",
+  delay = 0,
 }: {
   children: ReactNode;
   className?: string;
   animation?: string;
+  /** Small pause (ms) before the entrance starts — staggers sections so they
+   *  settle in one after another instead of all snapping in at once. */
+  delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<"pre" | "playing" | "done">("pre");
@@ -51,6 +55,7 @@ export default function AnimateInView({
       onAnimationEnd={(e) => {
         if (e.target === e.currentTarget) setPhase("done");
       }}
+      style={phase === "playing" && delay ? { animationDelay: `${delay}ms` } : undefined}
       className={`${className} ${
         phase === "pre" ? "aiv-pre" : phase === "playing" ? `animate__animated ${animation}` : ""
       }`.trim()}

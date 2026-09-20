@@ -1,4 +1,7 @@
 "use client";
+import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_forms_booking_form";
+import { useEditorial } from "@/components/editorial/provider";
+
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -34,6 +37,8 @@ export default function BookingForm({
   cottages?: Cottage[];
   events?: EventProgram[];
 }) {
+  const content = useEditorial("components/forms/booking-form", editorialDefaults);
+
   const searchParams = useSearchParams();
   const initialType = (searchParams.get("type") as "stay" | "event") ?? "stay";
   const initialSlug = searchParams.get("slug") ?? cottages[0]?.slug ?? "";
@@ -159,10 +164,8 @@ export default function BookingForm({
   if (status === "success") {
     return (
       <div className="border border-line bg-surface p-10 text-center">
-        <p className="font-display italic text-3xl">Booking confirmed</p>
-        <p className="mt-3 text-sm text-foreground-soft">
-          Reference <span className="font-mono">{confirmedId}</span>. A confirmation has been recorded. Our
-          demo admin dashboard shows this booking under <span className="font-mono">/admin/bookings</span>.
+        <p className="font-display italic text-3xl">{content.text_1}</p>
+        <p className="mt-3 text-sm text-foreground-soft">{content.text_2}<span className="font-mono">{confirmedId}</span>{content.text_3}<span className="font-mono">{content.text_4}</span>.
         </p>
       </div>
     );
@@ -174,18 +177,18 @@ export default function BookingForm({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Booking type</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_6}</label>
             <select
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
               {...register("type")}
             >
-              <option value="stay">Cottage stay</option>
-              <option value="event">Event / retreat</option>
+              <option value="stay">{content.text_7}</option>
+              <option value="event">{content.text_8}</option>
             </select>
           </div>
           <div>
             <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">
-              {type === "stay" ? "Cottage" : "Program"}
+              {type === "stay" ? content.text_9 : content.text_10}
             </label>
             <select
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
@@ -203,7 +206,7 @@ export default function BookingForm({
         {type === "stay" ? (
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Check-in</label>
+              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_11}</label>
               <input
                 type="date"
                 className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
@@ -212,7 +215,7 @@ export default function BookingForm({
               {errors.checkIn && <p className="mt-1 text-xs text-red-700">{errors.checkIn.message}</p>}
             </div>
             <div>
-              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Check-out</label>
+              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_12}</label>
               <input
                 type="date"
                 className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
@@ -223,7 +226,7 @@ export default function BookingForm({
           </div>
         ) : (
           <div>
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Program date</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_13}</label>
             <input
               type="date"
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
@@ -233,7 +236,7 @@ export default function BookingForm({
         )}
 
         <div>
-          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Guests</label>
+          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_14}</label>
           <input
             type="number"
             min={1}
@@ -246,7 +249,7 @@ export default function BookingForm({
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Full name</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_15}</label>
             <input
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
               {...register("guestName")}
@@ -254,7 +257,7 @@ export default function BookingForm({
             {errors.guestName && <p className="mt-1 text-xs text-red-700">{errors.guestName.message}</p>}
           </div>
           <div>
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Email</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_16}</label>
             <input
               type="email"
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
@@ -265,7 +268,7 @@ export default function BookingForm({
         </div>
 
         <div>
-          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Phone</label>
+          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_17}</label>
           <input
             className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
             {...register("guestPhone")}
@@ -274,7 +277,7 @@ export default function BookingForm({
         </div>
 
         <div className="flex items-center justify-between border border-line bg-surface px-4 py-3">
-          <span className="text-sm text-foreground-soft">Total</span>
+          <span className="text-sm text-foreground-soft">{content.text_18}</span>
           <span className="tabular-nums text-xl font-semibold text-foreground">₹{amount.toLocaleString("en-IN")}</span>
         </div>
 
@@ -289,7 +292,7 @@ export default function BookingForm({
           disabled={submitting}
           className="btn btn-accent w-full transition-opacity disabled:opacity-60"
         >
-          {submitting ? "Processing…" : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`}
+          {submitting ? content.text_19 : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`}
         </button>
       </form>
     </>

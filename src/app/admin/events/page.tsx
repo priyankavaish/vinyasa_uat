@@ -1,3 +1,4 @@
+import SearchableTable from "@/components/admin/searchable-table";
 import Link from "next/link";
 import { asc } from "drizzle-orm";
 import { getDb, hasDb } from "@/lib/db";
@@ -20,9 +21,7 @@ export default async function AdminEventsPage() {
         </Link>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-lg border border-line bg-white">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
+      <SearchableTable label="events" columns={7} emptyMessage="No events yet." header={<thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
             <tr>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Kind</th>
@@ -32,10 +31,7 @@ export default async function AdminEventsPage() {
               <th className="px-4 py-3">Live</th>
               <th className="px-4 py-3" />
             </tr>
-          </thead>
-          <tbody>
-            {rows.map((e) => (
-              <tr key={e.id} className="border-t border-line">
+          </thead>} items={rows.map((e) => ({ id: e.id, search: [e.name, e.slug, e.kind, e.dateLabel, e.published ? "published live yes" : "draft"].join(" "), content: (<tr key={e.id} className="border-t border-line">
                 <td className="px-4 py-3 font-medium">
                   <Link href={`/admin/events/${e.id}`} className="text-accent underline">
                     {e.name}
@@ -52,18 +48,7 @@ export default async function AdminEventsPage() {
                 <td className="px-4 py-3 text-right">
                   <DeleteButton id={e.id} action={deleteEvent} label="Delete this event?" />
                 </td>
-              </tr>
-            ))}
-            {rows.length === 0 && (
-              <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-sm text-foreground-soft">
-                  No events yet.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+              </tr>) }))} />
     </div>
   );
 }

@@ -2,10 +2,11 @@
 
 :root {
   --background: #f3f1ea;
+  --footer-background: #e6d8bd;
   --surface: #fbf9f3;
   --foreground: #2b2620;
   --foreground-soft: #4a4234;
-  --muted: #776d5b;
+  --muted: #5a4e3d;
   --line: #e4ddc9;
   --accent: #8f3b31;
   --accent-ink: #fdf6f0;
@@ -14,8 +15,10 @@
   --secondary-ink: #2f3a26;
   --clay-surface: #f3e6d8;
   --clay-ink: #6b3f22;
-  --dusk-surface: #e9e7ef;
-  --dusk-ink: #3f3f5c;
+  /* "dusk" band — kept earthy: a pale sage surface + deep olive ink
+     (no cool lavender; the brand palette is mitti + greenery only). */
+  --dusk-surface: #e7ebdd;
+  --dusk-ink: #3a4432;
   --focus: #8f3b31;
 }
 
@@ -85,6 +88,25 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* A subtle linen weave — used behind whole pages (about/volunteer/contact/
+   events/home) to keep flat colour blocks from feeling generic. Warm, faint,
+   and tiled small enough to read as texture rather than a visible pattern. */
+.texture-linen {
+  position: relative;
+  isolation: isolate;
+}
+.texture-linen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M0 8h64M0 24h64M0 40h64M0 56h64' stroke='%236b3f22' stroke-width='1' opacity='.5'/%3E%3Cpath d='M8 0v64M24 0v64M40 0v64M56 0v64' stroke='%236b3f22' stroke-width='1' opacity='.5'/%3E%3C/svg%3E");
+  background-size: 64px 64px;
+}
+
 a {
   color: inherit;
 }
@@ -140,7 +162,13 @@ label[for] {
   text-transform: uppercase;
   border-radius: 0;
   white-space: nowrap;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn:hover { transform: translateY(-2px) rotate(-0.4deg); }
+.btn:active { transform: translateY(0) scale(0.96); transition-duration: 0.08s; }
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover, .btn:active { transform: none; }
 }
 
 .btn-outline {
@@ -266,6 +294,41 @@ label[for] {
 @keyframes seed-spin { to { transform: rotate(360deg); } }
 @keyframes orbit-drift { to { translate: 1.5rem -1rem; rotate: 8deg; } }
 
+/* Family "book" — a page settling in after a jump. */
+@keyframes page-settle {
+  from { opacity: 0; transform: rotateY(-38deg); }
+  to { opacity: 1; transform: rotateY(0); }
+}
+.animate-page-settle {
+  transform-origin: left center;
+  backface-visibility: hidden;
+  animation: page-settle 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Family "book" — a real 3D leaf turning about the spine. */
+@keyframes leaf-flip-next {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(-180deg); }
+}
+@keyframes leaf-flip-prev {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(180deg); }
+}
+.animate-leaf-flip-next {
+  transform-style: preserve-3d;
+  animation: leaf-flip-next 0.66s cubic-bezier(0.45, 0.05, 0.25, 1) both;
+}
+.animate-leaf-flip-prev {
+  transform-style: preserve-3d;
+  animation: leaf-flip-prev 0.66s cubic-bezier(0.45, 0.05, 0.25, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-page-settle,
+  .animate-leaf-flip-next,
+  .animate-leaf-flip-prev { animation: none; }
+}
+
 /* Deliberately different silhouettes across the home page. */
 .organic-section { position: relative; isolation: isolate; }
 .organic-connect { padding-top: 5rem; }
@@ -360,7 +423,7 @@ label[for] {
 .hero-brand-place-rule {
   width: clamp(1.75rem, 4vw, 3rem);
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(239, 200, 145, .75), transparent);
+  background: linear-gradient(90deg, transparent, rgba(201, 113, 63, .8), transparent);
 }
 .hero-brand-kicker {
   margin-top: clamp(1rem, 2.2vw, 1.5rem);
@@ -383,7 +446,7 @@ label[for] {
 .hero-brand-divider-rule {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(216, 139, 80, .85), transparent);
+  background: linear-gradient(90deg, transparent, rgba(201, 113, 63, .85), transparent);
 }
 .hero-video-overlay {
   background:
@@ -399,7 +462,7 @@ label[for] {
   place-items: center;
   border: 1px solid rgba(255, 241, 220, .48);
   border-radius: 50%;
-  color: #efc27f;
+  color: #c9713f;
   box-shadow: 0 0 0 .45rem rgba(255, 241, 220, .045), 0 1rem 3rem rgba(0, 0, 0, .24);
 }
 .hero-brand-mark::before,
@@ -408,7 +471,7 @@ label[for] {
   width: .28rem;
   height: .28rem;
   border-radius: 50%;
-  background: #efc27f;
+  background: #c9713f;
   content: "";
 }
 .hero-brand-mark::before { top: -.16rem; }
@@ -418,7 +481,7 @@ label[for] {
   width: 3.2rem;
   height: 3.2rem;
   place-items: center;
-  border: 1px solid rgba(239, 194, 127, .38);
+  border: 1px solid rgba(201, 113, 63, .4);
   border-radius: 50%;
   background: rgba(31, 25, 17, .3);
   backdrop-filter: blur(6px);
@@ -438,7 +501,7 @@ label[for] {
   text-shadow: 0 .2rem 1.8rem rgba(0, 0, 0, .42);
 }
 .hero-brand-wordmark-accent {
-  color: #efc27f;
+  color: #c9713f;
   font-family: var(--font-script), cursive;
   font-size: .78em;
   letter-spacing: 0;
@@ -461,7 +524,7 @@ label[for] {
 .hero-brand-values i {
   width: .3rem;
   height: .3rem;
-  border: 1px solid #eec079;
+  border: 1px solid #c9713f;
   transform: rotate(45deg);
 }
 .hero-brand-name {
@@ -538,7 +601,8 @@ label[for] {
 }
 
 .site-header-inner {
-  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-top: max(.5rem, env(safe-area-inset-top));
+  padding-bottom: .5rem;
   padding-right: max(1.25rem, env(safe-area-inset-right));
   padding-left: max(1.25rem, env(safe-area-inset-left));
 }
@@ -622,7 +686,7 @@ label[for] {
   color: #000 !important;
 }
 
-.site-header-inner { min-height: calc(4.75rem + env(safe-area-inset-top)); padding-bottom: .75rem; }
+.site-header-inner { min-height: calc(4.25rem + env(safe-area-inset-top)); padding-bottom: .5rem; }
   .site-logo img { width: 2.75rem; height: 2.75rem; }
   .menu-toggle { width: 2.75rem; height: 2.75rem; border-color: transparent; border-radius: 0px; background: rgb(104 97 97 / 10%); box-shadow: 0 1px 7px 0 rgba(150,150,150,.22); }
 
@@ -693,10 +757,7 @@ label[for] {
   .hero-video { animation: none !important; }
 }
 
-.place-carousel-slide { flex-basis: min(82vw, 22rem); }
 .place-carousel-track { backface-visibility: hidden; }
-@media (min-width: 640px) { .place-carousel-slide { flex-basis: 44%; } }
-@media (min-width: 1024px) { .place-carousel-slide { flex-basis: 32%; } }
 
 .lexabiz-credit {
   position: relative;
@@ -733,6 +794,53 @@ label[for] {
 @keyframes gentle-bob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-0.08em); }
+}
+
+/* A continuous little nudge on a CTA's arrow — "look, click me" — instead of
+   only moving on hover. A smooth, unbroken back-and-forth (no snap, no
+   pause), small amplitude so it reads as a gentle hint, not a glitch. */
+@keyframes arrow-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+.arrow-nudge {
+  display: inline-flex;
+  animation: arrow-nudge 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .arrow-nudge { animation: none; }
+}
+
+/* The two ring shapes in the footer's top-right corner — a slow, continuous
+   grow/shrink breathing so the footer doesn't sit completely still. */
+@keyframes footer-shape-grow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.12); opacity: 0.7; }
+}
+.footer-shape {
+  animation: footer-shape-grow 6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-shape { animation: none; }
+}
+.next-event-link:hover + .next-event-wave {
+  background: linear-gradient(to right, #7d3128, #ad4636, #7d3128) !important;
+}
+
+/* A small, slow sway on every section eyebrow's icon — used sitewide via
+   SectionEyebrow, so the whole site gets a touch of ambient life instead of
+   only the home hero. Small amplitude, on purpose: it should read as
+   "breathing", not "wobbling". */
+@keyframes eyebrow-sway {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(8deg) translateY(-1px); }
+}
+.eyebrow-icon {
+  display: inline-flex;
+  animation: eyebrow-sway 3.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow-icon { animation: none; }
 }
 
 /* Slow hue-cycle through earthy tones — terracotta, marigold, sage, clay,
@@ -867,3 +975,4 @@ label[for] {
   .aiv-pre { opacity: 1; }
   .animate__animated { animation: none !important; }
 }
+

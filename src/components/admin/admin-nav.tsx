@@ -12,7 +12,7 @@ const LINKS = [
   { href: "/admin/blog", label: "Blog" },
   { href: "/admin/stays", label: "Stays" },
   { href: "/admin/events", label: "Events" },
-  { href: "/admin/pages", label: "Pages" },
+  { href: "/admin/pages", label: "Manage Pages" },
   { href: "/admin/settings", label: "Settings" },
 ];
 

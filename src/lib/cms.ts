@@ -4,6 +4,7 @@ import { getDb, hasDb } from "@/lib/db";
 import * as t from "@/lib/db/schema";
 import {
   cottages as SEED_COTTAGES,
+  legacyCottages,
   events as SEED_EVENTS,
   visitOptions as SEED_VISIT_OPTIONS,
   partners as SEED_PARTNERS,
@@ -41,22 +42,30 @@ function toWebPath(value: string | null | undefined): string {
 }
 
 function rowToCottage(r: t.CottageRow): Cottage {
+  const defaults = SEED_COTTAGES.find((c) => c.slug === r.slug);
+  const legacy = legacyCottages.find((c) => c.slug === r.slug);
+  const gallery = (r.gallery ?? []).map(toWebPath).filter(Boolean);
+  // Upgrade untouched seed fields while preserving content edited in the CMS.
+  const usesSeedGallery = !gallery.length || (
+    !!legacy && JSON.stringify(gallery) === JSON.stringify(legacy.gallery)
+  );
   return {
     slug: r.slug,
     name: r.name,
     element: r.element,
     tagline: r.tagline,
-    description: r.description,
+    description: defaults && (!r.description || r.description === legacy?.description)
+      ? defaults.description : r.description,
     icon: r.icon,
     accent: r.accent,
     pricePerNight: r.pricePerNight,
-    maxGuests: r.maxGuests,
-    amenities: r.amenities ?? [],
-    image: toWebPath(r.imageUrl) || "/seed/room-agni-1.jpg",
-    gallery: (r.gallery ?? []).length
-      ? r.gallery.map(toWebPath)
-      : [toWebPath(r.imageUrl)].filter(Boolean),
-    bodyHtml: r.bodyHtml || undefined,
+    maxGuests: defaults && r.maxGuests === legacy?.maxGuests ? defaults.maxGuests : r.maxGuests,
+    amenities: defaults && (!(r.amenities ?? []).length || JSON.stringify(r.amenities) === JSON.stringify(legacy?.amenities))
+      ? defaults.amenities : r.amenities ?? [],
+    image: toWebPath(r.imageUrl) || defaults?.image || "/seed/room-agni-1.jpg",
+    gallery: usesSeedGallery && defaults ? defaults.gallery
+      : gallery.length ? gallery : [toWebPath(r.imageUrl)].filter(Boolean),
+    bodyHtml: r.bodyHtml || defaults?.bodyHtml || undefined,
     placeholder: false,
   };
 }
@@ -88,12 +97,12 @@ export const getCottages = unstable_cache(
         .from(t.cottages)
         .where(eq(t.cottages.published, true))
         .orderBy(asc(t.cottages.sort));
-      return rows.length ? rows.map(rowToCottage) : SEED_COTTAGES;
+      return rows.map(rowToCottage);
     } catch {
       return SEED_COTTAGES;
     }
   },
-  ["cms:cottages"],
+  ["cms:cottages:v3"],
   { tags: ["cottages"] }
 );
 
@@ -111,12 +120,12 @@ export const getEvents = unstable_cache(
         .from(t.events)
         .where(eq(t.events.published, true))
         .orderBy(asc(t.events.sort));
-      return rows.length ? rows.map(rowToEvent) : SEED_EVENTS;
+      return rows.map(rowToEvent);
     } catch {
       return SEED_EVENTS;
     }
   },
-  ["cms:events"],
+  ["cms:events:v2"],
   { tags: ["events"] }
 );
 
@@ -130,14 +139,12 @@ export const getVisitOptions = unstable_cache(
     if (!hasDb()) return SEED_VISIT_OPTIONS;
     try {
       const rows = await getDb().select().from(t.visitOptions).orderBy(asc(t.visitOptions.sort));
-      return rows.length
-        ? rows.map((r) => ({ title: r.title, description: r.description, image: r.imageUrl }))
-        : SEED_VISIT_OPTIONS;
+      return rows.map((r) => ({ title: r.title, description: r.description, image: toWebPath(r.imageUrl) }));
     } catch {
       return SEED_VISIT_OPTIONS;
     }
   },
-  ["cms:visit-options"],
+  ["cms:visit-options:v2"],
   { tags: ["visit-options"] }
 );
 

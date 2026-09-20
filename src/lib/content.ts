@@ -1,3 +1,4 @@
+import { cottageDetails } from "./cottage-details";
 // Placeholder marker: any specific (price, room count detail, program length)
 // not confirmed from the public site/Instagram is flagged " (placeholder)" so
 // nothing invented is presented to the client as fact.
@@ -21,7 +22,7 @@ export type Cottage = {
 
 // Seven hand-plastered rooms, each named for an element. Also the fallback
 // content the public site renders when the database is empty or unreachable.
-export const cottages: Cottage[] = [
+export const legacyCottages: Cottage[] = [
   {
     slug: "agni",
     name: "Agni",
@@ -132,6 +133,8 @@ export const cottages: Cottage[] = [
     placeholder: false,
   },
 ];
+
+export const cottages: Cottage[] = legacyCottages.map((cottage) => ({ ...cottage, ...cottageDetails[cottage.slug] }));
 
 export type EventProgram = {
   slug: string;
