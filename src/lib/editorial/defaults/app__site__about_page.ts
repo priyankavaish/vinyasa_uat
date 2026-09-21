@@ -1,3 +1,5 @@
+import type { IconName } from "@/components/ui/icon";
+import bandImg from "@/app/assets/new/about-band.jpg";
 
 const FAMILY = [
   {
@@ -55,57 +57,120 @@ const FAMILY = [
     since: "2020",
   },
 ];
-import { Icon, type IconName } from "@/components/ui/icon";
-import bandImg from "@/app/assets/new/about-band.jpg";
-import storyImg from "@/app/assets/new/community-01.jpg";
-const PRINCIPLES: Array<{ icon: IconName; title: string; body: string }> = [
-  { icon: "home-outline", title: "Safe space", body: "Where you can create." },
-  { icon: "sparkles-outline", title: "Non-judgemental", body: "Where you can express." },
-  { icon: "leaf-outline", title: "Eco-conscious", body: "Where you can co-live with nature." },
-  { icon: "people-outline", title: "Community living", body: "Where you collaborate." },
+
+const CONSTRUCTION_PARAGRAPHS = [
+  {
+    label: "The intention",
+    body:
+      "Vinyasa began with a simple intention: to build with nature, by nature, rather than place a conventional structure upon it. Building on the lands of Rajasthan, the founder was drawn to the vernacular architecture peculiar to this region — a way of building that invites you to work closely with earthen materials and the varied seasons of the land, so resilient structures can emerge. Inspired by this, the founder and the locals around him began working with earth-based materials and natural building techniques — earthbag, wattle and daub, and cob — to raise the first structures of Vinyasa.",
+  },
+  {
+    label: "The foundations",
+    body:
+      "Slowly, and with a lot of learning through experience, Vinyasa started emerging with stone and lime becoming its foundation. Some of the roofs you will see are bamboo and eucalyptus frames covered with thatch; others are iron-framed and laid with terracotta tiles — with the amphitheatre and the reception standing tall among them. The cottages caught momentum, and the studio followed. It was all one grand living choreography at play with nature, and the founder still remembers how the movement of these bodies translated into the walls, day by day.",
+  },
+  {
+    label: "The name",
+    body:
+      "Movement is deeply valuable to the founder, and as part of how this construction unfolded, he grew curious about how the name of this space might carry that same quality of movement — because movement, he believes, has a continuation to it: there is no end, only a constant response to change. He wanted the space to resemble that, and that is why we call it Vinyasa today — meaning flow. A flow with the resilience to break and the potential to adapt to changing seasons. Vinyasa's walls witnessed this when the first construction was met with rains, which allowed those walls to be rethought and rebuilt. This is what these walls still embody — a space for all that flow consists of: the breaking, the shattering, the rebuilding, the grounding — inviting everyone who arrives at Vinyasa to arrive exactly as they are, and unfold into their becoming.",
+  },
+  {
+    label: "The studio",
+    body:
+      "Amidst this lustrous nature, the intention to build the studio was drawn from Sankalp's belief that body and mind cannot be inspired in isolation, behind four walls — they activate when body and mind can step between nature and stay open to receive the wisdom of the land. That is why the studio space — what Vinyasa calls the temple — stands open, without walls, letting one practise their art in tune with nature. Vinyasa believes deeply in this relationship between nature and art, and how both invite you to slow down, pause, attend to detail, ruminate, linger and empathise. Co-creating this human thread of existence, Vinyasa invites people to step into the dance between art, nature, connection and community.",
+  },
 ];
 
+const GALLERY_PHOTOS = [
+  { image: "/seed/grounds-01.jpg", alt: "Hand-built earthen wall catching the afternoon light at Vinyasa" },
+  { image: "/seed/grounds-04.jpg", alt: "Bamboo and thatch roof frame under construction at Vinyasa" },
+  { image: "/images/property-cottages-day.jpg", alt: "Mud cottages nestled among the trees at Vinyasa" },
+  { image: "/seed/grounds-07.jpg", alt: "The open-air studio, temple to movement, at Vinyasa" },
+  { image: "/seed/room-prithvi-1.jpg", alt: "Hand-painted mandala wall inside a Vinyasa cottage" },
+  { image: "/seed/grounds-06.jpg", alt: "Stone and lime foundation of a Vinyasa structure" },
+];
 
-type Copy = Record<string, string>;
+const VALUES: Array<{ icon: IconName; title: string; body: string; image: string; imageAlt: string }> = [
+  {
+    icon: "leaf-outline",
+    title: "Live",
+    image: "/seed/grounds-05.jpg",
+    imageAlt: "Solar panels and a quiet courtyard at Vinyasa in the early morning light",
+    body:
+      "At Vinyasa, living is an act of interconnection — with people, nature and the larger living world. We are learning to use what the land offers: solar energy is already part of this rhythm, with rainwater harvesting and greywater systems as the forward vision for the ecosystem. Even the small things become part of this relationship — we try to carry less plastic into the space and manage our own waste consciously, while looking forward to learning new ways of handling our electrical, plastic and medical waste. Quiet nights, shared meals and an unwavering care for the space are embedded in this flow of living.",
+  },
+  {
+    icon: "sparkles-outline",
+    title: "Create",
+    image: "/seed/room-prithvi-2.jpg",
+    imageAlt: "An artist's hand-painted mandala wall inside a Vinyasa studio cottage",
+    body:
+      "To create at Vinyasa is to participate, not simply consume. We value curiosity, openness, attuned listening, sharing and the possibility of making something together. We believe creation can emerge differently when it comes from belonging and trust rather than scarcity or isolation. Vinyasa invites artists and creators to connect with nature not just as a space, but as a place where inspiration can be found.",
+  },
+  {
+    icon: "people-outline",
+    title: "Belong",
+    image: "/seed/community-03.jpg",
+    imageAlt: "Residents sharing a meal together at Vinyasa",
+    body:
+      "To belong at Vinyasa is to make space for yourself while making space for another. We respect boundaries, non-judgement, compassion, empathy, communication and care. Belonging here is something we continually create together — with people, with the land, and with the living world. Vinyasa invites you to get curious about the many ways to connect with one another.",
+  },
+];
+
+const FOUNDER_PARAGRAPHS = [
+  "As a child, Sankalp was quiet, curious and a little courageously rebellious — always drawn to questions, and to the way things worked around him.",
+  "Years later, that same curiosity found a language in movement, when dance entered his life and he found himself immersing in the body, the self and intuition. What began as a fascination with movement slowly became a way for him to find his potential as an artist, and a step towards honouring his creativity. His journey took him from Terence Lewis on the streets of Bombay to the Martha Graham School in New York — through studios, stages, odd jobs and double shifts — learning, creating, performing, simply entering his era as a dancer in the world.",
+  "Somewhere between making art and sharing space with fellow artists, he discovered how deeply artists need one another — the conversations, the witnessing, the simple feeling of belonging with humans who hold an innate respect and trust in the process of creating, and in developing an intimacy with art.",
+  "Being a kid who never felt the need to step outside the four walls of his room and screen, he found his way back to nature through his art of movement. He began to wonder what might happen if artists could have a space where people, art, body and land were not separate things, but elements within which creativity thrives and amplifies.",
+  "That question eventually brought him back to Jaipur when Covid hit and he was sent back from New York — where a dream once held in a notebook began taking shape in earth.",
+  "Even today, he does not see Vinyasa as a finished creation, but as something living — capable of changing with the people, seasons and ideas that enter it. This resilient land was nothing less than a stage for him, and for the humans who gathered to make something one could call home — a home where trust is embedded and community is in its foundation. Perhaps through his truest way of being — to keep moving, becoming, growing and flowing — he invites others to find their own path to themselves, their craft and their flow.",
+];
+
+const FOUNDER_PULLQUOTE =
+  "Vinyasa became an extension of something Sankalp had been carrying all along — the instinct to rearrange, to question, to break open and build anew. Just in case of Vinyasa, it came together not brick by brick, but mud by mud.";
 
 export const defaults = {
-"FAMILY": FAMILY,
-seo: {
-  title: "About",
-  description:
-    "The story behind Vinyasa Earth — an art-residential space in Jaipur, founded by dancer Sankalp Sharma as a safe, non-judgemental home for artists to live, create, and belong.",
-  alternates: { canonical: "/about" },
-},
-"list_1": [
-                  "Sankalp Sharma, a professional dancer, was abroad on a dance scholarship when the 2020 pandemic was announced and sent him back to India. Out of that pause came Vinyasa Earth: a village built around the practical realities artists face — long commutes, cramped rooms, nowhere to perform, and the basic question of the next meal.",
-                  "The idea was simple. Give artists quality sleep, nutritious food, and real support, and the creative work takes care of itself.",
-                ],
-"list_2": [
-                  "Mud plaster and jaali screens instead of concrete. Kitchen-garden meals instead of a restaurant menu. Block-print textiles and hand-painted mandalas on the cottage walls. It is a working example of the sustainable, earth-first living the community here practises every day.",
-                  "Everything at Vinyasa carries the goodness of mother earth — a blend of humanity and nature, held with gratitude.",
-                ],
-"PRINCIPLES": PRINCIPLES,
+  seo: {
+    title: "About",
+    description:
+      "The story behind Vinyasa Earth — an art-residential space in Jaipur, founded by dancer Sankalp Sharma as a safe, non-judgemental home for artists to live, create, and belong.",
+    alternates: { canonical: "/about" },
+  },
 
-"bandImg": bandImg,
-"storyImg": storyImg,
-"text_1": "Our story",
-"text_2": "Start your journey inwards",
-"text_3": "Vinyasa Earth is an art-residential space in Jaipur, Rajasthan — a safe and non-judgemental abode for everyone to free their inner defences and explore themselves.",
-"image_4": "/images/IMG_1084.JPG",
-"imageAlt_5": "Hand-painted mud cottage framed by a neem tree and marigolds at Vinyasa Earth",
-"alt_6": "Community gathering at Vinyasa Earth",
-"text_7": "How it began",
-"text_8": "An artist village, imagined in lockdown",
+  hero_eyebrow: "Our story",
+  hero_title: "Start your journey inwards",
+  hero_description:
+    "Vinyasa Earth is an art-residential space in Jaipur, Rajasthan — a safe and non-judgemental abode for everyone to free their inner defences and explore themselves.",
+  hero_image: "/images/IMG_1084.JPG",
+  hero_image_alt: "Hand-painted mud cottage framed by a neem tree and marigolds at Vinyasa Earth",
 
+  construction_eyebrow: "How it was built",
+  construction_title: "Built with the earth, not upon it",
+  construction_image: "/seed/grounds-02.jpg",
+  construction_image_alt: "Earthen wall under construction with natural building materials at Vinyasa",
+  construction_accent_image: "/seed/grounds-09.jpg",
+  construction_paragraphs: CONSTRUCTION_PARAGRAPHS,
 
-"text_11": "What we stand on",
-"text_12": "Four principles",
-"text_13": "\"Everything at Vinyasa carries the goodness of mother earth — a blend of humanity and nature, held with gratitude.\"",
-"text_14": "The Vinyasa Earth community",
-"text_15": "Built from the ground",
-"text_16": "Rajasthan's own way of building",
+  gallery_eyebrow: "The place, as it was raised",
+  gallery_title: "Earth, walls, and the studio without walls",
+  gallery_photos: GALLERY_PHOTOS,
 
+  values_eyebrow: "What we stand on",
+  values_title: "The Vinyasa way",
+  values: VALUES,
 
-"src_19": "/images/2N0A9797.JPG",
-"alt_20": "A grinding stone by a bamboo window inside a hand-built mud room at Vinyasa Earth"
+  founder_eyebrow: "About the founder",
+  founder_title: "Sankalp Sharma",
+  founder_role: "Dancer, builder, founder of Vinyasa",
+  founder_image: "/seed/community-01.jpg",
+  founder_image_alt: "Sankalp Sharma, founder of Vinyasa Earth",
+  founder_paragraphs: FOUNDER_PARAGRAPHS,
+  founder_pullquote: FOUNDER_PULLQUOTE,
+
+  FAMILY,
+
+  quote_text:
+    "\"Everything at Vinyasa carries the goodness of mother earth — a blend of humanity and nature, held with gratitude.\"",
+  quote_caption: "The Vinyasa Earth community",
+  bandImg,
 };
