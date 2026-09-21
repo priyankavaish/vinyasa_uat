@@ -47,7 +47,7 @@ export default function PhotoMasonry() {
                 <button
                   type="button"
                   onClick={() => setLightboxIndex(i)}
-                  className="group relative block aspect-[4/5] w-44 cursor-pointer overflow-hidden shadow-[0_18px_40px_-24px_rgba(30,20,12,0.35)] transition-shadow duration-300 hover:shadow-[0_24px_54px_-20px_rgba(30,20,12,0.45)] sm:w-56"
+                  className="group relative block aspect-[4/5] w-44 cursor-pointer overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] shadow-[0_18px_40px_-24px_rgba(30,20,12,0.35)] transition-shadow duration-300 hover:shadow-[0_24px_54px_-20px_rgba(30,20,12,0.45)] sm:w-56"
                 >
                   <Image
                     src={photo.image}
