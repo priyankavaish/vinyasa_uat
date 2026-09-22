@@ -82,6 +82,98 @@ const PAUSE_WITHIN_CONTENT = {
   ],
 };
 
+type EditorialEvent = {
+  introTitle: string;
+  intro: string;
+  context: string;
+  exploreTitle: string;
+  explore: string[];
+  takeawayTitle: string;
+  takeaways: string[];
+  aboutTitle: string;
+  about: string;
+  passes?: { name: string; price: string; detail: string }[];
+  cta: string;
+};
+
+const EDITORIAL_EVENTS: Record<string, EditorialEvent> = {
+  "artist-in-residence": {
+    introTitle: "A slower way to let practice evolve.",
+    intro: "The Vinyasa Artist-in-Residence Program is a four-month living and research opportunity for artists and practitioners who want to deepen their practice within a nature-led, community-oriented environment.",
+    context: "Two selected artists live, explore and create between June and September. This is not a retreat and not a production residency. It is a process-driven immersion in which practice can be questioned, documented and reshaped in dialogue with land, people and time.",
+    exploreTitle: "What the residency offers",
+    explore: ["Four-month residential stay at Vinyasa Earth", "Dormitory accommodation and daily vegetarian meals", "Access to natural, architectural and community spaces", "Space for independent research and artistic inquiry", "Opportunity to host workshops, sessions or offerings", "A growing body of practice-led work for the Vinyasa Archive"],
+    takeawayTitle: "What the application asks for",
+    takeaways: ["A clear research topic and central question", "Scope, methodology and proposed outcomes", "A tentative June-September timeline", "A plan for process documentation", "A willingness to offer consistent, accessible engagements to the community"],
+    aboutTitle: "Research as practice.",
+    about: "Residents are expected to develop their inquiry into a well-structured research document, with written reflections, process journals, visual documentation or practice-based findings. Artists retain authorship while contributing to Vinyasa's growing archive of knowledge.",
+    cta: "Apply for the residency",
+  },
+  "artist-unite": {
+    introTitle: "Come with your practice. Leave with a community.",
+    intro: "Artist Unite is a ten-day interdisciplinary residency built around the experience of living, creating and exchanging practices with artists from completely different worlds.",
+    context: "There are no masterclasses here. A painter might invite you into the way they observe; a dancer might share how movement begins; a theatre-maker might introduce a game for discovering characters. The intention is to experience how another artist thinks through their art.",
+    exploreTitle: "The rhythm of Artist Unite",
+    explore: ["Morning stretch and a 7:30 AM artist process session", "Open afternoons for self-creation and studio time", "Shared evening practice, experiments or conversations", "Community meals, closing circles and spontaneous jams", "A final day at Zariya, the festival created by the residents", "Ten days of living inside an interdisciplinary artistic community"],
+    takeawayTitle: "Who this is for",
+    takeaways: ["Dancers, painters and theatre-makers", "Visual artists, musicians and sculptors", "Photographers, filmmakers and writers", "Performance artists and interdisciplinary practitioners", "Anyone curious about how other artists live and create"],
+    aboutTitle: "And then, we build Zariya.",
+    about: "Over the residency, Vinyasa gradually transforms from a home for artists into a festival made by them. Performances, artworks, installations and collaborations find their spaces, and every resident gets an opportunity to present work in a form suited to their practice.",
+    passes: [{ name: "Artist Unite 2026", price: "Rs. 18,500 + GST", detail: "Ten nights in a dormitory, daily breakfast and dinner, shared process spaces and participation at Zariya." }],
+    cta: "Apply for Artist Unite",
+  },
+  zariya: {
+    introTitle: "A night to create, connect and celebrate.",
+    intro: "Zariya is Vinyasa Earth's annual gathering of artists, creators and curious minds - an evening that begins around sunset and slowly unfolds into art, conversations, performances, music and meaningful connections.",
+    context: "As the sun sets, Vinyasa becomes a shared creative space. Some things are planned and some emerge from the people who gather: open stages, artist showcases, spontaneous jams, installations, exhibitions and experiences.",
+    exploreTitle: "What the evening holds",
+    explore: ["Performances and open stages", "Artist showcases and exhibitions", "Conversations across creative disciplines", "Music, spontaneous jams and shared experiences", "Natural spaces and local, conscious choices", "The option to stay back and wake to a slower morning"],
+    takeawayTitle: "Come as you are",
+    takeaways: ["Come with your art", "Come with a story", "Come with a friend", "Come curious", "Leave with a collaboration, an idea, a conversation or a beautiful memory"],
+    aboutTitle: "At the heart of Zariya is connection.",
+    about: "Connection between artists and audiences, between different creative disciplines, and between celebration and a more conscious way of experiencing it. Zariya is our way of bringing people back together for the festive season.",
+    cta: "Join the gathering",
+  },
+  "drishti-new-years-retreat": {
+    introTitle: "A different kind of New Year.",
+    intro: "Drishti is Vinyasa Earth's year-end retreat - three days to step away from the noise, look back at the year that has been, and create space for the one that is about to begin.",
+    context: "Drishti means vision: the way we see, perceive and direct our attention. There is nowhere to rush to and nothing you need to become. These days invite you to notice what the year gave you, what it asked of you, what you are ready to leave behind and what you would like to carry forward.",
+    exploreTitle: "The experience",
+    explore: ["Slow mornings and movement practices", "Meditation, breathwork and time in nature", "Creative explorations and intimate conversations", "Shared meals, laughter and spaces for silence", "An intentional transition into the New Year", "Room to be part of the community or entirely your own"],
+    takeawayTitle: "Who is Drishti for?",
+    takeaways: ["Anyone who wants to end the year differently", "People arriving alone or with a friend", "Beginners and experienced practitioners alike", "Anyone willing to arrive, participate and give themselves three days", "Those looking for clarity rather than resolutions"],
+    aboutTitle: "Sometimes, changing where you stand changes what you can see.",
+    about: "Drishti is not a New Year's Eve party disguised as a retreat. It is a slower kind of beginning, rooted in movement, stillness, conversation, nature, creativity and community.",
+    cta: "Reserve your place",
+  },
+  "performing-lab-retreat": {
+    introTitle: "Where technique meets ritual, discipline meets play.",
+    intro: "Performing Lab is a five-day residential intensive for performers, dancers, actors, theatre-makers, musicians, facilitators and creative explorers seeking a deeper artistic practice through movement, ritual, physical theatre and embodied creation.",
+    context: "Led by internationally acclaimed theatre practitioner Sukh Ahlstrom, the lab combines physical theatre, Kalaripayattu, movement research, rhythm, voice, clowning and collective creation in the natural surroundings of Vinyasa Earth.",
+    exploreTitle: "What you will explore",
+    explore: ["Physical theatre and Kalaripayattu", "Body Weather and active meditations", "Clowning, pantomime and rhythm training", "Voice, singing and body percussion", "Contemporary movement and creative composition", "Training, laboratories, reflection and a final showcase"],
+    takeawayTitle: "What you take home",
+    takeaways: ["A wider physical and expressive range", "Practical tools for artistic creation and performance", "Stronger presence, improvisation and adaptability", "New movement qualities and creative strategies", "A renewed relationship with curiosity, play and artistic intuition", "An official certificate of participation"],
+    aboutTitle: "Learn with Sukh Ahlstrom.",
+    about: "Sukh is an international performing artist, director and educator with more than twenty years of experience across physical theatre, dance, martial arts, theatrical anthropology and embodied creative practices. Her work has reached artists and students across Chile, India, Denmark, Brazil, Serbia and Greenland.",
+    passes: [{ name: "Early Bird Dorm", price: "Rs. 20,475", detail: "Shared dormitory accommodation. Limited seats available." }, { name: "Dorm Residency", price: "Rs. 24,150", detail: "Shared dormitory accommodation with the full residency experience." }, { name: "Cottage Residency", price: "Rs. 32,025", detail: "Twin-sharing earthen cottage accommodation." }, { name: "Artist Scholarship", price: "Rs. 15,015", detail: "Limited scholarship-supported dormitory seats for emerging artists and practitioners." }],
+    cta: "Apply for Performing Lab",
+  },
+  "anhad-ka-baaja": {
+    introTitle: "An evening of Kabir bhajans.",
+    intro: "Anhad ka Baaja is an intimate evening of listening and singing along to the words of Sant Kabir. Led by Priyal, the evening invites us to slow down and experience poetry through music - not only as something to perform, but as something to feel, share and reflect upon.",
+    context: "Come as you are. Listen quietly, sing along when you feel called, and spend an evening in the company of music, poetry and people. Food is not included in the ticket; guests can order from the Vinyasa kitchen before the event begins.",
+    exploreTitle: "An evening to sit inside",
+    explore: ["Kabir bhajans led by Priyal", "Listening as a shared practice", "Space to sing along or simply be present", "A welcome drink at Vinyasa Earth", "Music, poetry and conversation in community"],
+    takeawayTitle: "With Priyal",
+    takeaways: ["Musician and yoga teacher", "A bridge between science, spirituality and the arts", "Student of the oral traditions of Kabir, Nanak and Meera", "A musical journey shaped by two years learning with Prahlad Tipanya Ji"],
+    aboutTitle: "Come listen, sing and spend an evening with Kabir.",
+    about: "Priyal's work brings together music, yoga and meditation as tools for healing and self-discovery. Anhad ka Baaja marks a new step in his journey as he brings these bhajans to Vinyasa in his own voice.",
+    passes: [{ name: "Entry", price: "Rs. 450 + GST", detail: "Per person. Includes a welcome drink; food can be ordered separately." }],
+    cta: "Book your place",
+  },
+};
+
 export async function generateStaticParams() {
   const events = await getEvents();
   return events.map((e) => ({ slug: e.slug }));
@@ -108,11 +200,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const details = content.EVENT_DETAILS[event.slug];
   const priceLabel = event.priceFrom === 0 ? "By donation" : `Ã¢â€šÂ¹${event.priceFrom.toLocaleString("en-IN")}`;
   const isPauseWithin = event.slug === "the-pause-within";
+  const editorialEvent = EDITORIAL_EVENTS[event.slug];
 
   return (
     <>
-      <PageHero framed={isPauseWithin} eyebrow={isPauseWithin ? "A residential retreat" : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
-        {isPauseWithin && <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent">Reserve your place <span aria-hidden>↗</span></Link>}
+      <PageHero framed={isPauseWithin || !!editorialEvent} eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
+        {(isPauseWithin || editorialEvent) && <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent">{editorialEvent?.cta ?? "Reserve your place"} <span aria-hidden>↗</span></Link>}
       </PageHero>
 
       {isPauseWithin ? (
@@ -164,6 +257,56 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent mt-7 block text-center">Reserve your place <span aria-hidden>↗</span></Link>
               </div>
               <p className="mt-4 text-center text-xs leading-5 text-muted">Part of The Collective Body, Vinyasa Earth's Artist-in-Residence programme.</p>
+            </aside>
+          </section>
+        </main>
+      ) : editorialEvent ? (
+        <main className="bg-background">
+          <section className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:py-24">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">{event.dateLabel || "Vinyasa Earth, Jaipur"}</p>
+              <h2 className="mt-5 max-w-[18ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl">{editorialEvent.introTitle}</h2>
+              <p className="mt-7 max-w-2xl text-lg leading-8 text-foreground-soft">{editorialEvent.intro}</p>
+              <p className="mt-5 max-w-2xl leading-7 text-foreground-soft">{editorialEvent.context}</p>
+
+              <div className="mt-12 grid border-y border-line py-6 sm:grid-cols-3 sm:divide-x sm:divide-line">
+                <div className="pb-5 sm:px-5 sm:pb-0 sm:first:pl-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Duration</p><p className="mt-2 font-semibold">{event.durationLabel || "At Vinyasa Earth"}</p></div>
+                <div className="border-t border-line pt-5 sm:border-t-0 sm:px-5 sm:pt-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Facilitator</p><p className="mt-2 font-semibold">{event.facilitator || "Vinyasa Earth"}</p></div>
+                <div className="border-t border-line pt-5 sm:border-t-0 sm:px-5 sm:pt-0 sm:last:pr-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Venue</p><p className="mt-2 font-semibold">Vinyasa Earth, Jaipur</p></div>
+              </div>
+
+              <div className="mt-16 grid gap-12 md:grid-cols-2">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">The experience</p>
+                  <h3 className="mt-4 font-display text-3xl leading-tight">{editorialEvent.exploreTitle}</h3>
+                  <ul className="mt-6 space-y-4 text-foreground-soft">
+                    {editorialEvent.explore.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />{item}</li>)}
+                  </ul>
+                </div>
+                <div className="border-t border-line pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">A closer look</p>
+                  <h3 className="mt-4 font-display text-3xl leading-tight">{editorialEvent.takeawayTitle}</h3>
+                  <ul className="mt-6 space-y-4 text-foreground-soft">
+                    {editorialEvent.takeaways.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />{item}</li>)}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-16 border-t border-line pt-10">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Beyond the schedule</p>
+                <h3 className="mt-4 max-w-xl font-display text-3xl leading-tight">{editorialEvent.aboutTitle}</h3>
+                <p className="mt-5 max-w-2xl leading-7 text-foreground-soft">{editorialEvent.about}</p>
+              </div>
+            </div>
+
+            <aside className="self-start lg:sticky lg:top-28">
+              <div className="border border-line bg-surface p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">{editorialEvent.passes ? "Ways to join" : "Make space for it"}</p>
+                <p className="mt-3 text-sm leading-6 text-foreground-soft">{event.description}</p>
+                {editorialEvent.passes ? <div className="mt-7 divide-y divide-line">{editorialEvent.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold">{pass.name}</h3><span className="shrink-0 text-sm font-semibold text-accent">{pass.price}</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft">{pass.detail}</p></div>)}</div> : <p className="mt-7 border-y border-line py-5 text-2xl font-semibold">{priceLabel}</p>}
+                <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent mt-7 block text-center">{editorialEvent.cta} <span aria-hidden>↗</span></Link>
+              </div>
+              <p className="mt-4 text-center text-xs leading-5 text-muted">Vinyasa Earth, Jaipur</p>
             </aside>
           </section>
         </main>
