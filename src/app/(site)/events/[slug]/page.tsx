@@ -58,6 +58,30 @@ const EVENT_DETAILS: Record<string, { heading: string; paragraphs: string[]; hig
   },
 };
 
+const PAUSE_WITHIN_CONTENT = {
+  intro: "The Pause Within is an invitation to slow down and become curious about how stress, emotions, tension, overwhelm, disconnection and the need for rest show up in everyday life.",
+  context: "This is not a retreat about eliminating stress or achieving a particular state of calm. It is an exploration of our relationship with stress - an opportunity to recognise our patterns, understand our signals and discover what helps us feel supported.",
+  explore: [
+    "How we recognise when stress is building",
+    "How emotions show up physically",
+    "What helps us feel more settled and supported",
+    "How to notice when we are doing too much",
+    "How to pause before reacting automatically",
+    "Simple practices that can support us in everyday life",
+  ],
+  takeBack: [
+    "A clearer understanding of your stress responses",
+    "Greater awareness of what supports you",
+    "More space between what you feel and what you do next",
+    "A more compassionate relationship with yourself",
+  ],
+  passes: [
+    { name: "Complete Retreat Pass", price: "Rs. 4,999", detail: "Two-night stay, food and retreat facilitation." },
+    { name: "Stay & Retreat Pass", price: "Rs. 2,499", detail: "Two-night stay and retreat facilitation. Meals can be ordered separately." },
+    { name: "Community Pass", price: "Rs. 1,800", detail: "For members of the Vinyasa community. Includes stay and food." },
+  ],
+};
+
 export async function generateStaticParams() {
   const events = await getEvents();
   return events.map((e) => ({ slug: e.slug }));
@@ -83,11 +107,67 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const image = event.image || content.EVENT_IMAGES[event.slug] || "/seed/grounds-06.jpg";
   const details = content.EVENT_DETAILS[event.slug];
   const priceLabel = event.priceFrom === 0 ? "By donation" : `Ã¢â€šÂ¹${event.priceFrom.toLocaleString("en-IN")}`;
+  const isPauseWithin = event.slug === "the-pause-within";
 
   return (
     <>
-      <PageHero eyebrow={event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"} />
+      <PageHero framed={isPauseWithin} eyebrow={isPauseWithin ? "A residential retreat" : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
+        {isPauseWithin && <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent">Reserve your place <span aria-hidden>↗</span></Link>}
+      </PageHero>
 
+      {isPauseWithin ? (
+        <main className="bg-background">
+          <section className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:py-24">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">18-20 September 2026</p>
+              <h2 className="mt-5 max-w-[16ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl">A little space to listen inward.</h2>
+              <p className="mt-7 max-w-2xl text-lg leading-8 text-foreground-soft">{PAUSE_WITHIN_CONTENT.intro}</p>
+              <p className="mt-5 max-w-2xl leading-7 text-foreground-soft">{PAUSE_WITHIN_CONTENT.context}</p>
+
+              <div className="mt-12 grid border-y border-line py-6 sm:grid-cols-3 sm:divide-x sm:divide-line">
+                <div className="pb-5 sm:px-5 sm:pb-0 sm:first:pl-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Duration</p><p className="mt-2 font-semibold">Two nights, two days</p></div>
+                <div className="border-t border-line pt-5 sm:border-t-0 sm:px-5 sm:pt-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Facilitator</p><p className="mt-2 font-semibold">Nikita Chawda</p></div>
+                <div className="border-t border-line pt-5 sm:border-t-0 sm:px-5 sm:pt-0 sm:last:pr-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Venue</p><p className="mt-2 font-semibold">Vinyasa Earth, Jaipur</p></div>
+              </div>
+
+              <div className="mt-16 grid gap-12 md:grid-cols-2">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">The retreat</p>
+                  <h3 className="mt-4 font-display text-3xl leading-tight">What we will explore</h3>
+                  <ul className="mt-6 space-y-4 text-foreground-soft">
+                    {PAUSE_WITHIN_CONTENT.explore.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />{item}</li>)}
+                  </ul>
+                </div>
+                <div className="border-t border-line pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">A gentle takeaway</p>
+                  <h3 className="mt-4 font-display text-3xl leading-tight">What you may take back</h3>
+                  <ul className="mt-6 space-y-4 text-foreground-soft">
+                    {PAUSE_WITHIN_CONTENT.takeBack.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />{item}</li>)}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-16 border-t border-line pt-10">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">About Nikita</p>
+                <h3 className="mt-4 font-display text-3xl leading-tight">A body-led way of paying attention.</h3>
+                <p className="mt-5 max-w-2xl leading-7 text-foreground-soft">Nikita Chawda is a somatic therapist and Play Movement Educator who works with adults navigating trauma, stress and shame. Her approach is not about fixing, changing or controlling the body and mind. She creates the time, space and support needed to meet ourselves where we are and reconnect with the vitality within us.</p>
+              </div>
+            </div>
+
+            <aside className="self-start lg:sticky lg:top-28">
+              <div className="border border-line bg-surface p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Choose your pass</p>
+                <p className="mt-3 text-sm leading-6 text-foreground-soft">Come with curiosity. There is nothing to fix and nowhere particular to arrive.</p>
+                <div className="mt-7 divide-y divide-line">
+                  {PAUSE_WITHIN_CONTENT.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold">{pass.name}</h3><span className="shrink-0 text-sm font-semibold text-accent">{pass.price}</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft">{pass.detail}</p></div>)}
+                </div>
+                <Link href={`/book?type=event&slug=${event.slug}`} className="btn btn-accent mt-7 block text-center">Reserve your place <span aria-hidden>↗</span></Link>
+              </div>
+              <p className="mt-4 text-center text-xs leading-5 text-muted">Part of The Collective Body, Vinyasa Earth's Artist-in-Residence programme.</p>
+            </aside>
+          </section>
+        </main>
+      ) : (
       <section className="mx-auto max-w-4xl px-5 py-14 sm:px-8">
         <Link href={content.href_1} className="text-xs uppercase tracking-[0.08em] text-accent underline">{content.text_2}</Link>
         <div className="mt-8 grid gap-10 sm:grid-cols-[1.4fr_1fr]">
@@ -133,6 +213,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           </div>
         </div>
       </section>
+      )}
     </>
   );
 }

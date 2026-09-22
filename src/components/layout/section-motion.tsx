@@ -16,7 +16,11 @@ export default function SectionMotion({ children }: { children: ReactNode }) {
     const animations = new Map<HTMLElement, Animation>();
 
     const finish = (element: HTMLElement) => {
-      animations.get(element)?.cancel();
+      const animation = animations.get(element);
+      if (animation) {
+        animation.onfinish = null;
+        animation.cancel();
+      }
       animations.delete(element);
     };
     const observer = new IntersectionObserver((entries) => {
@@ -36,6 +40,7 @@ export default function SectionMotion({ children }: { children: ReactNode }) {
     }, { threshold: 0, rootMargin: "0px 0px -24px 0px" });
 
     const register = () => {
+      if (!root.isConnected) return;
       root.querySelectorAll<HTMLElement>("section").forEach((section) => {
         if (seen.has(section) || section.closest("[data-hero]") || section.parentElement?.closest("section")) return;
         seen.add(section);

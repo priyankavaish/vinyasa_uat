@@ -10,6 +10,9 @@
   border-radius: 0;
 }
 .image { object-fit: cover; object-position: var(--hero-position, 50% 50%); }
+.heroFramed { width: min(calc(100% - 40px), 1120px); height: calc(100svh - 176px); min-height: 0; margin: 96px auto; border-radius: 2px; }
+.heroFramed .image { object-fit: cover; }
+.heroFramed .content { padding-inline: 40px; }
 /* contain mode: full-bleed cover sized to the viewport so there is no filler
    and the heading sits in the first view without scrolling */
 .heroContain { height: calc(100svh - 10px); min-height: 560px; max-height: 900px; align-items: flex-start; }
@@ -52,6 +55,8 @@
   .heroContain .content { padding-top: 128px; }
   .image { object-position: var(--hero-mobile-position, var(--hero-position, 50% 50%)); }
   .content { padding: 112px 20px 36px; }
+  .heroFramed { width: calc(100% - 24px); height: calc(100svh - 148px); margin: 82px auto; }
+  .heroFramed .content { padding-inline: 24px; }
   .title { font-size: 34px; }
   .eyebrow { font-size: 12px; letter-spacing: .16em; margin-bottom: 14px; }
   .description { margin-top: 16px; font-size: 14px; line-height: 1.65; }
