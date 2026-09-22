@@ -77,7 +77,7 @@ export default async function CottageDetailPage({ params }: { params: Promise<{ 
               </div>
             ) : <p className="mt-3 text-2xl font-semibold">{content.text_18}</p>}
             <Link href={bookingUrl} className="btn btn-accent mt-6 flex w-full items-center justify-center gap-2">
-              {shared ? content.text_19 : content.text_20} <Icon name="arrow-forward-outline" size={16} />
+                {shared ? content.text_19 : content.text_20} <span className="arrow-nudge relative top-px inline-flex items-center leading-none"><Icon name="arrow-forward-outline" size={16} /></span>
             </Link>
             <p className="mt-3 text-center text-xs leading-relaxed text-muted">{content.text_21}</p>
           </div>

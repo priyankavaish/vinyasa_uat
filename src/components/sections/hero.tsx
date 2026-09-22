@@ -115,6 +115,7 @@ export function PageHero({
   imagePosition = "50% 50%",
   mobileImagePosition,
   contain = false,
+  framed = false,
   children,
 }: {
   eyebrow: string;
@@ -125,10 +126,11 @@ export function PageHero({
   imagePosition?: string;
   mobileImagePosition?: string;
   contain?: boolean;
+  framed?: boolean;
   children?: ReactNode;
 }) {
   return (
-    <section data-hero className={`${heroStyles.hero} ${contain ? heroStyles.heroContain : ""}`} style={{
+    <section data-hero className={`${heroStyles.hero} ${contain ? heroStyles.heroContain : ""} ${framed ? heroStyles.heroFramed : ""}`} style={{
       "--hero-position": imagePosition,
       "--hero-mobile-position": mobileImagePosition ?? imagePosition,
     } as CSSProperties}>
