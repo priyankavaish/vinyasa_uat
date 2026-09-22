@@ -156,14 +156,18 @@ export async function saveEvent(form: FormData) {
   }
   revalidateTag("events");
   revalidatePath("/events");
+  revalidatePath(`/events/${values.slug}`);
   redirect("/admin/events");
 }
 
 export async function deleteEvent(id: string) {
   await assertAdmin();
-  await getDb().delete(t.events).where(eq(t.events.id, id));
+  const db = getDb();
+  const [event] = await db.select({ slug: t.events.slug }).from(t.events).where(eq(t.events.id, id)).limit(1);
+  await db.delete(t.events).where(eq(t.events.id, id));
   revalidateTag("events");
   revalidatePath("/events");
+  if (event?.slug) revalidatePath(`/events/${event.slug}`);
 }
 
 // --------------------------------------------------------------------------
