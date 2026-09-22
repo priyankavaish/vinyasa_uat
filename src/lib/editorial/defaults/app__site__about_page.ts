@@ -156,7 +156,7 @@ export const defaults = {
   gallery_photos: GALLERY_PHOTOS,
 
   values_eyebrow: "What we stand on",
-  values_title: "The Vinyasa way",
+  values_title: "Vinyasa's principles",
   values: VALUES,
 
   founder_eyebrow: "About the founder",

@@ -5,7 +5,7 @@ import { PageHero } from "@/components/sections/hero";
 import SectionWave from "@/components/ui/section-wave";
 import AnimateInView from "@/components/ui/animate-in-view";
 import FamilyBookshelf from "@/components/sections/family-bookshelf";
-import ValueCard from "@/components/sections/value-card";
+import PrincipleRow from "@/components/sections/principle-row";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax, ParallaxHeroImage } from "@/components/ui/parallax";
@@ -116,25 +116,34 @@ export default async function AboutPage() {
 
       <SectionWave from="#e7ebdd" to="#f3e6d8" variant="hill" className="h-8 sm:h-12" />
 
-      {/* Values — the Vinyasa way */}
+      {/* Principles — the Vinyasa way */}
       <AnimateInView delay={80}>
         <section className="organic-section bg-clay-surface py-16 sm:py-20">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <div className="mx-auto max-w-5xl px-5 sm:px-8">
             <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
               <SectionEyebrow icon="leaf-outline" className="justify-center">{content.values_eyebrow}</SectionEyebrow>
               <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.values_title}</h2>
             </Reveal>
 
-            <div className="mx-auto mt-14 grid max-w-5xl gap-6 sm:grid-cols-3">
+            <div className="mt-14">
               {content.values.map((v, i) => (
-                <Reveal key={v.title} variant="up" delay={i * 100}>
-                  <ValueCard icon={v.icon} title={v.title} body={v.body} image={v.image} imageAlt={v.imageAlt} />
-                </Reveal>
+                <PrincipleRow
+                  key={v.title}
+                  index={i + 1}
+                  icon={v.icon}
+                  title={v.title}
+                  body={v.body}
+                  image={v.image}
+                  imageAlt={v.imageAlt}
+                  reverse={i % 2 === 1}
+                />
               ))}
             </div>
           </div>
         </section>
       </AnimateInView>
+
+      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" className="h-8 sm:h-12" />
 
       {/* About the founder */}
       <AnimateInView delay={100}>
