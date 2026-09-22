@@ -34,8 +34,9 @@
 .track .number { font-size: 11px; text-transform: uppercase; letter-spacing: .13em; color: #8f3b31; margin-bottom: 22px; }
 .track > a { margin-top: auto; margin-block-start: 24px; }
 .life { max-width: 1152px; margin: auto; padding: 56px 32px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-.photo { position: relative; aspect-ratio: 1.1; overflow: hidden; }
-.photo img { transition: transform 500ms ease-out; }
+.photo { position: relative; aspect-ratio: 1.1; isolation: isolate; }
+.photo::before { content: ""; position: absolute; inset: 14px -14px -14px 14px; z-index: -1; background: #8f5a3c; box-shadow: 8px 10px 0 rgba(92, 52, 34, .18); transform: skewY(-2deg); }
+.photo img { z-index: 1; transition: transform 500ms ease-out; }
 .photo:hover img { transform: scale(1.05); }
 .life h2, .promises h2, .faq h2 { margin-top: 16px; }
 .life p, .promises p { margin-top: 20px; color: #4a4234; line-height: 1.8; }
