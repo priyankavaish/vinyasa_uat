@@ -14,10 +14,16 @@ export default function GalleryCarouselGrid({
   images,
   alt = "",
   perSlide = 4,
+  masonry = false,
+  rounded = false,
+  square = false,
 }: {
   images: string[];
   alt?: string;
   perSlide?: number;
+  masonry?: boolean;
+  rounded?: boolean;
+  square?: boolean;
 }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [selected, setSelected] = useState(0);
@@ -51,7 +57,7 @@ export default function GalleryCarouselGrid({
         <div className="flex touch-pan-y">
           {slides.map((slide, si) => (
             <div key={si} className="min-w-0 shrink-0 grow-0 basis-full">
-              <div className="grid grid-cols-2 gap-2 sm:gap-3">
+              <div className={masonry ? "grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3" : "grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3"}>
                 {slide.map((src, ii) => {
                   const globalIndex = si * perSlide + ii;
                   return (
@@ -59,7 +65,7 @@ export default function GalleryCarouselGrid({
                       key={`${src}-${globalIndex}`}
                       type="button"
                       onClick={() => setLightboxIndex(globalIndex)}
-                      className="group relative aspect-[4/3] overflow-hidden border border-line"
+                      className={`group relative overflow-hidden border border-line ${rounded ? "rounded-tl-[2rem] rounded-br-[2rem]" : ""} ${square ? "aspect-square" : masonry && (ii === 0 || ii === 5) ? "aspect-[3/4] md:row-span-2 md:aspect-auto md:h-full" : "aspect-[4/3]"}`}
                     >
                       <Image
                         src={src}

@@ -9,6 +9,7 @@ import PrincipleRow from "@/components/sections/principle-row";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax, ParallaxHeroImage } from "@/components/ui/parallax";
+import GalleryCarouselGrid from "@/components/ui/gallery-carousel-grid";
 
 export const revalidate = 300;
 
@@ -91,24 +92,13 @@ export default async function AboutPage() {
               <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.gallery_title}</h2>
             </Reveal>
 
-            <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
-              {content.gallery_photos.map((photo, i) => (
-                <Reveal key={photo.image} variant="scale" delay={(i % 6) * 60}>
-                  <div
-                    className={`group relative overflow-hidden rounded-tl-[2rem] rounded-br-[2rem] shadow-[0_18px_40px_-24px_rgba(30,20,12,0.35)] transition-shadow duration-300 hover:shadow-[0_24px_54px_-20px_rgba(30,20,12,0.45)] ${
-                      i === 0 || i === 5 ? "aspect-[3/4] md:row-span-2 md:aspect-auto md:h-full" : "aspect-[4/3]"
-                    }`}
-                  >
-                    <Image
-                      src={photo.image}
-                      alt={photo.alt}
-                      fill
-                      sizes="(min-width: 768px) 32vw, 48vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </div>
-                </Reveal>
-              ))}
+            <div className="mt-10">
+              <GalleryCarouselGrid
+                images={content.gallery_photos.map((photo) => photo.image)}
+                alt="Vinyasa Earth built with earth, walls and open studios"
+                perSlide={6}
+                rounded
+              />
             </div>
           </div>
         </section>
