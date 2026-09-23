@@ -47,6 +47,10 @@
   box-sizing: border-box;
 }
 
+.text-accent {
+  color: var(--accent) !important;
+}
+
 html {
   scroll-behavior: smooth;
   /* iOS rubber-band past the footer exposed the white canvas. The page still

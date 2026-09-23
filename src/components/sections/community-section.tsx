@@ -31,7 +31,7 @@ export default async function CommunitySection() {
               src={content.communityGathering}
               alt={content.alt_9}
               fill
-              quality={95}
+              quality={80}
               sizes="(min-width: 768px) 50vw, 100vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />

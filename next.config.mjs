@@ -6,7 +6,7 @@ const nextConfig = {
   // PGlite ships a wasm + data blob that Next's bundler must not inline.
   serverExternalPackages: ["@electric-sql/pglite"],
   images: {
-    qualities: [75, 90, 95],
+    qualities: [75, 80, 90, 95],
     remotePatterns: [
       { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
       { protocol: "https", hostname: "*.blob.vercel-storage.com" },

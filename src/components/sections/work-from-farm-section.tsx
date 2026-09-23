@@ -47,14 +47,10 @@ export default async function WorkFromFarmSection() {
           </ul>
 
           <div className="mt-6 space-y-0">
-            {points.map(([title, body], i) => (
-              <div key={title} className="flex gap-4 border-t border-line py-3.5 last:border-b">
-                <span className="font-display text-xl leading-none text-accent/60 tabular-nums">{content.text_5}{i + 1}
-                </span>
-                <div>
-                  <h3 className="font-display text-base leading-snug text-foreground">{title}</h3>
-                  <p className="mt-1 text-sm leading-6 text-foreground-soft">{body}</p>
-                </div>
+            {points.map(([title, body]) => (
+              <div key={title} className="border-t border-line py-3.5 last:border-b">
+                <h3 className="font-display text-base leading-snug text-foreground">{title}</h3>
+                <p className="mt-1 text-sm leading-6 text-foreground-soft">{body}</p>
               </div>
             ))}
           </div>

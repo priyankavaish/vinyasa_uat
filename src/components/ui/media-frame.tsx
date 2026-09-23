@@ -18,7 +18,7 @@ export default function MediaFrame({
         src={src}
         alt={alt}
         fill
-        quality={95}
+        quality={80}
         sizes={sizes}
         className="object-cover transition-transform duration-500 group-hover:scale-105"
       />

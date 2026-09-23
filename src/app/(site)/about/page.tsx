@@ -9,8 +9,10 @@ import FamilyBookshelf from "@/components/sections/family-bookshelf";
 import PrincipleRow from "@/components/sections/principle-row";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
-import { Parallax, ParallaxHeroImage } from "@/components/ui/parallax";
+import { ParallaxHeroImage } from "@/components/ui/parallax";
 import GalleryCarouselGrid from "@/components/ui/gallery-carousel-grid";
+import ConstructionStory from "@/components/sections/construction-story";
+import FounderStory from "@/components/sections/founder-story";
 
 export const revalidate = 300;
 
@@ -34,58 +36,22 @@ export default async function AboutPage() {
         <Link href="#founder" className="btn btn-outline-light">
           About the Founder
         </Link>
-        <Link href="/stays" className="btn btn-accent">
-          Explore our stays
+        <Link href="#family" className="btn btn-accent">
+          Meet Our Family
         </Link>
       </PageHero>
 
       {/* Construction — how Vinyasa was built */}
       <AnimateInView delay={60}>
         <section className="texture-linen mx-auto max-w-6xl px-5 py-20 sm:px-8">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-            <Reveal variant="left">
-              <SectionEyebrow icon="compass-outline">{content.construction_eyebrow}</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.construction_title}</h2>
-
-              <div className="mt-8 space-y-8">
-                {content.construction_paragraphs.map((p, i) => (
-                  <Reveal key={p.label} variant="up" delay={i * 60}>
-                    <div className="border-l-2 border-accent/30 pl-5">
-                      <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-accent">{p.label}</span>
-                      <p className="mt-2 leading-relaxed text-foreground-soft">{p.body}</p>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            </Reveal>
-
-            <Reveal variant="right" delay={100} className="lg:sticky lg:top-28">
-              <div className="relative aspect-[4/5]">
-                <div aria-hidden className="absolute -bottom-4 -left-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
-                <div aria-hidden className="absolute -bottom-2 -left-2 h-full w-full bg-accent/10" />
-                <div className="group relative h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
-                  <Parallax enabled speed={-0.06} className="absolute inset-[-9%]">
-                    <Image
-                      src={content.construction_image}
-                      alt={content.construction_image_alt}
-                      fill
-                      sizes="(min-width: 1024px) 40vw, 100vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </Parallax>
-                </div>
-                <div className="absolute -right-6 -top-6 hidden h-28 w-28 overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] border-4 border-background shadow-lg sm:block">
-                  <Image
-                    src={content.construction_accent_image}
-                    alt=""
-                    fill
-                    sizes="112px"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            </Reveal>
-          </div>
+          <ConstructionStory
+            eyebrow={<SectionEyebrow icon="compass-outline">{content.construction_eyebrow}</SectionEyebrow>}
+            title={<h2 className="mt-3 font-display italic text-4xl leading-tight">{content.construction_title}</h2>}
+            paragraphs={content.construction_paragraphs}
+            image={content.construction_image}
+            imageAlt={content.construction_image_alt}
+            accentImage={content.construction_accent_image}
+          />
         </section>
       </AnimateInView>
 
@@ -147,41 +113,15 @@ export default async function AboutPage() {
       {/* About the founder */}
       <AnimateInView delay={100}>
         <section id="founder" className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-          <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-            <Reveal variant="left">
-              <SectionEyebrow icon="star-outline">{content.founder_eyebrow}</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.founder_title}</h2>
-              <p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-accent">{content.founder_role}</p>
-
-              <div className="mt-6 space-y-4">
-                {content.founder_paragraphs.map((p, i) => (
-                  <p key={i} className="leading-relaxed text-foreground-soft">{p}</p>
-                ))}
-              </div>
-
-              <blockquote className="mt-8 border-l-2 border-accent/40 pl-5 font-display italic text-xl leading-snug text-clay-ink">
-                {content.founder_pullquote}
-              </blockquote>
-            </Reveal>
-
-            <Reveal variant="right" delay={100} className="lg:sticky lg:top-28">
-              <div className="relative aspect-[4/5]">
-                <div aria-hidden className="absolute -bottom-4 -left-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
-                <div aria-hidden className="absolute -bottom-2 -left-2 h-full w-full bg-accent/10" />
-                <div className="group relative h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
-                  <Parallax enabled speed={0.06} className="absolute inset-[-9%]">
-                    <Image
-                      src={content.founder_image}
-                      alt={content.founder_image_alt}
-                      fill
-                      sizes="(min-width: 1024px) 40vw, 100vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </Parallax>
-                </div>
-              </div>
-            </Reveal>
-          </div>
+          <FounderStory
+            eyebrow={<SectionEyebrow icon="star-outline">{content.founder_eyebrow}</SectionEyebrow>}
+            title={<h2 className="mt-3 font-display italic text-4xl leading-tight">{content.founder_title}</h2>}
+            role={<p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-accent">{content.founder_role}</p>}
+            paragraphs={content.founder_paragraphs}
+            pullquote={content.founder_pullquote}
+            image={content.founder_image}
+            imageAlt={content.founder_image_alt}
+          />
         </section>
       </AnimateInView>
 
