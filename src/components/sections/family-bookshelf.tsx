@@ -112,6 +112,7 @@ export default function FamilyBookshelf({ members, hero = false }: { members: Fa
 
   return (
     <section
+      id="family"
       className={hero ? "organic-section pb-10 pt-28 sm:pb-14 sm:pt-32" : "organic-section py-12 sm:py-16"}
       style={{
         background:

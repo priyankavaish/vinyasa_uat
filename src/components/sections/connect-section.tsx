@@ -11,7 +11,7 @@ import Link from "next/link";
 import SectionEyebrow from "../ui/section-eyebrow";
 import { Reveal } from "../ui/reveal";
 import { Parallax } from "../ui/parallax";
-import { Icon } from "../ui/icon";
+import { Icon, type IconName } from "../ui/icon";
 
 // Each block previews the page it links to, so it borrows that page's own
 // hero/identity photo rather than a fresh one.
@@ -22,6 +22,13 @@ const FEATURE = {
   blurb:
     "Weeks to build, paint, or write alongside a resident community — an affordable stay-with-meals program for creative practitioners.",
 };
+
+const FEATURE_PERKS: { icon: IconName; label: string }[] = [
+  { icon: "home-outline", label: "Dorm stay" },
+  { icon: "leaf-outline", label: "3 meals a day" },
+  { icon: "sparkles-outline", label: "Open studio & stage" },
+  { icon: "people-outline", label: "Community shala" },
+];
 
 const PAIR = [
   {
@@ -85,12 +92,25 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
             <p className="mt-5 max-w-[42ch] text-base leading-relaxed text-foreground">
               {content.FEATURE.blurb}
             </p>
+
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {FEATURE_PERKS.map((p) => (
+                <li
+                  key={p.label}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
+                >
+                  <Icon name={p.icon} size={12} />
+                  {p.label}
+                </li>
+              ))}
+            </ul>
+
             <Link
               href={content.FEATURE.href}
-              className="group mt-7 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#c9713f] transition-[gap] duration-300 hover:gap-3.5"
+              className="group mt-7 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent transition-[gap] duration-300 hover:gap-3.5"
             >
               {content.text_4}
-              <Icon name="arrow-forward-outline" size={13} />
+              <Icon name="arrow-forward-outline" size={16} />
             </Link>
           </Reveal>
         </div>
