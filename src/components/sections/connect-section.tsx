@@ -59,8 +59,8 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
       <div className="mt-10 sm:mt-14">
         <div className="mx-auto grid max-w-[100rem] items-center gap-0 md:grid-cols-2 md:gap-4 lg:gap-6">
           <Reveal variant="up" className="relative w-full md:p-4 lg:p-6">
-            <div aria-hidden className="absolute -bottom-4 -right-4 hidden h-[calc(100%-2rem)] w-[calc(100%-2rem)] border border-clay-ink/15 bg-clay-surface md:block lg:-bottom-5 lg:-right-5 lg:h-[calc(100%-3rem)] lg:w-[calc(100%-3rem)]" />
-            <div aria-hidden className="absolute -bottom-2 -right-2 hidden h-[calc(100%-2rem)] w-[calc(100%-2rem)] bg-accent/10 md:block lg:-bottom-3 lg:-right-3 lg:h-[calc(100%-3rem)] lg:w-[calc(100%-3rem)]" />
+            <div aria-hidden className="absolute -bottom-4 -right-4 hidden h-[calc(100%-2rem)] w-[calc(100%-2rem)] border border-accent/30 bg-clay-surface md:block lg:-bottom-5 lg:-right-5 lg:h-[calc(100%-3rem)] lg:w-[calc(100%-3rem)]" />
+            <div aria-hidden className="absolute -bottom-2 -right-2 hidden h-[calc(100%-2rem)] w-[calc(100%-2rem)] bg-accent/15 md:block lg:-bottom-3 lg:-right-3 lg:h-[calc(100%-3rem)] lg:w-[calc(100%-3rem)]" />
             <div className="group relative aspect-[4/3] w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(45,35,25,0.4)] sm:aspect-[16/10] md:aspect-[4/3]">
               <Image
                 src={content.FEATURE.image}
@@ -87,8 +87,10 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
             </p>
             <Link
               href={content.FEATURE.href}
-              className="mt-7 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent transition-[gap] duration-300 hover:gap-3.5"
-            >{content.text_4}<Icon name="arrow-forward-outline" size={13} />
+              className="group mt-7 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent transition-[gap] duration-300 hover:gap-3.5"
+            >
+              {content.text_4}
+              <Icon name="arrow-forward-outline" size={13} />
             </Link>
           </Reveal>
         </div>
