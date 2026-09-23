@@ -59,7 +59,7 @@ export function HomeHero() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           disablePictureInPicture
           poster={content.poster_1}
           className="hero-video absolute inset-0 h-full w-full object-cover"
@@ -135,10 +135,10 @@ export function PageHero({
       "--hero-mobile-position": mobileImagePosition ?? imagePosition,
     } as CSSProperties}>
       {image && (contain ? (
-        <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.imageContain} />
+        <Image src={image} alt={imageAlt} fill priority quality={80} sizes="100vw" className={heroStyles.imageContain} />
       ) : (
         <ParallaxHeroImage>
-          <Image src={image} alt={imageAlt} fill priority quality={95} sizes="100vw" className={heroStyles.image} />
+          <Image src={image} alt={imageAlt} fill priority quality={80} sizes="100vw" className={heroStyles.image} />
         </ParallaxHeroImage>
       ))}
       <div className={heroStyles.overlay} aria-hidden="true" />

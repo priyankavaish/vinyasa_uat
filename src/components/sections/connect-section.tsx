@@ -66,7 +66,7 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
                 src={content.FEATURE.image}
                 alt=""
                 fill
-                quality={90}
+                quality={80}
                 sizes="(min-width: 768px) 45vw, 100vw"
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
@@ -131,7 +131,7 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
                       src={card.image}
                       alt=""
                       fill
-                      quality={90}
+                      quality={80}
                       sizes="(min-width: 768px) 45vw, 100vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />

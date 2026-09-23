@@ -60,7 +60,7 @@ export default function EventsHeroCarousel({ slides }: { slides: EventSlide[] })
             fill
             priority={i === 0}
             sizes="(min-width: 1152px) 1152px, 100vw"
-            quality={90}
+            quality={80}
             className="object-cover"
             style={{ objectPosition: "50% 38%" }}
           />

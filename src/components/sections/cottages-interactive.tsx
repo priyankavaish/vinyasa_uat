@@ -74,7 +74,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                   src={hero}
                   alt={`Inside ${current.name}, a hand-built cottage at Vinyasa Earth`}
                   fill
-                  quality={95}
+                  quality={80}
                   sizes="(min-width: 1280px) 620px, (min-width: 1024px) 55vw, 100vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   onLoad={(e) => {
