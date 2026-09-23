@@ -106,6 +106,7 @@ export default async function AboutPage() {
                 alt="Vinyasa Earth built with earth, walls and open studios"
                 perSlide={6}
                 rounded
+                threeCol
               />
             </div>
           </div>

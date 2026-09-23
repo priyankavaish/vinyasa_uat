@@ -17,6 +17,7 @@ export default function GalleryCarouselGrid({
   masonry = false,
   rounded = false,
   square = false,
+  threeCol = false,
 }: {
   images: string[];
   alt?: string;
@@ -24,6 +25,7 @@ export default function GalleryCarouselGrid({
   masonry?: boolean;
   rounded?: boolean;
   square?: boolean;
+  threeCol?: boolean;
 }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [selected, setSelected] = useState(0);
@@ -57,7 +59,7 @@ export default function GalleryCarouselGrid({
         <div className="flex touch-pan-y">
           {slides.map((slide, si) => (
             <div key={si} className="min-w-0 shrink-0 grow-0 basis-full">
-              <div className={masonry ? "grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3" : "grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3"}>
+              <div className={masonry ? "grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3" : `grid grid-cols-2 gap-2 sm:gap-3${threeCol ? " md:grid-cols-3" : ""}`}>
                 {slide.map((src, ii) => {
                   const globalIndex = si * perSlide + ii;
                   return (
