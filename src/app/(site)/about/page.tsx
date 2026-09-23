@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__about_page";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
@@ -29,7 +30,14 @@ export default async function AboutPage() {
         image={content.hero_image}
         imageAlt={content.hero_image_alt}
         contain imagePosition="50% 42%"
-      />
+      >
+        <Link href="#founder" className="btn btn-outline-light">
+          About the Founder
+        </Link>
+        <Link href="/stays" className="btn btn-accent">
+          Explore our stays
+        </Link>
+      </PageHero>
 
       {/* Construction — how Vinyasa was built */}
       <AnimateInView delay={60}>
@@ -137,7 +145,7 @@ export default async function AboutPage() {
 
       {/* About the founder */}
       <AnimateInView delay={100}>
-        <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+        <section id="founder" className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
           <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
             <Reveal variant="left">
               <SectionEyebrow icon="star-outline">{content.founder_eyebrow}</SectionEyebrow>
