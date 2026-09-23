@@ -87,7 +87,7 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
             </p>
             <Link
               href={content.FEATURE.href}
-              className="group mt-7 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent transition-[gap] duration-300 hover:gap-3.5"
+              className="group mt-7 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#c9713f] transition-[gap] duration-300 hover:gap-3.5"
             >
               {content.text_4}
               <Icon name="arrow-forward-outline" size={13} />
