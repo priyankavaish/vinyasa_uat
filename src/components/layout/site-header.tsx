@@ -37,6 +37,13 @@ export default function SiteHeader() {
   const transparent = overHero && !scrolled && !open;
 
   useEffect(() => {
+    // A hard refresh can land the browser back at its last scroll offset
+    // (scroll restoration), which makes the header render "scrolled" for a
+    // frame on a page that should open transparent over the hero photo.
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
     function getScrollPosition() {
       return Math.max(
         window.scrollY,
@@ -46,7 +53,9 @@ export default function SiteHeader() {
     }
 
     function onScroll() {
-      setScrolled(getScrollPosition() > 1);
+      // A small threshold (not >1px) so a layout shift from the hero image
+      // or video finishing its load can't falsely flip the header solid.
+      setScrolled(getScrollPosition() > 24);
     }
 
     onScroll();
