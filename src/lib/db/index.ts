@@ -32,6 +32,49 @@ function pgliteDir(u: string) {
   return rest || "./.pglite/data";
 }
 
+// PGlite is a single-process embedded database: two processes opening the
+// same directory at once (e.g. a leftover `npm run db:seed` next to a running
+// `next dev`) corrupt it beyond repair. A PID lockfile turns that silent
+// corruption into a clear error instead.
+export function claimPgliteLock(dir: string) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const fs = require("fs") as typeof import("fs");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const path = require("path") as typeof import("path");
+  const lockFile = path.join(dir, ".vinyasa-lock");
+
+  const isRunning = (pid: number) => {
+    try {
+      process.kill(pid, 0);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  if (fs.existsSync(lockFile)) {
+    const heldBy = Number(fs.readFileSync(lockFile, "utf8").trim());
+    if (heldBy && heldBy !== process.pid && isRunning(heldBy)) {
+      throw new Error(
+        `Local database at "${dir}" is already open in another process (PID ${heldBy}). ` +
+          `Stop it before starting a new one — running two at once corrupts the database.`
+      );
+    }
+  }
+
+  fs.writeFileSync(lockFile, String(process.pid));
+  const release = () => {
+    try {
+      if (fs.readFileSync(lockFile, "utf8").trim() === String(process.pid)) fs.unlinkSync(lockFile);
+    } catch {
+      // best-effort cleanup
+    }
+  };
+  process.once("exit", release);
+  process.once("SIGINT", () => { release(); process.exit(0); });
+  process.once("SIGTERM", () => { release(); process.exit(0); });
+}
+
 export function getDb(): Db {
   if (!url) {
     throw new Error(
@@ -44,6 +87,7 @@ export function getDb(): Db {
       const dir = pgliteDir(url);
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       require("fs").mkdirSync(dir, { recursive: true });
+      claimPgliteLock(dir);
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { PGlite } = require("@electric-sql/pglite");
       // eslint-disable-next-line @typescript-eslint/no-require-imports

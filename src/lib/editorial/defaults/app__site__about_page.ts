@@ -3,58 +3,28 @@ import bandImg from "@/app/assets/new/about-band.jpg";
 
 const FAMILY = [
   {
-    name: "Sankalp Sharma",
-    role: "Founder",
-    photo: "/seed/community-01.jpg",
-    position: "50% 35%",
-    blurb:
-      "A dancer who traded the stage for the soil. Sankalp started Vinyasa as a home where artists could live, make, and belong without asking permission.",
+    name: "Ankita Sharma",
+    role: "Co-founder",
+    photo: "/seed/family/ankita-cutout.png",
+    position: "50% 40%",
+    blurb: "Sankalp's partner, and the quiet rhythm behind Vinyasa's every day.",
     since: "2018",
   },
   {
-    name: "Ankita Sharma",
-    role: "Resident",
-    photo: "/seed/community-05.jpg",
-    position: "50% 40%",
-    blurb:
-      "Came for a week of quiet, stayed for the mornings. Now keeps the kitchen garden and the residency calendar running in step.",
-    since: "2020",
-  },
-  {
-    name: "Abhishek Gore",
-    role: "Resident",
-    photo: "/seed/community-06.jpg",
-    position: "50% 40%",
-    blurb:
-      "Builder, tinkerer, night-owl. If a wall is drying or a light needs fixing, it is usually his hands on it.",
-    since: "2021",
-  },
-  {
     name: "Coco",
-    role: "Resident animal",
-    photo: "/seed/community-04.jpg",
-    position: "50% 45%",
-    blurb:
-      "Chief greeter. Escorts every new guest from the gate to the courtyard and expects a scratch as payment.",
+    role: "Resident Dog · Head of Welcomes",
+    photo: "/seed/family/coco-cutout.png",
+    position: "45% 55%",
+    blurb: "Greets every guest at the gate. Payment: one scratch, non-negotiable.",
     since: "2019",
   },
   {
     name: "Mojo",
-    role: "Resident animal",
-    photo: "/seed/grounds-03.jpg",
+    role: "Resident Dog · Director of Sunlight",
+    photo: "/seed/family/mojo-cutout.png",
     position: "50% 50%",
-    blurb:
-      "Sun-spot specialist. Can be found wherever the light lands warmest, supervising from a respectful distance.",
+    blurb: "Coco's partner in mischief. Found wherever the sun lands warmest.",
     since: "2019",
-  },
-  {
-    name: "Diwan",
-    role: "Resident",
-    photo: "/seed/community-07.jpg",
-    position: "50% 40%",
-    blurb:
-      "Holds the long view — logistics, land, and the slow work of keeping a shared home actually shared.",
-    since: "2020",
   },
 ];
 
@@ -162,7 +132,7 @@ export const defaults = {
   founder_eyebrow: "About the founder",
   founder_title: "Sankalp Sharma",
   founder_role: "Dancer, builder, founder of Vinyasa",
-  founder_image: "/seed/community-01.jpg",
+  founder_image: "/seed/family/sankalp-cutout.png",
   founder_image_alt: "Sankalp Sharma, founder of Vinyasa Earth",
   founder_paragraphs: FOUNDER_PARAGRAPHS,
   founder_pullquote: FOUNDER_PULLQUOTE,

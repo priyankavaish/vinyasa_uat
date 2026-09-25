@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "@/components/editorial/image";
 import { Reveal } from "@/components/ui/reveal";
-import { Parallax } from "@/components/ui/parallax";
 
 export default function FounderStory({
   eyebrow,
@@ -87,20 +86,37 @@ export default function FounderStory({
       </Reveal>
 
       <Reveal variant="right" delay={100} className="lg:sticky lg:top-28">
-        <div ref={imageRef} className="relative aspect-[4/5]">
-          <div aria-hidden className="absolute -bottom-4 -left-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
-          <div aria-hidden className="absolute -bottom-2 -left-2 h-full w-full bg-accent/10" />
-          <div className="group relative h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
-            <Parallax enabled speed={0.06} className="absolute inset-[-9%]">
+        <div ref={imageRef} className="relative flex aspect-[4/5] flex-col items-center justify-center gap-6">
+          <div className="relative aspect-square w-full max-w-[26rem]">
+            <span
+              aria-hidden
+              className="absolute inset-0 border border-dashed border-accent/25"
+              style={{ borderRadius: "50%", rotate: "12deg" }}
+            />
+            <span
+              aria-hidden
+              className="absolute -bottom-3 -right-3 h-full w-full border border-clay-ink/15 bg-background"
+              style={{ borderRadius: "38% 62% 63% 37% / 41% 44% 56% 59%", rotate: "-6deg" }}
+            />
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-accent shadow-[0_30px_60px_-24px_rgba(143,59,49,0.55)]"
+              style={{ borderRadius: "38% 62% 63% 37% / 41% 44% 56% 59%", rotate: "-6deg" }}
+            />
+            <div className="group relative h-full w-full p-6">
               <Image
                 src={image}
                 alt={imageAlt}
                 fill
-                sizes="(min-width: 1024px) 40vw, 100vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(min-width: 1024px) 30vw, 60vw"
+                className="object-contain object-bottom transition-transform duration-500 group-hover:scale-105"
               />
-            </Parallax>
+            </div>
           </div>
+
+          <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-background px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">
+            Founder · Est. 2018
+          </span>
         </div>
       </Reveal>
     </div>
