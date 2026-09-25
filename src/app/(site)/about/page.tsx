@@ -125,7 +125,7 @@ export default async function AboutPage() {
         </section>
       </AnimateInView>
 
-      <SectionWave from="#f3f1ea" to="#ece0c9" variant="wave" className="h-8 sm:h-12" />
+      <SectionWave from="#f3f1ea" to="#fbf9f3" variant="wave" className="h-8 sm:h-12" />
 
       {/* Community bookshelf */}
       <AnimateInView delay={60}><FamilyBookshelf members={content.FAMILY} /></AnimateInView>

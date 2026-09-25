@@ -3,7 +3,7 @@ import { mkdirSync } from "fs";
 import { PGlite } from "@electric-sql/pglite";
 import { drizzle } from "drizzle-orm/pglite";
 import { migrate } from "drizzle-orm/pglite/migrator";
-import { localDbDir, isLocalDb } from "./index";
+import { localDbDir, isLocalDb, claimPgliteLock } from "./index";
 
 // Applies the SQL migrations in ./drizzle to the local PGlite database.
 // Run once (npm run db:setup:local) before db:seed on a dev machine.
@@ -16,6 +16,7 @@ async function main() {
   }
   const dir = localDbDir();
   mkdirSync(dir, { recursive: true });
+  claimPgliteLock(dir);
   const db = drizzle(new PGlite(dir), {});
   await migrate(db, { migrationsFolder: "./drizzle" });
   console.log(`✓ local database ready at ${dir}`);
