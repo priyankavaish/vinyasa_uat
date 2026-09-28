@@ -106,6 +106,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="preconnect" href="https://www.youtube-nocookie.com" />
         <link rel="preconnect" href="https://i.ytimg.com" />
         <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
+        {/* Runs before hydration so the browser never auto-restores a prior
+            scroll position on a hero page — otherwise the header's own
+            scroll-restoration fix (in site-header.tsx, which only runs after
+            React mounts) loses that race and the header briefly renders
+            solid instead of transparent over the hero photo/video. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if ("scrollRestoration" in history) { history.scrollRestoration = "manual"; }`,
+          }}
+        />
       </head>
       <body className="flex min-h-dvh flex-col">
         <script
