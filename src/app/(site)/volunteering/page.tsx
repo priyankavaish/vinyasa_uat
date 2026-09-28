@@ -10,7 +10,6 @@ import { Icon } from "@/components/ui/icon";
 import LeadForm from "@/components/forms/lead-form";
 import GalleryCarouselGrid from "@/components/ui/gallery-carousel-grid";
 import { volunteerTracks, volunteerInfo } from "@/lib/content";
-import CommunitySection from "@/components/sections/community-section";
 
 import communityImg from "@/app/assets/new/community-05.jpg";
 import styles from "./volunteer.module.css";
@@ -46,8 +45,6 @@ export default async function VolunteerPage() {
         </div>
       </section>
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
-
-      <AnimateInView delay={70}><CommunitySection /></AnimateInView>
 
       <AnimateInView delay={60}><section className="mx-auto max-w-3xl px-5 py-10 text-center sm:px-8">
         <Reveal variant="fade">

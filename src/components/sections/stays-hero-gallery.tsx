@@ -137,7 +137,9 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
               <span className={styles.imageLayer}><Image src={photo.src} alt={`${photo.name} at Vinyasa Earth`} fill
                 priority={index < 5} loading={index < 5 ? undefined : "eager"}
                 quality={80} sizes="(min-width: 640px) 1100px, 640px" className={styles.image} /></span>
-              <span className={styles.caption}><span className={styles.captionName}><span>{photo.name}</span></span><Icon name="arrow-forward-outline" size={16} /></span>
+              <span className={styles.caption}>
+                <span className={styles.captionName}>{photo.name}</span>
+              </span>
             </Link>;
           })}
         </div>
