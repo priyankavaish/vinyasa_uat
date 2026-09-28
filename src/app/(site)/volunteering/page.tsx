@@ -2,7 +2,6 @@
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__corporate_page";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
-import Link from "next/link";
 import SectionWave from "@/components/ui/section-wave";
 import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
@@ -11,6 +10,7 @@ import { Icon } from "@/components/ui/icon";
 import LeadForm from "@/components/forms/lead-form";
 import GalleryCarouselGrid from "@/components/ui/gallery-carousel-grid";
 import { volunteerTracks, volunteerInfo } from "@/lib/content";
+import CommunitySection from "@/components/sections/community-section";
 
 import communityImg from "@/app/assets/new/community-05.jpg";
 import styles from "./volunteer.module.css";
@@ -46,6 +46,8 @@ export default async function VolunteerPage() {
         </div>
       </section>
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
+
+      <AnimateInView delay={70}><CommunitySection /></AnimateInView>
 
       <AnimateInView delay={60}><section className="mx-auto max-w-3xl px-5 py-10 text-center sm:px-8">
         <Reveal variant="fade">
@@ -156,10 +158,6 @@ export default async function VolunteerPage() {
             <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_42}</h2>
             <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_43}{" "}
               <a href={content.href_44} className="text-accent underline">{content.text_45}</a>
-              .
-            </p>
-            <p className="mt-6 border border-line bg-surface p-4 text-sm text-foreground-soft">{content.text_46}{" "}
-              <Link href={content.href_47} className="text-accent underline">{content.text_48}</Link>
               .
             </p>
           </Reveal>

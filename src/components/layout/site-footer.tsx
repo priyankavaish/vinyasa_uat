@@ -83,13 +83,37 @@ export default async function SiteFooter() {
                 <Icon name="circle-outline" size={16} className="text-secondary" />
                 {content.CONTACT_PHONE_DISPLAY}
               </a>
+            </div>
+
+            <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-secondary">Follow along</p>
+            <div className="mt-3 flex items-center gap-3">
               <a
                 href={content.href_8}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
+                aria-label="Vinyasa Earth on Instagram"
+                className="grid h-10 w-10 place-items-center rounded-full border border-clay-ink/20 text-clay-ink/85 transition-all hover:-translate-y-0.5 hover:border-accent hover:text-accent"
               >
-                <Icon name="images-outline" size={16} className="text-secondary" />{content.text_9}</a>
+                <Icon name="logo-instagram" size={17} />
+              </a>
+              <a
+                href={content.href_youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Vinyasa Earth on YouTube"
+                className="grid h-10 w-10 place-items-center rounded-full border border-clay-ink/20 text-clay-ink/85 transition-all hover:-translate-y-0.5 hover:border-[#cc2b26] hover:text-[#cc2b26]"
+              >
+                <Icon name="play-outline" size={17} />
+              </a>
+              <a
+                href={`https://wa.me/${phoneHref.replace("+", "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Message Vinyasa Earth on WhatsApp"
+                className="grid h-10 w-10 place-items-center rounded-full border border-clay-ink/20 text-clay-ink/85 transition-all hover:-translate-y-0.5 hover:border-[#25D366] hover:text-[#25D366]"
+              >
+                <Icon name="logo-whatsapp" size={16} />
+              </a>
             </div>
           </div>
         </div>

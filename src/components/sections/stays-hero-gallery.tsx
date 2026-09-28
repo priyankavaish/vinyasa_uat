@@ -144,7 +144,6 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
         <div className={styles.footer}>
           <div><p className={styles.eyebrow}>{isEvents ? content.text_7 : content.text_8}</p>
             <h1>{isEvents ? content.text_9 : content.text_10}</h1>
-            <a className={styles.explore} href={isEvents ? "#events-calendar" : "#rooms"}>{isEvents ? content.text_11 : content.text_12} <Icon name="arrow-forward-outline" size={16} /></a>
           </div>
           {photos.length > 1 && <div className={styles.controls}>
             <button type="button" onClick={() => move(-1)} aria-label={isEvents ? content.text_13 : content.text_14}><span className={styles.previous}><Icon name="arrow-forward-outline" size={18} /></span></button>

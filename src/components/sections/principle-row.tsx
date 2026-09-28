@@ -24,8 +24,8 @@ export default function PrincipleRow({
   return (
     <div className="border-t border-clay-ink/12 py-12 first:border-t-0 first:pt-0 sm:py-14">
       <div
-        className={`grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 ${
-          reverse ? "lg:[&>*:first-child]:order-2" : ""
+        className={`grid items-center gap-8 lg:gap-14 ${
+          reverse ? "lg:grid-cols-[0.85fr_1.15fr] lg:[&>*:first-child]:order-2" : "lg:grid-cols-[1.15fr_0.85fr]"
         }`}
       >
         <Reveal variant={reverse ? "right" : "left"}>

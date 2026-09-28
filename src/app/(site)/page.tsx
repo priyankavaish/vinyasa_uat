@@ -5,9 +5,7 @@ import { HomeHero } from "@/components/sections/hero";
 import NextEventRibbon from "@/components/sections/next-event-ribbon";
 import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
 import TestimonialsSection from "@/components/sections/testimonials-section";
-import CottagesSection from "@/components/sections/cottages-section";
 import GallerySection from "@/components/sections/gallery-section";
-import CommunitySection from "@/components/sections/community-section";
 import WorkFromFarmSection from "@/components/sections/work-from-farm-section";
 import PhotoMasonry from "@/components/sections/photo-masonry";
 import ConnectSection from "@/components/sections/connect-section";
@@ -39,12 +37,9 @@ export default function HomePage() {
         variant="wave"
         className="next-event-wave h-6 sm:h-10"
       />
-      <AnimateInView delay={60}><CottagesSection /></AnimateInView>
       <SectionWave from="#fffaf2" to="#fff1e0" variant="arch" />
       <AnimateInView delay={80}><ConnectSection afterFirst={<WorkFromFarmSection />} /></AnimateInView>
-      <SectionWave from="#fff1e0" to="#f3f1ea" variant="slant" />
-      <AnimateInView delay={80}><CommunitySection /></AnimateInView>
-      <SectionWave from="#f3f1ea" to="#f3e6d8" variant="wave" />
+      <SectionWave from="#fff1e0" to="#f3e6d8" variant="slant" />
       <AnimateInView delay={100}><UpcomingEventsSection /></AnimateInView>
       <SectionWave from="#f3e6d8" to="#e8dbc6" variant="arch" />
       <AnimateInView delay={100}><TestimonialsSection /></AnimateInView>

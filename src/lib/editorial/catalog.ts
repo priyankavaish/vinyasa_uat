@@ -1,6 +1,7 @@
 import { defaults as whatsappDefaults } from "./defaults/whatsapp";
 import { defaults as homeDefaults } from "./defaults/app__site__page";
 import { defaults as d0 } from "./defaults/app__site__about_page";
+import { defaults as dArtistEscape } from "./defaults/app__site__artist_escape_page";
 import { defaults as d1 } from "./defaults/app__site__blogs_page";
 import { defaults as d2 } from "./defaults/app__site__book_page";
 import { defaults as d3 } from "./defaults/app__site__contact_page";
@@ -39,6 +40,7 @@ export const editorialCatalog = {
 "shared/whatsapp": whatsappDefaults,
 "app/(site)/page": homeDefaults,
 "app/(site)/about/page": d0,
+"app/(site)/artist-escape/page": dArtistEscape,
 "app/(site)/blogs/page": d1,
 "app/(site)/book/page": d2,
 "app/(site)/contact/page": d3,

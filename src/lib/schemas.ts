@@ -19,7 +19,7 @@ export const bookingRequestSchema = z.object({
 export type BookingRequest = z.infer<typeof bookingRequestSchema>;
 
 export const leadSchema = z.object({
-  source: z.enum(["contact", "corporate", "newsletter", "volunteer"]),
+  source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape"]),
   name: z.string().trim().min(2).max(100),
   email: z.string().trim().email().max(150),
   phone: z

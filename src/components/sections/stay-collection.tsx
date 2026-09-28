@@ -70,7 +70,7 @@ export default function StayCollection({ rooms }: { rooms: Cottage[] }) {
   const visible = rooms.filter((room) => filter === "all" || (filter === "shared" ? room.slug === "dorm" : room.slug !== "dorm"));
   const filters: { value: Filter; label: string; count: number }[] = [
     { value: "all", label: "All stays", count: rooms.length },
-    { value: "cottages", label: "Cottages", count: rooms.filter((r) => r.slug !== "dorm").length },
+    { value: "cottages", label: "Mudhouses", count: rooms.filter((r) => r.slug !== "dorm").length },
     { value: "shared", label: "Shared dorm", count: rooms.filter((r) => r.slug === "dorm").length },
   ];
   return (

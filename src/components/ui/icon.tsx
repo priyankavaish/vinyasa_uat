@@ -26,7 +26,11 @@ export type IconName =
   | "water-outline"
   | "wind-outline"
   | "circle-outline"
-  | "expand-outline";
+  | "expand-outline"
+  | "volume-high-outline"
+  | "volume-mute-outline"
+  | "play-outline"
+  | "logo-instagram";
 
 const PATHS: Record<IconName, React.ReactNode> = {
   "leaf-outline": (
@@ -374,6 +378,68 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <polyline points="180 448 64 448 64 332" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
       <line x1="448" y1="64" x2="300" y2="212" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
       <line x1="64" y1="448" x2="212" y2="300" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+    </>
+  ),
+  "volume-high-outline": (
+    <>
+      <path
+        d="M266.94,49.13,142.13,155.79H74.79a10.65,10.65,0,0,0-10.65,10.66v178.9a10.65,10.65,0,0,0,10.65,10.66h67.34L266.94,462.67a8.42,8.42,0,0,0,14-6.33V55.46A8.42,8.42,0,0,0,266.94,49.13Z"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+      <path
+        d="M320,320s24-32,24-64-24-64-24-64"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+      <path
+        d="M368,368s48-56,48-112-48-112-48-112"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+    </>
+  ),
+  "volume-mute-outline": (
+    <>
+      <path
+        d="M266.94,49.13,142.13,155.79H74.79a10.65,10.65,0,0,0-10.65,10.66v178.9a10.65,10.65,0,0,0,10.65,10.66h67.34L266.94,462.67a8.42,8.42,0,0,0,14-6.33V55.46A8.42,8.42,0,0,0,266.94,49.13Z"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+      />
+      <line x1="320" y1="196" x2="416" y2="316" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+      <line x1="416" y1="196" x2="320" y2="316" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="32" />
+    </>
+  ),
+  "play-outline": (
+    <>
+      <circle cx="256" cy="256" r="208" fill="none" stroke="currentColor" strokeWidth="32" />
+      <path
+        d="M208,168l144,88-144,88Z"
+        fill="currentColor"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="24"
+      />
+    </>
+  ),
+  "logo-instagram": (
+    <>
+      <rect x="64" y="64" width="384" height="384" rx="96" fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="32" />
+      <circle cx="256" cy="256" r="96" fill="none" stroke="currentColor" strokeWidth="32" />
+      <circle cx="378" cy="134" r="24" fill="currentColor" />
     </>
   ),
 };
