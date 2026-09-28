@@ -2,7 +2,6 @@
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__stays_page";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
-import Link from "next/link";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
@@ -15,18 +14,12 @@ import carpetLiveLogo from "@/app/assets/stays/carpetlive-trimmed.png";
 import dheerLogo from "@/app/assets/stays/DHEER-LOGO.png";
 import SectionWave from "@/components/ui/section-wave";
 import AnimateInView from "@/components/ui/animate-in-view";
-import galleryA from "@/app/assets/new/grounds-01.jpg";
-import galleryC from "@/app/assets/new/room-prithvi-2.jpg";
-import galleryD from "@/app/assets/new/grounds-04.jpg";
 import expA from "@/app/assets/new/community-06.jpg";
 import expD from "@/app/assets/new/grounds-08.jpg";
 import expE from "@/app/assets/new/community-07.jpg";
 import expF from "@/app/assets/new/grounds-09.jpg";
 
-import residencyImg from "@/app/assets/new/community-05.jpg";
-
 import { getCottages, getVisitOptions } from "@/lib/cms";
-import { whatsappLink } from "@/lib/site";
 
 const ACCESSORY_PARTNERS = [
   {
@@ -120,47 +113,6 @@ export default async function StaysPage() {
             </Reveal>
           ))}
         </div>
-      </section></AnimateInView>
-
-      <AnimateInView delay={100}><section id="artist-escape" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-20 sm:px-8">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <Reveal variant="left">
-            <div className="relative aspect-[4/5]">
-              <div aria-hidden className="absolute -bottom-4 -right-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
-              <div aria-hidden className="absolute -bottom-2 -right-2 h-full w-full bg-accent/10" />
-              <div className="group relative h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
-                <Image src={content.residencyImg} alt={content.alt_9} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-              </div>
-            </div>
-          </Reveal>
-          <Reveal variant="right" delay={100}>
-            <SectionEyebrow icon="compass-outline">{content.text_10}</SectionEyebrow>
-            <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_11}</h2>
-            <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_12}</p>
-            <p className="mt-3 leading-relaxed text-foreground-soft">{content.text_13}</p>
-            <div className="mt-7 flex flex-wrap gap-4">
-              <a href={whatsappLink("Hi Vinyasa Earth, I'd like to apply for the Artist Escape.")} className="btn btn-accent inline-flex">{content.text_14}</a>
-              <Link href={content.href_15} className="btn btn-outline inline-flex">{content.text_16}</Link>
-            </div>
-          </Reveal>
-        </div>
-      </section></AnimateInView>
-
-      <AnimateInView delay={80}><section id="artist-escape-gallery" aria-label={content.aria_label_17} className="mx-auto max-w-6xl px-5 pb-20 sm:px-8">
-        <Reveal variant="fade" delay={120}>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[content.galleryA, "/images/2N0A9945.jpg", content.galleryC, content.galleryD].map((img, i) => (
-              <div
-                key={i}
-                className={`relative aspect-[3/4] overflow-hidden border border-line ${
-                  i % 2 === 1 ? "sm:mt-6" : ""
-                }`}
-              >
-                <Image src={img} alt="" fill sizes="25vw" placeholder={typeof img === "string" ? "empty" : "blur"} className="object-cover transition-transform duration-500 hover:scale-105" />
-              </div>
-            ))}
-          </div>
-        </Reveal>
       </section></AnimateInView>
 
       {visitOptions.length > 0 && (
