@@ -10,6 +10,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
       { protocol: "https", hostname: "*.blob.vercel-storage.com" },
+      { protocol: "https", hostname: "www.vinyasa.earth" },
+      { protocol: "https", hostname: "vinyasa.earth" },
     ],
   },
   async redirects() {

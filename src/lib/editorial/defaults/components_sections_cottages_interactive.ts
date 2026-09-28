@@ -12,7 +12,7 @@ export type RoomItem = {
 };
 
 export const defaults = {
-"text_1": "The Cottages",
+"text_1": "The Mudhouses",
 "text_2": "Shaped by hand. Rooted in earth.",
 "text_3": "Mud walls, wooden beams, and the quiet beauty of things made by hand. A little home in the landscape of Rajasthan.",
 

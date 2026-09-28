@@ -3,7 +3,7 @@
 import { Fragment, useMemo, useState } from "react";
 import type { Lead } from "@/lib/store";
 
-const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter"] as const;
+const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape"] as const;
 
 export default function LeadsTable({ leads }: { leads: Lead[] }) {
   const [filter, setFilter] = useState<(typeof SOURCES)[number]>("all");

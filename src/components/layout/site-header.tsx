@@ -10,9 +10,9 @@ import { useEffect, useState } from "react";
 import { Icon } from "../ui/icon";
 
 const NAV_LINKS = [
-  { href: "/", label: "Home" },
   { href: "/about", label: "The Vinyasa Way" },
   { href: "/stays", label: "Stays" },
+  { href: "/artist-escape", label: "Artist Escape" },
   { href: "/events", label: "Events & Retreats" },
   { href: "/volunteering", label: "Volunteering" },
   { href: "/contact", label: "Contact" },
@@ -25,7 +25,7 @@ function isActivePath(pathname: string, href: string) {
 // Routes whose first viewport is a full-bleed photo hero — nav rides
 // transparent over the image on these, like villaskamezi/era-residence.
 // Everywhere else (forms, admin) there's no photo to sit on, so it's solid.
-const HERO_PHOTO_ROUTES = [/^\/$/, /^\/about$/, /^\/book$/, /^\/work-from-farm$/];
+const HERO_PHOTO_ROUTES = [/^\/$/, /^\/about$/, /^\/book$/, /^\/work-from-farm$/, /^\/artist-escape$/];
 
 export default function SiteHeader() {
   const content = useEditorial("components/layout/site-header", editorialDefaults);

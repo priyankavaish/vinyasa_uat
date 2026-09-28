@@ -102,6 +102,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${displaySerif.variable} ${archivo.variable} ${script.variable} ${samarkan.variable} ${bellefair.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://www.youtube-nocookie.com" />
+        <link rel="preconnect" href="https://i.ytimg.com" />
+        <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
+      </head>
       <body className="flex min-h-dvh flex-col">
         <script
           type="application/ld+json"
