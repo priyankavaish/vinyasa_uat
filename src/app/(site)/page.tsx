@@ -33,11 +33,10 @@ export default function HomePage() {
       <NextEventRibbon />
       <SectionWave
         from="linear-gradient(to right, #7d3128, #9a3f31, #7d3128)"
-        to="#fffaf2"
+        to="#fff1e0"
         variant="wave"
         className="next-event-wave h-6 sm:h-10"
       />
-      <SectionWave from="#fffaf2" to="#fff1e0" variant="arch" />
       <AnimateInView delay={80}><ConnectSection afterFirst={<WorkFromFarmSection />} /></AnimateInView>
       <SectionWave from="#fff1e0" to="#f3e6d8" variant="slant" />
       <AnimateInView delay={100}><UpcomingEventsSection /></AnimateInView>
