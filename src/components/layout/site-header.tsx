@@ -32,7 +32,10 @@ export default function SiteHeader() {
 
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname() ?? "/";
+  // usePathname() can resolve to "" (not null) during static prerendering,
+  // which `?? "/"` doesn't catch — that silently baked a solid (non-hero)
+  // header into the static HTML for "/" and other hero routes.
+  const pathname = usePathname() || "/";
   const overHero = HERO_PHOTO_ROUTES.some((re) => re.test(pathname));
   const transparent = overHero && !scrolled && !open;
 
