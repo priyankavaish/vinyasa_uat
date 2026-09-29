@@ -32,17 +32,26 @@ export default function SiteHeader() {
 
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // Forces one extra render right after mount (see below) — React 18/19
+  // bails out of re-rendering when an effect calls setState with a value
+  // that's Object.is-equal to the current one, e.g. setScrolled(false) when
+  // scrolled is already false. That's exactly what happens on a non-scrolled
+  // hero page: the mount-time effect below is a no-op, so a hydration
+  // mismatch caused by anything read from `window` in the render body (see
+  // `pathname`) never gets patched onto the actual DOM. A guaranteed
+  // false->true transition sidesteps that regardless of its cause.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   // usePathname() has intermittently returned a stale/empty value on the
   // very first client render in production (a real, reproducible race, not
   // just an SSR quirk — confirmed by re-testing the same URL repeatedly).
   // Reading window.location.pathname directly in the render body instead is
-  // synchronous and always correct on the client; the one-render hydration
-  // mismatch this can cause on a hero route is harmless (React just uses
-  // this value) and resolves before the browser ever paints.
+  // synchronous and always correct on the client.
   const routerPathname = usePathname() || "/";
   const pathname = typeof window !== "undefined" ? window.location.pathname || "/" : routerPathname;
   const overHero = HERO_PHOTO_ROUTES.some((re) => re.test(pathname));
   const transparent = overHero && !scrolled && !open;
+  void mounted;
 
   useEffect(() => {
     // A hard refresh can land the browser back at its last scroll offset
