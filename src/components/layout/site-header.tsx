@@ -51,7 +51,6 @@ export default function SiteHeader() {
   const pathname = typeof window !== "undefined" ? window.location.pathname || "/" : routerPathname;
   const overHero = HERO_PHOTO_ROUTES.some((re) => re.test(pathname));
   const transparent = overHero && !scrolled && !open;
-  void mounted;
 
   useEffect(() => {
     // A hard refresh can land the browser back at its last scroll offset
@@ -97,6 +96,7 @@ export default function SiteHeader() {
     <header
       data-menu-open={open ? "true" : "false"}
       data-transparent={transparent ? "true" : "false"}
+      data-mounted={mounted ? "true" : "false"}
       className={`fixed top-0 z-40 w-full transition-all duration-500 ${scrolled ? "site-header--scrolled" : ""} ${
         transparent
           ? "border-b border-transparent"
