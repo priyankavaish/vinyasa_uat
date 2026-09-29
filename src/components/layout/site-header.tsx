@@ -6,7 +6,7 @@ import { useEditorial } from "@/components/editorial/provider";
 import Link from "next/link";
 import Image from "@/components/editorial/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "../ui/icon";
 
 const NAV_LINKS = [
@@ -30,16 +30,9 @@ const HERO_PHOTO_ROUTES = [/^\/$/, /^\/about$/, /^\/book$/, /^\/work-from-farm$/
 export default function SiteHeader() {
   const content = useEditorial("components/layout/site-header", editorialDefaults);
 
+  const headerRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  // Forces one extra render right after mount (see below) — React 18/19
-  // bails out of re-rendering when an effect calls setState with a value
-  // that's Object.is-equal to the current one, e.g. setScrolled(false) when
-  // scrolled is already false. That's exactly what happens on a non-scrolled
-  // hero page: the mount-time effect below is a no-op, so a hydration
-  // mismatch caused by anything read from `window` in the render body (see
-  // `pathname`) never gets patched onto the actual DOM. A guaranteed
-  // false->true transition sidesteps that regardless of its cause.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   // usePathname() has intermittently returned a stale/empty value on the
@@ -51,6 +44,26 @@ export default function SiteHeader() {
   const pathname = typeof window !== "undefined" ? window.location.pathname || "/" : routerPathname;
   const overHero = HERO_PHOTO_ROUTES.some((re) => re.test(pathname));
   const transparent = overHero && !scrolled && !open;
+
+  // On Vercel's production runtime (not reproducible in a local `next build`
+  // + `next start`), React was silently accepting the hydration mismatch
+  // this component produces (SSR always renders "solid", since `window`
+  // doesn't exist server-side) WITHOUT ever patching the real DOM node's
+  // `data-transparent`, background or border-related attributes to match —
+  // and every later re-render bailed out because React's own internal
+  // snapshot already (incorrectly) matched the intended value. Setting them
+  // imperatively via a ref bypasses that reconciliation entirely, so the
+  // header is guaranteed correct regardless of what React's declarative
+  // pass did or didn't commit to the DOM.
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    el.setAttribute("data-transparent", transparent ? "true" : "false");
+    el.style.backgroundColor = transparent ? "transparent" : "#ffffff";
+    el.classList.toggle("border-transparent", transparent);
+    el.classList.toggle("border-black/10", !transparent);
+    el.classList.toggle("shadow-[0_8px_30px_rgba(35,31,25,0.10)]", !transparent);
+  }, [transparent]);
 
   useEffect(() => {
     // A hard refresh can land the browser back at its last scroll offset
@@ -94,6 +107,7 @@ export default function SiteHeader() {
 
   return (
     <header
+      ref={headerRef}
       data-menu-open={open ? "true" : "false"}
       data-transparent={transparent ? "true" : "false"}
       data-mounted={mounted ? "true" : "false"}
