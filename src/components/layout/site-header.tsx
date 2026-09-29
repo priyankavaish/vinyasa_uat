@@ -6,7 +6,7 @@ import { useEditorial } from "@/components/editorial/provider";
 import Link from "next/link";
 import Image from "@/components/editorial/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Icon } from "../ui/icon";
 
 const NAV_LINKS = [
@@ -35,9 +35,19 @@ export default function SiteHeader() {
   // usePathname() can resolve to "" (not null) during static prerendering,
   // which `?? "/"` doesn't catch — that silently baked a solid (non-hero)
   // header into the static HTML for "/" and other hero routes.
-  const pathname = usePathname() || "/";
+  const routerPathname = usePathname() || "/";
+  const [pathname, setPathname] = useState(routerPathname);
   const overHero = HERO_PHOTO_ROUTES.some((re) => re.test(pathname));
   const transparent = overHero && !scrolled && !open;
+
+  // Belt-and-braces: re-derive the route straight from the browser (not the
+  // App Router hook) synchronously before the first paint. On at least one
+  // production deployment `usePathname()`'s render-time value didn't match
+  // the real route on first load — this can't reproduce the same failure,
+  // no matter its cause, since it reads the URL directly.
+  useLayoutEffect(() => {
+    setPathname(window.location.pathname || "/");
+  }, [routerPathname]);
 
   useEffect(() => {
     // A hard refresh can land the browser back at its last scroll offset
