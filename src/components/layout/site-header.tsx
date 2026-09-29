@@ -31,6 +31,8 @@ export default function SiteHeader() {
   const content = useEditorial("components/layout/site-header", editorialDefaults);
 
   const headerRef = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLUListElement>(null);
+  const logoWrapRef = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -57,12 +59,24 @@ export default function SiteHeader() {
   // pass did or didn't commit to the DOM.
   useEffect(() => {
     const el = headerRef.current;
-    if (!el) return;
-    el.setAttribute("data-transparent", transparent ? "true" : "false");
-    el.style.backgroundColor = transparent ? "transparent" : "#ffffff";
-    el.classList.toggle("border-transparent", transparent);
-    el.classList.toggle("border-black/10", !transparent);
-    el.classList.toggle("shadow-[0_8px_30px_rgba(35,31,25,0.10)]", !transparent);
+    if (el) {
+      el.setAttribute("data-transparent", transparent ? "true" : "false");
+      el.style.backgroundColor = transparent ? "transparent" : "#ffffff";
+      el.classList.toggle("border-transparent", transparent);
+      el.classList.toggle("border-black/10", !transparent);
+      el.classList.toggle("shadow-[0_8px_30px_rgba(35,31,25,0.10)]", !transparent);
+    }
+    const nav = navRef.current;
+    if (nav) {
+      nav.classList.toggle("text-white", transparent);
+      nav.classList.toggle("drop-shadow-[0_1px_4px_rgba(0,0,0,0.65)]", transparent);
+      nav.classList.toggle("text-black", !transparent);
+    }
+    const logoWrap = logoWrapRef.current;
+    if (logoWrap) {
+      logoWrap.classList.toggle("shadow-[0_2px_12px_rgba(0,0,0,0.4),0_0_22px_6px_rgba(255,255,255,0.35)]", transparent);
+      logoWrap.classList.toggle("shadow-[0_0_14px_2px_rgba(255,255,255,0.45)]", !transparent);
+    }
   }, [transparent]);
 
   useEffect(() => {
@@ -125,6 +139,7 @@ export default function SiteHeader() {
           className="flex items-center justify-self-start"
         >
           <span
+            ref={logoWrapRef}
             className={`grid place-items-center rounded-full bg-white p-0.5 ring-1 ring-white/70 transition-all duration-500 ${
               transparent ? "shadow-[0_2px_12px_rgba(0,0,0,0.4),0_0_22px_6px_rgba(255,255,255,0.35)]" : "shadow-[0_0_14px_2px_rgba(255,255,255,0.45)]"
             }`}
@@ -141,6 +156,7 @@ export default function SiteHeader() {
         </Link>
 
         <ul
+          ref={navRef}
           className={`hidden items-center justify-center gap-6 text-xs font-semibold tracking-[0.12em] uppercase lg:flex ${
             transparent ? "text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.65)]" : "text-black"
           }`}
