@@ -126,8 +126,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                 <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{current.tagline}</p>
               </div>
               <p className="mt-6 max-w-[40ch] text-sm leading-relaxed text-foreground-soft">{content.text_16}</p>
-              <div className="mt-7 flex flex-wrap items-end justify-between gap-5">
-                <p className="text-xs text-foreground-soft">{content.text_17}<span className="mx-1 font-display text-2xl text-clay-ink">{inr(current.pricePerNight)}</span>{content.text_18}</p>
+              <div className="mt-7 flex justify-end">
                 <Link href={`/stays/${current.slug}`} className="btn btn-accent btn-sm inline-flex items-center">{content.text_19}</Link>
               </div>
             </article>
