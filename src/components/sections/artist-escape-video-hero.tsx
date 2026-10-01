@@ -54,7 +54,7 @@ export default function ArtistEscapeVideoHero({
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-background/90 sm:text-lg">{description}</p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
             <Link href="#offerings" className="btn btn-accent">
-              Explore both offerings
+              Find Your Creative Path
             </Link>
             <Link href="#artists" className="btn btn-outline-light">
               Meet the artists
