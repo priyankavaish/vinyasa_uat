@@ -7,7 +7,7 @@ const FAMILY = [
     role: "Co-founder",
     photo: "/seed/family/ankita-cutout.png",
     position: "50% 40%",
-    blurb: "Sankalp's partner, and the quiet rhythm behind Vinyasa's every day.",
+    blurb: "Ankita is the warm, steady presence behind Vinyasa. From tending to the space to preparing nourishing meals, she brings care, warmth and a listening ear to all that she does. She loves creating an environment where people feel welcomed, safe and held. You’ll often find her at Vinyasa - caring, holding space, or simply being there.",
     since: "2018",
   },
   {

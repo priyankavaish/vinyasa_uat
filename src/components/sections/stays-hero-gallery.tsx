@@ -138,7 +138,7 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
             return <Link key={photo.src + index} ref={(el) => { cards.current[index] = el; }}
               href={`/${variant}/${photo.slug}`} className={styles.slide} aria-label={`Explore ${photo.name}`}
               data-visible={visible} data-active={index === active} aria-hidden={!visible} tabIndex={visible ? 0 : -1}
-              style={{ "--offset": d * 100 + "%", "--scale": 1 - Math.min(Math.abs(d), 2) * .10, visibility: visible ? "visible" : "hidden" } as CSSProperties}>
+              style={{ zIndex: Math.round(10 - Math.abs(d) * 3), "--offset": d * 100 + "%", "--scale": 1 - Math.min(Math.abs(d), 2) * .10, visibility: visible ? "visible" : "hidden" } as CSSProperties}>
               <span className={styles.imageLayer}><Image src={photo.src} alt={`${photo.name} at Vinyasa Earth`} fill
                 priority={index < 5} loading={index < 5 ? undefined : "eager"}
                 quality={80} sizes="(min-width: 640px) 1100px, 640px" className={styles.image} /></span>

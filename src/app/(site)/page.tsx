@@ -3,7 +3,6 @@ import { getEditorial } from "@/lib/editorial/server";
 import { HomeHero } from "@/components/sections/hero";
 // import MarqueeBar from "@/components/sections/marquee-bar";
 import NextEventRibbon from "@/components/sections/next-event-ribbon";
-import UpcomingEventsSection from "@/components/sections/upcoming-events-section";
 import TestimonialsSection from "@/components/sections/testimonials-section";
 import CottagesSection from "@/components/sections/cottages-section";
 import GallerySection from "@/components/sections/gallery-section";
@@ -49,9 +48,7 @@ export default function HomePage() {
           </>
         } />
       </AnimateInView>
-      <SectionWave from="#fff1e0" to="#f3e6d8" variant="slant" />
-      <AnimateInView delay={100}><UpcomingEventsSection /></AnimateInView>
-      <SectionWave from="#f3e6d8" to="#e8dbc6" variant="arch" />
+      <SectionWave from="#fff1e0" to="#e8dbc6" variant="arch" />
       <AnimateInView delay={100}><TestimonialsSection /></AnimateInView>
       <SectionWave from="#e8dbc6" to="#e7ebdd" variant="hill" />
       <AnimateInView delay={80}><PhotoMasonry /></AnimateInView>

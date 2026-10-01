@@ -25,7 +25,7 @@ export default function FamilyBookshelf({ members, hero = false }: { members: Fa
       id="family"
       className={`texture-linen relative overflow-hidden ${hero ? "organic-section bg-surface pb-14 pt-28 sm:pb-20 sm:pt-32" : "organic-section bg-surface py-16 sm:py-20"}`}
     >
-      <div className="relative mx-auto max-w-4xl px-5 sm:px-8">
+      <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
           <SectionEyebrow icon="people-outline" className="justify-center">{content.text_1}</SectionEyebrow>
           <Heading className="mt-3 font-display text-3xl italic leading-[1.15] text-clay-ink sm:text-4xl">
@@ -35,15 +35,15 @@ export default function FamilyBookshelf({ members, hero = false }: { members: Fa
           <p className="mx-auto mt-5 max-w-[52ch] leading-relaxed text-foreground-soft">{content.text_4}</p>
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 divide-y divide-clay-ink/12 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <div className="mt-12 grid grid-cols-1 divide-y divide-clay-ink/15 md:grid-cols-[1.35fr_1fr_1fr] md:divide-x md:divide-y-0 sm:mt-16">
           {members.map((member, i) => (
             <Reveal
               key={member.name}
               variant="up"
               delay={i * 120}
-              className="flex flex-col items-center px-6 py-10 text-center first:pt-0 sm:py-0"
+              className="grid min-w-0 grid-cols-1 justify-items-center px-5 py-10 text-center first:pt-0 md:row-span-4 md:grid-rows-subgrid md:px-6 md:py-0 lg:px-8"
             >
-              <div className="relative h-40 w-40 sm:h-48 sm:w-48">
+              <div className="relative mx-auto h-40 w-40 lg:h-48 lg:w-48">
                 <span
                   aria-hidden
                   className="absolute -bottom-3 -right-3 h-full w-full border border-clay-ink/15 bg-background"
@@ -59,15 +59,15 @@ export default function FamilyBookshelf({ members, hero = false }: { members: Fa
                     src={member.photo}
                     alt={member.name}
                     fill
-                    sizes="176px"
+                    sizes="(min-width: 1024px) 192px, 160px"
                     className="object-contain object-bottom transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
               </div>
 
-              <span className="mt-6 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">{member.role}</span>
-              <h3 className="mt-1.5 font-display italic text-2xl leading-tight text-clay-ink">{member.name}</h3>
-              <p className="mt-3 max-w-[24ch] text-sm leading-relaxed text-foreground-soft">{member.blurb}</p>
+              <span className="mt-7 self-center text-[11px] font-bold uppercase leading-relaxed tracking-[0.14em] text-accent">{member.role}</span>
+              <h3 className="mt-2 font-display text-2xl leading-tight text-clay-ink">{member.name}</h3>
+              <p className="mt-4 w-full max-w-[42ch] self-start text-pretty text-left text-sm leading-[1.8] text-foreground-soft md:text-justify">{member.blurb}</p>
             </Reveal>
           ))}
         </div>
