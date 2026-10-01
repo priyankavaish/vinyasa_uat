@@ -1,8 +1,10 @@
 import type { MetadataRoute } from "next";
-import { cottages, events } from "@/lib/content";
+import { cottages } from "@/lib/content";
+import { getEvents } from "@/lib/cms";
 import { SITE_ORIGIN } from "@/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const events = await getEvents();
   const routes = ["", "/about", "/stays", "/events", "/volunteering", "/contact", "/book"];
   return [
     ...routes.map((route) => ({ url: `${SITE_ORIGIN}${route}`, changeFrequency: "monthly" as const, priority: route === "" ? 1 : 0.8 })),

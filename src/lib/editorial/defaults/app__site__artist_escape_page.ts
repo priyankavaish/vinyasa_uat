@@ -86,7 +86,7 @@ export const defaults = {
       "A home away from home for artists. Stay, studio and performance in one space at Vinyasa Earth, Jaipur — apply to join the resident artist community.",
   },
 
-  hero_eyebrow: "For the Artists",
+  hero_eyebrow: "With the Artists By the Artists",
   hero_title: "For the Artists",
   hero_description:
     "Stay, studio and performance in one place — so the only thing left to do is create.",

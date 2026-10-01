@@ -13,12 +13,10 @@ export default async function NextEventRibbon() {
   const content = await getEditorial("components/sections/next-event-ribbon", editorialDefaults);
 
   const events = await getEvents();
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
 
   const next = events
     .map((e) => ({ e, start: parseEventStart(e.dateLabel) }))
-    .filter((x): x is { e: (typeof events)[number]; start: Date } => x.start !== null && x.start >= today)
+    .filter((x): x is { e: (typeof events)[number]; start: Date } => x.start !== null)
     .sort((a, b) => a.start.getTime() - b.start.getTime())[0];
 
   if (!next) return null;

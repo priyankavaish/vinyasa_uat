@@ -1,5 +1,6 @@
 import { mudhouseContent, mudhouseText } from "./mudhouse-wording";
-import { unstable_cache } from "next/cache";
+import { unstable_cache, unstable_noStore } from "next/cache";
+import { isEventActive } from "@/lib/event-dates";
 import { and, asc, desc, eq } from "drizzle-orm";
 import { getDb, hasDb } from "@/lib/db";
 import * as t from "@/lib/db/schema";
@@ -112,7 +113,7 @@ export async function getCottage(slug: string): Promise<Cottage | null> {
   return all.find((c) => c.slug === slug) ?? null;
 }
 
-export const getEvents = unstable_cache(
+export const getAllEvents = unstable_cache(
   async (): Promise<EventProgram[]> => {
     if (!hasDb()) return SEED_EVENTS;
     try {
@@ -129,6 +130,14 @@ export const getEvents = unstable_cache(
   ["cms:events:v3"],
   { tags: ["events"] }
 );
+
+// Evaluate expiry on every request, outside the cached CMS data.
+export async function getEvents(): Promise<EventProgram[]> {
+  unstable_noStore();
+  const events = await getAllEvents();
+  const now = new Date();
+  return events.filter((event) => isEventActive(event.dateLabel, now));
+}
 
 export async function getEvent(slug: string): Promise<EventProgram | null> {
   const all = await getEvents();

@@ -13,13 +13,16 @@ import ArtistEscapeVideoHero from "@/components/sections/artist-escape-video-her
 import ArtistEscapeShort from "@/components/sections/artist-escape-short";
 import ArtistEscapeApplicationForm from "@/components/forms/artist-escape-application-form";
 
+import ArtistOfferings from "@/components/sections/artist-offerings";
+import ArtistInResidenceSection from "@/components/sections/artist-in-residence-section";
+
 export const revalidate = 300;
 
 const PROCESS_ICONS: IconName[] = ["sparkles-outline", "people-outline", "ribbon-outline"];
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
   const { seo } = await getEditorial("app/(site)/artist-escape/page", editorialDefaults);
-  return { ...seo, title: editorialDefaults.seo.title };
+  return { ...seo, title: editorialDefaults.seo.title, description: "Explore Artist Escape and Artist in Residence at Vinyasa Earth, Jaipur. Two offerings for creative practice, community and research." };
 }
 
 export default async function ArtistEscapePage() {
@@ -35,12 +38,14 @@ export default async function ArtistEscapePage() {
         description={content.hero_description}
       />
 
+      <ArtistOfferings escapeImage={content.vision_image} />
+
       {/* Vision — with the vertical short as its visual */}
       <AnimateInView delay={60}>
-        <section className="texture-linen py-14 sm:py-16">
+        <section id="artist-escape" className="texture-linen scroll-mt-24 py-14 sm:py-16">
           <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <Reveal variant="left" className="order-2 lg:order-1">
-              <SectionEyebrow icon="sparkles-outline">{content.vision_eyebrow}</SectionEyebrow>
+              <SectionEyebrow icon="sparkles-outline">Space to Create &middot; Artist Escape</SectionEyebrow>
               <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.vision_title}</h2>
               <div className="mt-5 space-y-5">
                 {content.vision_paragraphs.map((p) => (
@@ -158,7 +163,7 @@ export default async function ArtistEscapePage() {
       <AnimateInView delay={60}>
         <section className="bg-clay-surface py-12 sm:py-14">
           <div className="mx-auto max-w-5xl px-5 sm:px-8">
-            <SectionHeading icon="compass-outline" eyebrow={content.process_eyebrow} title={content.process_title} />
+            <SectionHeading icon="compass-outline" eyebrow="Artist Escape" title={content.process_title} />
 
             <div className="relative mt-12 grid gap-8 sm:grid-cols-3">
               <div aria-hidden className="pointer-events-none absolute inset-x-0 top-8 hidden border-t border-dashed border-accent/25 sm:block" />
@@ -201,11 +206,44 @@ export default async function ArtistEscapePage() {
         </section>
       </AnimateInView>
 
-      <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" className="h-8 sm:h-12" />
+
+      {/* Apply — intro + application form */}
+      <AnimateInView delay={80}>
+        <section id="apply" className="scroll-mt-24 bg-clay-surface py-14 sm:py-16">
+          <div className="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+            <Reveal variant="left">
+              <SectionEyebrow icon="sparkles-outline">Apply for Artist Escape</SectionEyebrow>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.cta_title}</h2>
+              <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
+                {content.cta_paragraphs.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+              <div className="mt-6 space-y-2 text-sm">
+                <a href={`mailto:${content.cta_email}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
+                  {content.cta_email}
+                </a>
+                <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
+                  {content.cta_phone}
+                </a>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80">{content.cta_location}</p>
+              </div>
+            </Reveal>
+
+            <Reveal variant="right" delay={100}>
+              <ArtistEscapeApplicationForm />
+            </Reveal>
+          </div>
+        </section>
+      </AnimateInView>
+
+      <ArtistInResidenceSection />
+
+      <SectionWave from="#eef0e4" to="#f3f1ea" variant="wave" className="h-8 sm:h-12" />
 
       {/* Artists gallery */}
       <AnimateInView delay={60}>
-        <section id="artists" className="py-12 sm:py-14">
+        <section id="artists" className="scroll-mt-24 py-12 sm:py-14">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <SectionHeading
               icon="images-outline"
@@ -241,39 +279,7 @@ export default async function ArtistEscapePage() {
         </section>
       </AnimateInView>
 
-      <SectionWave from="#f3f1ea" to="#f3e6d8" variant="hill" className="h-8 sm:h-12" />
-
-      {/* Apply — intro + application form */}
-      <AnimateInView delay={80}>
-        <section id="apply" className="bg-clay-surface py-14 sm:py-16">
-          <div className="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-            <Reveal variant="left">
-              <SectionEyebrow icon="sparkles-outline">Apply</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.cta_title}</h2>
-              <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
-                {content.cta_paragraphs.map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-              </div>
-              <div className="mt-6 space-y-2 text-sm">
-                <a href={`mailto:${content.cta_email}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  {content.cta_email}
-                </a>
-                <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  {content.cta_phone}
-                </a>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80">{content.cta_location}</p>
-              </div>
-            </Reveal>
-
-            <Reveal variant="right" delay={100}>
-              <ArtistEscapeApplicationForm />
-            </Reveal>
-          </div>
-        </section>
-      </AnimateInView>
-
-      <style>{`:root { --wave-lead: #f3e6d8; }`}</style>
+      <style>{`:root { --wave-lead: #f3f1ea; }`}</style>
     </div>
   );
 }

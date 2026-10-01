@@ -1,47 +1,51 @@
-// Events only carry a free-text `dateLabel` ("18–20 Sep 2026", "1 Jun – 30
-// Sep 2026", "29 Dec 2026 – 1 Jan 2027", "17–22 Jan 2027"...). To sort/filter
-// by "upcoming" we pull the first real date out of that label instead of
-// adding a schema column just for this. Handles every shape currently in
-// use; falls back to `null` ("no known date") for anything it can't parse.
+// Date labels support single days and inclusive ranges, including month/year boundaries.
 const MONTHS: Record<string, number> = {
   jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
   jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
 };
+const PART = /^(\d{1,2})(?:\s+([A-Za-z]+))?(?:\s+(\d{4}))?$/;
 
-const FULL = /(\d{1,2})\s+([A-Za-z]{3,})(?:\s+(\d{4}))?/;
-const BARE_DAY = /^(\d{1,2})$/;
+function validDate(day: number, month: number, year: number): Date | null {
+  const date = new Date(Date.UTC(year, month, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month &&
+    date.getUTCDate() === day ? date : null;
+}
 
-export function parseEventStart(dateLabel: string | null | undefined): Date | null {
-  if (!dateLabel) return null;
-  // First segment before an en-dash / hyphen range separator, e.g.
-  // "18–20 Sep 2026" -> ["18", "20 Sep 2026"], "1 Jun – 30 Sep 2026" -> ["1 Jun", "30 Sep 2026"].
-  const [firstRaw, restRaw] = dateLabel.split(/\s*[–-]\s*/);
-  const first = firstRaw?.trim() ?? "";
-  const rest = restRaw?.trim() ?? "";
-
-  const full1 = first.match(FULL);
-  let day: number, monthName: string, year: number | undefined;
-
-  if (full1) {
-    day = Number(full1[1]);
-    monthName = full1[2];
-    year = full1[3] ? Number(full1[3]) : undefined;
-  } else if (BARE_DAY.test(first) && rest) {
-    // "18–20 Sep 2026": day-only start, month/year live on the end segment.
-    const fromRest = rest.match(FULL);
-    if (!fromRest) return null;
-    day = Number(first);
-    monthName = fromRest[2];
-    year = fromRest[3] ? Number(fromRest[3]) : undefined;
-  } else {
-    return null;
+export function parseEventDates(label: string | null | undefined): { start: Date; end: Date } | null {
+  if (!label) return null;
+  const parts = label.trim().split(/\s*(?:[-\u2013\u2014]|\bto\b)\s*/i);
+  if (parts.length > 2) return null;
+  const first = parts[0].match(PART);
+  const last = (parts[1] ?? parts[0]).match(PART);
+  if (!first || !last) return null;
+  const startMonth = MONTHS[(first[2] ?? last[2] ?? "").slice(0, 3).toLowerCase()];
+  const endMonth = MONTHS[(last[2] ?? first[2] ?? "").slice(0, 3).toLowerCase()];
+  if (startMonth === undefined || endMonth === undefined) return null;
+  let startYear = Number(first[3] ?? last[3]);
+  let endYear = Number(last[3] ?? first[3]);
+  if (!startYear || !endYear) return null;
+  if (endMonth < startMonth) {
+    if (!first[3]) startYear--;
+    else if (!last[3]) endYear++;
   }
+  const start = validDate(Number(first[1]), startMonth, startYear);
+  const end = validDate(Number(last[1]), endMonth, endYear);
+  return start && end && end >= start ? { start, end } : null;
+}
 
-  const month = MONTHS[monthName.slice(0, 3).toLowerCase()];
-  if (month === undefined) return null;
-  if (year === undefined) year = Number(rest.match(/(\d{4})/)?.[1]);
-  if (!year) return null;
+export function parseEventStart(label: string | null | undefined): Date | null {
+  return parseEventDates(label)?.start ?? null;
+}
 
-  const d = new Date(Date.UTC(year, month, day));
-  return Number.isNaN(d.getTime()) ? null : d;
+export function parseEventEnd(label: string | null | undefined): Date | null {
+  return parseEventDates(label)?.end ?? null;
+}
+
+// Keep an event through its final calendar day at the venue (India).
+export function isEventActive(label: string | null | undefined, now = new Date()): boolean {
+  const end = parseEventEnd(label);
+  if (!end) return false;
+  const indiaDate = new Date(now.getTime() + 330 * 60 * 1000);
+  const today = Date.UTC(indiaDate.getUTCFullYear(), indiaDate.getUTCMonth(), indiaDate.getUTCDate());
+  return end.getTime() >= today;
 }

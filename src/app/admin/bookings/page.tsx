@@ -1,6 +1,6 @@
 import { listBookings } from "@/lib/store";
 import { hasDb } from "@/lib/db";
-import { getCottages, getEvents } from "@/lib/cms";
+import { getCottages, getAllEvents } from "@/lib/cms";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +18,7 @@ export default async function AdminBookingsPage() {
   const [bookings, cottages, events] = await Promise.all([
     listBookings(),
     getCottages(),
-    getEvents(),
+    getAllEvents(),
   ]);
 
   const nameFor = (type: string, slug: string) => {

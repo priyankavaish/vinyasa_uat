@@ -7,12 +7,10 @@ const FALLBACK = "/images/property-night-gathering.jpg";
 
 export default async function UpcomingEventsSection() {
   const events = await getEvents();
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
 
   const items: EventItem[] = events
     .map((event) => ({ event, start: parseEventStart(event.dateLabel) }))
-    .filter((e): e is { event: (typeof events)[number]; start: Date } => e.start !== null && e.start >= today)
+    .filter((e): e is { event: (typeof events)[number]; start: Date } => e.start !== null)
     .sort((a, b) => a.start.getTime() - b.start.getTime())
     .slice(0, 4)
     .map(({ event, start }) => ({

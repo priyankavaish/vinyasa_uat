@@ -38,7 +38,8 @@ export default function EventForm({ event }: { event?: EventRow }) {
         </div>
         <div>
           <label className={label}>Date label</label>
-          <input name="dateLabel" defaultValue={event?.dateLabel} className={field} />
+          <input name="dateLabel" required placeholder="15-24 Oct 2026" defaultValue={event?.dateLabel} className={field} />
+          <p className="mt-1 text-xs text-muted">Single day: 24 Oct 2026. Multiple days: 15-24 Oct 2026 or 29 Dec 2026 - 1 Jan 2027.</p>
         </div>
         <div>
           <label className={label}>Facilitator</label>

@@ -14,7 +14,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { getEvents } from "@/lib/cms";
-import { parseEventStart } from "@/lib/event-dates";
+import { parseEventStart, parseEventEnd } from "@/lib/event-dates";
 
 import gatherImg from "@/app/assets/new/community-02.jpg";
 
@@ -41,24 +41,6 @@ const EVENT_DISPLAY: Record<string, { name: string; date: string; duration: stri
 
 function priceText(from: number) {
   return from === 0 ? "By donation" : `From INR ${from.toLocaleString("en-IN")}`;
-}
-
-// Rough end-date from a range label ("18-20 Sep 2026" -> 20 Sep 2026); falls
-// back to the start when there's no range.
-function parseEventEnd(label: string, start: Date): Date {
-  const [, restRaw] = label.split(/\s*[–-]\s*/);
-  if (!restRaw) return start;
-  const m = restRaw.trim().match(/(\d{1,2})\s+([A-Za-z]{3,})(?:\s+(\d{4}))?/);
-  if (!m) return start;
-  const months: Record<string, number> = {
-    jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
-    jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
-  };
-  const month = months[m[2].slice(0, 3).toLowerCase()];
-  if (month === undefined) return start;
-  const year = m[3] ? Number(m[3]) : start.getUTCFullYear();
-  const d = new Date(Date.UTC(year, month, Number(m[1])));
-  return Number.isNaN(d.getTime()) || d < start ? start : d;
 }
 
 function ymd(d: Date) {
@@ -105,7 +87,7 @@ export default async function EventsPage() {
       const label = event.dateLabel || "";
       const start = parseEventStart(label);
       if (!start) return null;
-      const end = parseEventEnd(label, start);
+      const end = parseEventEnd(label)!;
       return {
         slug: event.slug,
         name: event.name,
@@ -152,19 +134,7 @@ export default async function EventsPage() {
           <Image src={content.gatherImg} alt="" className="w-full rounded-full" />
         </Parallax>
         <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8">
-          <Reveal variant="up">
-            <div className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-soft">
-              {Object.values(content.KIND_META).map((k) => (
-                <span key={k.label} className="inline-flex items-center gap-2">
-                  <span className="h-3 w-3" style={{ backgroundColor: k.accent }} />
-                  {k.label}
-                </span>
-              ))}
-            </div>
-            <EventsCalendar entries={calEntries} />
-          </Reveal>
-
-          <ul className="mt-12 border-t border-line">
+          <ul className="border-t border-line">
             {events.map((event, i) => {
               const meta = content.KIND_META[event.kind] ?? content.KIND_META.retreat;
               const display =
@@ -178,7 +148,7 @@ export default async function EventsPage() {
                 };
               const label = display.date || event.dateLabel || "";
               const start = parseEventStart(label);
-              const end = start ? parseEventEnd(label, start) : null;
+              const end = start ? parseEventEnd(label)! : null;
               const month = start
                 ? start.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" }).toUpperCase()
                 : "";
@@ -237,6 +207,20 @@ export default async function EventsPage() {
               );
             })}
           </ul>
+          {events.length === 0 && <p className="py-8 text-center text-foreground-soft">New events will be announced soon.</p>}
+          <div className="mt-12">
+            <Reveal variant="up">
+            <div className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground-soft">
+              {Object.values(content.KIND_META).map((k) => (
+                <span key={k.label} className="inline-flex items-center gap-2">
+                  <span className="h-3 w-3" style={{ backgroundColor: k.accent }} />
+                  {k.label}
+                </span>
+              ))}
+            </div>
+            <EventsCalendar entries={calEntries} />
+          </Reveal>
+          </div>
         </div>
       </section></AnimateInView>
     </div>
