@@ -18,7 +18,8 @@ export const revalidate = 300;
 const PROCESS_ICONS: IconName[] = ["sparkles-outline", "people-outline", "ribbon-outline"];
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/artist-escape/page", editorialDefaults)).seo;
+  const { seo } = await getEditorial("app/(site)/artist-escape/page", editorialDefaults);
+  return { ...seo, title: editorialDefaults.seo.title };
 }
 
 export default async function ArtistEscapePage() {
@@ -29,8 +30,8 @@ export default async function ArtistEscapePage() {
       {/* Full-bleed video hero */}
       <ArtistEscapeVideoHero
         youtubeId={content.hero_youtube_id}
-        eyebrow={content.hero_eyebrow}
-        title={content.hero_title}
+        eyebrow={editorialDefaults.hero_eyebrow}
+        title={editorialDefaults.hero_title}
         description={content.hero_description}
       />
 

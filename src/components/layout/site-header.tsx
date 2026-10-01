@@ -12,7 +12,7 @@ import { Icon } from "../ui/icon";
 const NAV_LINKS = [
   { href: "/about", label: "The Vinyasa Way" },
   { href: "/stays", label: "Stays" },
-  { href: "/artist-escape", label: "Artist Escape" },
+  { href: "/artist-escape", label: "For the Artists" },
   { href: "/events", label: "Events & Retreats" },
   { href: "/volunteering", label: "Volunteering" },
   { href: "/contact", label: "Contact" },
@@ -171,7 +171,7 @@ export default function SiteHeader() {
                   aria-current={active ? "page" : undefined}
                   className={`${linkClass} ${active ? activeClass : ""}`}
                 >
-                  {link.label}
+                  {link.href === "/artist-escape" ? "For the Artists" : link.label}
                 </Link>
               </li>
             );
@@ -219,7 +219,7 @@ export default function SiteHeader() {
                         : ""
                     }
                   >
-                    {link.label}
+                    {link.href === "/artist-escape" ? "For the Artists" : link.label}
                   </Link>
                 </li>
               );

@@ -25,11 +25,11 @@ export default async function AdminStaysPage() {
         <div className="flex items-center justify-between">
           <h1 className="font-display text-3xl italic">Stays</h1>
           <Link href="/admin/stays/new" className="btn btn-accent">
-            Add cottage
+            Add mudhouse
           </Link>
         </div>
 
-        <SearchableTable label="stays" columns={6} emptyMessage="No cottages yet. Add a cottage to get started." header={<thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
+        <SearchableTable label="stays" columns={6} emptyMessage="No mudhouses yet. Add a mudhouse to get started." header={<thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
               <tr>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Element</th>
@@ -50,7 +50,7 @@ export default async function AdminStaysPage() {
                   <td className="px-4 py-3 tabular-nums">{c.sort}</td>
                   <td className="px-4 py-3">{c.published ? "Yes" : "Draft"}</td>
                   <td className="px-4 py-3 text-right">
-                    <DeleteButton id={c.id} action={deleteCottage} label="Delete cottage?" />
+                    <DeleteButton id={c.id} action={deleteCottage} label="Delete mudhouse?" />
                   </td>
                 </tr>) }))} />
       </div>

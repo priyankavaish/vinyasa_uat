@@ -6,7 +6,7 @@ const page = (name: string) => ("app/(site)/" + (name ? name + "/" : "") + "page
 export const managedPages: ManagedPage[] = [
   { id: "home", title: "Home", path: "/", sections: [page(""), ...["hero", "next-event-ribbon", "cottages-interactive", "connect-section", "work-from-farm-section", "community-section", "upcoming-events-interactive", "testimonials-section", "photo-masonry", "gallery-section"].map(section)] },
   { id: "about", title: "About / The Vinyasa Way", path: "/about", sections: [page("about"), section("family-bookshelf")] },
-  { id: "artist-escape", title: "Artist Escape", path: "/artist-escape", sections: [page("artist-escape")] },
+  { id: "artist-escape", title: "For the Artists", path: "/artist-escape", sections: [page("artist-escape")] },
   { id: "stays", title: "Stays", path: "/stays", sections: [page("stays"), section("stays-hero-gallery"), section("stay-collection"), section("partner-cards")] },
   { id: "events", title: "Events & Retreats", path: "/events", sections: [page("events"), section("stays-hero-gallery")] },
   { id: "volunteer", title: "Volunteering", path: "/volunteering", sections: [page("corporate"), "components/forms/lead-form"] },
@@ -47,7 +47,7 @@ const SECTION_TITLES: Record<string, string> = {
 const SECTION_HINTS: Record<string, string> = {
   "components/sections/hero": "The full-screen video and headline visitors see first.",
   "components/sections/next-event-ribbon": "The small banner announcing the next upcoming event.",
-  "components/sections/cottages-interactive": "The stays/cottages carousel.",
+  "components/sections/cottages-interactive": "The stays/mudhouses carousel.",
   "components/sections/testimonials-section": "Guest quotes.",
   "components/sections/photo-masonry": "The grid of photos further down the page.",
   "components/sections/gallery-section": "A gallery of photos.",

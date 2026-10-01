@@ -12,6 +12,11 @@ import styles from "./stays-hero-gallery.module.css";
 export type StayHeroPhoto = { src: string; name: string; slug: string; element: string; date?: string };
 const distance = (index: number, position: number, count: number) =>
   ((index - position + count * 100.5) % count) - count / 2;
+const stayElementLabel = (element: string) => {
+  if (element === "Stillness") return "A place for stillness";
+  if (element === "Shared") return "Shared living";
+  return `Inspired by ${element.toLowerCase()}`;
+};
 
 export default function StaysHeroGallery({ photos, variant = "stays" }: { photos: StayHeroPhoto[]; variant?: "stays" | "events" }) {
   const content = useEditorial("components/sections/stays-hero-gallery", editorialDefaults);
@@ -132,12 +137,16 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
             const visible = d >= -visibleRange && d < visibleRange;
             return <Link key={photo.src + index} ref={(el) => { cards.current[index] = el; }}
               href={`/${variant}/${photo.slug}`} className={styles.slide} aria-label={`Explore ${photo.name}`}
-              data-visible={visible} aria-hidden={!visible} tabIndex={visible ? 0 : -1}
+              data-visible={visible} data-active={index === active} aria-hidden={!visible} tabIndex={visible ? 0 : -1}
               style={{ "--offset": d * 100 + "%", "--scale": 1 - Math.min(Math.abs(d), 2) * .10, visibility: visible ? "visible" : "hidden" } as CSSProperties}>
               <span className={styles.imageLayer}><Image src={photo.src} alt={`${photo.name} at Vinyasa Earth`} fill
                 priority={index < 5} loading={index < 5 ? undefined : "eager"}
                 quality={80} sizes="(min-width: 640px) 1100px, 640px" className={styles.image} /></span>
               <span className={styles.caption}>
+                <span className={styles.captionMeta}>
+                  <span>{isEvents ? photo.element || "Upcoming programme" : stayElementLabel(photo.element || "nature")}</span>
+                  {photo.date && <span className={styles.captionDate}>{photo.date}</span>}
+                </span>
                 <span className={styles.captionName}>{photo.name}</span>
               </span>
             </Link>;

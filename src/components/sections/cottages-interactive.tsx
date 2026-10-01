@@ -69,10 +69,10 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
             <div className="relative mx-auto max-h-[32rem] transition-[aspect-ratio] duration-500 ease-out" style={{ aspectRatio: heroRatio }}>
               <div aria-hidden className="absolute -bottom-4 -right-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
               <div aria-hidden className="absolute -bottom-2 -right-2 h-full w-full bg-accent/10" />
-              <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} cottage`} className="group relative block h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
+              <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} mudhouse`} className="group relative block h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
                 <Image
                   src={hero}
-                  alt={`Inside ${current.name}, a hand-built cottage at Vinyasa Earth`}
+                  alt={`Inside ${current.name}, a hand-built mudhouse at Vinyasa Earth`}
                   fill
                   quality={80}
                   sizes="(min-width: 1280px) 620px, (min-width: 1024px) 55vw, 100vw"

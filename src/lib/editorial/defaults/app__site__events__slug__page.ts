@@ -22,7 +22,7 @@ const EVENT_DETAILS: Record<string, { heading: string; paragraphs: string[]; hig
   "the-pause-within": {
     heading: "A quiet return to yourself",
     paragraphs: ["A two-night residential retreat created to notice how stress lives differently in each of us and what those experiences may be trying to tell us.", "Gentle group sessions, time in nature and unhurried pauses offer room to step away from daily demands and listen more closely."],
-    highlights: ["Guided reflection", "Restorative practices", "Vegetarian meals", "Stay in Vinyasa's earth-built cottages"],
+    highlights: ["Guided reflection", "Restorative practices", "Vegetarian meals", "Stay in Vinyasa's earth-built mudhouses"],
   },
   "artist-unite": {
     heading: "A residency of self creation",

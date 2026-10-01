@@ -4,7 +4,7 @@ import { getEditorial } from "@/lib/editorial/server";
 import { Icon } from "@/components/ui/icon";
 
 const ITEMS = [
-  "Six hand-built mud cottages",
+  "Six hand-built mudhouses",
   "Artist Escape applications open",
   "Corporate offsites and team retreats",
 ];

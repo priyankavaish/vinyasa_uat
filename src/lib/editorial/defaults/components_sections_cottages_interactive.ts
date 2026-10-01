@@ -24,7 +24,7 @@ export const defaults = {
 
 
 "text_12": "Find your little home",
-"aria_label_13": "Choose a cottage",
+"aria_label_13": "Choose a mudhouse",
 
 
 "text_16": "Follow the textures of mud and wood, the curves of the walls, and the small details that make each space its own.",

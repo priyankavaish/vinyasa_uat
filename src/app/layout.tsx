@@ -44,12 +44,12 @@ const samarkan = localFont({
 });
 
 const description =
-  "Stay in hand-built mud cottages, join artist residencies and retreats, or host a thoughtful team offsite in Jaipur.";
+  "Stay in hand-built mudhouses, join artist residencies and retreats, or host a thoughtful team offsite in Jaipur.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: "Vinyasa Earth | Mud Cottage Stays & Artist Residencies in Jaipur",
+    default: "Vinyasa Earth | Mudhouse Stays & Artist Residencies in Jaipur",
     template: "%s | Vinyasa Earth",
   },
   description,
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   category: "Travel and hospitality",
   keywords: [
     "Vinyasa Earth", "mud house stay Jaipur", "artist residency India",
-    "eco retreat Jaipur", "Jaipur cottage stay", "creative retreat Rajasthan",
+    "eco retreat Jaipur", "Jaipur mudhouse stay", "creative retreat Rajasthan",
     "corporate offsite Jaipur", "wellness retreat Rajasthan",
   ],
   alternates: { canonical: "/" },

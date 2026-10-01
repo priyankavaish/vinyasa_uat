@@ -27,7 +27,7 @@ export const legacyCottages: Cottage[] = [
     slug: "agni",
     name: "Agni",
     element: "Fire",
-    tagline: "Premium cottage",
+    tagline: "Premium mudhouse",
     description:
       "A sunset-red room with its own open-air wash pit, carved straight into the earthen wall.",
     icon: "flame-outline",
@@ -43,7 +43,7 @@ export const legacyCottages: Cottage[] = [
     slug: "jal",
     name: "Jal",
     element: "Water",
-    tagline: "Premium cottage",
+    tagline: "Premium mudhouse",
     description:
       "A cobalt skylight over the bed pulls the colour of the sky straight into the room.",
     icon: "water-outline",
@@ -59,7 +59,7 @@ export const legacyCottages: Cottage[] = [
     slug: "chandrama",
     name: "Chandrama",
     element: "Moon",
-    tagline: "Standard cottage",
+    tagline: "Standard mudhouse",
     description: "A trail of moon phases circles the wall of this round, quiet mud room.",
     icon: "moon-outline",
     accent: "#3f3f5c",
@@ -74,7 +74,7 @@ export const legacyCottages: Cottage[] = [
     slug: "prithvi",
     name: "Prithvi",
     element: "Earth",
-    tagline: "Premium cottage",
+    tagline: "Premium mudhouse",
     description:
       "A cave-like nook pressed by hand from raw earth, with a built-in chulha seat by the window.",
     icon: "leaf-outline",
@@ -90,7 +90,7 @@ export const legacyCottages: Cottage[] = [
     slug: "vayu",
     name: "Vayu",
     element: "Air",
-    tagline: "Standard cottage",
+    tagline: "Standard mudhouse",
     description: "Wide shutters and high thatch keep this room catching every breeze that passes.",
     icon: "wind-outline",
     accent: "#7c8f5a",
@@ -105,7 +105,7 @@ export const legacyCottages: Cottage[] = [
     slug: "shunya",
     name: "Shunya",
     element: "Stillness",
-    tagline: "Standard cottage",
+    tagline: "Standard mudhouse",
     description: "Nothing but a bed, a net, and a window — built for doing absolutely nothing.",
     icon: "circle-outline",
     accent: "#a49a86",
@@ -255,7 +255,7 @@ export type PropertyPhoto = {
 // Every property + location shot, all in one moving carousel (see
 // PhotoMasonry) so nothing sits split across two separate galleries.
 export const placePhotos: PropertyPhoto[] = [
-  { image: "/images/property-cottages-day.jpg", alt: "The hand-built mud cottages by day" },
+  { image: "/images/property-cottages-day.jpg", alt: "The hand-built mudhouses by day" },
   { image: "/images/property-lawn-gazebo.jpg", alt: "The lawn and gazebo" },
   { image: "/images/amer-fort-lake.jpg", alt: "Historic fort by the lake" },
   { image: "/images/property-kitchen-garden.jpg", alt: "The kitchen garden" },
@@ -270,7 +270,7 @@ export const placePhotos: PropertyPhoto[] = [
 export const galleryPosts: GalleryPost[] = [
   {
     image: "/images/instagram/ig-04-aug12.jpg",
-    caption: "Eco-mud elemental cottage stays",
+    caption: "Eco-mud elemental mudhouse stays",
     permalink: "https://www.instagram.com/vinyasa.earth/p/Db7obD0ILza/",
   },
   {
@@ -425,7 +425,7 @@ export const siteContentSeed: Record<string, unknown> = {
     values: "Live · Create · Belong",
   },
   "home.cottages": {
-    eyebrow: "The Cottages",
+    eyebrow: "The Mudhouses",
     heading: "Seven rooms. Each made by hand.",
   },
   "about.hero": {
@@ -440,7 +440,7 @@ export const siteContentSeed: Record<string, unknown> = {
   },
   "about.craft": {
     heading: "Rajasthan's own way of building",
-    body: "Mud plaster and jaali screens instead of concrete. Kitchen-garden meals instead of a restaurant menu. Block-print textiles and hand-painted mandalas on the cottage walls. It is a working example of the sustainable, earth-first living the community here practises every day.\n\nEverything at Vinyasa carries the goodness of mother earth — a blend of humanity and nature, held with gratitude.",
+    body: "Mud plaster and jaali screens instead of concrete. Kitchen-garden meals instead of a restaurant menu. Block-print textiles and hand-painted mandalas on the mudhouse walls. It is a working example of the sustainable, earth-first living the community here practises every day.\n\nEverything at Vinyasa carries the goodness of mother earth — a blend of humanity and nature, held with gratitude.",
   },
   "contact.hero": {
     eyebrow: "Get in touch",
@@ -449,14 +449,14 @@ export const siteContentSeed: Record<string, unknown> = {
       "Questions about a stay, a retreat, venue hire, or volunteering — send a note and the team will write back.",
   },
   "contact.services": [
-    { title: "Retreats", body: "Wellness, art, and corporate retreats with eco-lodging in the mud cottages.", icon: "leaf-outline" },
-    { title: "Venue hire", body: "Workshops, events, and creative shoots across the cottages and the amphitheatre.", icon: "camera-outline" },
+    { title: "Retreats", body: "Wellness, art, and corporate retreats with eco-lodging in the mudhouses.", icon: "leaf-outline" },
+    { title: "Venue hire", body: "Workshops, events, and creative shoots across the mudhouses and the amphitheatre.", icon: "camera-outline" },
     { title: "Brand partnerships", body: "Collaborations aligned with sustainability and wellness values.", icon: "ribbon-outline" },
     { title: "Day experiences", body: "Non-overnight visits with lunch and a guided tour of the land.", icon: "sunny-outline" },
   ],
   "contact.faq": [
     { q: "How do I get there?", a: "The farm is road-accessible from Jaipur. An Uber or cab straight to the gate is the easiest way in." },
-    { q: "What are the stay options?", a: "Six themed mud cottages, a shared dorm, and tent stays, depending on the season." },
+    { q: "What are the stay options?", a: "Six themed mudhouses, a shared dorm, and tent stays, depending on the season." },
     { q: "Are meals included?", a: "Vegetarian meals are included with retreat and residency packages, and available to add for other stays." },
     { q: "Can I visit for the day?", a: "Yes — without an overnight booking, through an event or a day pass with lunch and a tour." },
     { q: "How can I pay?", a: "Credit and debit cards, UPI, and bank transfers are all accepted." },

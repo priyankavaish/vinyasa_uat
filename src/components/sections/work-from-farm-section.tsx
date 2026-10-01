@@ -11,7 +11,7 @@ import farmImage from "@/app/assets/IMG_4301-scaled.webp";
 const perks: { icon: IconName; label: string }[] = [
   { icon: "wind-outline", label: "Wi-Fi & quiet corners" },
   { icon: "leaf-outline", label: "Community meals" },
-  { icon: "home-outline", label: "Cottage or dorm" },
+  { icon: "home-outline", label: "Mudhouse or dorm" },
   { icon: "sunny-outline", label: "Farm walks" },
 ];
 

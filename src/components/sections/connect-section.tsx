@@ -3,7 +3,6 @@ import { defaults as editorialDefaults } from "@/lib/editorial/defaults/componen
 import { getEditorial } from "@/lib/editorial/server";
 import type { ReactNode } from "react";
 import Image from "@/components/editorial/image";
-import SectionWave from "../ui/section-wave";
 import eventsTileImage from "@/app/assets/events-tile-community.png";
 import corporateTileImage from "@/app/assets/IMG_2429.jpeg";
 import artistTileImage from "@/app/assets/2N0A9983.JPG";
@@ -47,7 +46,7 @@ const PAIR = [
   },
 ] as const;
 
-// `afterFirst` lets the home page drop a full section (Work From Farm) between
+// `afterFirst` lets the home page insert Work From Farm and Stays between
 // the feature block and the Events/Corporate pair.
 export default async function ConnectSection({ afterFirst }: { afterFirst?: ReactNode }) {
   const content = await getEditorial("components/sections/connect-section", editorialDefaults);
@@ -118,9 +117,7 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
 
       {afterFirst && (
         <div className="mt-10 sm:mt-14">
-          <SectionWave from="#fff1e0" to="#f3e6d8" variant="wave" />
           {afterFirst}
-          <SectionWave from="#f3e6d8" to="#fff1e0" variant="wave" />
 
         </div>
       )}

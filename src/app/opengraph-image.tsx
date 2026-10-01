@@ -12,7 +12,7 @@ export default function OpenGraphImage() {
       <div style={{ marginTop: 36, fontFamily: "serif", fontSize: 112, lineHeight: .9, letterSpacing: -5 }}>Vinyasa Earth</div>
       <div style={{ width: 390, height: 2, marginTop: 40, background: "#edb678" }} />
       <div style={{ marginTop: 28, fontSize: 24, letterSpacing: 7, textTransform: "uppercase" }}>Live · Create · Belong</div>
-      <div style={{ marginTop: 62, fontSize: 24, color: "rgba(251,249,243,.78)" }}>Mud cottages · Artist residencies · Thoughtful retreats</div>
+      <div style={{ marginTop: 62, fontSize: 24, color: "rgba(251,249,243,.78)" }}>Mudhouses · Artist residencies · Thoughtful retreats</div>
     </div>,
     size,
   );

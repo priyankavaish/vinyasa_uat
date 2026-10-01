@@ -1,3 +1,4 @@
+import { mudhouseContent, mudhouseText } from "./mudhouse-wording";
 import { unstable_cache } from "next/cache";
 import { and, asc, desc, eq } from "drizzle-orm";
 import { getDb, hasDb } from "@/lib/db";
@@ -51,21 +52,21 @@ function rowToCottage(r: t.CottageRow): Cottage {
   );
   return {
     slug: r.slug,
-    name: r.name,
-    element: r.element,
-    tagline: r.tagline,
+    name: mudhouseText(r.name),
+    element: mudhouseText(r.element),
+    tagline: mudhouseText(r.tagline),
     description: defaults && (!r.description || r.description === legacy?.description)
-      ? defaults.description : r.description,
+      ? defaults.description : mudhouseText(r.description),
     icon: r.icon,
     accent: r.accent,
     pricePerNight: r.pricePerNight,
     maxGuests: defaults && r.maxGuests === legacy?.maxGuests ? defaults.maxGuests : r.maxGuests,
     amenities: defaults && (!(r.amenities ?? []).length || JSON.stringify(r.amenities) === JSON.stringify(legacy?.amenities))
-      ? defaults.amenities : r.amenities ?? [],
+      ? defaults.amenities : mudhouseContent(r.amenities ?? []),
     image: toWebPath(r.imageUrl) || defaults?.image || "/seed/room-agni-1.jpg",
     gallery: usesSeedGallery && defaults ? defaults.gallery
       : gallery.length ? gallery : [toWebPath(r.imageUrl)].filter(Boolean),
-    bodyHtml: r.bodyHtml || defaults?.bodyHtml || undefined,
+    bodyHtml: mudhouseText(r.bodyHtml || "") || defaults?.bodyHtml || undefined,
     placeholder: false,
   };
 }
@@ -73,16 +74,16 @@ function rowToCottage(r: t.CottageRow): Cottage {
 function rowToEvent(r: t.EventRow): EventProgram {
   return {
     slug: r.slug,
-    name: r.name,
+    name: mudhouseText(r.name),
     kind: (r.kind as EventProgram["kind"]) ?? "retreat",
     durationLabel: r.durationLabel,
     priceFrom: r.priceFrom,
-    description: r.description,
+    description: mudhouseText(r.description),
     placeholder: false,
     dateLabel: r.dateLabel || undefined,
     facilitator: r.facilitator || undefined,
     image: toWebPath(r.imageUrl) || undefined,
-    bodyHtml: r.bodyHtml || undefined,
+    bodyHtml: mudhouseText(r.bodyHtml || "") || undefined,
   };
 }
 
@@ -102,7 +103,7 @@ export const getCottages = unstable_cache(
       return SEED_COTTAGES;
     }
   },
-  ["cms:cottages:v3"],
+  ["cms:cottages:v4"],
   { tags: ["cottages"] }
 );
 
@@ -125,7 +126,7 @@ export const getEvents = unstable_cache(
       return SEED_EVENTS;
     }
   },
-  ["cms:events:v2"],
+  ["cms:events:v3"],
   { tags: ["events"] }
 );
 
@@ -139,12 +140,12 @@ export const getVisitOptions = unstable_cache(
     if (!hasDb()) return SEED_VISIT_OPTIONS;
     try {
       const rows = await getDb().select().from(t.visitOptions).orderBy(asc(t.visitOptions.sort));
-      return rows.map((r) => ({ title: r.title, description: r.description, image: toWebPath(r.imageUrl) }));
+      return rows.map((r) => ({ title: mudhouseText(r.title), description: mudhouseText(r.description), image: toWebPath(r.imageUrl) }));
     } catch {
       return SEED_VISIT_OPTIONS;
     }
   },
-  ["cms:visit-options:v2"],
+  ["cms:visit-options:v3"],
   { tags: ["visit-options"] }
 );
 
@@ -155,9 +156,9 @@ export const getPartners = unstable_cache(
       const rows = await getDb().select().from(t.partners).orderBy(asc(t.partners.sort));
       return rows.length
         ? rows.map((r) => ({
-            name: r.name,
+            name: mudhouseText(r.name),
             logo: r.logoUrl,
-            description: r.description,
+            description: mudhouseText(r.description),
             link: r.link,
           }))
         : SEED_PARTNERS;
@@ -165,7 +166,7 @@ export const getPartners = unstable_cache(
       return SEED_PARTNERS;
     }
   },
-  ["cms:partners"],
+  ["cms:partners:mudhouse-v1"],
   { tags: ["partners"] }
 );
 
@@ -180,17 +181,17 @@ export const getPublishedBlogs = unstable_cache(
         .orderBy(desc(t.blogs.publishedAt));
       return rows.map((r) => ({
         slug: r.slug,
-        title: r.title,
-        excerpt: r.excerpt,
+        title: mudhouseText(r.title),
+        excerpt: mudhouseText(r.excerpt),
         coverUrl: r.coverUrl,
-        bodyHtml: r.bodyHtml,
+        bodyHtml: mudhouseText(r.bodyHtml),
         publishedAt: r.publishedAt ? r.publishedAt.toISOString() : null,
       }));
     } catch {
       return [];
     }
   },
-  ["cms:blogs"],
+  ["cms:blogs:mudhouse-v1"],
   { tags: ["blogs"] }
 );
 
@@ -209,12 +210,12 @@ export const getContent = unstable_cache(
         .from(t.siteContent)
         .where(eq(t.siteContent.key, key))
         .limit(1);
-      return row ? (row.value as T) : fallback;
+      return row ? mudhouseContent(row.value as T) : fallback;
     } catch {
       return fallback;
     }
   },
-  ["cms:content"],
+  ["cms:content:mudhouse-v1"],
   { tags: ["content"] }
 );
 
@@ -238,17 +239,17 @@ export const getBuilderPages = unstable_cache(
       return rows.map((r) => ({
         id: r.id,
         slug: r.slug,
-        title: r.title,
+        title: mudhouseText(r.title),
         layout: r.layout,
-        blocks: (r.blocks ?? []) as unknown[],
-        seoTitle: r.seoTitle,
-        seoDescription: r.seoDescription,
+        blocks: mudhouseContent((r.blocks ?? []) as unknown[]),
+        seoTitle: mudhouseText(r.seoTitle),
+        seoDescription: mudhouseText(r.seoDescription),
       }));
     } catch {
       return [];
     }
   },
-  ["cms:pages"],
+  ["cms:pages:mudhouse-v1"],
   { tags: ["pages"] },
 );
 
@@ -266,16 +267,16 @@ export const getPublishedPage = unstable_cache(
       return {
         id: r.id,
         slug: r.slug,
-        title: r.title,
+        title: mudhouseText(r.title),
         layout: r.layout,
-        blocks: (r.blocks ?? []) as unknown[],
-        seoTitle: r.seoTitle,
-        seoDescription: r.seoDescription,
+        blocks: mudhouseContent((r.blocks ?? []) as unknown[]),
+        seoTitle: mudhouseText(r.seoTitle),
+        seoDescription: mudhouseText(r.seoDescription),
       };
     } catch {
       return null;
     }
   },
-  ["cms:page"],
+  ["cms:page:mudhouse-v1"],
   { tags: ["pages"] },
 );

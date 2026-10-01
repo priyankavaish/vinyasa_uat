@@ -37,7 +37,7 @@ const CONSTRUCTION_PARAGRAPHS = [
   {
     label: "The foundations",
     body:
-      "Slowly, and with a lot of learning through experience, Vinyasa started emerging with stone and lime becoming its foundation. Some of the roofs you will see are bamboo and eucalyptus frames covered with thatch; others are iron-framed and laid with terracotta tiles — with the amphitheatre and the reception standing tall among them. The cottages caught momentum, and the studio followed. It was all one grand living choreography at play with nature, and the founder still remembers how the movement of these bodies translated into the walls, day by day.",
+      "Slowly, and with a lot of learning through experience, Vinyasa started emerging with stone and lime becoming its foundation. Some of the roofs you will see are bamboo and eucalyptus frames covered with thatch; others are iron-framed and laid with terracotta tiles — with the amphitheatre and the reception standing tall among them. The mudhouses caught momentum, and the studio followed. It was all one grand living choreography at play with nature, and the founder still remembers how the movement of these bodies translated into the walls, day by day.",
   },
   {
     label: "The name",
@@ -54,9 +54,9 @@ const CONSTRUCTION_PARAGRAPHS = [
 const GALLERY_PHOTOS = [
   { image: "/seed/grounds-01.jpg", alt: "Hand-built earthen wall catching the afternoon light at Vinyasa" },
   { image: "/seed/grounds-04.jpg", alt: "Bamboo and thatch roof frame under construction at Vinyasa" },
-  { image: "/images/property-cottages-day.jpg", alt: "Mud cottages nestled among the trees at Vinyasa" },
+  { image: "/images/property-cottages-day.jpg", alt: "Mudhouses nestled among the trees at Vinyasa" },
   { image: "/seed/grounds-07.jpg", alt: "The open-air studio, temple to movement, at Vinyasa" },
-  { image: "/seed/room-prithvi-1.jpg", alt: "Hand-painted mandala wall inside a Vinyasa cottage" },
+  { image: "/seed/room-prithvi-1.jpg", alt: "Hand-painted mandala wall inside a Vinyasa mudhouse" },
   { image: "/seed/grounds-06.jpg", alt: "Stone and lime foundation of a Vinyasa structure" },
 ];
 
@@ -73,7 +73,7 @@ const VALUES: Array<{ icon: IconName; title: string; body: string; image: string
     icon: "sparkles-outline",
     title: "Create",
     image: "/seed/room-prithvi-2.jpg",
-    imageAlt: "An artist's hand-painted mandala wall inside a Vinyasa studio cottage",
+    imageAlt: "An artist's hand-painted mandala wall inside a Vinyasa studio mudhouse",
     body:
       "To create at Vinyasa is to participate, not simply consume. We value curiosity, openness, attuned listening, sharing and the possibility of making something together. We believe creation can emerge differently when it comes from belonging and trust rather than scarcity or isolation. Vinyasa invites artists and creators to connect with nature not just as a space, but as a place where inspiration can be found.",
   },
@@ -112,7 +112,7 @@ export const defaults = {
   hero_description:
     "Vinyasa Earth is an art-residential space in Jaipur, Rajasthan — a safe and non-judgemental abode for everyone to free their inner defences and explore themselves.",
   hero_image: "/images/IMG_1084.JPG",
-  hero_image_alt: "Hand-painted mud cottage framed by a neem tree and marigolds at Vinyasa Earth",
+  hero_image_alt: "Hand-painted mudhouse framed by a neem tree and marigolds at Vinyasa Earth",
 
   construction_eyebrow: "How it was built",
   construction_title: "Built with the earth, not upon it",

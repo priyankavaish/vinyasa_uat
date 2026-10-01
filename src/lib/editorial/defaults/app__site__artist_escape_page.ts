@@ -81,13 +81,13 @@ const ARTIST_PHOTOS = [
 
 export const defaults = {
   seo: {
-    title: "Artist Escape — Vinyasa Earth",
+    title: "For the Artists",
     description:
       "A home away from home for artists. Stay, studio and performance in one space at Vinyasa Earth, Jaipur — apply to join the resident artist community.",
   },
 
-  hero_eyebrow: "Artist Escape",
-  hero_title: "A home away from home",
+  hero_eyebrow: "For the Artists",
+  hero_title: "For the Artists",
   hero_description:
     "Stay, studio and performance in one place — so the only thing left to do is create.",
   hero_image: HERO_IMAGE,

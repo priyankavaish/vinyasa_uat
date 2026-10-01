@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<import("next").Metadata> {
 
 const findHere: { icon: IconName; text: string }[] = [
   { icon: "wind-outline", text: "Wi-Fi and open shared spaces to work from — no fixed desks or coworking cubicles" },
-  { icon: "home-outline", text: "A bed in the community dormitory or a private earthen cottage" },
+  { icon: "home-outline", text: "A bed in the community dormitory or a private earthen mudhouse" },
   { icon: "leaf-outline", text: "Community vegetarian meals cooked on the farm" },
   { icon: "sunny-outline", text: "Quiet areas set aside for rest, walking and reading" },
 ];
@@ -30,7 +30,7 @@ const stays = [
     ],
   },
   {
-    name: "Earthen Cottage",
+    name: "Earthen Mudhouse",
     icon: "home-outline" as IconName,
     rows: [
       { label: "1–6 nights", price: "₹3,500 / night" },

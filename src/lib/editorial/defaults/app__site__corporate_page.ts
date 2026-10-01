@@ -66,7 +66,7 @@ seo: {
 "text_26": "Life between the tasks",
 "text_27": "A little work.",
 "text_28": "A different way to live.",
-"text_29": "Garden, welcome guests, care for the cottages or tell stories online. Everyday contributions become a way to learn, connect and belong.",
+"text_29": "Garden, welcome guests, care for the mudhouses or tell stories online. Everyday contributions become a way to learn, connect and belong.",
 "text_30": "01 / Garden",
 "text_31": "02 / Hospitality",
 "text_32": "03 / Maintenance",

@@ -72,7 +72,7 @@ seo: {
 "galleryC": galleryC,
 "galleryD": galleryD,
 "residencyImg": residencyImg,
-"text_1": "We give our guests a unique perspective on the beauty of nature — a chance to disconnect from the outside world and immerse in the wonders that surround us. Our cottages are a comfortable, relaxing place to unwind after a day exploring the surrounding countryside.",
+"text_1": "We give our guests a unique perspective on the beauty of nature — a chance to disconnect from the outside world and immerse in the wonders that surround us. Our mudhouses are a comfortable, relaxing place to unwind after a day exploring the surrounding countryside.",
 "text_2": "Experiences",
 "text_3": "Days built around making things",
 "text_4": "Vinyasa is a space for self-engaging activities — nature walks, hikes, and one-on-one sessions with an artist in residence — woven into our daily life. Experiences are seasonal; write to",

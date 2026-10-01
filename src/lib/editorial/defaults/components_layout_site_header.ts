@@ -2,7 +2,7 @@
 const NAV_LINKS = [
   { href: "/about", label: "The Vinyasa Way" },
   { href: "/stays", label: "Stays" },
-  { href: "/artist-escape", label: "Artist Escape" },
+  { href: "/artist-escape", label: "For the Artists" },
   { href: "/events", label: "Events & Retreats" },
   { href: "/volunteering", label: "Volunteering" },
   { href: "/contact", label: "Contact" },

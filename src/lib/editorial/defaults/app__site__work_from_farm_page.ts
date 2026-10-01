@@ -1,7 +1,7 @@
 import { Icon, type IconName } from "@/components/ui/icon";
 const findHere: { icon: IconName; text: string }[] = [
   { icon: "wind-outline", text: "Wi-Fi and open shared spaces to work from — no fixed desks or coworking cubicles" },
-  { icon: "home-outline", text: "A bed in the community dormitory or a private earthen cottage" },
+  { icon: "home-outline", text: "A bed in the community dormitory or a private earthen mudhouse" },
   { icon: "leaf-outline", text: "Community vegetarian meals cooked on the farm" },
   { icon: "sunny-outline", text: "Quiet areas set aside for rest, walking and reading" },
 ];
@@ -15,7 +15,7 @@ const stays = [
     ],
   },
   {
-    name: "Earthen Cottage",
+    name: "Earthen Mudhouse",
     icon: "home-outline" as IconName,
     rows: [
       { label: "1–6 nights", price: "₹3,500 / night" },
@@ -36,7 +36,7 @@ export const defaults = {
 seo: {
   title: "Work From Farm",
   description:
-    "Work From Farm at Vinyasa Earth — stay, work and slow down outside Jaipur. Wi-Fi and open shared spaces, community meals, and a bed in an earthen cottage or the dorm, by the night or the season.",
+    "Work From Farm at Vinyasa Earth — stay, work and slow down outside Jaipur. Wi-Fi and open shared spaces, community meals, and a bed in an earthen mudhouse or the dorm, by the night or the season.",
   alternates: { canonical: "/work-from-farm" },
 },
 "findHere": findHere,
@@ -48,7 +48,7 @@ seo: {
 "image_4": "/images/Vinyasa data (Space)/BM9A6310.jpg",
 "imageAlt_5": "Quiet green fields beside the Vinyasa Earth farm",
 "text_6": "A different way to work",
-"text_7": "Bring your laptop and your current project. Find focus among mud cottages, open skies and a living creative community — close enough to Jaipur, yet far from its rush. Stay a few nights or settle in for a season.",
+"text_7": "Bring your laptop and your current project. Find focus among mudhouses, open skies and a living creative community — close enough to Jaipur, yet far from its rush. Stay a few nights or settle in for a season.",
 "text_8": "What you'll find here",
 "text_9": "Room to work, and room to breathe",
 "text_10": "Choose your stay",

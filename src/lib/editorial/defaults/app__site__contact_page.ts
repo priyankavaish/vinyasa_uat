@@ -3,12 +3,12 @@ const SERVICES_FALLBACK: Array<{ icon: IconName; title: string; body: string }> 
   {
     icon: "leaf-outline",
     title: "Retreats",
-    body: "Wellness, art, and corporate retreats with eco-lodging in the mud cottages.",
+    body: "Wellness, art, and corporate retreats with eco-lodging in the mudhouses.",
   },
   {
     icon: "camera-outline",
     title: "Venue hire",
-    body: "Workshops, events, and creative shoots across the cottages and the amphitheatre.",
+    body: "Workshops, events, and creative shoots across the mudhouses and the amphitheatre.",
   },
   {
     icon: "ribbon-outline",
@@ -28,7 +28,7 @@ const FAQ_FALLBACK = [
   },
   {
     q: "What are the stay options?",
-    a: "Six themed mud cottages, a shared dorm, and tent stays, depending on the season.",
+    a: "Six themed mudhouses, a shared dorm, and tent stays, depending on the season.",
   },
   {
     q: "Are meals included?",

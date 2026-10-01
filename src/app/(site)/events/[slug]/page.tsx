@@ -34,7 +34,7 @@ const EVENT_DETAILS: Record<string, { heading: string; paragraphs: string[]; hig
   "the-pause-within": {
     heading: "A quiet return to yourself",
     paragraphs: ["A two-night residential retreat created to notice how stress lives differently in each of us and what those experiences may be trying to tell us.", "Gentle group sessions, time in nature and unhurried pauses offer room to step away from daily demands and listen more closely."],
-    highlights: ["Guided reflection", "Restorative practices", "Vegetarian meals", "Stay in Vinyasa's earth-built cottages"],
+    highlights: ["Guided reflection", "Restorative practices", "Vegetarian meals", "Stay in Vinyasa's earth-built mudhouses"],
   },
   "artist-unite": {
     heading: "A residency of self creation",
@@ -156,7 +156,7 @@ const EDITORIAL_EVENTS: Record<string, EditorialEvent> = {
     takeaways: ["A wider physical and expressive range", "Practical tools for artistic creation and performance", "Stronger presence, improvisation and adaptability", "New movement qualities and creative strategies", "A renewed relationship with curiosity, play and artistic intuition", "An official certificate of participation"],
     aboutTitle: "Learn with Sukh Ahlstrom.",
     about: "Sukh is an international performing artist, director and educator with more than twenty years of experience across physical theatre, dance, martial arts, theatrical anthropology and embodied creative practices. Her work has reached artists and students across Chile, India, Denmark, Brazil, Serbia and Greenland.",
-    passes: [{ name: "Early Bird Dorm", price: "Rs. 20,475", detail: "Shared dormitory accommodation. Limited seats available." }, { name: "Dorm Residency", price: "Rs. 24,150", detail: "Shared dormitory accommodation with the full residency experience." }, { name: "Cottage Residency", price: "Rs. 32,025", detail: "Twin-sharing earthen cottage accommodation." }, { name: "Artist Scholarship", price: "Rs. 15,015", detail: "Limited scholarship-supported dormitory seats for emerging artists and practitioners." }],
+    passes: [{ name: "Early Bird Dorm", price: "Rs. 20,475", detail: "Shared dormitory accommodation. Limited seats available." }, { name: "Dorm Residency", price: "Rs. 24,150", detail: "Shared dormitory accommodation with the full residency experience." }, { name: "Mudhouse Residency", price: "Rs. 32,025", detail: "Twin-sharing earthen mudhouse accommodation." }, { name: "Artist Scholarship", price: "Rs. 15,015", detail: "Limited scholarship-supported dormitory seats for emerging artists and practitioners." }],
     cta: "Apply for Performing Lab",
   },
   "anhad-ka-baaja": {
