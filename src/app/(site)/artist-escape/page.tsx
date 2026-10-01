@@ -207,36 +207,6 @@ export default async function ArtistEscapePage() {
       </AnimateInView>
 
 
-      {/* Apply — intro + application form */}
-      <AnimateInView delay={80}>
-        <section id="apply" className="scroll-mt-24 bg-clay-surface py-14 sm:py-16">
-          <div className="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-            <Reveal variant="left">
-              <SectionEyebrow icon="sparkles-outline">Apply for Artist Escape</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.cta_title}</h2>
-              <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
-                {content.cta_paragraphs.map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-              </div>
-              <div className="mt-6 space-y-2 text-sm">
-                <a href={`mailto:${content.cta_email}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  {content.cta_email}
-                </a>
-                <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  {content.cta_phone}
-                </a>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80">{content.cta_location}</p>
-              </div>
-            </Reveal>
-
-            <Reveal variant="right" delay={100}>
-              <ArtistEscapeApplicationForm />
-            </Reveal>
-          </div>
-        </section>
-      </AnimateInView>
-
       <ArtistInResidenceSection />
 
       <SectionWave from="#eef0e4" to="#f3f1ea" variant="wave" className="h-8 sm:h-12" />
@@ -279,7 +249,39 @@ export default async function ArtistEscapePage() {
         </section>
       </AnimateInView>
 
-      <style>{`:root { --wave-lead: #f3f1ea; }`}</style>
+      <SectionWave from="#f3f1ea" to="#f3e6d8" variant="hill" className="h-8 sm:h-12" />
+
+      {/* Apply — intro + application form */}
+      <AnimateInView delay={80}>
+        <section id="apply" className="scroll-mt-24 bg-clay-surface py-14 sm:py-16">
+          <div className="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+            <Reveal variant="left">
+              <SectionEyebrow icon="sparkles-outline">Apply for Artist Escape</SectionEyebrow>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.cta_title}</h2>
+              <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
+                {content.cta_paragraphs.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+              <div className="mt-6 space-y-2 text-sm">
+                <a href={`mailto:${content.cta_email}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
+                  {content.cta_email}
+                </a>
+                <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
+                  {content.cta_phone}
+                </a>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80">{content.cta_location}</p>
+              </div>
+            </Reveal>
+
+            <Reveal variant="right" delay={100}>
+              <ArtistEscapeApplicationForm />
+            </Reveal>
+          </div>
+        </section>
+      </AnimateInView>
+
+      <style>{`:root { --wave-lead: #f3e6d8; }`}</style>
     </div>
   );
 }
