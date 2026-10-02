@@ -134,7 +134,28 @@ export const legacyCottages: Cottage[] = [
   },
 ];
 
-export const cottages: Cottage[] = legacyCottages.map((cottage) => ({ ...cottage, ...cottageDetails[cottage.slug] }));
+// Source: https://www.vinyasa.earth/room/tent-stay-at-vinyasa/
+export const tentStay: Cottage = {
+  slug: "tent",
+  name: "Tent",
+  element: "Outdoors",
+  tagline: "Close to the land",
+  description: "A simple tent stay among Vinyasa's natural surroundings, for fresh-air mornings, quiet nights and a slower rhythm outdoors.",
+  icon: "leaf-outline",
+  accent: "#6b7a5e",
+  pricePerNight: 2000,
+  maxGuests: 2,
+  amenities: ["Ground bedding / mattresses", "Common campus washrooms", "Outdoor living", "For 1-2 guests"],
+  image: "/images/stays/tent.webp",
+  gallery: ["/images/stays/tent.webp"],
+  bodyHtml: "<h3>Settle into nature</h3><p>Stay close to the landscape with a consciously minimal place to rest. Tent living suits travellers, volunteers and retreat guests who enjoy open air and community life.</p><h3>A simple place to sleep</h3><p>Each tent accommodates one or two guests with ground bedding or mattresses. This is a basic outdoor stay, with the natural surroundings at the centre of the experience.</p><h3>Shared facilities</h3><p>Washrooms are shared with the campus and are not attached to the tent. A short walk is needed to reach them.</p>",
+  placeholder: false,
+};
+
+export const cottages: Cottage[] = [
+  ...legacyCottages.map((cottage) => ({ ...cottage, ...cottageDetails[cottage.slug] })),
+  tentStay,
+];
 
 export type EventProgram = {
   slug: string;

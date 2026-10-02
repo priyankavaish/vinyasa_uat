@@ -7,6 +7,7 @@ import * as t from "@/lib/db/schema";
 import {
   cottages as SEED_COTTAGES,
   legacyCottages,
+  tentStay,
   events as SEED_EVENTS,
   visitOptions as SEED_VISIT_OPTIONS,
   partners as SEED_PARTNERS,
@@ -97,14 +98,23 @@ export const getCottages = unstable_cache(
       const rows = await getDb()
         .select()
         .from(t.cottages)
-        .where(eq(t.cottages.published, true))
         .orderBy(asc(t.cottages.sort));
-      return rows.map(rowToCottage);
+      const rooms = rows.filter((row) => row.published).map(rowToCottage);
+      // Introduce Tent on existing installations without replacing CMS edits.
+      // An explicitly unpublished Tent must stay hidden.
+      if (!rows.some((row) => row.slug === "tent")) rooms.push(tentStay);
+      const tentIndex = rooms.findIndex((room) => room.slug === "tent");
+      if (tentIndex !== -1) {
+        const [tent] = rooms.splice(tentIndex, 1);
+        const dormIndex = rooms.findIndex((room) => room.slug === "dorm");
+        rooms.splice(dormIndex === -1 ? rooms.length : dormIndex + 1, 0, tent);
+      }
+      return rooms;
     } catch {
       return SEED_COTTAGES;
     }
   },
-  ["cms:cottages:v4"],
+  ["cms:cottages:v5"],
   { tags: ["cottages"] }
 );
 

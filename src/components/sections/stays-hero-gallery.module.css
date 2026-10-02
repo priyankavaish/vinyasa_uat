@@ -20,9 +20,9 @@
   color: #fbf9f3;
   transition: opacity .25s ease;
 }
-.captionMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; color: #efb878; font-size: 10px; font-weight: 700; line-height: 1.4; }
-.captionDate { display: inline-flex; align-items: center; gap: 9px; color: rgba(251, 249, 243, .82); font-size: 10px; font-weight: 500; }
-.captionDate::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: #b5643b; }
+.captionMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; color: #efb878; text-shadow: 0 1px 0 rgba(255, 255, 255, .12); font-size: 14px; font-weight: 700; line-height: 1.4; }
+.captionDate { display: inline-flex; align-items: center; gap: 9px; color: #ffffff; text-shadow: none; font-size: 14px; font-weight: 600; }
+.captionDate::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: #efb878; }
 .captionName {
   display: block;
   max-width: 19ch;
@@ -40,7 +40,7 @@
 }
 
 .footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1152px; margin: 12px auto 0; padding: 0 32px; }
-.eyebrow { margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .16em; color: #8f3b31; }
+.eyebrow { margin-bottom: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #682b22; }
 .footer h1 { font-size: clamp(23px, 2.3vw, 30px); font-weight: 400; letter-spacing: -.035em; line-height: 1.2; }
 .explore { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; margin-top: 4px; color: #8f3b31; font-size: 13px; }
 .controls { display: flex; align-items: center; gap: 4px; }
@@ -58,8 +58,8 @@
   .slide { width: 33.333333%; height: 94%; }
   .slide[data-active="true"] { width: 68%; }
   .caption { gap: 6px; padding: 46px 15px 16px; }
-  .captionMeta { font-size: 10px; }
-  .captionDate { font-size: 10px; }
+  .captionMeta { font-size: 13px; }
+  .captionDate { font-size: 13px; }
   .captionName { max-width: 17ch; font-size: 23px; }
   .footer { display: block; margin-top: 10px; padding: 0 20px; }
   .footer h1 { font-size: 25px; max-width: 20ch; }
@@ -107,15 +107,15 @@
   .eventsHero .footer { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 8px; padding: 0 20px; }
   .eventsHero .footer > div:first-child { width: 100%; }
   .eventsHero .footer h1 { font-size: clamp(24px, 7vw, 30px); max-width: 22ch; }
-  .eventsHero .eyebrow { font-size: 9px; }
+  .eventsHero .eyebrow { font-size: 11px; }
   .eventsHero .controls { justify-content: flex-start; border: 0; padding: 0; margin: 0; }
   .eventsHero .controls button { min-height: 38px; min-width: 38px; }
   .eventsHero .track { height: auto; }
   .eventsHero .slide { width: 76%; height: 87%; }
   .eventsHero .slide[data-active="true"] { width: 88%; }
   .eventsHero .caption { inset: auto 0 0; gap: 6px; padding: 50px 17px 18px; }
-  .eventsHero .captionMeta { font-size: 10px; }
-  .eventsHero .captionDate { font-size: 10px; }
+  .eventsHero .captionMeta { font-size: 13px; }
+  .eventsHero .captionDate { font-size: 13px; }
   .eventsHero .captionName { max-width: 18ch; font-size: 23px; }
 }
 @media (prefers-reduced-motion: reduce) { .slide:hover .image { transform: none; } }

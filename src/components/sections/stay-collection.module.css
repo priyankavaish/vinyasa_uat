@@ -68,7 +68,7 @@
   .intro p { font-size: 16px; }
   .intro span { font-size: 12px; margin-top: 8px; }
   .toolbar { display: block; margin-bottom: 24px; }
-  .filters { justify-content: space-between; gap: 12px; }
+  .filters { justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   .filters button { font-size: 12px; padding: 16px 0; }
   .results { display: none; }
   .grid { grid-template-columns: 1fr; gap: 42px; padding-top: 6px; }

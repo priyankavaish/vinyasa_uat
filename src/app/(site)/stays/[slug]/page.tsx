@@ -33,6 +33,7 @@ export default async function CottageDetailPage({ params }: { params: Promise<{ 
   if (!cottage) notFound();
   const gallery = cottage.gallery?.length ? cottage.gallery : [cottage.image];
   const shared = cottage.slug === "dorm";
+  const tent = cottage.slug === "tent";
   const bookingUrl = `/book?type=stay&slug=${encodeURIComponent(cottage.slug)}`;
 
   return (
@@ -52,13 +53,13 @@ export default async function CottageDetailPage({ params }: { params: Promise<{ 
         <section aria-labelledby="about-stay">
       <header className="mb-7">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">{cottage.element}{content.text_6}{cottage.tagline}</p>
-        <h1 className="mt-2 font-semibold text-3xl leading-tight sm:text-4xl">{cottage.name}{shared ? content.text_7 : content.text_8}</h1>
+        <h1 className="mt-2 font-semibold text-3xl leading-tight sm:text-4xl">{cottage.name}{tent ? " Stay" : shared ? content.text_7 : content.text_8}</h1>
         <p className="mt-3 flex items-center gap-2 text-sm text-foreground-soft"><Icon name="location-outline" size={16} />{content.text_9}</p>
       </header>
 
           <h2 id="about-stay" className="sr-only">{content.text_10}{cottage.name}</h2>
           <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 border-y border-line py-4 text-sm text-foreground-soft">
-            <span className="flex items-center gap-2"><Icon name={shared ? "people-outline" : "home-outline"} size={18} />{shared ? content.text_11 : content.text_12}</span>
+            <span className="flex items-center gap-2"><Icon name={shared ? "people-outline" : "home-outline"} size={18} />{tent ? "Outdoor tent stay" : shared ? content.text_11 : content.text_12}</span>
             <span className="flex items-center gap-2"><Icon name="people-outline" size={18} />{shared ? `${cottage.maxGuests}-bed dormitory` : `Up to ${cottage.maxGuests} guests`}</span>
           </div>
           <p className="mt-6 text-base leading-relaxed text-foreground-soft">{cottage.description}</p>

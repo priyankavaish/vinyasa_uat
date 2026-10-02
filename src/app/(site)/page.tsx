@@ -42,9 +42,9 @@ export default function HomePage() {
           <>
             <SectionWave from="#fff1e0" to="#f3e6d8" variant="wave" />
             <WorkFromFarmSection />
-            <SectionWave from="#f3e6d8" to="#fffaf2" variant="wave" />
+            <SectionWave from="#f3e6d8" to="var(--surface)" variant="wave" />
             <CottagesSection />
-            <SectionWave from="#fffaf2" to="#fff1e0" variant="arch" />
+            <SectionWave from="var(--surface)" to="#fff1e0" variant="arch" />
           </>
         } />
       </AnimateInView>

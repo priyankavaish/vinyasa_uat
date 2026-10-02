@@ -10,7 +10,7 @@ import { Icon } from "@/components/ui/icon";
 import type { Cottage } from "@/lib/content";
 import styles from "./stay-collection.module.css";
 
-type Filter = "all" | "cottages" | "shared";
+type Filter = "all" | "cottages" | "shared" | "tent";
 
 function StayCard({ room }: { room: Cottage }) {
   const content = useEditorial("components/sections/stay-collection", editorialDefaults);
@@ -18,6 +18,7 @@ function StayCard({ room }: { room: Cottage }) {
   const [photo, setPhoto] = useState(0);
   const images = [...new Set((room.gallery.length ? room.gallery : [room.image]).filter(Boolean))];
   const shared = room.slug === "dorm";
+  const tent = room.slug === "tent";
   const href = `/stays/${room.slug}`;
   return (
     <article className={styles.card} data-shared={shared}>
@@ -26,7 +27,7 @@ function StayCard({ room }: { room: Cottage }) {
           <Image src={images[photo] || room.image} alt={`${room.name} at Vinyasa Earth, photo ${photo + 1}`}
             fill sizes="(min-width: 1152px) 528px, (min-width: 700px) 46vw, 100vw" className={styles.image} />
         </Link>
-        <span className={styles.type}>{shared ? content.text_1 : room.element + " element"}</span>
+        <span className={styles.type}>{tent ? "Outdoor stay" : shared ? content.text_1 : room.element + " element"}</span>
         {images.length > 1 && (
           <div className={styles.photoControls} aria-label={`${room.name} photos`}>
             <button type="button" aria-label={`Previous photo of ${room.name}`}
@@ -54,8 +55,8 @@ function StayCard({ room }: { room: Cottage }) {
           <p className={styles.price}>
             {room.pricePerNight > 0 ? <><span>{content.text_4}</span><strong>₹{room.pricePerNight.toLocaleString("en-IN")}</strong><small>{shared ? "/ bed / night" : "/ night"}</small></> : <strong>{content.text_5}</strong>}
           </p>
-          <Link href={href} className={styles.explore} aria-label={`Explore ${room.name} ${shared ? content.text_6 : content.text_7}`}>
-            {shared ? content.text_8 : content.text_9}<Icon name="arrow-forward-outline" size={17} />
+          <Link href={href} className={styles.explore} aria-label={`Explore ${room.name} ${tent ? "stay" : shared ? content.text_6 : content.text_7}`}>
+            {tent ? "Explore tent" : shared ? content.text_8 : content.text_9}<Icon name="arrow-forward-outline" size={17} />
           </Link>
         </div>
       </div>
@@ -67,11 +68,12 @@ export default function StayCollection({ rooms }: { rooms: Cottage[] }) {
   const content = useEditorial("components/sections/stay-collection", editorialDefaults);
 
   const [filter, setFilter] = useState<Filter>("all");
-  const visible = rooms.filter((room) => filter === "all" || (filter === "shared" ? room.slug === "dorm" : room.slug !== "dorm"));
+  const visible = rooms.filter((room) => filter === "all" || (filter === "shared" ? room.slug === "dorm" : filter === "tent" ? room.slug === "tent" : room.slug !== "dorm" && room.slug !== "tent"));
   const filters: { value: Filter; label: string; count: number }[] = [
     { value: "all", label: "All stays", count: rooms.length },
-    { value: "cottages", label: "Mudhouses", count: rooms.filter((r) => r.slug !== "dorm").length },
+    { value: "cottages", label: "Mudhouses", count: rooms.filter((r) => r.slug !== "dorm" && r.slug !== "tent").length },
     { value: "shared", label: "Shared dorm", count: rooms.filter((r) => r.slug === "dorm").length },
+    { value: "tent", label: "Tent", count: rooms.filter((r) => r.slug === "tent").length },
   ];
   return (
     <section id="rooms" aria-labelledby="stay-collection-heading" className={styles.section}>
