@@ -63,36 +63,6 @@ export default async function ArtistEscapePage() {
         </section>
       </AnimateInView>
 
-      <SectionWave from="#f3f1ea" to="#eef0e4" variant="slant" className="h-8 sm:h-12" />
-
-      {/* A moment at Artist Escape — vertical short */}
-      <AnimateInView delay={60}>
-        <section className="bg-secondary-surface py-12 sm:py-14">
-          <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-            <Reveal variant="left" className="order-1">
-              <div className="relative aspect-[4/3] w-full">
-                <div aria-hidden className="absolute -bottom-4 -left-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
-                <div aria-hidden className="absolute -bottom-2 -left-2 h-full w-full bg-accent/10" />
-                <div className="group relative h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
-                  <Image
-                    src={content.vision_image}
-                    alt={content.vision_image_alt}
-                    fill
-                    sizes="(min-width: 1024px) 40vw, 100vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-              </div>
-            </Reveal>
-            <Reveal variant="right" delay={100} className="order-2">
-              <SectionEyebrow icon="camera-outline">{content.short_eyebrow}</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.short_title}</h2>
-              <p className="mt-4 max-w-md leading-relaxed text-foreground-soft">{content.short_body}</p>
-            </Reveal>
-          </div>
-        </section>
-      </AnimateInView>
-
       {/* Pull-quote */}
       <AnimateInView delay={60}>
         <section className="relative flex min-h-[38vh] items-center overflow-hidden bg-[#241a12] text-background">
