@@ -1,7 +1,6 @@
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__events_page";
 import { getEditorial } from "@/lib/editorial/server";
-import Image from "@/components/editorial/image";
 import Link from "next/link";
 import { PageHero } from "@/components/sections/hero";
 import type { EventSlide } from "@/components/sections/events-hero-carousel";
@@ -11,12 +10,10 @@ import SectionWave from "@/components/ui/section-wave";
 import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
-import { Parallax } from "@/components/ui/parallax";
 import { Icon, type IconName } from "@/components/ui/icon";
 import { getEvents } from "@/lib/cms";
 import { parseEventStart, parseEventEnd } from "@/lib/event-dates";
 
-import gatherImg from "@/app/assets/new/community-02.jpg";
 
 export const revalidate = 300;
 export async function generateMetadata(): Promise<import("next").Metadata> {
@@ -130,9 +127,6 @@ export default async function EventsPage() {
 
       <SectionWave from="#f3f1ea" to="#f3e6d8" variant="wave" />
       <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-16">
-        <Parallax speed={-0.04} className="pointer-events-none absolute -right-24 -top-16 hidden w-[22rem] opacity-[0.14] sm:block" aria-hidden="true">
-          <Image src={content.gatherImg} alt="" className="w-full rounded-full" />
-        </Parallax>
         <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8">
           <ul className="border-t border-line">
             {events.map((event, i) => {
@@ -198,7 +192,7 @@ export default async function EventsPage() {
                       )}
                       <Link
                         href={`/events/${event.slug}`}
-                        className="inline-flex items-center gap-1.5 bg-accent px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-accent-ink transition-transform hover:-translate-y-0.5"
+                        className="inline-flex items-center gap-1.5 bg-accent px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white! transition-transform hover:-translate-y-0.5"
                       >{content.text_10}<Icon name="arrow-forward-outline" size={12} />
                       </Link>
                     </div>

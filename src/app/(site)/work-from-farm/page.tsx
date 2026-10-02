@@ -1,189 +1,83 @@
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__work_from_farm_page";
 import { getEditorial } from "@/lib/editorial/server";
+import Image from "@/components/editorial/image";
 import Link from "next/link";
-import { PageHero } from "@/components/sections/hero";
-import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
-import { Icon, type IconName } from "@/components/ui/icon";
+import { Icon } from "@/components/ui/icon";
 import { whatsappLink } from "@/lib/site";
-import AnimateInView from "@/components/ui/animate-in-view";
-
+import workPhoto from "@/app/assets/work-from-farm/IMG_4297-1-600x900.webp";
+import gardenPhoto from "@/app/assets/work-from-farm/IMG_4299-600x900.webp";
+import styles from "./work-from-farm.module.css";
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
   return (await getEditorial("app/(site)/work-from-farm/page", editorialDefaults)).seo;
 }
 
-const findHere: { icon: IconName; text: string }[] = [
-  { icon: "wind-outline", text: "Wi-Fi and open shared spaces to work from — no fixed desks or coworking cubicles" },
-  { icon: "home-outline", text: "A bed in the community dormitory or a private earthen mudhouse" },
-  { icon: "leaf-outline", text: "Community vegetarian meals cooked on the farm" },
-  { icon: "sunny-outline", text: "Quiet areas set aside for rest, walking and reading" },
+const agreements = [
+  "Wash your own plate and leave shared spaces clean.",
+  "Use water and electricity mindfully; support plastic-free living.",
+  "Respect quiet time after dinner and the people around you.",
+  "Keep the campus vegetarian, smoke-free and alcohol-free.",
 ];
-
-const stays = [
-  {
-    name: "Community Dormitory",
-    icon: "people-outline" as IconName,
-    rows: [
-      { label: "1–14 nights", price: "₹750 / person / night" },
-      { label: "15+ nights", price: "₹500 / person / night" },
-    ],
-  },
-  {
-    name: "Earthen Mudhouse",
-    icon: "home-outline" as IconName,
-    rows: [
-      { label: "1–6 nights", price: "₹3,500 / night" },
-      { label: "7–14 nights", price: "₹2,900 / night" },
-      { label: "15+ nights", price: "₹2,100 / night" },
-    ],
-  },
-];
-
-const meals = [
-  { label: "Breakfast", price: "₹250" },
-  { label: "Lunch", price: "₹500" },
-  { label: "Dinner", price: "₹500" },
-];
-
-const vinyasaWay = [
-  "Wash your own plate after meals and leave shared spaces clean",
-  "Use water and electricity mindfully",
-  "Support plastic-free living on the campus",
-  "Respect quiet time after dinner",
-  "The campus is vegetarian and substance-free — no smoking or alcohol",
-];
-
-const forWhom = [
-  "Remote workers", "Freelancers", "Founders", "Writers", "Artists",
-  "Researchers", "Workation seekers", "Community-living enthusiasts",
+const faqs = [
+  ["How reliable are Wi-Fi and electricity?", "Wi-Fi supports regular remote work. Village connectivity and power can occasionally be interrupted; basic backup covers essential needs."],
+  ["Are there desks or air-conditioning?", "There are no dedicated workstations or air-conditioning. Choose a shared or outdoor space that suits you."],
+  ["How do meals work?", "Meals are optional, charged separately and pre-ordered each morning. The community kitchen is not a self-catering kitchen."],
+  ["Can I join events?", "Ask about gatherings during your stay. Some carry a separate fee; participation is optional."],
 ];
 
 export default async function WorkFromFarmPage() {
   const content = await getEditorial("app/(site)/work-from-farm/page", editorialDefaults);
-
+  const enquiry = whatsappLink("Hi Vinyasa Earth, I'd like to enquire about a Work From Farm stay longer than 15 nights.");
   return (
-    <>
-      <PageHero
-        eyebrow={content.eyebrow_1}
-        title={content.title_2}
-        description={content.description_3}
-        image={content.image_4} imageAlt={content.imageAlt_5} imagePosition="50% 55%" mobileImagePosition="30% 50%"
-      />
-
-      <AnimateInView delay={60}><section className="mx-auto max-w-3xl px-5 py-14 text-center sm:px-8 sm:py-16">
-        <Reveal variant="fade">
-          <SectionEyebrow icon="leaf-outline" className="justify-center">{content.text_6}</SectionEyebrow>
-          <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_7}</p>
-        </Reveal>
-      </section></AnimateInView>
-
-      <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <Reveal variant="up" className="mx-auto mb-10 max-w-2xl text-center">
-            <SectionEyebrow icon="compass-outline" className="justify-center">{content.text_8}</SectionEyebrow>
-            <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_9}</h2>
-          </Reveal>
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {content.findHere.map((f) => (
-              <li key={f.text} className="flex gap-3 border border-line bg-surface p-5">
-                <Icon name={f.icon} size={18} className="mt-0.5 shrink-0 text-accent" />
-                <span className="text-sm leading-6 text-foreground-soft">{f.text}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section></AnimateInView>
-
-      <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
-        <Reveal variant="up" className="mx-auto mb-10 max-w-2xl text-center">
-          <SectionEyebrow icon="home-outline" className="justify-center">{content.text_10}</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_11}</h2>
-        </Reveal>
-
-        <div className="grid gap-6 sm:grid-cols-2">
-          {content.stays.map((s) => (
-            <div key={s.name} className="border border-line bg-surface p-6 sm:p-7">
-              <div className="flex items-center gap-2 text-accent">
-                <Icon name={s.icon} size={16} />
-                <p className="text-xs font-bold uppercase tracking-[0.16em]">{s.name}</p>
-              </div>
-              <dl className="mt-4 divide-y divide-line text-sm">
-                {s.rows.map((r) => (
-                  <div key={r.label} className="flex items-baseline justify-between gap-4 py-2.5">
-                    <dt className="text-foreground-soft">{r.label}</dt>
-                    <dd className="font-semibold tabular-nums text-foreground">{r.price}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 grid gap-4 border-t border-line pt-6 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-8">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">{content.text_12}</p>
-          <ul className="flex flex-wrap gap-x-8 gap-y-2 text-sm text-foreground-soft">
-            {content.meals.map((m) => (
-              <li key={m.label} className="tabular-nums">
-                {m.label} <span className="font-semibold text-foreground">{m.price}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <p className="mt-4 text-xs text-muted">{content.text_13}</p>
-      </section></AnimateInView>
-
-      <AnimateInView delay={100}><section className="organic-section relative overflow-hidden bg-clay-surface py-14 sm:py-20">
-        <div className="mx-auto grid max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
-          <Reveal variant="left">
-            <SectionEyebrow icon="sparkles-outline">{content.text_14}</SectionEyebrow>
-            <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_15}</h2>
-            <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_16}</p>
-          </Reveal>
-          <Reveal variant="right" delay={100}>
-            <ul className="space-y-0">
-              {vinyasaWay.map((v, i) => (
-                <li key={v} className="flex gap-4 border-t border-line py-4 last:border-b">
-                  <span className="font-display text-lg leading-none text-accent/60 tabular-nums">{content.text_17}{i + 1}
-                  </span>
-                  <span className="text-sm leading-6 text-foreground-soft">{v}</span>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-      </section></AnimateInView>
-
-      <AnimateInView delay={80}><section className="mx-auto max-w-4xl px-5 py-14 text-center sm:px-8 sm:py-20">
-        <Reveal variant="fade">
-          <SectionEyebrow icon="people-outline" className="justify-center">{content.text_18}</SectionEyebrow>
-          <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_19}</h2>
-          <ul className="mt-6 flex flex-wrap justify-center gap-2">
-            {forWhom.map((w) => (
-              <li
-                key={w}
-                className="rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
-              >
-                {w}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-      </section></AnimateInView>
-
-      <AnimateInView delay={80}><section className="organic-section relative overflow-hidden bg-clay-surface py-16 text-center sm:py-20">
-        <Reveal variant="up" className="mx-auto max-w-2xl px-5 sm:px-8">
-          <h2 className="font-display text-3xl leading-tight sm:text-4xl">{content.text_20}</h2>
-          <p className="mt-4 leading-relaxed text-foreground-soft">{content.text_21}</p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <Link href={content.href_22} className="btn btn-accent inline-flex">{content.text_23}</Link>
-            <a
-              href={whatsappLink("Hi Vinyasa Earth, I'd like to book a Work From Farm stay.")}
-              className="btn btn-outline inline-flex"
-            >{content.text_24}</a>
+    <div className={styles.page}>
+      <section className={`${styles.container} ${styles.hero}`} aria-labelledby="farm-title">
+        <Reveal className={styles.heroCopy}>
+          <p className={styles.eyebrow}>Work from farm / Vinyasa Earth</p>
+          <h1 id="farm-title">A little less rush.<br /><span>A little more room.</span></h1>
+          <p className={styles.lead}>{content.title_2}</p>
+          <p className={styles.copy}>{content.description_3}</p>
+          <div className={styles.actions}>
+            <Link href={content.href_22} className={`btn btn-accent ${styles.button}`}>Find your stay <Icon name="arrow-forward-outline" size={17} /></Link>
+            <a href="#farm-stays" className={styles.textLink}>Explore stays &amp; rates <span aria-hidden="true">↓</span></a>
           </div>
+          <div className={styles.heroNote}><Icon name="leaf-outline" size={19} /><span>Bring your laptop. Make yourself at home.</span></div>
         </Reveal>
-      </section></AnimateInView>
-    </>
+        <figure className={styles.heroPhoto}>
+          <Image src={workPhoto} alt="A guest working on her laptop beneath the trees at Vinyasa" fill priority sizes="(min-width: 1152px) 490px, (min-width: 768px) 46vw, 100vw" />
+          <figcaption>Work, with a different view.</figcaption>
+        </figure>
+      </section>
+
+      <section className={styles.amenities} aria-labelledby="farm-amenities">
+        <div className={styles.container}>
+          <div className={styles.sectionHeading}><p className={styles.eyebrow}>{content.text_8}</p><h2 id="farm-amenities">{content.text_9}</h2></div>
+          <ul className={styles.amenityGrid}>{content.findHere.map((item) => <li key={item.text}><Icon name={item.icon} size={24} /><p>{item.text}</p></li>)}</ul>
+        </div>
+      </section>
+
+      <section id="farm-stays" className={`${styles.container} ${styles.stays}`} aria-labelledby="farm-stays-title">
+        <div className={styles.splitHeading}><div><p className={styles.eyebrow}>{content.text_10}</p><h2 id="farm-stays-title">Settle in, your way.</h2></div><p>One night or a longer change of scene.<br />Choose a shared home or your own quiet corner.</p></div>
+        <div className={styles.stayGrid}>{content.stays.map((stay, i) => <Reveal key={stay.name} className={styles.stayCard}>
+          <div className={styles.stayTop}><Icon name={stay.icon} size={22} /><span>0{i + 1}</span></div>
+          <h3>{stay.name}</h3><p className={styles.stayDescription}>{i === 0 ? "A simple shared stay, with community close by." : "A private earthen stay for up to two guests."}</p>
+          <dl>{stay.rows.map((row) => <div key={row.label}><dt>{row.label}</dt><dd><strong>{row.price.split("/")[0].trim()}</strong>{row.price.includes("/") && <small> / {row.price.split("/").slice(1).join("/").trim()}</small>}</dd></div>)}</dl>
+          <Link href={content.href_22} className={styles.stayLink}>Check availability <Icon name="arrow-forward-outline" size={18} /></Link>
+        </Reveal>)}</div>
+        <p className={styles.priceNote}>{content.text_13} Meals are separate.</p>
+        <div className={styles.meals}><div><p className={styles.eyebrow}>Around the table</p><h3>Simple food. Shared moments.</h3><p>Optional vegetarian meals, ordered each morning.</p></div><dl>{content.meals.map((meal) => <div key={meal.label}><dt>{meal.label}</dt><dd>{meal.price}</dd></div>)}</dl></div>
+      </section>
+
+      <section className={styles.community} aria-labelledby="farm-community">
+        <div className={`${styles.container} ${styles.communityGrid}`}>
+          <figure className={styles.communityPhoto}><Image src={gardenPhoto} alt="A guest working on a laptop on the grass beside an earthen cottage" fill sizes="(min-width: 1152px) 430px, (min-width: 768px) 42vw, 100vw" /><figcaption>A change of pace, outside Jaipur.</figcaption></figure>
+          <Reveal className={styles.communityCopy}><p className={styles.eyebrow}>{content.text_14}</p><h2 id="farm-community">Your work.<br />Our shared rhythm.</h2><p>{content.text_16}</p><ol>{agreements.map((item, i) => <li key={item}><span>0{i + 1}</span>{item}</li>)}</ol><p className={styles.communityNote}>For remote workers, freelancers, founders, writers, artists and anyone comfortable with community living.</p></Reveal>
+        </div>
+      </section>
+
+      <section className={`${styles.container} ${styles.faq}`} aria-labelledby="farm-faq"><div><p className={styles.eyebrow}>Before you arrive</p><h2 id="farm-faq">A few things<br />to know.</h2><p>Maheshwas Khurd, outside Jaipur.<br />Cabs can reach the property directly.</p></div><div className={styles.questions}>{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+
+      <section className={styles.cta} aria-labelledby="farm-book"><div className={styles.container}><p className={styles.eyebrow}>Make room for a different everyday</p><h2 id="farm-book">Bring your work. Stay a while.</h2><p>Up to 15 nights? Book online. Longer stay? Let&apos;s plan it together.</p><div className={styles.actions}><Link href={content.href_22} className={`btn btn-accent ${styles.button}`}>Check availability <Icon name="arrow-forward-outline" size={17} /></Link><a href={enquiry} className={`btn btn-outline ${styles.button}`}>Enquire for a longer stay</a></div></div></section>
+    </div>
   );
 }
