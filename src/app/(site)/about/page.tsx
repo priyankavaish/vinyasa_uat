@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__about_page";
+import { defaults as editorialDefaults, previousConstructionParagraphs, previousValues } from "@/lib/editorial/defaults/app__site__about_page";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
 import { PageHero } from "@/components/sections/hero";
@@ -22,6 +22,16 @@ export async function generateMetadata(): Promise<import("next").Metadata> {
 
 export default async function AboutPage() {
   const content = await getEditorial("app/(site)/about/page", editorialDefaults);
+  const constructionParagraphs = content.construction_paragraphs.map((paragraph) => {
+    const previous = previousConstructionParagraphs.find((item) => item.label === paragraph.label);
+    const updated = editorialDefaults.construction_paragraphs.find((item) => item.label === paragraph.label);
+    return previous?.body === paragraph.body && updated ? { ...paragraph, body: updated.body } : paragraph;
+  });
+  const values = content.values.map((value) => {
+    const previous = previousValues.find((item) => item.title === value.title);
+    const updated = editorialDefaults.values.find((item) => item.title === value.title);
+    return previous?.body === value.body && updated ? { ...value, body: updated.body } : value;
+  });
   const family = content.FAMILY.map((member) => {
     const legacyAnkitaBio = "Sankalp's partner, and the quiet rhythm behind Vinyasa's every day.";
     if (member.name === "Ankita Sharma" && member.blurb.trim() === legacyAnkitaBio) {
@@ -54,7 +64,7 @@ export default async function AboutPage() {
           <ConstructionStory
             eyebrow={<SectionEyebrow icon="compass-outline">{content.construction_eyebrow}</SectionEyebrow>}
             title={<h2 className="mt-3 font-display italic text-4xl leading-tight">{content.construction_title}</h2>}
-            paragraphs={content.construction_paragraphs}
+            paragraphs={constructionParagraphs}
             image={content.construction_image}
             imageAlt={content.construction_image_alt}
             accentImage={content.construction_accent_image}
@@ -98,7 +108,7 @@ export default async function AboutPage() {
             </Reveal>
 
             <div className="mt-14">
-              {content.values.map((v, i) => (
+              {values.map((v, i) => (
                 <PrincipleRow
                   key={v.title}
                   index={i + 1}

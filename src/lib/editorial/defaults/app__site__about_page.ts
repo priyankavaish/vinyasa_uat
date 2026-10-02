@@ -28,7 +28,7 @@ const FAMILY = [
   },
 ];
 
-const CONSTRUCTION_PARAGRAPHS = [
+export const previousConstructionParagraphs = [
   {
     label: "The intention",
     body:
@@ -51,6 +51,25 @@ const CONSTRUCTION_PARAGRAPHS = [
   },
 ];
 
+const CONSTRUCTION_PARAGRAPHS = [
+  {
+    "label": "The intention",
+    "body": "Vinyasa began with a simple intention: to build with nature, by nature, rather than place a conventional structure upon nature. Building on the lands of Rajasthan inspired the founder with the vernacular architecture which is peculiar around here. This kind of architecture invites one to work closely with the earthen materials and the varied seasons of the land, for resilient structures to emerge. Inspired by this, the founder, with the locals around, began with earthen based materials and natural building techniques, some of which include earthbag, wattle and daub, and cob house, to construct different structures in Vinyasa."
+  },
+  {
+    "label": "The foundations",
+    "body": "Slowly, and with a lot of learning through experience, Vinyasa started emerging, with stone and lime becoming its foundation and some of the roofs that you will see are bamboo and eucalyptus roof frames covered with thatch, iron framed with terracotta tiles resting over some structures, with the amphitheatre and the reception standing tall. The cottages caught momentum and the studio followed. It all was one grand living choreography at play with nature, and the founder still remembers how the movement of these bodies translated into the walls day by day."
+  },
+  {
+    "label": "The name",
+    "body": "As movement is something that is deeply valuable to the founder and a part of how this construction was unfolding, he became curious about how the name of this space had to be something to do with movement, because he believes that movement has the quality of continuation to it. There is no end. It is a constant response to change. He wanted the space to resemble that, and that is why we call it Vinyasa today, meaning FLOW. The flow that has resilience to break and potential to adapt itself to changing seasons. Vinyasa’s walls witnessed this when the initial construction was met with rains, which allowed these walls to be rethought and rebuilt. This is also what these walls embody, a space for all that flow consists of, the breaking, the shattering, the rebuilding, the grounding, and this allows the space to invite everyone who comes to Vinyasa to be able to arrive in the state that they are and unfold into their becoming."
+  },
+  {
+    "label": "The studio",
+    "body": "Amidst the lustrous nature, the intention to construct a space which was the studio was drawn from Sankalp’s idea about how body and mind cannot be inspired in isolation of four walls, but rather get activated when the body and mind can step in between nature and allow oneself to be open to receive the wisdom of the land. That is the reason the studio space, what Vinyasa calls temple, is open without any walls, allowing one to practice their art in tune with nature. Because Vinyasa really believes in the interrelationship of nature and art and how both of these invite one to slow down, pause, attend to details, to ruminate, to linger and to empathise. Co creating this human thread of existence, Vinyasa invites people to step into this dance between art, nature, connection and community."
+  }
+];
+
 const GALLERY_PHOTOS = [
   { image: "/seed/grounds-01.jpg", alt: "Hand-built earthen wall catching the afternoon light at Vinyasa" },
   { image: "/seed/grounds-04.jpg", alt: "Bamboo and thatch roof frame under construction at Vinyasa" },
@@ -60,7 +79,7 @@ const GALLERY_PHOTOS = [
   { image: "/seed/grounds-06.jpg", alt: "Stone and lime foundation of a Vinyasa structure" },
 ];
 
-const VALUES: Array<{ icon: IconName; title: string; body: string; image: string; imageAlt: string }> = [
+export const previousValues: Array<{ icon: IconName; title: string; body: string; image: string; imageAlt: string }> = [
   {
     icon: "leaf-outline",
     title: "Live",
@@ -84,6 +103,30 @@ const VALUES: Array<{ icon: IconName; title: string; body: string; image: string
     imageAlt: "Residents sharing a meal together at Vinyasa",
     body:
       "To belong at Vinyasa is to make space for yourself while making space for another. We respect boundaries, non-judgement, compassion, empathy, communication and care. Belonging here is something we continually create together — with people, with the land, and with the living world. Vinyasa invites you to get curious about the many ways to connect with one another.",
+  },
+];
+
+const VALUES: Array<{ icon: IconName; title: string; body: string; image: string; imageAlt: string }> = [
+  {
+    icon: "leaf-outline",
+    title: "Live",
+    image: "/seed/grounds-05.jpg",
+    imageAlt: "Solar panels and a quiet courtyard at Vinyasa in the early morning light",
+    body: "At Vinyasa, living is an act of interconnection—with people, nature and the larger living world. learning to use what the land offers. Solar energy is already part of this rhythm, with rainwater harvesting and greywater systems being the forward vision in the ecosystem.\n\nEven the small things become part of this relationship. We try to carry less plastic into the space, and we try to manage our own waste consciously, with this vinyasa is also looking forward to learning new ways of managing its electrical, plastic and medical waste. Quiet nights, shared meals and an unwavering care for the space is embedded in this flow of living.",
+  },
+  {
+    icon: "sparkles-outline",
+    title: "Create",
+    image: "/seed/room-prithvi-2.jpg",
+    imageAlt: "An artist's hand-painted mandala wall inside a Vinyasa studio mudhouse",
+    body: "To create at Vinyasa is to participate, not simply consume.\n\nWe value curiosity, openness, attuned listening, sharing and the possibility of making something together.\n\nWe believe creation can emerge differently when it comes from belonging and trust rather than scarcity or isolation. Vinyasa invites artists and creators to connect with nature not just from a place of a space, but from a place where inspiration can be found.",
+  },
+  {
+    icon: "people-outline",
+    title: "Belong",
+    image: "/seed/community-03.jpg",
+    imageAlt: "Residents sharing a meal together at Vinyasa",
+    body: "To belong at Vinyasa is to make space for yourself while making space for another.\n\nWe respect boundaries, non-judgement, compassion, empathy, communication and care.\n\nBelonging here is something we continually create together—with people, with the land, and with the living world. Vinyasa invites one to get curious about ways to connect with one another.",
   },
 ];
 

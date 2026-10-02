@@ -41,7 +41,9 @@ export default function PrincipleRow({
                 <Icon name={icon} size={16} />
               </span>
               <h3 className="mt-3 font-display italic text-3xl leading-tight sm:text-[2.15rem]">{title}</h3>
-              <p className="mt-4 max-w-xl leading-relaxed text-foreground-soft">{body}</p>
+              <div className="mt-4 max-w-xl space-y-4 leading-relaxed text-foreground-soft">
+                {body.split(/\n\s*\n/).map((paragraph, i) => <p key={i}>{paragraph}</p>)}
+              </div>
             </div>
           </div>
         </Reveal>
