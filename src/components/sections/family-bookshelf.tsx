@@ -2,6 +2,7 @@
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_family_bookshelf";
 import { useEditorial } from "@/components/editorial/provider";
 
+import { useState } from "react";
 import Image from "@/components/editorial/image";
 import Link from "next/link";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
@@ -18,6 +19,7 @@ export type FamilyMember = {
 
 export default function FamilyBookshelf({ members, hero = false }: { members: FamilyMember[]; hero?: boolean }) {
   const content = useEditorial("components/sections/family-bookshelf", editorialDefaults);
+  const [expandedMembers, setExpandedMembers] = useState<string[]>([]);
   const Heading = hero ? "h1" : "h2";
 
   return (
@@ -35,13 +37,13 @@ export default function FamilyBookshelf({ members, hero = false }: { members: Fa
           <p className="mx-auto mt-5 max-w-[52ch] leading-relaxed text-foreground-soft">{content.text_4}</p>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-1 divide-y divide-clay-ink/15 md:grid-cols-[1.35fr_1fr_1fr] md:divide-x md:divide-y-0 sm:mt-16">
+        <div className="mt-12 grid grid-cols-1 divide-y divide-clay-ink/15 md:grid-cols-3 md:divide-x md:divide-y-0 sm:mt-16">
           {members.map((member, i) => (
             <Reveal
               key={member.name}
               variant="up"
               delay={i * 120}
-              className="grid min-w-0 grid-cols-1 justify-items-center px-5 py-10 text-center first:pt-0 md:row-span-4 md:grid-rows-subgrid md:px-6 md:py-0 lg:px-8"
+              className="grid min-w-0 grid-cols-1 justify-items-center px-5 py-10 text-center first:pt-0 md:row-span-5 md:grid-rows-subgrid md:px-6 md:py-0 lg:px-8"
             >
               <div className="relative mx-auto h-40 w-40 lg:h-48 lg:w-48">
                 <span
@@ -67,7 +69,21 @@ export default function FamilyBookshelf({ members, hero = false }: { members: Fa
 
               <span className="mt-7 self-center text-[11px] font-bold uppercase leading-relaxed tracking-[0.14em] text-accent">{member.role}</span>
               <h3 className="mt-2 font-display text-2xl leading-tight text-clay-ink">{member.name}</h3>
-              <p className="mt-4 w-full max-w-[42ch] self-start text-pretty text-left text-sm leading-[1.8] text-foreground-soft md:text-justify">{member.blurb}</p>
+              <p id={`family-bio-${i}`} className={`mt-4 w-full max-w-[42ch] self-start text-pretty text-left text-sm leading-[1.8] text-foreground-soft ${member.blurb.length > 160 && !expandedMembers.includes(member.name) ? "line-clamp-3" : ""}`}>{member.blurb}</p>
+              <div className="w-full max-w-[42ch] self-start text-left">
+                {member.blurb.length > 160 && (
+                  <button
+                    type="button"
+                    aria-expanded={expandedMembers.includes(member.name)}
+                    aria-controls={`family-bio-${i}`}
+                    aria-label={`${expandedMembers.includes(member.name) ? "Read less" : "Read more"} about ${member.name}`}
+                    onClick={() => setExpandedMembers((current) => current.includes(member.name) ? current.filter((name) => name !== member.name) : [...current, member.name])}
+                    className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                  >
+                    {expandedMembers.includes(member.name) ? "Read less" : "Read more"}
+                  </button>
+                )}
+              </div>
             </Reveal>
           ))}
         </div>

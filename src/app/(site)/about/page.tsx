@@ -22,6 +22,13 @@ export async function generateMetadata(): Promise<import("next").Metadata> {
 
 export default async function AboutPage() {
   const content = await getEditorial("app/(site)/about/page", editorialDefaults);
+  const family = content.FAMILY.map((member) => {
+    const legacyAnkitaBio = "Sankalp's partner, and the quiet rhythm behind Vinyasa's every day.";
+    if (member.name === "Ankita Sharma" && member.blurb.trim() === legacyAnkitaBio) {
+      return { ...member, blurb: editorialDefaults.FAMILY[0].blurb };
+    }
+    return member;
+  });
 
   return (
     <div>
@@ -128,7 +135,7 @@ export default async function AboutPage() {
       <SectionWave from="#f3f1ea" to="#fbf9f3" variant="wave" className="h-8 sm:h-12" />
 
       {/* Community bookshelf */}
-      <AnimateInView delay={60}><FamilyBookshelf members={content.FAMILY} /></AnimateInView>
+      <AnimateInView delay={60}><FamilyBookshelf members={family} /></AnimateInView>
 
       <style>{`:root { --wave-lead: #241a12; }`}</style>
 
