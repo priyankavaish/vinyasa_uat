@@ -53,11 +53,11 @@ export default function ArtistEscapeVideoHero({
           <h1 className="mt-4 font-display italic text-5xl leading-[1.05] sm:text-7xl">{title}</h1>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-background/90 sm:text-lg">{description}</p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-            <Link href="#offerings" className="btn btn-accent">
-              Find Your Creative Path
+            <Link href="#apply" className="btn btn-accent">
+              Apply Now
             </Link>
             <Link href="#artists" className="btn btn-outline-light">
-              Meet the artists
+              Our Past Artist Entries
             </Link>
           </div>
         </Reveal>
