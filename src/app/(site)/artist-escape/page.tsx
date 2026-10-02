@@ -161,45 +161,45 @@ export default async function ArtistEscapePage() {
 
       {/* Application process */}
       <AnimateInView delay={60}>
-        <section className="bg-clay-surface py-12 sm:py-14">
+        <section className="bg-clay-surface py-8 sm:py-10">
           <div className="mx-auto max-w-5xl px-5 sm:px-8">
             <SectionHeading icon="compass-outline" eyebrow="Artist Escape" title={content.process_title} />
 
-            <div className="relative mt-12 grid gap-8 sm:grid-cols-3">
-              <div aria-hidden className="pointer-events-none absolute inset-x-0 top-8 hidden border-t border-dashed border-accent/25 sm:block" />
+            <div className="relative mt-6 grid gap-4 sm:grid-cols-3">
+              <div aria-hidden className="pointer-events-none absolute inset-x-0 top-6 hidden border-t border-dashed border-accent/25 sm:block" />
               {content.process_steps.map((step, i) => (
                 <Reveal key={step.title} variant="fade" delay={i * 80} className="relative">
-                  <div className="relative overflow-hidden rounded-tl-2xl rounded-br-2xl border border-clay-ink/15 bg-surface p-7 text-center shadow-[0_18px_40px_-26px_rgba(30,20,12,0.35)] transition-transform duration-300 hover:-translate-y-1">
-                    <span className="relative mx-auto grid h-12 w-12 place-items-center rounded-full bg-accent/10 text-accent ring-4 ring-surface">
+                  <div className="relative overflow-hidden rounded-tl-2xl rounded-br-2xl border border-clay-ink/15 bg-surface p-5 text-center shadow-[0_18px_40px_-26px_rgba(30,20,12,0.35)] transition-transform duration-300 hover:-translate-y-1">
+                    <span className="relative mx-auto grid h-9 w-9 place-items-center rounded-full bg-accent/10 text-accent ring-4 ring-surface">
                       <Icon name={PROCESS_ICONS[i] ?? "sparkles-outline"} size={20} />
                     </span>
-                    <h3 className="relative mt-4 font-display italic text-2xl leading-tight">{step.title}</h3>
+                    <h3 className="relative font-display italic text-2xl leading-tight">{step.title}</h3>
                     <p className="relative mt-2 text-sm leading-relaxed text-foreground-soft">{step.body}</p>
                   </div>
                 </Reveal>
               ))}
             </div>
 
-            <Reveal variant="fade" delay={200} className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-tl-2xl rounded-br-2xl border border-accent/20 bg-surface text-center shadow-[0_18px_40px_-26px_rgba(30,20,12,0.3)]">
-              <div className="border-b border-accent/15 bg-accent/5 px-8 py-6">
-                <span className="mx-auto grid h-10 w-10 place-items-center rounded-full bg-accent/10 text-accent">
+            <Reveal variant="fade" delay={200} className="mx-auto mt-6 max-w-3xl overflow-hidden rounded-tl-2xl rounded-br-2xl border border-accent/20 bg-surface text-center shadow-[0_18px_40px_-26px_rgba(30,20,12,0.3)]">
+              <div className="flex items-center justify-center gap-3 border-b border-accent/15 bg-accent/5 px-5 py-3">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent/10 text-accent">
                   <Icon name="calendar-outline" size={18} />
                 </span>
-                <h3 className="mt-3 font-display italic text-2xl">{content.pricing_title}</h3>
+                <h3 className="font-display italic text-2xl">{content.pricing_title}</h3>
               </div>
-              <div className="p-8">
-                <div className="grid gap-4 sm:grid-cols-2">
+              <div className="p-4 sm:p-5">
+                <div className="grid gap-3 sm:grid-cols-2">
                   {content.pricing_tiers.map((tier, i) => (
                     <div
                       key={tier.label}
-                      className={`rounded-tl-xl rounded-br-xl border p-5 ${i === 0 ? "border-accent/30 bg-accent/5" : "border-line"}`}
+                      className={`rounded-tl-xl rounded-br-xl border p-3 ${i === 0 ? "border-accent/30 bg-accent/5" : "border-line"}`}
                     >
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{tier.label}</p>
                       <p className="mt-2 font-display italic text-3xl">{tier.price}</p>
                     </div>
                   ))}
                 </div>
-                <p className="mt-5 text-sm text-foreground-soft">{content.pricing_note}</p>
+                <p className="mt-3 text-sm text-foreground-soft">{content.pricing_note}</p>
               </div>
             </Reveal>
           </div>
