@@ -37,13 +37,13 @@ export default function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  // usePathname() has intermittently returned a stale/empty value on the
-  // very first client render in production (a real, reproducible race, not
-  // just an SSR quirk — confirmed by re-testing the same URL repeatedly).
-  // Reading window.location.pathname directly in the render body instead is
-  // synchronous and always correct on the client.
-  const routerPathname = usePathname() || "/";
-  const pathname = typeof window !== "undefined" ? window.location.pathname || "/" : routerPathname;
+  // Use the router snapshot so client navigation renders the destination route.
+  const pathname = usePathname() || "/";
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   const overHero = HERO_PHOTO_ROUTES.some((re) => re.test(pathname));
   const transparent = overHero && !scrolled && !open;
 
