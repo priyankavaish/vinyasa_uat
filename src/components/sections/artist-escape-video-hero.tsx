@@ -57,7 +57,7 @@ export default function ArtistEscapeVideoHero({
               Apply Now
             </Link>
             <Link href="#artists" className="btn btn-outline-light">
-              Our Past Artist Entries
+              Our Past Artists
             </Link>
           </div>
         </Reveal>

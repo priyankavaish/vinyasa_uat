@@ -1,5 +1,6 @@
+import { mudhouseText } from "@/lib/mudhouse-wording";
 import Link from "next/link";
-import { defaults as editorialDefaults, previousConstructionParagraphs, previousValues } from "@/lib/editorial/defaults/app__site__about_page";
+import { defaults as editorialDefaults, previousConstructionParagraphs, previousValues, previousFounderParagraphs, previousFounderPullquote } from "@/lib/editorial/defaults/app__site__about_page";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
 import { PageHero } from "@/components/sections/hero";
@@ -25,8 +26,14 @@ export default async function AboutPage() {
   const constructionParagraphs = content.construction_paragraphs.map((paragraph) => {
     const previous = previousConstructionParagraphs.find((item) => item.label === paragraph.label);
     const updated = editorialDefaults.construction_paragraphs.find((item) => item.label === paragraph.label);
-    return previous?.body === paragraph.body && updated ? { ...paragraph, body: updated.body } : paragraph;
+    return updated && (previous?.body === paragraph.body || mudhouseText(updated.body) === paragraph.body) ? { ...paragraph, body: updated.body } : paragraph;
   });
+  const founderParagraphs = JSON.stringify(content.founder_paragraphs) === JSON.stringify(previousFounderParagraphs)
+    ? editorialDefaults.founder_paragraphs : content.founder_paragraphs;
+  const founderRole = content.founder_role === "Dancer, builder, founder of Vinyasa"
+    ? editorialDefaults.founder_role : content.founder_role;
+  const founderPullquote = content.founder_pullquote === previousFounderPullquote
+    ? editorialDefaults.founder_pullquote : content.founder_pullquote;
   const values = content.values.map((value) => {
     const previous = previousValues.find((item) => item.title === value.title);
     const updated = editorialDefaults.values.find((item) => item.title === value.title);
@@ -133,9 +140,9 @@ export default async function AboutPage() {
           <FounderStory
             eyebrow={<SectionEyebrow icon="star-outline">{content.founder_eyebrow}</SectionEyebrow>}
             title={<h2 className="mt-3 font-display italic text-4xl leading-tight">{content.founder_title}</h2>}
-            role={<p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-accent">{content.founder_role}</p>}
-            paragraphs={content.founder_paragraphs}
-            pullquote={content.founder_pullquote}
+            role={<p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-accent">{founderRole}</p>}
+            paragraphs={founderParagraphs}
+            pullquote={founderPullquote}
             image={content.founder_image}
             imageAlt={content.founder_image_alt}
           />

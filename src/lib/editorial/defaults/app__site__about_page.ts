@@ -130,7 +130,7 @@ const VALUES: Array<{ icon: IconName; title: string; body: string; image: string
   },
 ];
 
-const FOUNDER_PARAGRAPHS = [
+export const previousFounderParagraphs = [
   "As a child, Sankalp was quiet, curious and a little courageously rebellious — always drawn to questions, and to the way things worked around him.",
   "Years later, that same curiosity found a language in movement, when dance entered his life and he found himself immersing in the body, the self and intuition. What began as a fascination with movement slowly became a way for him to find his potential as an artist, and a step towards honouring his creativity. His journey took him from Terence Lewis on the streets of Bombay to the Martha Graham School in New York — through studios, stages, odd jobs and double shifts — learning, creating, performing, simply entering his era as a dancer in the world.",
   "Somewhere between making art and sharing space with fellow artists, he discovered how deeply artists need one another — the conversations, the witnessing, the simple feeling of belonging with humans who hold an innate respect and trust in the process of creating, and in developing an intimacy with art.",
@@ -139,8 +139,21 @@ const FOUNDER_PARAGRAPHS = [
   "Even today, he does not see Vinyasa as a finished creation, but as something living — capable of changing with the people, seasons and ideas that enter it. This resilient land was nothing less than a stage for him, and for the humans who gathered to make something one could call home — a home where trust is embedded and community is in its foundation. Perhaps through his truest way of being — to keep moving, becoming, growing and flowing — he invites others to find their own path to themselves, their craft and their flow.",
 ];
 
-const FOUNDER_PULLQUOTE =
+const FOUNDER_PARAGRAPHS = [
+  "As a child, Sankalp was quiet, curious and a little courageously rebellious, always drawn to questions and the ways things function around him.",
+  "Years later, that same curiosity found a language in movement, when dance entered his life and he found himself immersing in the body, self and intuition.",
+  "What began as a fascination with movement slowly became a way for him to find the potential as an artist and a step towards honoring his creativity. His journey took him from Terrence Lewis on the streets of Bombay to the Martha Graham School in New York, through studios, stages, odd jobs and double shifts. He found himself learning, creating, performing and simply entering his era as a dancer in the world.",
+  "Somewhere between making art and sharing space with fellow artists around him, he discovered how deeply artists need one another: the conversations, the witnessing, the simple feeling of belonging with humans who have this innate respect and trust in the process of creating and developing an intimacy with art.",
+  "Being a kid who never felt the need to exit the four walls of his room and screen, he found his way back to nature through immersing in his art of movement with nature.",
+  "He began to wonder what might happen if artists could have a space where people, art, body and land were not separate things, instead elements in which creativity thrives and amplifies.\nThat question eventually brought him back to Jaipur when COVID hit and he was sent back from New York, where a dream once held in a notebook began taking shape in earth.",
+  "Vinyasa became an extension of something Sankalp had been carrying all along: the instinct to rearrange, to question, to break open and build anew. His mere thought of sharing space with artists, art and nature, that translates into a community, started coming alive brick by brick, but just in case of Vinyasa, it is mud by mud.",
+  "Even today, he does not see it as a finished creation, but as something living, capable of changing with the people, seasons and ideas that enter it. This resilient land was nothing less than a stage for him, and the humans who gathered to make something that one can call home, a home where trust is embedded and community is in its foundation. Perhaps through his truest way of being: to keep moving, becoming, growing and flowing, he invites humans to find their own path to themselves, their craft and their flow."
+];
+
+export const previousFounderPullquote =
   "Vinyasa became an extension of something Sankalp had been carrying all along — the instinct to rearrange, to question, to break open and build anew. Just in case of Vinyasa, it came together not brick by brick, but mud by mud.";
+
+const FOUNDER_PULLQUOTE = "Perhaps through his truest way of being: to keep moving, becoming, growing and flowing, he invites humans to find their own path to themselves, their craft and their flow.";
 
 export const defaults = {
   seo: {
@@ -174,7 +187,7 @@ export const defaults = {
 
   founder_eyebrow: "About the founder",
   founder_title: "Sankalp Sharma",
-  founder_role: "Dancer, builder, founder of Vinyasa",
+  founder_role: "Dancer , Curator and Founder of Vinaysa",
   founder_image: "/seed/family/sankalp-cutout.png",
   founder_image_alt: "Sankalp Sharma, founder of Vinyasa Earth",
   founder_paragraphs: FOUNDER_PARAGRAPHS,
