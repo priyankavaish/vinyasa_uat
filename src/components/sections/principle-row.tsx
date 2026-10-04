@@ -41,7 +41,7 @@ export default function PrincipleRow({
                 <Icon name={icon} size={16} />
               </span>
               <h3 className="mt-3 font-display italic text-3xl leading-tight sm:text-[2.15rem]">{title}</h3>
-              <div className="mt-4 max-w-xl space-y-4 leading-relaxed text-foreground-soft">
+              <div className="mt-4 max-w-xl space-y-2 leading-relaxed text-foreground-soft">
                 {body.split(/\n\s*\n/).map((paragraph, i) => <p key={i}>{paragraph}</p>)}
               </div>
             </div>
@@ -49,7 +49,7 @@ export default function PrincipleRow({
         </Reveal>
 
         <Reveal variant={reverse ? "left" : "right"} delay={80}>
-          <div className="relative aspect-[16/10] overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] shadow-[0_24px_50px_-28px_rgba(30,20,12,0.4)]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] shadow-[0_24px_50px_-28px_rgba(30,20,12,0.4)]">
             <Image
               src={image}
               alt={imageAlt}
