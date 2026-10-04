@@ -1,3 +1,4 @@
+import { getStayInventory } from "@/lib/stay-inventory";
 import { mudhouseContent, mudhouseText } from "./mudhouse-wording";
 import { unstable_cache, unstable_noStore } from "next/cache";
 import { isEventActive } from "@/lib/event-dates";
@@ -91,7 +92,7 @@ function rowToEvent(r: t.EventRow): EventProgram {
 
 // --- cached getters (fall back to bundled seed content) ------------------
 
-export const getCottages = unstable_cache(
+const getCottageCatalog = unstable_cache(
   async (): Promise<Cottage[]> => {
     if (!hasDb()) return SEED_COTTAGES;
     try {
@@ -117,6 +118,11 @@ export const getCottages = unstable_cache(
   ["cms:cottages:v5"],
   { tags: ["cottages"] }
 );
+
+export async function getCottages(): Promise<Cottage[]> {
+  const [rooms, stock] = await Promise.all([getCottageCatalog(), getStayInventory()]);
+  return rooms.map((room) => ({ ...room, quantity: stock[room.slug] ?? null }));
+}
 
 export async function getCottage(slug: string): Promise<Cottage | null> {
   const all = await getCottages();

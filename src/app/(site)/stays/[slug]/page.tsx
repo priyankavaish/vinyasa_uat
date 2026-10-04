@@ -1,3 +1,4 @@
+import PaymentButton from "@/components/ui/payment-button";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__stays__slug__page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -77,9 +78,9 @@ export default async function CottageDetailPage({ params }: { params: Promise<{ 
                 <span className="ml-2 text-sm text-foreground-soft">{shared ? "/ bed / night" : "/ night"}</span>
               </div>
             ) : <p className="mt-3 text-2xl font-semibold">{content.text_18}</p>}
-            <Link href={bookingUrl} className="btn btn-accent mt-6 flex w-full items-center justify-center gap-2">
+            <PaymentButton unavailable={cottage.quantity === 0} target={`stay:${cottage.slug}`} href={bookingUrl}  className="btn btn-accent mt-6 flex w-full items-center justify-center gap-2">
                 {shared ? content.text_19 : content.text_20} <span className="arrow-nudge relative top-px inline-flex items-center leading-none"><Icon name="arrow-forward-outline" size={16} /></span>
-            </Link>
+            </PaymentButton>
             <p className="mt-3 text-center text-xs leading-relaxed text-muted">{content.text_21}</p>
           </div>
           <div className="p-6 sm:p-7">

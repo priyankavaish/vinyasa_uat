@@ -980,3 +980,14 @@ label[for] {
   .animate__animated { animation: none !important; }
 }
 
+
+/* Shared by the payment button and its admin preview. */
+.btn.payment-button {
+  background: var(--payment-background, var(--accent));
+  color: var(--payment-foreground, var(--accent-ink));
+  border: 1px solid var(--payment-background, var(--accent));
+}
+.btn.payment-button:hover {
+  background: transparent;
+  color: var(--payment-background, var(--accent));
+}

@@ -15,6 +15,7 @@ export default async function CottagesSection() {
     icon: c.icon,
     accent: c.accent,
     pricePerNight: c.pricePerNight,
+    quantity: c.quantity,
     image: c.image || FALLBACK,
     gallery: (c.gallery?.length ? c.gallery : [c.image]).filter(Boolean).slice(0, 6),
   }));

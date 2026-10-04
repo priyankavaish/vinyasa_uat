@@ -1,3 +1,4 @@
+import { readStayInventory } from "@/lib/stay-inventory";
 import { NextRequest, NextResponse } from "next/server";
 import { bookingRequestSchema } from "@/lib/schemas";
 import { getCottages, getEvents } from "@/lib/cms";
@@ -48,6 +49,16 @@ export async function POST(req: NextRequest) {
     );
   }
   const values = parsed.data;
+  if (values.type === "stay") {
+    try {
+      const inventory = await readStayInventory();
+      if (inventory[values.itemSlug] === 0) {
+        return NextResponse.json({ error: "This stay is sold out. Please choose another stay." }, { status: 409 });
+      }
+    } catch {
+      return NextResponse.json({ error: "Could not check availability. Please try again." }, { status: 503 });
+    }
+  }
 
   const amount = await computeAmount(values.type, values.itemSlug, values.checkIn, values.checkOut);
   if (amount === null || amount <= 0) {

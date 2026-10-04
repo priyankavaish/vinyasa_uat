@@ -14,6 +14,7 @@ import {
   type Cottage,
   type EventProgram,
 } from "@/lib/content";
+import { isStaySoldOut } from "@/lib/stay-stock";
 import { bookingRequestSchema, type BookingRequest } from "@/lib/schemas";
 
 declare global {
@@ -74,7 +75,10 @@ export default function BookingForm({
     return events.find((e) => e.slug === itemSlug) ?? events[0];
   }, [type, itemSlug, cottages, events]);
 
+  const soldOut = type === "stay" && isStaySoldOut(cottages.find((c) => c.slug === itemSlug));
+
   const amount = useMemo(() => {
+    if (!item) return 0;
     if (type === "stay" && "pricePerNight" in item) {
       const nights = nightsBetween(checkIn, checkOut) || 1;
       return item.pricePerNight * nights;
@@ -84,6 +88,7 @@ export default function BookingForm({
   }, [type, item, checkIn, checkOut]);
 
   async function onSubmit(values: BookingRequest) {
+    if (soldOut || !item) return;
     setStatus("creating-booking");
     setErrorMessage(null);
     try {
@@ -195,8 +200,8 @@ export default function BookingForm({
               {...register("itemSlug")}
             >
               {(type === "stay" ? cottages : events).map((i) => (
-                <option key={i.slug} value={i.slug}>
-                  {i.name}
+                <option key={i.slug} value={i.slug} disabled={type === "stay" && cottages.find((c) => c.slug === i.slug)?.quantity === 0}>
+                  {i.name}{type === "stay" && cottages.find((c) => c.slug === i.slug)?.quantity === 0 ? " — Sold out" : ""}
                 </option>
               ))}
             </select>
@@ -289,10 +294,10 @@ export default function BookingForm({
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || soldOut || !item}
           className="btn btn-accent w-full transition-opacity disabled:opacity-60"
         >
-          {submitting ? content.text_19 : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`}
+          {soldOut ? "Sold out" : !item ? "Unavailable" : submitting ? content.text_19 : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`}
         </button>
       </form>
     </>

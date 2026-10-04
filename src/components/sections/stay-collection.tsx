@@ -50,6 +50,7 @@ function StayCard({ room }: { room: Cottage }) {
           </div>
           <p className={styles.occupancy}><Icon name="people-outline" size={16} />{shared ? content.text_3 : `Up to ${room.maxGuests} guests`}</p>
         </div>
+        {room.quantity === 0 && <p className="mt-3 inline-block border border-accent/25 bg-clay-surface px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent">Sold out</p>}
         <p className={styles.description}>{room.description}</p>
         <div className={styles.bottom}>
           <p className={styles.price}>

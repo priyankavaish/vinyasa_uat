@@ -1,3 +1,5 @@
+import PaymentButton from "@/components/ui/payment-button";
+import { isRazorpayLink } from "@/lib/payment-buttons";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__useful_links_page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -87,7 +89,9 @@ export default async function UsefulLinksPage() {
           <SectionEyebrow icon="compass-outline">{content.text_7}</SectionEyebrow>
           <h2 className="mt-3 font-display text-3xl italic leading-tight text-clay-ink">{content.text_8}</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {content.ACTIONS.map((item) => (
+            {content.ACTIONS.map((item) => isRazorpayLink(item.href) ? (
+              <PaymentButton key={item.label} target="general" href={item.href} className="btn btn-accent flex items-center justify-center !whitespace-normal text-center">{item.label}</PaymentButton>
+            ) : (
               <a
                 key={item.label}
                 href={item.href}
