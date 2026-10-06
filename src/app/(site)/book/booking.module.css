@@ -1,17 +1,19 @@
 .page { max-width: 1120px; margin: auto; padding: 7.25rem 1.25rem 4rem; }
-.heading { margin-bottom: 1.5rem; }
+.heading { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-bottom: 1.5rem; }
 .heading h1 { margin-top: .55rem; font-size: clamp(2rem, 3.2vw, 2.8rem); line-height: 1.15; }
-.heading > p:last-child { margin-top: .6rem; color: var(--foreground-soft); font-size: .9rem; }
+.intro > p:last-child { margin-top: .6rem; color: var(--foreground-soft); font-size: .9rem; }
+.location { flex-shrink: 0; padding: .5rem 0 .5rem 1.5rem; border-left: 1px solid var(--line); color: var(--accent); }
+.location p { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
+.location span { display: block; margin-top: .35rem; color: var(--foreground-soft); font-size: .75rem; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 3rem; align-items: start; }
 .form { min-width: 0; padding: 1.75rem; border: 1px solid var(--line); background: var(--surface); scroll-margin-top: 6rem; }
 .aside { padding: 1.5rem; background: var(--clay-surface); color: var(--foreground); }
 .photo { position: relative; height: 250px; border-radius: 140px 140px 0 0; overflow: hidden; background: var(--clay-ink); }
 .image { object-fit: cover; object-position: 50% 55%; }
-.caption { margin-top: 1rem; color: var(--accent); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
-.aside h2 { margin-top: .8rem; font-size: 2rem; line-height: 1.15; }
+.aside h2 { margin-top: 1.25rem; font-size: 2rem; line-height: 1.15; }
 .description { margin-top: 1rem; color: var(--foreground-soft); font-size: .9rem; line-height: 1.7; }
 .explore { display: inline-block; margin-top: 1.5rem; color: var(--accent); font-size: .8rem; text-decoration: underline; text-underline-offset: 5px; }
-@media (max-width: 1023px) { .layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 1.5rem; } }
+@media (max-width: 1023px) { .location { display: none; } .layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 1.5rem; } }
 @media (max-width: 767px) {
  .page { padding-top: 6rem; }
  .layout { grid-template-columns: 1fr; gap: 2rem; }
