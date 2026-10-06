@@ -34,6 +34,7 @@ const meals = [
 
 export const defaults = {
 seo: {
+    keywords: "",
   title: "Work From Farm",
   description:
     "Work From Farm at Vinyasa Earth — stay, work and slow down outside Jaipur. Wi-Fi and open shared spaces, community meals, and a bed in an earthen mudhouse or the dorm, by the night or the season.",

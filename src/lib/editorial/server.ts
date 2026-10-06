@@ -1,6 +1,8 @@
 import "server-only";
 import { getContent, getPartners } from "@/lib/cms";
 import { mergeEditorial } from "./merge";
+import { getPageSettings } from "@/lib/page-routing-store";
+import { applyPageLinks } from "@/lib/page-routing";
 export async function getEditorial<T>(key: string, defaults: T): Promise<T> {
   let baseline: unknown = defaults;
   if (key === "app/(site)/about/page") {
@@ -43,5 +45,6 @@ export async function getEditorial<T>(key: string, defaults: T): Promise<T> {
       baseline = mergeEditorial(defaults, { ACCESSORY_PARTNERS: partners });
     }
   }
-  return mergeEditorial(baseline as T, await getContent(`editorial:${key}`));
+  const value = mergeEditorial(baseline as T, await getContent(`editorial:${key}`));
+  return applyPageLinks(value, await getPageSettings(), key === "components/layout/site-header" || key === "components/layout/site-footer");
 }

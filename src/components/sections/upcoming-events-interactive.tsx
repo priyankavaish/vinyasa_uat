@@ -27,7 +27,7 @@ const KIND_META: Record<string, { icon: IconName; accent: string; label: string 
   retreat: { icon: "leaf-outline", accent: "#6b7a5e", label: "Retreat" },
   workshop: { icon: "sparkles-outline", accent: "#a06a2c", label: "Workshop" },
 };
-const priceText = (from: number) => (from === 0 ? "By donation" : `From ₹${from.toLocaleString("en-IN")}`);
+const priceText = (from: number) => (from === 0 ? "By donation" : `From ₹${from.toLocaleString("en-IN")} + 18% GST`);
 
 export default function UpcomingEventsInteractive({ items }: { items: EventItem[] }) {
   const content = useEditorial("components/sections/upcoming-events-interactive", editorialDefaults);

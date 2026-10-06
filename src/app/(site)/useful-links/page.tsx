@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 import PaymentButton from "@/components/ui/payment-button";
 import { isRazorpayLink } from "@/lib/payment-buttons";
 
@@ -13,7 +14,7 @@ import CopyField from "./copy-field";
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/useful-links/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/useful-links/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
 
 type ActionLink = { label: string; href: string; note: string; icon: IconName };

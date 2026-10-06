@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import Link from "next/link";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__blogs_page";
@@ -13,7 +14,7 @@ import { getPublishedBlogs } from "@/lib/cms";
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/blogs/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/blogs/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
 
 // Index of the Vinyasa Earth journal. Full pieces live on vinyasa.earth for now.

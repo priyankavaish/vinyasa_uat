@@ -51,6 +51,7 @@ const POSTS: Array<{ title: string; href: string; blurb: string }> = [
 
 export const defaults = {
 seo: {
+    keywords: "",
   title: "Blogs",
   description:
     "Long-form writing from the Vinyasa Earth journal — residencies, community life, and the small practices that shape a shared home in Jaipur.",

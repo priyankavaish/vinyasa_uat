@@ -29,6 +29,7 @@ export default function ImageField({
   defaultValue = "",
   value,
   onChange,
+  onBusyChange,
 }: {
   name?: string;
   label?: string;
@@ -37,6 +38,7 @@ export default function ImageField({
    *  outside a plain <form>, e.g. the block-builder's React state). */
   value?: string;
   onChange?: (v: string) => void;
+  onBusyChange?: (busy: boolean) => void;
 }) {
   const controlled = value !== undefined;
   const [internal, setInternal] = useState(() => toWebPath(defaultValue));
@@ -60,7 +62,9 @@ export default function ImageField({
       setErr("That file is not an image.");
       return;
     }
+    if (busy) return;
     setBusy(true);
+    onBusyChange?.(true);
     setErr(null);
     try {
       const compressed = await compressImage(file);
@@ -74,6 +78,7 @@ export default function ImageField({
       setErr(e instanceof Error ? e.message : "Upload failed.");
     } finally {
       setBusy(false);
+      onBusyChange?.(false);
     }
   }
 
@@ -120,7 +125,7 @@ export default function ImageField({
             const f = e.clipboardData.files?.[0];
             if (f) void upload(f);
           }}
-          className={`min-w-[16rem] flex-1 rounded border border-dashed px-4 py-4 text-center transition-colors ${
+          className={`min-w-0 flex-1 rounded border border-dashed px-4 py-4 text-center transition-colors ${
             drag ? "border-accent bg-accent/5" : "border-line bg-background"
           }`}
         >

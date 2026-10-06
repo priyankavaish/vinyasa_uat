@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__page";
 import { getEditorial } from "@/lib/editorial/server";
 import { HomeHero } from "@/components/sections/hero";
@@ -13,7 +14,7 @@ import AnimateInView from "@/components/ui/animate-in-view";
 import SectionWave from "@/components/ui/section-wave";
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/page", editorialDefaults)).seo, editorialDefaults.seo, true);
 }
 export const revalidate = 300;
 

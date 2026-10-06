@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__stays_page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -68,7 +69,7 @@ const ACCESSORY_PARTNERS = [
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/stays/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/stays/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
 
 const EXPERIENCE_PHOTOS = [expA, "/images/2N0A9839.JPG", "/images/DJI_20240924131352_0562_D.jpg", expD, expE, expF];

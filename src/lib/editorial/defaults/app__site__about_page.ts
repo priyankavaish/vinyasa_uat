@@ -157,6 +157,7 @@ const FOUNDER_PULLQUOTE = "Perhaps through his truest way of being: to keep movi
 
 export const defaults = {
   seo: {
+    keywords: "",
     title: "About",
     description:
       "The story behind Vinyasa Earth — an art-residential space in Jaipur, founded by dancer Sankalp Sharma as a safe, non-judgemental home for artists to live, create, and belong.",

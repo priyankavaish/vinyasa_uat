@@ -54,6 +54,7 @@ type Faq = { q: string; a: string };
 
 export const defaults = {
 seo: {
+    keywords: "",
   title: "Contact",
   description:
     "Contact Vinyasa Earth in Jaipur about stays, retreats, residencies, venue hire and volunteering. Phone +91 77376 07227, vinyasa.ashram@gmail.com.",

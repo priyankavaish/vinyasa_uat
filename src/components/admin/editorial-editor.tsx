@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveEditorial } from "@/lib/editorial/actions";
 import ImageField from "./image-field";
+import SeoFields from "./seo-fields";
 import { isEditorialImageField, isEditorialVideoField, isEditorialAdvancedField } from "@/lib/editorial/fields";
 type Section = { key: string; defaults: unknown; value: unknown };
 type Data = Record<string, unknown>;
@@ -46,6 +47,7 @@ const human = (path: string) => {
   return titleCase(last);
 };
 function Fields({ value, template, path, onChange }: { value: unknown; template: unknown; path: string; onChange: (value: unknown) => void }) {
+  if (path === "Content.seo" && value && typeof value === "object" && !Array.isArray(value)) return <SeoFields value={value} onChange={onChange} />;
   if (Array.isArray(value)) return <fieldset className="min-w-0 space-y-3 border border-line p-4">{path !== "Content" && <legend className="max-w-full break-words px-2 font-semibold">{human(path)}</legend>}{value.map((entry, index) => <div key={index} className="space-y-2 border-b border-line pb-4"><Fields value={entry} template={Array.isArray(template) ? template[index] ?? template[0] : entry} path={`${path} / ${index + 1}`} onChange={next => onChange(value.map((old, i) => i === index ? next : old))} /><button type="button" className="text-sm text-accent underline" onClick={() => onChange(value.filter((_, i) => i !== index))}>Remove item</button></div>)}<button type="button" className="btn btn-outline" onClick={() => onChange([...value, structuredClone(Array.isArray(template) ? template[0] : "")])}>Add item</button></fieldset>;
   if (value && typeof value === "object") {
     const entries = Object.entries(value).filter(([key]) => !["blurDataURL", "blurWidth", "blurHeight"].includes(key));
@@ -70,7 +72,7 @@ function Fields({ value, template, path, onChange }: { value: unknown; template:
   if (typeof value === "boolean") return <label className="flex gap-3 text-sm"><input type="checkbox" checked={value} onChange={e => onChange(e.target.checked)} />{human(path)}</label>;
   if (typeof value === "number") return <label className="grid min-w-0 gap-2 break-words text-sm">{human(path)}<input className="border border-line bg-white p-3" type="number" value={value} onChange={e => onChange(Number(e.target.value))} /></label>;
   const text = String(value ?? "");
-  if (isEditorialImageField(path, text)) return <div><ImageField name={path} label={human(path)} defaultValue={text} /></div>;
+  if (isEditorialImageField(path, text)) return <div><ImageField name={path} label={human(path)} value={text} onChange={onChange} /></div>;
   if (isEditorialVideoField(path, text)) {
     return (
       <div className="min-w-0">
@@ -102,6 +104,8 @@ export default function EditorialEditor({ sections, initialSection }: { sections
   const [draft, setDraft] = useState(section?.value);
   const [status, setStatus] = useState("");
   const [saving, setSaving] = useState(false);
+  const [dirty, setDirty] = useState(false);
+  useEffect(() => { const warn = (event: BeforeUnloadEvent) => { if (dirty) { event.preventDefault(); event.returnValue = ""; } }; window.addEventListener("beforeunload", warn); return () => window.removeEventListener("beforeunload", warn); }, [dirty]);
   const [revision, setRevision] = useState(0);
   async function save(form: HTMLFormElement) {
     setSaving(true); setStatus("");
@@ -117,9 +121,10 @@ export default function EditorialEditor({ sections, initialSection }: { sections
       const payload = syncMedia(data, "Content");
       await saveEditorial(selected, payload);
       setDraft(payload);
+      setDirty(false);
       setStatus("Saved. Your website now uses this content."); router.refresh();
     } catch (error) { setStatus(error instanceof Error ? error.message : "Could not save."); }
     finally { setSaving(false); }
   }
-  return <div className="mt-8 min-w-0 [&_input]:max-w-full [&_textarea]:min-w-0">{sections.length > 1 && <label className="grid gap-2 text-sm font-semibold">Section<select value={selected} className="w-full border border-line bg-white p-3" onChange={e => { const next = sections.find(s => s.key === e.target.value)!; setSelected(next.key); setDraft(next.value); setStatus(""); setRevision(v=>v+1); }} disabled={!ready || saving}>{sections.map(s => <option key={s.key} value={s.key}>{human(s.key)}</option>)}</select></label>}<form className="mt-6 space-y-5" onSubmit={e => { e.preventDefault(); void save(e.currentTarget); }}><fieldset className="min-w-0" disabled={!ready || saving}><Fields key={`${selected}:${revision}`} value={draft} template={section.defaults} path="Content" onChange={setDraft} /></fieldset><div className="sticky bottom-0 flex flex-wrap items-center gap-4 border border-line bg-[#f4efe6] p-4"><button disabled={!ready || saving} className="btn btn-accent" type="submit">{saving ? "Saving…" : "Save content"}</button><button type="button" disabled={!ready || saving} className="text-sm underline" onClick={() => { setDraft(section.defaults); setRevision(v=>v+1); setStatus("Defaults loaded. Save to apply."); }}>Load original content</button><p role="status" className="text-sm">{status}</p></div></form></div>;
+  return <div className="mt-8 min-w-0 [&_input]:max-w-full [&_textarea]:min-w-0">{sections.length > 1 && <label className="grid gap-2 text-sm font-semibold">Section<select value={selected} className="w-full border border-line bg-white p-3" onChange={e => { const next = sections.find(s => s.key === e.target.value)!; if (dirty && !window.confirm("Discard unsaved changes in this section?")) return; setDirty(false); setSelected(next.key); setDraft(next.value); setStatus(""); setRevision(v=>v+1); }} disabled={!ready || saving}>{sections.map(s => <option key={s.key} value={s.key}>{human(s.key)}</option>)}</select></label>}<form className="mt-6 space-y-5" onSubmit={e => { e.preventDefault(); void save(e.currentTarget); }}><fieldset className="min-w-0" disabled={!ready || saving}><Fields key={`${selected}:${revision}`} value={draft} template={section.defaults} path="Content" onChange={next => { setDraft(next); setDirty(true); setStatus(""); }} /></fieldset><div className="sticky bottom-0 flex flex-wrap items-center gap-4 border border-line bg-[#f4efe6] p-4"><button disabled={!ready || saving} className="btn btn-accent" type="submit">{saving ? "Saving…" : "Save content"}</button><button type="button" disabled={!ready || saving} className="text-sm underline" onClick={() => { if (!window.confirm("Replace this section with original content? Save to apply.")) return; setDirty(true); setDraft(section.defaults); setRevision(v=>v+1); setStatus("Defaults loaded. Save to apply."); }}>Load original content</button><p role="status" className="text-sm">{status || (dirty ? "Unsaved changes" : "")}</p></div></form></div>;
 }

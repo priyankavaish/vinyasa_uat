@@ -75,7 +75,7 @@ export default async function CottageDetailPage({ params }: { params: Promise<{ 
               <div className="mt-3">
                 <span className="mr-2 text-xs text-foreground-soft">{content.text_17}</span>
                 <span className="text-3xl font-semibold tracking-tight tabular-nums">₹{cottage.pricePerNight.toLocaleString("en-IN")}</span>
-                <span className="ml-2 text-sm text-foreground-soft">{shared ? "/ bed / night" : "/ night"}</span>
+                <span className="ml-2 text-sm text-foreground-soft">{shared ? "/ bed / night + 18% GST" : "/ night + 18% GST"}</span>
               </div>
             ) : <p className="mt-3 text-2xl font-semibold">{content.text_18}</p>}
             <PaymentButton unavailable={cottage.quantity === 0} target={`stay:${cottage.slug}`} href={bookingUrl}  className="btn btn-accent mt-6 flex w-full items-center justify-center gap-2">

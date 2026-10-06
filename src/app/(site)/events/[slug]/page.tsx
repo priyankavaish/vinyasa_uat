@@ -199,14 +199,14 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   if (!event) notFound();
   const image = event.image || content.EVENT_IMAGES[event.slug] || "/seed/grounds-06.jpg";
   const details = content.EVENT_DETAILS[event.slug];
-  const priceLabel = event.priceFrom === 0 ? "By donation" : `Ã¢â€šÂ¹${event.priceFrom.toLocaleString("en-IN")}`;
+  const priceLabel = event.priceFrom === 0 ? "By donation" : `₹${event.priceFrom.toLocaleString("en-IN")} + 18% GST`;
   const isPauseWithin = event.slug === "the-pause-within";
   const editorialEvent = EDITORIAL_EVENTS[event.slug];
 
   return (
     <>
       <PageHero framed={isPauseWithin || !!editorialEvent} eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
-        {(isPauseWithin || editorialEvent) && <PaymentButton target={`event:${event.slug}`} href={`/book?type=event&slug=${event.slug}`}  className="btn btn-accent">{editorialEvent?.cta ?? "Reserve your place"} <span aria-hidden>↗</span></PaymentButton>}
+        {(isPauseWithin || editorialEvent) && <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent">{editorialEvent?.cta ?? "Reserve your place"} <span aria-hidden>↗</span></PaymentButton>}
       </PageHero>
 
       {isPauseWithin ? (
@@ -253,9 +253,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Choose your pass</p>
                 <p className="mt-3 text-sm leading-6 text-foreground-soft">Come with curiosity. There is nothing to fix and nowhere particular to arrive.</p>
                 <div className="mt-7 divide-y divide-line">
-                  {PAUSE_WITHIN_CONTENT.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold">{pass.name}</h3><span className="shrink-0 text-sm font-semibold text-accent">{pass.price}</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft">{pass.detail}</p></div>)}
+                  {PAUSE_WITHIN_CONTENT.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold">{pass.name}</h3><span className="shrink-0 text-sm font-semibold text-accent">{pass.price.replace(/\s*\+\s*GST$/i, "")} + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft">{pass.detail}</p></div>)}
                 </div>
-                <PaymentButton target={`event:${event.slug}`} href={`/book?type=event&slug=${event.slug}`}  className="btn btn-accent mt-7 block text-center">Reserve your place <span aria-hidden>↗</span></PaymentButton>
+                <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center">Reserve your place <span aria-hidden>↗</span></PaymentButton>
               </div>
               <p className="mt-4 text-center text-xs leading-5 text-muted">Part of The Collective Body, Vinyasa Earth's Artist-in-Residence programme.</p>
             </aside>
@@ -304,8 +304,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               <div className="border border-line bg-surface p-6 sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">{editorialEvent.passes ? "Ways to join" : "Make space for it"}</p>
                 <p className="mt-3 text-sm leading-6 text-foreground-soft">{event.description}</p>
-                {editorialEvent.passes ? <div className="mt-7 divide-y divide-line">{editorialEvent.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold">{pass.name}</h3><span className="shrink-0 text-sm font-semibold text-accent">{pass.price}</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft">{pass.detail}</p></div>)}</div> : <p className="mt-7 border-y border-line py-5 text-2xl font-semibold">{priceLabel}</p>}
-                <PaymentButton target={`event:${event.slug}`} href={`/book?type=event&slug=${event.slug}`}  className="btn btn-accent mt-7 block text-center">{editorialEvent.cta} <span aria-hidden>↗</span></PaymentButton>
+                {editorialEvent.passes ? <div className="mt-7 divide-y divide-line">{editorialEvent.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold">{pass.name}</h3><span className="shrink-0 text-sm font-semibold text-accent">{pass.price.replace(/\s*\+\s*GST$/i, "")} + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft">{pass.detail}</p></div>)}</div> : <p className="mt-7 border-y border-line py-5 text-2xl font-semibold">{priceLabel}</p>}
+                <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center">{editorialEvent.cta} <span aria-hidden>↗</span></PaymentButton>
               </div>
               <p className="mt-4 text-center text-xs leading-5 text-muted">Vinyasa Earth, Jaipur</p>
             </aside>
@@ -353,7 +353,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           <div className="border border-line bg-surface p-6">
             <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_7}</p>
             <p className="mt-1 font-sans text-3xl font-bold tracking-tight tabular-nums">{priceLabel}</p>
-            <PaymentButton target={`event:${event.slug}`} href={`/book?type=event&slug=${event.slug}`}  className="btn btn-accent mt-5 block text-center">{content.text_8}</PaymentButton>
+            <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-5 block text-center">{content.text_8}</PaymentButton>
           </div>
         </div>
       </section>

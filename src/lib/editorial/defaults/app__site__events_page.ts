@@ -19,6 +19,7 @@ const EVENT_DISPLAY: Record<string, { name: string; date: string; duration: stri
 
 export const defaults = {
 seo: {
+    keywords: "",
   title: "Events & Retreats",
   description: "Artist residencies, retreats, workshops and gatherings at Vinyasa Earth.",
   alternates: { canonical: "/events" },

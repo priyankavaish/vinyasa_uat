@@ -1,8 +1,11 @@
+import { notifyEntry } from "@/lib/email-notifications";
+import { revalidatePath } from "next/cache";
+import { bookingPrice } from "@/lib/booking-pricing";
 import { readStayInventory } from "@/lib/stay-inventory";
 import { NextRequest, NextResponse } from "next/server";
 import { bookingRequestSchema } from "@/lib/schemas";
 import { getCottages, getEvents } from "@/lib/cms";
-import { createBooking } from "@/lib/store";
+import { createBooking, ensureBookingCurrencyPrecision } from "@/lib/store";
 import { createOrder } from "@/lib/razorpay";
 import { requireAdminSession } from "@/lib/auth";
 
@@ -60,13 +63,16 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const amount = await computeAmount(values.type, values.itemSlug, values.checkIn, values.checkOut);
-  if (amount === null || amount <= 0) {
+  const baseAmount = await computeAmount(values.type, values.itemSlug, values.checkIn, values.checkOut);
+  if (baseAmount === null || baseAmount <= 0) {
     return NextResponse.json({ error: "Could not price that selection." }, { status: 400 });
   }
 
+  const pricing = bookingPrice(baseAmount);
+  const amount = pricing.totalAmount;
   try {
-    const order = await createOrder(amount * 100, `vinyasa-${Date.now()}`);
+    await ensureBookingCurrencyPrecision();
+    const order = await createOrder(pricing.totalPaise, `vinyasa-${Date.now()}`);
     const booking = await createBooking({
       type: values.type,
       itemSlug: values.itemSlug,
@@ -80,7 +86,9 @@ export async function POST(req: NextRequest) {
       amount,
       razorpayOrderId: order.id,
     });
-    return NextResponse.json({ booking, order });
+    revalidatePath("/admin/bookings");
+    await notifyEntry("booking", booking);
+    return NextResponse.json({ booking, order, pricing });
   } catch (err) {
     console.error("[api/bookings] failed to create booking", err);
     return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 });

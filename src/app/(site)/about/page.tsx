@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { mudhouseText } from "@/lib/mudhouse-wording";
 import Link from "next/link";
 import { defaults as editorialDefaults, previousConstructionParagraphs, previousValues, previousFounderParagraphs, previousFounderPullquote } from "@/lib/editorial/defaults/app__site__about_page";
@@ -18,7 +19,7 @@ import FounderStory from "@/components/sections/founder-story";
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/about/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/about/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
 
 export default async function AboutPage() {

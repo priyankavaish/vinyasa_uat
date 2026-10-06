@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__events_page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -17,7 +18,7 @@ import { parseEventStart, parseEventEnd } from "@/lib/event-dates";
 
 export const revalidate = 300;
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/events/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/events/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
 
 const KIND_META: Record<string, { icon: IconName; accent: string; label: string }> = {
@@ -37,7 +38,7 @@ const EVENT_DISPLAY: Record<string, { name: string; date: string; duration: stri
 };
 
 function priceText(from: number) {
-  return from === 0 ? "By donation" : `From INR ${from.toLocaleString("en-IN")}`;
+  return from === 0 ? "By donation" : `From INR ${from.toLocaleString("en-IN")} + 18% GST`;
 }
 
 function ymd(d: Date) {

@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { getDb } from "./index";
 import { adminUsers } from "./schema";
 
@@ -23,10 +23,9 @@ export async function verifyAdmin(email: string, password: string) {
 export async function setAdminPassword(email: string, newPassword: string) {
   const db = getDb();
   const passwordHash = await bcrypt.hash(newPassword, 10);
-  await db
-    .update(adminUsers)
-    .set({ passwordHash })
-    .where(eq(adminUsers.email, email.toLowerCase().trim()));
+  await db.execute(sql`WITH changed AS (UPDATE admin_users SET password_hash=${passwordHash} WHERE email=${email.toLowerCase().trim()} RETURNING id)
+  INSERT INTO site_content (key,value) SELECT 'admin-password-changed:' || id::text,'true'::jsonb FROM changed
+  ON CONFLICT(key) DO UPDATE SET value=EXCLUDED.value,updated_at=now()`);
 }
 
 export async function upsertAdmin(email: string, password: string) {

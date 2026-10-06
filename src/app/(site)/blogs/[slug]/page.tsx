@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PageHero } from "@/components/sections/hero";
 import RichContent from "@/components/ui/rich-content";
 import { getBlog, getPublishedBlogs } from "@/lib/cms";
+
+import { blogKeywords } from "@/lib/blog-fields";
 
 export const revalidate = 300;
 
@@ -21,8 +23,9 @@ export async function generateMetadata({
   const blog = await getBlog(slug);
   if (!blog) return {};
   return {
-    title: blog.title,
-    description: blog.excerpt || undefined,
+    title: blog.seoTitle || blog.title,
+    description: blog.seoDescription || blog.excerpt || undefined,
+    keywords: blogKeywords(blog),
     alternates: { canonical: `/blogs/${blog.slug}` },
   };
 }
@@ -31,6 +34,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const { slug } = await params;
   const blog = await getBlog(slug);
   if (!blog) notFound();
+  if (blog.slug !== slug) redirect(`/blogs/${blog.slug}`);
 
   return (
     <>

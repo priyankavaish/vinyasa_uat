@@ -54,7 +54,7 @@ function StayCard({ room }: { room: Cottage }) {
         <p className={styles.description}>{room.description}</p>
         <div className={styles.bottom}>
           <p className={styles.price}>
-            {room.pricePerNight > 0 ? <><span>{content.text_4}</span><strong>₹{room.pricePerNight.toLocaleString("en-IN")}</strong><small>{shared ? "/ bed / night" : "/ night"}</small></> : <strong>{content.text_5}</strong>}
+            {room.pricePerNight > 0 ? <><span>{content.text_4}</span><strong>₹{room.pricePerNight.toLocaleString("en-IN")}</strong><small>{shared ? "/ bed / night + 18% GST" : "/ night + 18% GST"}</small></> : <strong>{content.text_5}</strong>}
           </p>
           <Link href={href} className={styles.explore} aria-label={`Explore ${room.name} ${tent ? "stay" : shared ? content.text_6 : content.text_7}`}>
             {tent ? "Explore tent" : shared ? content.text_8 : content.text_9}<Icon name="arrow-forward-outline" size={17} />

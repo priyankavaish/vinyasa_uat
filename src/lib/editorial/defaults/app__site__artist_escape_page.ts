@@ -81,9 +81,11 @@ const ARTIST_PHOTOS = [
 
 export const defaults = {
   seo: {
+    keywords: "",
+    alternates: { canonical: "/artist-escape" },
     title: "For the Artists",
     description:
-      "A home away from home for artists. Stay, studio and performance in one space at Vinyasa Earth, Jaipur — apply to join the resident artist community.",
+      "Explore Artist Escape and Artist in Residence at Vinyasa Earth, Jaipur. Two offerings for creative practice, community and research.",
   },
 
   hero_eyebrow: "With the Artists By the Artists",
