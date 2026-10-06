@@ -64,6 +64,12 @@ export default function FounderStory({
             <p className="leading-relaxed text-foreground-soft">{paragraphs.join(" ")}</p>
           )}
 
+        {expanded && (
+          <blockquote className="mt-8 border-l-2 border-accent/40 pl-5 font-display italic text-xl leading-snug text-clay-ink">
+            {pullquote}
+          </blockquote>
+        )}
+
           {!expanded && (
             <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent" />
           )}
@@ -78,11 +84,7 @@ export default function FounderStory({
           {expanded ? "Read less" : "Read more"}
         </button>
 
-        {expanded && (
-          <blockquote className="mt-8 border-l-2 border-accent/40 pl-5 font-display italic text-xl leading-snug text-clay-ink">
-            {pullquote}
-          </blockquote>
-        )}
+
       </Reveal>
 
       <Reveal variant="right" delay={100} className="lg:sticky lg:top-28">
