@@ -42,6 +42,7 @@ type ActionLink = { label: string; href: string; note: string; icon: IconName };
 
 export const defaults = {
 seo: {
+    keywords: "",
   title: "Useful Links",
   description:
     "The frequently-used links for Vinyasa Earth — check-in, payments, booking a call, reviews, plus bank and GST details.",

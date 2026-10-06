@@ -50,10 +50,11 @@ function StayCard({ room }: { room: Cottage }) {
           </div>
           <p className={styles.occupancy}><Icon name="people-outline" size={16} />{shared ? content.text_3 : `Up to ${room.maxGuests} guests`}</p>
         </div>
+        {room.quantity === 0 && <p className="mt-3 inline-block border border-accent/25 bg-clay-surface px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent">Sold out</p>}
         <p className={styles.description}>{room.description}</p>
         <div className={styles.bottom}>
           <p className={styles.price}>
-            {room.pricePerNight > 0 ? <><span>{content.text_4}</span><strong>₹{room.pricePerNight.toLocaleString("en-IN")}</strong><small>{shared ? "/ bed / night" : "/ night"}</small></> : <strong>{content.text_5}</strong>}
+            {room.pricePerNight > 0 ? <><span>{content.text_4}</span><strong>₹{room.pricePerNight.toLocaleString("en-IN")}</strong><small>{shared ? "/ bed / night + 18% GST" : "/ night + 18% GST"}</small></> : <strong>{content.text_5}</strong>}
           </p>
           <Link href={href} className={styles.explore} aria-label={`Explore ${room.name} ${tent ? "stay" : shared ? content.text_6 : content.text_7}`}>
             {tent ? "Explore tent" : shared ? content.text_8 : content.text_9}<Icon name="arrow-forward-outline" size={17} />

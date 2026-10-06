@@ -7,6 +7,7 @@ import communityImg from "@/app/assets/new/community-05.jpg";
 
 export const defaults = {
 seo: {
+    keywords: "",
   title: "Volunteer",
   description:
     "Volunteer at Vinyasa Earth in Jaipur — community volunteering from one week, or a skill-based exchange from one month. Dorm stay and three vegetarian meals a day included.",

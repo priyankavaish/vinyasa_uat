@@ -1,7 +1,8 @@
+import { getStayInventory } from "@/lib/stay-inventory";
 import { mudhouseContent, mudhouseText } from "./mudhouse-wording";
 import { unstable_cache, unstable_noStore } from "next/cache";
 import { isEventActive } from "@/lib/event-dates";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { getDb, hasDb } from "@/lib/db";
 import * as t from "@/lib/db/schema";
 import {
@@ -18,7 +19,9 @@ import {
   type Partner,
 } from "@/lib/content";
 
-export type Blog = {
+import { readBlogSettings, type BlogSettings } from "./blog-fields";
+
+export type Blog = BlogSettings & {
   slug: string;
   title: string;
   excerpt: string;
@@ -91,7 +94,7 @@ function rowToEvent(r: t.EventRow): EventProgram {
 
 // --- cached getters (fall back to bundled seed content) ------------------
 
-export const getCottages = unstable_cache(
+const getCottageCatalog = unstable_cache(
   async (): Promise<Cottage[]> => {
     if (!hasDb()) return SEED_COTTAGES;
     try {
@@ -117,6 +120,11 @@ export const getCottages = unstable_cache(
   ["cms:cottages:v5"],
   { tags: ["cottages"] }
 );
+
+export async function getCottages(): Promise<Cottage[]> {
+  const [rooms, stock] = await Promise.all([getCottageCatalog(), getStayInventory()]);
+  return rooms.map((room) => ({ ...room, quantity: stock[room.slug] ?? null }));
+}
 
 export async function getCottage(slug: string): Promise<Cottage | null> {
   const all = await getCottages();
@@ -194,11 +202,13 @@ export const getPublishedBlogs = unstable_cache(
     if (!hasDb()) return [];
     try {
       const rows = await getDb()
-        .select()
+        .select({ post: t.blogs, settings: t.siteContent.value })
         .from(t.blogs)
+        .leftJoin(t.siteContent, eq(t.siteContent.key, sql`'blog-settings:' || ${t.blogs.id}::text`))
         .where(eq(t.blogs.status, "published"))
         .orderBy(desc(t.blogs.publishedAt));
-      return rows.map((r) => ({
+      return rows.map(({ post: r, settings }) => ({
+        ...readBlogSettings(settings),
         slug: r.slug,
         title: mudhouseText(r.title),
         excerpt: mudhouseText(r.excerpt),
@@ -210,13 +220,13 @@ export const getPublishedBlogs = unstable_cache(
       return [];
     }
   },
-  ["cms:blogs:mudhouse-v1"],
+  ["cms:blogs:mudhouse-v2"],
   { tags: ["blogs"] }
 );
 
 export async function getBlog(slug: string): Promise<Blog | null> {
   const all = await getPublishedBlogs();
-  return all.find((b) => b.slug === slug) ?? null;
+  return all.find((b) => b.slug === slug || b.aliases.includes(slug)) ?? null;
 }
 
 export const getContent = unstable_cache(
@@ -245,6 +255,7 @@ export type BuilderPage = {
   slug: string;
   title: string;
   layout: string;
+  status?: "draft" | "published";
   blocks: unknown[];
   seoTitle: string;
   seoDescription: string;
@@ -260,6 +271,7 @@ export const getBuilderPages = unstable_cache(
         slug: r.slug,
         title: mudhouseText(r.title),
         layout: r.layout,
+        status: r.status === "published" ? "published" : "draft",
         blocks: mudhouseContent((r.blocks ?? []) as unknown[]),
         seoTitle: mudhouseText(r.seoTitle),
         seoDescription: mudhouseText(r.seoDescription),
@@ -288,6 +300,7 @@ export const getPublishedPage = unstable_cache(
         slug: r.slug,
         title: mudhouseText(r.title),
         layout: r.layout,
+        status: r.status === "published" ? "published" : "draft",
         blocks: mudhouseContent((r.blocks ?? []) as unknown[]),
         seoTitle: mudhouseText(r.seoTitle),
         seoDescription: mudhouseText(r.seoDescription),

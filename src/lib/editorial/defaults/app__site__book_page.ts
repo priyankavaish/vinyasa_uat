@@ -3,6 +3,7 @@
 
 export const defaults = {
 seo: {
+    keywords: "",
   title: "Book Your Stay",
   description:
     "Check availability and book a mudhouse stay or creative experience at Vinyasa Earth.",

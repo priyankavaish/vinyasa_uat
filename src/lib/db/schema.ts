@@ -2,6 +2,7 @@ import {
   pgTable,
   text,
   integer,
+  numeric,
   boolean,
   timestamp,
   jsonb,
@@ -44,7 +45,7 @@ export const bookings = pgTable("bookings", {
   guestName: text("guest_name").notNull(),
   guestEmail: text("guest_email").notNull(),
   guestPhone: text("guest_phone").notNull(),
-  amount: integer("amount").notNull(),
+  amount: numeric("amount", { precision: 12, scale: 2, mode: "number" }).notNull(),
   status: text("status").notNull().default("pending"), // pending | paid | failed
   razorpayOrderId: text("razorpay_order_id"),
   razorpayPaymentId: text("razorpay_payment_id"),

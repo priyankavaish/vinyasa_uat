@@ -14,6 +14,8 @@ import {
   type Cottage,
   type EventProgram,
 } from "@/lib/content";
+import { bookingPrice } from "@/lib/booking-pricing";
+import { isStaySoldOut } from "@/lib/stay-stock";
 import { bookingRequestSchema, type BookingRequest } from "@/lib/schemas";
 
 declare global {
@@ -33,15 +35,19 @@ function nightsBetween(checkIn?: string, checkOut?: string): number {
 export default function BookingForm({
   cottages = seedCottages,
   events = seedEvents,
+  mode = "stay",
 }: {
   cottages?: Cottage[];
   events?: EventProgram[];
+  mode?: "stay" | "event";
 }) {
   const content = useEditorial("components/forms/booking-form", editorialDefaults);
 
   const searchParams = useSearchParams();
-  const initialType = (searchParams.get("type") as "stay" | "event") ?? "stay";
-  const initialSlug = searchParams.get("slug") ?? cottages[0]?.slug ?? "";
+  const initialType = mode;
+  const options = mode === "stay" ? cottages : events;
+  const requestedSlug = searchParams.get("slug");
+  const initialSlug = options.find(item => item.slug === requestedSlug)?.slug ?? options[0]?.slug ?? "";
 
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -74,7 +80,10 @@ export default function BookingForm({
     return events.find((e) => e.slug === itemSlug) ?? events[0];
   }, [type, itemSlug, cottages, events]);
 
-  const amount = useMemo(() => {
+  const soldOut = type === "stay" && isStaySoldOut(cottages.find((c) => c.slug === itemSlug));
+
+  const baseAmount = useMemo(() => {
+    if (!item) return 0;
     if (type === "stay" && "pricePerNight" in item) {
       const nights = nightsBetween(checkIn, checkOut) || 1;
       return item.pricePerNight * nights;
@@ -83,7 +92,12 @@ export default function BookingForm({
     return 0;
   }, [type, item, checkIn, checkOut]);
 
+  const pricing = bookingPrice(baseAmount);
+  const amount = pricing.totalAmount;
+  const money = (value: number) => value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
+
   async function onSubmit(values: BookingRequest) {
+    if (soldOut || !item) return;
     setStatus("creating-booking");
     setErrorMessage(null);
     try {
@@ -182,21 +196,20 @@ export default function BookingForm({
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
               {...register("type")}
             >
-              <option value="stay">{content.text_7}</option>
-              <option value="event">{content.text_8}</option>
+              {mode === "stay" ? <option value="stay">{content.text_7 === "Mudhouse stay" ? "Stay" : content.text_7}</option> : <option value="event">{content.text_8}</option>}
             </select>
           </div>
           <div>
             <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">
-              {type === "stay" ? content.text_9 : content.text_10}
+              {type === "stay" ? (content.text_9 === "Mudhouse" ? "Stay option" : content.text_9) : content.text_10}
             </label>
             <select
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
               {...register("itemSlug")}
             >
               {(type === "stay" ? cottages : events).map((i) => (
-                <option key={i.slug} value={i.slug}>
-                  {i.name}
+                <option key={i.slug} value={i.slug} disabled={type === "stay" && cottages.find((c) => c.slug === i.slug)?.quantity === 0}>
+                  {i.name}{type === "stay" && cottages.find((c) => c.slug === i.slug)?.quantity === 0 ? " — Sold out" : ""}
                 </option>
               ))}
             </select>
@@ -276,8 +289,9 @@ export default function BookingForm({
           {errors.guestPhone && <p className="mt-1 text-xs text-red-700">{errors.guestPhone.message}</p>}
         </div>
 
+        <div className="space-y-2 text-sm text-foreground-soft"><div className="flex justify-between gap-4"><span>Base price (excluding GST)</span><span>₹{money(pricing.baseAmount)}</span></div><div className="flex justify-between gap-4"><span>GST (18%)</span><span>₹{money(pricing.gstAmount)}</span></div></div>
         <div className="flex items-center justify-between border border-line bg-surface px-4 py-3">
-          <span className="text-sm text-foreground-soft">{content.text_18}</span>
+          <span className="text-sm text-foreground-soft">Total including 18% GST</span>
           <span className="tabular-nums text-xl font-semibold text-foreground">₹{amount.toLocaleString("en-IN")}</span>
         </div>
 
@@ -289,10 +303,10 @@ export default function BookingForm({
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting || soldOut || !item}
           className="btn btn-accent w-full transition-opacity disabled:opacity-60"
         >
-          {submitting ? content.text_19 : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`}
+          {soldOut ? "Sold out" : !item ? "Unavailable" : submitting ? content.text_19 : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`}
         </button>
       </form>
     </>

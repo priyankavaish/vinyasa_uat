@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__contact_page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -17,7 +18,7 @@ type Service = { icon: string; title: string; body: string };
 type Faq = { q: string; a: string };
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/contact/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/contact/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
 
 const SERVICES_FALLBACK: Array<{ icon: IconName; title: string; body: string }> = [

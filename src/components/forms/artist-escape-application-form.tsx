@@ -146,12 +146,12 @@ export default function ArtistEscapeApplicationForm() {
 
       <div className="mt-5">
         <label className={label} htmlFor="ae-intent">Intent of application</label>
-        <textarea id="ae-intent" rows={4} className={field} {...register("intent")} />
+        <textarea id="ae-intent" rows={4} maxLength={2000} className={field} {...register("intent")} />
       </div>
 
       <div className="mt-5">
         <label className={label} htmlFor="ae-look-forward">What do you look forward to do at your stay at Vinyasa?</label>
-        <textarea id="ae-look-forward" rows={4} className={field} {...register("lookForward")} />
+        <textarea id="ae-look-forward" rows={4} maxLength={2000} className={field} {...register("lookForward")} />
       </div>
 
       {status === "error" && errorMessage && (

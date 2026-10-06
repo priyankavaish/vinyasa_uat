@@ -1,0 +1,40 @@
+"use server";
+import { z } from "zod";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { getSessionUser } from "@/lib/auth-server";
+import { getDb } from "@/lib/db";
+import { siteContent } from "@/lib/db/schema";
+import { EMAIL_CONFIG_KEY, encryptEmailSecret, getEmailConfig, retryNotification, sendNotificationEmail, type EmailKind } from "@/lib/email-notifications";
+async function requireAdmin() { if (!await getSessionUser()) throw new Error("Unauthorized"); }
+const configSchema = z.object({ siteUrl: z.string().trim().url().refine(value => { const url = new URL(value); return url.protocol === "https:" || (url.protocol === "http:" && ["localhost", "127.0.0.1"].includes(url.hostname)); }, "Use HTTPS for the live website.").transform(value => new URL(value).origin), provider: z.enum(["gmail", "smtp", "resend"]), sender: z.string().trim().email().max(150), host: z.string().trim().max(250), port: z.coerce.number().int().min(1).max(65535), user: z.string().trim().max(150), secret: z.string().trim().max(1000) });
+export async function saveEmailSettings(form: FormData) {
+ await requireAdmin();
+ const parsed = configSchema.safeParse(Object.fromEntries(form));
+ if (!parsed.success) return { ok: false, message: "Check the sender email and configuration fields." };
+ const data = parsed.data;
+ if (data.provider !== "resend" && !data.user) return { ok: false, message: "Enter the email login username." };
+ if (data.provider === "smtp" && !data.host) return { ok: false, message: "Enter the SMTP server hostname." };
+ try {
+  const existing = await getEmailConfig();
+  const secret = data.secret || (existing?.provider === data.provider ? existing.secret : "");
+  if (!secret) return { ok: false, message: data.provider === "resend" ? "Enter your Resend API key." : "Enter your email App Password." };
+  const value = { ...data, secret: encryptEmailSecret(data.provider === "gmail" ? secret.replace(/\s/g, "") : secret) };
+  await getDb().insert(siteContent).values({ key: EMAIL_CONFIG_KEY, value }).onConflictDoUpdate({ target: siteContent.key, set: { value, updatedAt: new Date() } });
+  revalidatePath("/admin/settings");
+  return { ok: true, message: "Saved. Send a test email to verify delivery." };
+ } catch { return { ok: false, message: "Could not save email settings. Check the server configuration." }; }
+}
+export async function testEmailSettings() {
+ await requireAdmin();
+ try { const config = await getEmailConfig(); if (!config) return { ok: false, message: "Save email settings first." };
+  await sendNotificationEmail(config, "Vinyasa Earth: email notification test", "Email notifications are configured for priyanka6199@gmail.com. Website entries remain available in the admin panel.");
+  return { ok: true, message: "Test email accepted by the provider. Check priyanka6199@gmail.com, including Spam." };
+ } catch { return { ok: false, message: "Test delivery failed. Check sender, App Password/API key and provider settings." }; }
+}
+export async function resendEntryEmail(kind: EmailKind, id: string) {
+ await requireAdmin();
+ if (!["lead", "booking", "payment"].includes(kind) || !z.string().uuid().safeParse(id).success) throw new Error("Invalid entry.");
+ await retryNotification(kind, id);
+ revalidatePath("/admin/contact"); revalidatePath("/admin/bookings"); revalidatePath("/admin/settings");
+}

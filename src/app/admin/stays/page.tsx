@@ -1,3 +1,6 @@
+import StayInventoryEditor from "@/components/admin/stay-inventory-editor";
+import { readStayInventory } from "@/lib/stay-inventory";
+import { cottages as seedCottages, tentStay } from "@/lib/content";
 import SearchableTable from "@/components/admin/searchable-table";
 import Link from "next/link";
 import { asc } from "drizzle-orm";
@@ -18,6 +21,10 @@ export default async function AdminStaysPage() {
     db.select().from(cottages).orderBy(asc(cottages.sort)),
     db.select().from(voT).orderBy(asc(voT.sort)),
   ]);
+
+  const inventory = await readStayInventory();
+  const inventoryRooms = rows.length ? rows : seedCottages;
+  const allInventoryRooms = inventoryRooms.some((room) => room.slug === "tent") ? inventoryRooms : [...inventoryRooms, tentStay];
 
   return (
     <div className="space-y-12">
@@ -55,6 +62,7 @@ export default async function AdminStaysPage() {
                 </tr>) }))} />
       </div>
 
+      <StayInventoryEditor stays={allInventoryRooms.map((room) => ({ slug: room.slug, name: room.name, quantity: inventory[room.slug] ?? null }))} />
       <VisitOptionsEditor items={vo} />
       <div className="border border-line bg-white p-6"><h2 className="text-xl">Partner logos & stay page content</h2><p className="mt-2 text-sm text-foreground-soft">Edit partner names, logos, descriptions and gallery images in the website content editor.</p><Link href="/admin/content?section=app%2F(site)%2Fstays%2Fpage" className="btn btn-outline mt-4">Edit stays page content</Link></div>
     </div>

@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__work_from_farm_page";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
@@ -10,7 +11,7 @@ import gardenPhoto from "@/app/assets/work-from-farm/IMG_4299-600x900.webp";
 import styles from "./work-from-farm.module.css";
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/work-from-farm/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/work-from-farm/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
 
 const agreements = [

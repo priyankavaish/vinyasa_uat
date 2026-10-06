@@ -8,9 +8,9 @@ export const defaults = {
 "text_4": "/admin/bookings",
 
 "text_6": "Booking type",
-"text_7": "Mudhouse stay",
+"text_7": "Stay",
 "text_8": "Event / retreat",
-"text_9": "Mudhouse",
+"text_9": "Stay option",
 "text_10": "Program",
 "text_11": "Check-in",
 "text_12": "Check-out",

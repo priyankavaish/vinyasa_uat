@@ -1,3 +1,5 @@
+import { notifyEntry } from "@/lib/email-notifications";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { razorpayVerifySchema } from "@/lib/schemas";
 import { getBooking, updateBookingStatus } from "@/lib/store";
@@ -32,6 +34,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Payment could not be verified." }, { status: 400 });
   }
 
+  if (booking.status === "paid") return NextResponse.json({ booking });
+
   const isMockOrder = booking.razorpayOrderId?.startsWith("order_mock") ?? false;
 
   if (!isMockOrder) {
@@ -46,5 +50,7 @@ export async function POST(req: NextRequest) {
   const updated = await updateBookingStatus(bookingId, "paid", {
     razorpayPaymentId: razorpay_payment_id,
   });
+  if (updated) await notifyEntry("payment", updated);
+  revalidatePath("/admin/bookings");
   return NextResponse.json({ booking: updated });
 }

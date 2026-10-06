@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__artist_escape_page";
 import { getEditorial } from "@/lib/editorial/server";
 import SectionWave from "@/components/ui/section-wave";
@@ -22,7 +23,7 @@ const PROCESS_ICONS: IconName[] = ["sparkles-outline", "people-outline", "ribbon
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
   const { seo } = await getEditorial("app/(site)/artist-escape/page", editorialDefaults);
-  return { ...seo, title: editorialDefaults.seo.title, description: "Explore Artist Escape and Artist in Residence at Vinyasa Earth, Jaipur. Two offerings for creative practice, community and research." };
+  return pageSeoMetadata(seo, editorialDefaults.seo);
 }
 
 export default async function ArtistEscapePage() {

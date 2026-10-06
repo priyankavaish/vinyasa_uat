@@ -1,3 +1,5 @@
+import { notifyEntry } from "@/lib/email-notifications";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { leadSchema } from "@/lib/schemas";
 import { createLead, listLeads } from "@/lib/store";
@@ -9,7 +11,7 @@ export const runtime = "nodejs";
 export async function POST(req: NextRequest) {
   if (!hasDb()) {
     return NextResponse.json(
-      { error: "Messaging is temporarily unavailable. Please email vinyasa.ashram@gmail.com." },
+      { error: "Messaging is temporarily unavailable. Please email priyanka6199@gmail.com." },
       { status: 503 }
     );
   }
@@ -31,6 +33,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const lead = await createLead(parsed.data);
+    revalidatePath("/admin/contact");
+    await notifyEntry("lead", lead);
     return NextResponse.json({ lead });
   } catch (err) {
     console.error("[api/leads] failed to create lead", err);

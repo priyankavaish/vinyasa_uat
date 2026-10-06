@@ -61,6 +61,7 @@ const EXPERIENCE_PHOTOS = [expA, "/images/2N0A9839.JPG", "/images/DJI_2024092413
 export const defaults = {
 "ACCESSORY_PARTNERS": ACCESSORY_PARTNERS,
 seo: {
+    keywords: "",
   title: "Stays at Vinyasa Earth in Jaipur",
   description:
     "Hand-built rooms named for the elements — Agni, Jal, Chandrama, Prithvi, Vayu, Shunya, and a shared dorm — at Vinyasa Earth in Jaipur.",

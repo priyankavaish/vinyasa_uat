@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Uses Web Crypto (globalThis.crypto.subtle) rather than Node's `crypto`
-// module so this file works in both the Node API routes AND the Edge
-// middleware runtime, which doesn't have Node's crypto.
+// Shared by Node API routes and Node middleware.
 
 export const SESSION_COOKIE = "vinyasa_admin_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 8; // 8 hours
@@ -48,7 +46,10 @@ type SessionPayload = { email: string; expires: number };
 
 export async function createSessionToken(email: string): Promise<string> {
   const expires = Date.now() + SESSION_TTL_MS;
-  const payload = `${expires}~${encodeURIComponent(email)}`;
+  const { findAdminByEmail } = await import("@/lib/db/users");
+  const user = await findAdminByEmail(email);
+  if (!user) throw new Error("Admin account does not exist.");
+  const payload = `${expires}~${encodeURIComponent(user.email)}~${await hmacHex(user.passwordHash)}`;
   return `${payload}.${await hmacHex(payload)}`;
 }
 
@@ -62,10 +63,25 @@ export async function readSessionToken(
   const signature = token.slice(dot + 1);
   const expected = await hmacHex(payload);
   if (!timingSafeEqualHex(expected, signature)) return null;
-  const [expStr, emailEnc] = payload.split("~");
+  const [expStr, emailEnc, fingerprint] = payload.split("~");
   const expires = Number(expStr);
   if (!Number.isFinite(expires) || Date.now() >= expires) return null;
-  return { email: decodeURIComponent(emailEnc ?? ""), expires };
+  try {
+    const email = decodeURIComponent(emailEnc ?? "");
+    const { findAdminByEmail } = await import("@/lib/db/users");
+    const user = await findAdminByEmail(email);
+    if (!user) return null;
+    if (fingerprint) {
+      if (!timingSafeEqualHex(fingerprint, await hmacHex(user.passwordHash))) return null;
+    } else {
+      const { getDb } = await import("@/lib/db");
+      const { siteContent } = await import("@/lib/db/schema");
+      const { eq } = await import("drizzle-orm");
+      const changed = await getDb().select({key:siteContent.key}).from(siteContent).where(eq(siteContent.key,"admin-password-changed:"+user.id)).limit(1);
+      if (changed.length) return null;
+    }
+    return {email:user.email,expires};
+  } catch { return null; }
 }
 
 export async function isValidSessionToken(token: string | undefined | null): Promise<boolean> {

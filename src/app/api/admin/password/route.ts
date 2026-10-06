@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { validPassword } from "@/lib/password-recovery";
 import { z } from "zod";
 import { requireAdminSession } from "@/lib/auth";
 import { getSessionUser } from "@/lib/auth-server";
@@ -8,7 +9,7 @@ export const runtime = "nodejs";
 
 const schema = z.object({
   currentPassword: z.string().min(1).max(200),
-  newPassword: z.string().min(8, "Use at least 8 characters.").max(200),
+  newPassword: z.string().refine(validPassword, "Use at least 8 characters, up to 72 bytes."),
 });
 
 export async function POST(req: NextRequest) {

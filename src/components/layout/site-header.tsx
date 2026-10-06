@@ -1,6 +1,7 @@
 "use client";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_layout_site_header";
 import { useEditorial } from "@/components/editorial/provider";
+import { pageForPath, type PageSettingsMap } from "@/lib/page-routing";
 
 
 import Link from "next/link";
@@ -25,9 +26,9 @@ function isActivePath(pathname: string, href: string) {
 // Routes whose first viewport is a full-bleed photo hero — nav rides
 // transparent over the image on these, like villaskamezi/era-residence.
 // Everywhere else (forms, admin) there's no photo to sit on, so it's solid.
-const HERO_PHOTO_ROUTES = [/^\/$/, /^\/about$/, /^\/book$/, /^\/artist-escape$/];
+const HERO_PHOTO_ROUTES = [/^\/$/, /^\/about$/, /^\/artist-escape$/];
 
-export default function SiteHeader() {
+export default function SiteHeader({ pageSettings = {} }: { pageSettings?: PageSettingsMap }) {
   const content = useEditorial("components/layout/site-header", editorialDefaults);
 
   const headerRef = useRef<HTMLElement>(null);
@@ -44,7 +45,8 @@ export default function SiteHeader() {
     setOpen(false);
   }, [pathname]);
 
-  const overHero = HERO_PHOTO_ROUTES.some((re) => re.test(pathname));
+  const originalPath = pageForPath(pathname, pageSettings)?.path ?? pathname;
+  const overHero = HERO_PHOTO_ROUTES.some((re) => re.test(originalPath));
   const transparent = overHero && !scrolled && !open;
 
   // On Vercel's production runtime (not reproducible in a local `next build`
@@ -171,7 +173,7 @@ export default function SiteHeader() {
                   aria-current={active ? "page" : undefined}
                   className={`${linkClass} ${active ? activeClass : ""}`}
                 >
-                  {link.href === "/artist-escape" ? "For the Artists" : link.label}
+                  {pageForPath(link.href.split(/[?#]/)[0], pageSettings)?.path === "/artist-escape" && !pageSettings[pageForPath(link.href.split(/[?#]/)[0], pageSettings)!.id]?.menuLabel ? "For the Artists" : link.label}
                 </Link>
               </li>
             );
@@ -219,7 +221,7 @@ export default function SiteHeader() {
                         : ""
                     }
                   >
-                    {link.href === "/artist-escape" ? "For the Artists" : link.label}
+                    {pageForPath(link.href.split(/[?#]/)[0], pageSettings)?.path === "/artist-escape" && !pageSettings[pageForPath(link.href.split(/[?#]/)[0], pageSettings)!.id]?.menuLabel ? "For the Artists" : link.label}
                   </Link>
                 </li>
               );

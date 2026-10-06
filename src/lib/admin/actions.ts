@@ -174,67 +174,19 @@ export async function deleteEvent(id: string) {
 // Blogs
 // --------------------------------------------------------------------------
 
-const blogSchema = z.object({
-  id: z.string().optional(),
-  slug: z.string().max(80).default(""),
-  title: z.string().min(1).max(200),
-  excerpt: z.string().max(500).default(""),
-  coverUrl: z.string().max(600).default(""),
-  status: z.enum(["draft", "published"]),
-});
-
 export async function saveBlog(form: FormData) {
-  await assertAdmin();
-  const data = blogSchema.parse(Object.fromEntries(form));
-  const db = getDb();
-  const slug = slugify(data.slug || data.title);
-  const bodyHtml = await cleanHtml(String(form.get("bodyHtml") ?? ""));
-  const now = new Date();
-
-  if (data.id) {
-    const [existing] = await db.select().from(t.blogs).where(eq(t.blogs.id, data.id)).limit(1);
-    await db
-      .update(t.blogs)
-      .set({
-        slug,
-        title: data.title,
-        excerpt: data.excerpt,
-        coverUrl: data.coverUrl,
-        bodyHtml,
-        status: data.status,
-        publishedAt:
-          data.status === "published"
-            ? (existing?.publishedAt ?? now)
-            : null,
-        updatedAt: now,
-      })
-      .where(eq(t.blogs.id, data.id));
-  } else {
-    await db.insert(t.blogs).values({
-      slug,
-      title: data.title,
-      excerpt: data.excerpt,
-      coverUrl: data.coverUrl,
-      bodyHtml,
-      status: data.status,
-      publishedAt: data.status === "published" ? now : null,
-    });
-  }
-  revalidateTag("blogs");
-  revalidatePath("/blogs");
-  revalidatePath(`/blogs/${slug}`);
+  const { saveBlogPost } = await import("@/lib/blog-post-actions");
+  const result = await saveBlogPost(form);
+  if (!result.ok) throw new Error(result.error);
   redirect("/admin/blog");
 }
-
 export async function deleteBlog(id: string) {
-  await assertAdmin();
-  await getDb().delete(t.blogs).where(eq(t.blogs.id, id));
-  revalidateTag("blogs");
-  revalidatePath("/blogs");
+  const { removeBlogPost } = await import("@/lib/blog-post-actions");
+  await removeBlogPost(id);
 }
 
 // --------------------------------------------------------------------------
-// Site content (page copy)
+// // Site content (page copy)
 // --------------------------------------------------------------------------
 
 export async function saveContent(key: string, value: unknown) {
@@ -322,6 +274,9 @@ export async function savePage(form: FormData) {
   const id = String(form.get("id") ?? "").trim();
   const title = String(form.get("title") ?? "").trim() || "Untitled page";
   const slug = slugify(String(form.get("slug") ?? "").trim() || title);
+  const { getPageSettings } = await import("@/lib/page-routing-store");
+  const { normalisePagePath, assertPathAvailable } = await import("@/lib/page-routing");
+  assertPathAvailable(normalisePagePath("/" + slug), "custom-" + id, await getPageSettings());
   const status = String(form.get("status") ?? "draft") === "published" ? "published" : "draft";
   const layoutRaw = String(form.get("layout") ?? "boxed");
   const layout = ["boxed", "full", "narrow"].includes(layoutRaw) ? layoutRaw : "boxed";

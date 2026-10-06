@@ -157,3 +157,17 @@ export async function listLeads(): Promise<Lead[]> {
   const rows = await db.select().from(leadsTable).orderBy(desc(leadsTable.createdAt));
   return rows.map(toLead);
 }
+
+// Older installations stored whole rupees. Preserve their existing values while
+// allowing exact GST totals in paise; run this idempotent upgrade once per connection.
+const precisionUpgrades = new WeakMap<object, Promise<void>>();
+export async function ensureBookingCurrencyPrecision() {
+  const db = getDb();
+  let upgrade = precisionUpgrades.get(db);
+  if (!upgrade) {
+    upgrade = db.execute(sql.raw("DO $$\nBEGIN\n  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = current_schema() AND table_name = 'bookings' AND column_name = 'amount' AND data_type <> 'numeric') THEN\n    ALTER TABLE bookings ALTER COLUMN amount TYPE numeric(12,2) USING amount::numeric(12,2);\n  END IF;\nEND $$;\n")).then(() => {});
+    precisionUpgrades.set(db, upgrade);
+    upgrade.catch(() => precisionUpgrades.delete(db));
+  }
+  await upgrade;
+}

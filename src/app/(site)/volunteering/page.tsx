@@ -1,3 +1,4 @@
+import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__corporate_page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -15,7 +16,7 @@ import communityImg from "@/app/assets/new/community-05.jpg";
 import styles from "./volunteer.module.css";
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
-  return (await getEditorial("app/(site)/corporate/page", editorialDefaults)).seo;
+  return pageSeoMetadata((await getEditorial("app/(site)/corporate/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
 
 export default async function VolunteerPage() {

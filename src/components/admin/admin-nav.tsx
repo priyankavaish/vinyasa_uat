@@ -13,6 +13,8 @@ const LINKS = [
   { href: "/admin/stays", label: "Stays" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/pages", label: "Manage Pages" },
+  { href: "/admin/payment-buttons", label: "Payment buttons" },
+  { href: "/admin/users", label: "Users" },
   { href: "/admin/settings", label: "Settings" },
 ];
 
@@ -50,7 +52,7 @@ export default function AdminNav({ email }: { email: string }) {
           <p className="font-display text-2xl italic">Vinyasa Earth</p>
           <p className="mt-0.5 text-[11px] uppercase tracking-[0.2em] text-[#d5bb87]">Admin</p>
 
-          <nav className="mt-8 flex-1 space-y-1">
+          <nav className="mt-8 min-h-0 flex-1 space-y-1 overflow-y-auto">
             {LINKS.map((l) => (
               <Link
                 key={l.href}

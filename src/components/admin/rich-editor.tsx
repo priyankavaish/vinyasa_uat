@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -12,14 +12,19 @@ const COLORS = ["#2b2620", "#8f3b31", "#6b7a5e", "#6b7a9e", "#a06a2c", "#ffffff"
 export default function RichEditor({
   value,
   onChange,
+  blockTools = false,
+  onUploadStateChange,
 }: {
   value: string;
   onChange: (html: string) => void;
+  blockTools?: boolean;
+  onUploadStateChange?: (busy: boolean) => void;
 }) {
+  const [blockMenu, setBlockMenu] = useState(false);
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ heading: { levels: [2, 3, 4] } }),
+      StarterKit.configure({ link: false, heading: { levels: [2, 3, 4] } }),
       TextStyle,
       Color,
       Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: "noopener" } }),
@@ -37,11 +42,11 @@ export default function RichEditor({
 
   // keep external resets in sync (e.g. after save)
   useEffect(() => {
-    if (editor && value && value !== editor.getHTML()) {
+    if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value, { emitUpdate: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
+  }, [editor, value]);
 
   const addImage = useCallback(async () => {
     if (!editor) return;
@@ -51,15 +56,19 @@ export default function RichEditor({
     input.onchange = async () => {
       const file = input.files?.[0];
       if (!file) return;
+      onUploadStateChange?.(true);
+      try {
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.url) editor.chain().focus().setImage({ src: body.url }).run();
       else alert(body?.error ?? "Upload failed");
+      } catch { alert("Upload failed. Please retry."); }
+      finally { onUploadStateChange?.(false); }
     };
     input.click();
-  }, [editor]);
+  }, [editor, onUploadStateChange]);
 
   const setLink = useCallback(() => {
     if (!editor) return;
@@ -82,9 +91,7 @@ export default function RichEditor({
     editor
       .chain()
       .focus()
-      .insertContent(
-        `<p><a data-btn="1" data-variant="accent" href="${url}">${label}</a></p>`
-      )
+      .insertContent({ type: "paragraph", content: [{ type: "text", text: label, marks: [{ type: "link", attrs: { href: url } }] }] })
       .run();
   }, [editor]);
 
@@ -162,10 +169,19 @@ export default function RichEditor({
         <Btn on={addImage} title="Insert image">
           Image
         </Btn>
-        <Btn on={addButton} title="Insert button">
-          Button
+        <Btn on={addButton} title="Insert call-to-action link">
+          Call to action
         </Btn>
       </div>
+      {blockTools && <div className="border-x border-line bg-white p-2"><button type="button" aria-expanded={blockMenu} onClick={() => setBlockMenu(!blockMenu)} className="btn btn-outline">+ Add block</button><button type="button" onClick={() => editor.chain().focus().undo().run()} className="ml-3 text-sm underline">Undo</button><button type="button" onClick={() => editor.chain().focus().redo().run()} className="ml-3 text-sm underline">Redo</button>{blockMenu && <div className="mt-3 flex flex-wrap gap-2">{[
+        ["Paragraph", () => editor.chain().focus().insertContent("<p>New paragraph</p>").run()],
+        ["Heading", () => editor.chain().focus().insertContent("<h2>New heading</h2>").run()],
+        ["Photo", addImage], ["Link", setLink],
+        ["Bullet list", () => editor.chain().focus().insertContent("<ul><li><p>List item</p></li></ul>").run()],
+        ["Numbered list", () => editor.chain().focus().insertContent("<ol><li><p>List item</p></li></ol>").run()],
+        ["Quote", () => editor.chain().focus().insertContent("<blockquote><p>Your quote</p></blockquote>").run()],
+        ["Divider", () => editor.chain().focus().setHorizontalRule().run()],
+      ].map(([label, action]) => <button type="button" key={String(label)} className="border border-line px-3 py-2 text-sm" onClick={() => { (action as () => void)(); setBlockMenu(false); }}>{String(label)}</button>)}</div>}</div>}
       <EditorContent editor={editor} />
     </div>
   );

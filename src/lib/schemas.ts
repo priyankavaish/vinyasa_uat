@@ -20,7 +20,7 @@ export type BookingRequest = z.infer<typeof bookingRequestSchema>;
 
 export const leadSchema = z.object({
   source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape"]),
-  name: z.string().trim().min(2).max(100),
+  name: z.string().trim().min(2).max(121),
   email: z.string().trim().email().max(150),
   phone: z
     .string()
@@ -29,7 +29,7 @@ export const leadSchema = z.object({
     .regex(/^[0-9+\-\s()]*$/, "Enter a valid phone number")
     .optional()
     .or(z.literal("")),
-  message: z.string().trim().max(2000).optional().or(z.literal("")),
+  message: z.string().trim().max(6000).optional().or(z.literal("")),
 });
 export type LeadRequest = z.infer<typeof leadSchema>;
 

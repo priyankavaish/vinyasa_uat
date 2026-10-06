@@ -1,12 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") || "/admin";
+  const requestedNext = params.get("next") || "/admin";
+  const next = requestedNext === "/admin" || requestedNext.startsWith("/admin/") ? requestedNext : "/admin";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
@@ -80,6 +82,7 @@ function LoginForm() {
           {status === "submitting" ? "Signing in…" : "Sign in"}
         </button>
       </form>
+      <Link href="/admin/forgot-password" className="mt-5 inline-block text-sm text-accent underline">Forgot password?</Link>
     </div>
   );
 }
