@@ -1,3 +1,4 @@
+import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import { getStayInventory } from "@/lib/stay-inventory";
 import { mudhouseContent, mudhouseText } from "./mudhouse-wording";
 import { unstable_cache, unstable_noStore } from "next/cache";
@@ -8,7 +9,6 @@ import * as t from "@/lib/db/schema";
 import {
   cottages as SEED_COTTAGES,
   legacyCottages,
-  tentStay,
   events as SEED_EVENTS,
   visitOptions as SEED_VISIT_OPTIONS,
   partners as SEED_PARTNERS,
@@ -98,14 +98,12 @@ const getCottageCatalog = unstable_cache(
   async (): Promise<Cottage[]> => {
     if (!hasDb()) return SEED_COTTAGES;
     try {
+      await ensureManagedTent();
       const rows = await getDb()
         .select()
         .from(t.cottages)
         .orderBy(asc(t.cottages.sort));
       const rooms = rows.filter((row) => row.published).map(rowToCottage);
-      // Introduce Tent on existing installations without replacing CMS edits.
-      // An explicitly unpublished Tent must stay hidden.
-      if (!rows.some((row) => row.slug === "tent")) rooms.push(tentStay);
       const tentIndex = rooms.findIndex((room) => room.slug === "tent");
       if (tentIndex !== -1) {
         const [tent] = rooms.splice(tentIndex, 1);
@@ -117,7 +115,7 @@ const getCottageCatalog = unstable_cache(
       return SEED_COTTAGES;
     }
   },
-  ["cms:cottages:v5"],
+  ["cms:cottages:v6"],
   { tags: ["cottages"] }
 );
 

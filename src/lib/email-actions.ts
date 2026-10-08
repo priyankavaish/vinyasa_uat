@@ -1,4 +1,6 @@
 "use server";
+import { routingSchema } from "@/lib/notification-routing";
+import { NOTIFICATION_ROUTING_KEY } from "@/lib/notification-routing-store";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -17,7 +19,7 @@ export async function saveEmailSettings(form: FormData) {
  if (data.provider === "smtp" && !data.host) return { ok: false, message: "Enter the SMTP server hostname." };
  try {
   const existing = await getEmailConfig();
-  const secret = data.secret || (existing?.provider === data.provider ? existing.secret : "");
+  const secret = data.secret || (existing?.provider === data.provider && existing.sender === data.sender && existing.user === data.user ? existing.secret : "");
   if (!secret) return { ok: false, message: data.provider === "resend" ? "Enter your Resend API key." : "Enter your email App Password." };
   const value = { ...data, secret: encryptEmailSecret(data.provider === "gmail" ? secret.replace(/\s/g, "") : secret) };
   await getDb().insert(siteContent).values({ key: EMAIL_CONFIG_KEY, value }).onConflictDoUpdate({ target: siteContent.key, set: { value, updatedAt: new Date() } });
@@ -27,9 +29,9 @@ export async function saveEmailSettings(form: FormData) {
 }
 export async function testEmailSettings() {
  await requireAdmin();
- try { const config = await getEmailConfig(); if (!config) return { ok: false, message: "Save email settings first." };
-  await sendNotificationEmail(config, "Vinyasa Earth: email notification test", "Email notifications are configured for priyanka6199@gmail.com. Website entries remain available in the admin panel.");
-  return { ok: true, message: "Test email accepted by the provider. Check priyanka6199@gmail.com, including Spam." };
+ try { const config = await getEmailConfig(); if (!config) return { ok: false, message: "Configure the email sender connection below first." };
+  await sendNotificationEmail(config, "Vinyasa Earth: email notification test", "This test uses the shared To, CC and BCC recipients for all website forms. Website entries remain available in the admin panel.");
+  return { ok: true, message: "Test email accepted by the provider. Check your notification recipients' Inbox and Spam." };
  } catch { return { ok: false, message: "Test delivery failed. Check sender, App Password/API key and provider settings." }; }
 }
 export async function resendEntryEmail(kind: EmailKind, id: string) {
@@ -37,4 +39,13 @@ export async function resendEntryEmail(kind: EmailKind, id: string) {
  if (!["lead", "booking", "payment"].includes(kind) || !z.string().uuid().safeParse(id).success) throw new Error("Invalid entry.");
  await retryNotification(kind, id);
  revalidatePath("/admin/contact"); revalidatePath("/admin/bookings"); revalidatePath("/admin/settings");
+}
+
+export async function saveNotificationRouting(input: unknown) {
+ await requireAdmin();
+ const parsed=routingSchema.safeParse(input);
+ if(!parsed.success) return {ok:false,message:parsed.error.issues[0]?.message || "Check the recipient email addresses."};
+ await getDb().insert(siteContent).values({key:NOTIFICATION_ROUTING_KEY,value:parsed.data}).onConflictDoUpdate({target:siteContent.key,set:{value:parsed.data,updatedAt:new Date()}});
+ revalidatePath("/admin/settings");revalidatePath("/admin/contact");revalidatePath("/admin/bookings");
+ return {ok:true,message:"Saved. Notifications from every website form and pending email retries will use these recipients."};
 }

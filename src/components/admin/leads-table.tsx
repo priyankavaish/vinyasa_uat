@@ -1,11 +1,13 @@
 "use client";
 
 import { Fragment, useMemo, useState } from "react";
+import EnquiryReplyForm from "@/components/admin/enquiry-reply-form";
+import type {EnquiryReply} from "@/lib/enquiry-replies";
 import type { Lead } from "@/lib/store";
 
 const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape"] as const;
 
-export default function LeadsTable({ leads }: { leads: Lead[] }) {
+export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; replies?: EnquiryReply[] }) {
   const [filter, setFilter] = useState<(typeof SOURCES)[number]>("all");
   const [openId, setOpenId] = useState<string | null>(null);
 
@@ -65,7 +67,7 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
                         {new Date(l.createdAt).toLocaleString("en-IN")}
                       </td>
                       <td className="px-4 py-3 text-right text-xs text-accent">
-                        {open ? "Hide" : "View"}
+                        <button type="button" onClick={event=>{event.stopPropagation();setOpenId(open?null:l.id);}} aria-expanded={open}>{open ? "Hide" : "View / Reply"}</button>
                       </td>
                     </tr>
                     {open && (
@@ -86,6 +88,7 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
                               {l.message || "— no message —"}
                             </p>
                           </div>
+                          <EnquiryReplyForm lead={l} replies={replies.filter(reply=>reply.leadId===l.id)} />
                         </td>
                       </tr>
                     )}
