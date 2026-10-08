@@ -1,3 +1,4 @@
+import { ensureArtistResidencyEvent, ensureMuseEvent } from "@/lib/db/event-catalog";
 import SearchableTable from "@/components/admin/searchable-table";
 import Link from "next/link";
 import { asc } from "drizzle-orm";
@@ -10,6 +11,8 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminEventsPage() {
   if (!hasDb()) return <p className="text-sm text-foreground-soft">Database not configured.</p>;
+  await ensureArtistResidencyEvent();
+  await ensureMuseEvent();
   const rows = await getDb().select().from(events).orderBy(asc(events.sort));
 
   return (

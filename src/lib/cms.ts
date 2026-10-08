@@ -1,3 +1,4 @@
+import { ensureArtistResidencyEvent, ensureMuseEvent } from "@/lib/db/event-catalog";
 import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import { getStayInventory } from "@/lib/stay-inventory";
 import { mudhouseContent, mudhouseText } from "./mudhouse-wording";
@@ -133,6 +134,8 @@ export const getAllEvents = unstable_cache(
   async (): Promise<EventProgram[]> => {
     if (!hasDb()) return SEED_EVENTS;
     try {
+      await ensureArtistResidencyEvent();
+      await ensureMuseEvent();
       const rows = await getDb()
         .select()
         .from(t.events)
@@ -143,7 +146,7 @@ export const getAllEvents = unstable_cache(
       return SEED_EVENTS;
     }
   },
-  ["cms:events:v3"],
+  ["cms:events:v5"],
   { tags: ["events"] }
 );
 

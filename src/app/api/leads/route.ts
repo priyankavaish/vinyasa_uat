@@ -35,10 +35,14 @@ export async function POST(req: NextRequest) {
     const data = parsed.data;
     const lead = await createLead({
       source: data.source,
-      name: data.source === "volunteer" ? `${data.name} ${data.lastName}` : data.name,
+      name: data.source === "volunteer" || data.source === "artist-residence" || data.source === "artist-unite" ? [data.name, data.lastName].filter(Boolean).join(" ") : data.name,
       email: data.email,
       phone: data.phone,
-      message: data.source === "volunteer"
+      message: data.source === "artist-unite"
+        ? `Artist Unite application\nArtform: ${data.artPractice}\nPortfolio / URL: ${data.portfolio}`
+        : data.source === "artist-residence"
+        ? `Artist-in-Residence application\nArt practice: ${data.artPractice}\nPortfolio: ${data.portfolio}\nCountry: ${data.country}\n\nArea of Research/Enquiry:\n${data.researchInquiry}`
+        : data.source === "volunteer"
         ? `Volunteering period days: ${[...new Set(data.volunteeringDates)].sort().join(", ")}\nVolunteering type: ${data.volunteeringType}`
         : data.source === "contact"
           ? `Subject: ${data.subject}${data.message ? `\n\n${data.message}` : ""}`
