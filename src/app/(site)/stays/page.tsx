@@ -5,6 +5,7 @@ import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__stays_page";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
+import Link from "next/link";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Parallax } from "@/components/ui/parallax";
@@ -137,7 +138,7 @@ export default async function StaysPage() {
                   delay={i * 90}
                   className={i % 2 === 1 ? "sm:mt-10" : ""}
                 >
-                  <div className="group relative aspect-[4/3] overflow-hidden border border-line transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)] sm:aspect-[16/10]">
+                  <Link href="/contact#contact-form" className="group relative block aspect-[4/3] overflow-hidden border border-line transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)] sm:aspect-[16/10]">
                     {option.image ? (
                       <Image
                         src={option.image}
@@ -151,10 +152,10 @@ export default async function StaysPage() {
                     )}
                     <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                      <h3 className="font-display italic text-xl leading-tight text-white sm:text-2xl"><FormattedText value={option.title} /></h3>
-                      <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-white/85"><FormattedText value={option.description} /></p>
+                      <h3 className="font-display italic text-xl leading-tight text-white sm:text-2xl"><FormattedText value={option.title} links={false} /></h3>
+                      <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-white/85"><FormattedText value={option.description} links={false} /></p>
                     </div>
-                  </div>
+                  </Link>
                 </Reveal>
               ))}
             </div>
