@@ -211,7 +211,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
       {isPauseWithin ? (
         <main className="bg-background">
-          <section className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:py-24">
+          <section className="mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:pb-24 lg:pt-8">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">18-20 September 2026</p>
               <h2 className="mt-5 max-w-[16ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl">A little space to listen inward.</h2>
@@ -263,7 +263,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
         </main>
       ) : editorialEvent ? (
         <main className="bg-background">
-          <section className="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:py-24">
+          <section className="mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:pb-24 lg:pt-8">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">{event.dateLabel || "Vinyasa Earth, Jaipur"}</p>
               <h2 className="mt-5 max-w-[18ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl">{editorialEvent.introTitle}</h2>
