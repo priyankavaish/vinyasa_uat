@@ -1,6 +1,6 @@
 import StayInventoryEditor from "@/components/admin/stay-inventory-editor";
 import { readStayInventory } from "@/lib/stay-inventory";
-import { cottages as seedCottages, tentStay } from "@/lib/content";
+import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import SearchableTable from "@/components/admin/searchable-table";
 import Link from "next/link";
 import { asc } from "drizzle-orm";
@@ -16,6 +16,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminStaysPage() {
   if (!hasDb()) return <p className="text-sm text-foreground-soft">Database not configured.</p>;
 
+  await ensureManagedTent();
   const db = getDb();
   const [rows, vo] = await Promise.all([
     db.select().from(cottages).orderBy(asc(cottages.sort)),
@@ -23,8 +24,6 @@ export default async function AdminStaysPage() {
   ]);
 
   const inventory = await readStayInventory();
-  const inventoryRooms = rows.length ? rows : seedCottages;
-  const allInventoryRooms = inventoryRooms.some((room) => room.slug === "tent") ? inventoryRooms : [...inventoryRooms, tentStay];
 
   return (
     <div className="space-y-12">
@@ -32,11 +31,11 @@ export default async function AdminStaysPage() {
         <div className="flex items-center justify-between">
           <h1 className="font-display text-3xl italic">Stays</h1>
           <Link href="/admin/stays/new" className="btn btn-accent">
-            Add mudhouse
+            Add a stay
           </Link>
         </div>
 
-        <SearchableTable label="stays" columns={6} emptyMessage="No mudhouses yet. Add a mudhouse to get started." header={<thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
+        <SearchableTable label="stays" columns={6} emptyMessage="No stays yet. Add a stay to get started." header={<thead className="bg-[#f4efe6] text-xs uppercase tracking-[0.06em] text-foreground-soft">
               <tr>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Element</th>
@@ -57,12 +56,12 @@ export default async function AdminStaysPage() {
                   <td className="px-4 py-3 tabular-nums">{c.sort}</td>
                   <td className="px-4 py-3">{c.published ? "Yes" : "Draft"}</td>
                   <td className="px-4 py-3 text-right">
-                    <DeleteButton id={c.id} action={deleteCottage} label="Delete mudhouse?" />
+                    <DeleteButton id={c.id} action={deleteCottage} label="Delete stay?" />
                   </td>
                 </tr>) }))} />
       </div>
 
-      <StayInventoryEditor stays={allInventoryRooms.map((room) => ({ slug: room.slug, name: room.name, quantity: inventory[room.slug] ?? null }))} />
+      <StayInventoryEditor stays={rows.map((room) => ({ slug: room.slug, name: room.name, quantity: inventory[room.slug] ?? null }))} />
       <VisitOptionsEditor items={vo} />
       <div className="border border-line bg-white p-6"><h2 className="text-xl">Partner logos & stay page content</h2><p className="mt-2 text-sm text-foreground-soft">Edit partner names, logos, descriptions and gallery images in the website content editor.</p><Link href="/admin/content?section=app%2F(site)%2Fstays%2Fpage" className="btn btn-outline mt-4">Edit stays page content</Link></div>
     </div>

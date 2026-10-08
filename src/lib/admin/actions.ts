@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { cookies } from "next/headers";
+import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import { getDb } from "@/lib/db";
 import * as t from "@/lib/db/schema";
 import { SESSION_COOKIE, isValidSessionToken } from "@/lib/auth";
@@ -56,7 +57,7 @@ const listStr = (v: FormDataEntryValue | null) =>
 
 const cottageSchema = z.object({
   id: z.string().optional(),
-  slug: z.string().min(1).max(80),
+  slug: z.string().max(80),
   name: z.string().min(1).max(120),
   element: z.string().max(60).default(""),
   tagline: z.string().max(160).default(""),
@@ -72,6 +73,7 @@ const cottageSchema = z.object({
 
 export async function saveCottage(form: FormData) {
   await assertAdmin();
+  await ensureManagedTent();
   const raw = Object.fromEntries(form);
   const data = cottageSchema.parse(raw);
   const db = getDb();
@@ -95,6 +97,8 @@ export async function saveCottage(form: FormData) {
     updatedAt: new Date(),
   };
 
+  if (!values.slug) throw new Error("Enter a URL slug using letters or numbers.");
+
   if (data.id) {
     await db.update(t.cottages).set(values).where(eq(t.cottages.id, data.id));
   } else {
@@ -107,6 +111,7 @@ export async function saveCottage(form: FormData) {
 
 export async function deleteCottage(id: string) {
   await assertAdmin();
+  await ensureManagedTent();
   await getDb().delete(t.cottages).where(eq(t.cottages.id, id));
   revalidateTag("cottages");
   revalidatePath("/stays");

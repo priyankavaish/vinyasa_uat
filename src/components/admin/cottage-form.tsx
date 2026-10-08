@@ -86,7 +86,7 @@ export default function CottageForm({ cottage }: { cottage?: CottageRow }) {
       <RichEditorField name="bodyHtml" label="Detail page content" defaultValue={cottage?.bodyHtml ?? ""} />
 
       <div className="flex gap-3">
-        <button type="submit" className="btn btn-accent">Save mudhouse</button>
+        <button type="submit" className="btn btn-accent">Save stay</button>
         <a href="/admin/stays" className="btn btn-outline">Cancel</a>
       </div>
     </form>
