@@ -1,3 +1,6 @@
+import {redirect} from "next/navigation";
+import {getSessionUser} from "@/lib/auth-server";
+import {listEnquiryReplies} from "@/lib/enquiry-replies";
 import { listEmailStates } from "@/lib/email-notifications";
 import EmailDelivery from "@/components/admin/email-delivery";
 import { listLeads } from "@/lib/store";
@@ -7,10 +10,11 @@ import LeadsTable from "@/components/admin/leads-table";
 export const dynamic = "force-dynamic";
 
 export default async function AdminContactPage() {
+  if(!await getSessionUser())redirect("/admin/login");
   if (!hasDb()) {
     return <p className="text-sm text-foreground-soft">Database not configured.</p>;
   }
-  const [leads, states] = await Promise.all([listLeads(), listEmailStates(["lead"])]);
+  const [leads, states, replies] = await Promise.all([listLeads(), listEmailStates(["lead"]),listEnquiryReplies()]);
 
   return (
     <div>
@@ -20,7 +24,7 @@ export default async function AdminContactPage() {
       </p>
       <EmailDelivery states={states} />
       <div className="mt-6">
-        <LeadsTable leads={leads} />
+        <LeadsTable leads={leads} replies={replies} />
       </div>
     </div>
   );

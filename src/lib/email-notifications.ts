@@ -5,8 +5,9 @@ import { eq, like, sql } from "drizzle-orm";
 import { getDb } from "@/lib/db";
 import { siteContent, leads } from "@/lib/db/schema";
 import { getBooking, type Booking, type Lead } from "@/lib/store";
+import { getNotificationRouting } from "@/lib/notification-routing-store";
+import { type NotificationRecipients } from "@/lib/notification-routing";
 import { SITE_ORIGIN } from "@/lib/site";
-export const NOTIFICATION_RECIPIENT = "priyanka6199@gmail.com";
 export const EMAIL_CONFIG_KEY = "email-notifications:config";
 export type EmailKind = "lead" | "booking" | "payment";
 export type EmailConfig = { provider: "gmail" | "smtp" | "resend"; sender: string; host: string; port: number; user: string; secret: string; siteUrl?: string };
@@ -33,12 +34,12 @@ export async function getEmailConfig(): Promise<EmailConfig | null> {
  return null;
 }
 export async function getEmailSummary() {
- try { const config = await getEmailConfig(); return { configured: !!config, recipient: NOTIFICATION_RECIPIENT, provider: config?.provider || "gmail", sender: config?.sender || "", host: config?.host || "", port: config?.port || 587, user: config?.user || "", siteUrl: config?.siteUrl || "" }; }
- catch { return { configured: false, recipient: NOTIFICATION_RECIPIENT, provider: "gmail", sender: "", host: "", port: 587, user: "", siteUrl: "" }; }
+ try { const [config,routing] = await Promise.all([getEmailConfig(),getNotificationRouting()]); return { configured: !!config, recipient: routing.defaults.to.join(", "), provider: config?.provider || "gmail", sender: config?.sender || "", host: config?.host || "", port: config?.port || 587, user: config?.user || "", siteUrl: config?.siteUrl || "" }; }
+ catch { return { configured: false, recipient: "", provider: "gmail", sender: "", host: "", port: 587, user: "", siteUrl: "" }; }
 }
-export async function sendAccountEmail(config: EmailConfig, recipient: string, subject: string, text: string, replyTo?: string, idempotencyKey?: string) {
+async function sendEmail(config: EmailConfig, recipients: NotificationRecipients, subject: string, text: string, replyTo?: string, idempotencyKey?: string) {
  if (config.provider === "resend") {
-  const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: "Bearer " + config.secret, "Content-Type": "application/json", ...(idempotencyKey ? { "Idempotency-Key": idempotencyKey } : {}) }, body: JSON.stringify({ from: config.sender, to: [recipient], subject, text, ...(replyTo ? { reply_to: replyTo } : {}) }), signal: AbortSignal.timeout(10000) });
+  const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: "Bearer " + config.secret, "Content-Type": "application/json", ...(idempotencyKey ? { "Idempotency-Key": idempotencyKey } : {}) }, body: JSON.stringify({ from: config.sender, to: recipients.to, ...(recipients.cc.length ? { cc: recipients.cc } : {}), ...(recipients.bcc.length ? { bcc: recipients.bcc } : {}), subject, text, ...(replyTo ? { reply_to: replyTo } : {}) }), signal: AbortSignal.timeout(10000) });
   if (!response.ok) throw new Error("Email provider rejected the message. Check sender verification and credentials.");
   return;
  }
@@ -48,15 +49,19 @@ export async function sendAccountEmail(config: EmailConfig, recipient: string, s
   disableFileAccess: true, disableUrlAccess: true,
  });
  try {
-  const result = await transport.sendMail({ from: { name: "Vinyasa Earth", address: config.sender }, to: recipient, subject, text, replyTo });
+  const result = await transport.sendMail({ from: { name: "Vinyasa Earth", address: config.sender }, to: recipients.to, cc: recipients.cc, bcc: recipients.bcc, subject, text, replyTo });
   if (!result.accepted?.length) throw new Error("Email was not accepted.");
  } finally { transport.close(); }
 }
-export async function sendNotificationEmail(config: EmailConfig, subject: string, text: string, replyTo?: string, idempotencyKey?: string) {
- return sendAccountEmail(config, NOTIFICATION_RECIPIENT, subject, text, replyTo, idempotencyKey);
+export async function sendAccountEmail(config: EmailConfig, recipient: string, subject: string, text: string, replyTo?: string, idempotencyKey?: string) {
+ return sendEmail(config, {to:[recipient],cc:[],bcc:[]}, subject, text, replyTo, idempotencyKey);
 }
-function messageFor(kind: EmailKind, entry: Lead | Booking) {
- const url = new URL(kind === "lead" ? "/admin/contact" : "/admin/bookings", SITE_ORIGIN).toString();
+export async function sendNotificationEmail(config: EmailConfig, subject: string, text: string, replyTo?: string, idempotencyKey?: string) {
+ const routing = await getNotificationRouting();
+ return sendEmail(config, routing.defaults, subject, text, replyTo, idempotencyKey);
+}
+function messageFor(kind: EmailKind, entry: Lead | Booking, origin: string) {
+ const url = new URL(kind === "lead" ? "/admin/contact" : "/admin/bookings", origin).toString();
  if (kind === "lead") {
   const lead = entry as Lead;
   return { subject: "Vinyasa Earth: new " + lead.source + " enquiry", replyTo: lead.email, text: ["New website enquiry", "Reference: " + lead.id, "Form: " + lead.source, "Name: " + lead.name, "Email: " + lead.email, "Phone: " + (lead.phone || "Not supplied"), "", lead.message || "No message", "", "View entry: " + url].join("\n") };
@@ -78,7 +83,7 @@ export async function notifyEntry(kind: EmailKind, entry: Lead | Booking) {
   const config = await getEmailConfig();
   if (!config) { state.state = "unconfigured"; state.error = "Email setup is required in Settings."; }
   else {
-   const mail = messageFor(kind, entry);
+   const mail = messageFor(kind, entry, config.siteUrl || SITE_ORIGIN);
    try { await sendNotificationEmail(config, mail.subject, mail.text, mail.replyTo, notificationKey); state.state = "sent"; }
    catch { state.state = "failed"; state.error = "Delivery failed. Check email settings and retry."; }
   }
