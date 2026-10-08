@@ -32,7 +32,18 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const lead = await createLead(parsed.data);
+    const data = parsed.data;
+    const lead = await createLead({
+      source: data.source,
+      name: data.source === "volunteer" ? `${data.name} ${data.lastName}` : data.name,
+      email: data.email,
+      phone: data.phone,
+      message: data.source === "volunteer"
+        ? `Volunteering period days: ${[...new Set(data.volunteeringDates)].sort().join(", ")}\nVolunteering type: ${data.volunteeringType}`
+        : data.source === "contact"
+          ? `Subject: ${data.subject}${data.message ? `\n\n${data.message}` : ""}`
+          : data.message,
+    });
     revalidatePath("/admin/contact");
     await notifyEntry("lead", lead);
     return NextResponse.json({ lead });

@@ -29,7 +29,7 @@ async function LocationMap({ fullWidth = false }: { fullWidth?: boolean }) {
               <span className="text-foreground-soft">({content.GOOGLE_RATING.count})</span>
             </div>
           </div>
-          <a href={content.GOOGLE_MAPS_LINK} target="_blank" rel="noopener noreferrer" aria-label={content.aria_label_2} className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-accent/30 text-accent transition-colors hover:bg-accent hover:text-white">
+          <a href={content.GOOGLE_MAPS_LINK} target="_blank" rel="noopener noreferrer" aria-label={content.aria_label_2} className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-accent/30 text-[var(--accent)] transition-colors hover:bg-accent hover:text-white">
             <Icon name="arrow-forward-outline" size={15} />
           </a>
         </div>
@@ -53,10 +53,10 @@ export default async function LocationSection({ showContactForm = false }: { sho
       <div className="relative z-10 mx-auto grid max-w-7xl items-start gap-10 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
         {/* form first — visible on landing */}
         <Reveal variant="up">
-          <div className="border border-line bg-surface p-6 shadow-[0_1.5rem_4rem_rgba(78,58,38,0.12)] sm:p-9">
+          <div className="border border-line bg-surface p-6 shadow-[0_1.5rem_4rem_rgba(78,58,38,0.12)] sm:p-7">
             <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-accent">{content.text_4}</p>
             <h2 className="mt-2 font-display text-3xl italic text-clay-ink sm:text-4xl">{content.text_5}</h2>
-            <div className="mt-6">
+            <div className="mt-4">
               <LeadForm source="contact" title={content.title_6} />
             </div>
           </div>
@@ -70,7 +70,7 @@ export default async function LocationSection({ showContactForm = false }: { sho
           <dl className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {content.CONTACT_ITEMS.map((item) => (
               <div key={item.label} className="group flex items-center gap-4">
-                <span className="grid h-11 w-11 shrink-0 place-items-center border border-accent/40 bg-surface text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+                <span className="grid h-11 w-11 shrink-0 place-items-center border border-accent/40 bg-surface text-[var(--accent)] transition-colors group-hover:bg-accent group-hover:text-white">
                   <Icon name={item.icon} size={18} />
                 </span>
                 <div className="min-w-0 border-l border-accent/20 pl-4">
@@ -94,8 +94,8 @@ export default async function LocationSection({ showContactForm = false }: { sho
             href={content.GOOGLE_MAPS_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-7 inline-flex items-center gap-3 border border-accent/70 bg-surface px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-accent transition-all hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-white"
-          >{content.text_9}<Icon name="arrow-forward-outline" size={15} />
+            className="btn btn-accent mt-7"
+          ><span className="inline-flex flex-nowrap items-center gap-3"><span>{content.text_9}</span><Icon name="arrow-forward-outline" size={15} className="shrink-0" /></span>
           </a>
         </Reveal>
       </div>
