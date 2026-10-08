@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { saveEditorial } from "@/lib/editorial/actions";
 import ImageField from "./image-field";
 import SeoFields from "./seo-fields";
-import { isEditorialImageField, isEditorialVideoField, isEditorialAdvancedField } from "@/lib/editorial/fields";
+import FormattedTextField from "./formatted-text-field";
+import { isEditorialImageField, isEditorialVideoField, isEditorialAdvancedField, isEditorialTextField } from "@/lib/editorial/fields";
 type Section = { key: string; defaults: unknown; value: unknown };
 type Data = Record<string, unknown>;
 // Generated field names look like "text_12", "href_5", "aria_label_6" — the
@@ -93,6 +94,7 @@ function Fields({ value, template, path, onChange }: { value: unknown; template:
       </div>
     );
   }
+  if (isEditorialTextField(path)) return <FormattedTextField name={path} label={human(path)} value={text} onChange={onChange} />;
   return <label className="grid min-w-0 gap-2 break-words text-sm">{human(path)}<textarea name={path} data-field={path} className="w-full border border-line bg-white p-3 leading-relaxed" rows={text.length > 160 ? 4 : 2} value={text} onChange={e => onChange(e.target.value)} /></label>;
 }
 export default function EditorialEditor({ sections, initialSection }: { sections: Section[]; initialSection?: string }) {

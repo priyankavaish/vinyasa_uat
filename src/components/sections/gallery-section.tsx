@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_gallery_section";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
@@ -15,15 +17,15 @@ export default async function GallerySection() {
 
       <Reveal variant="up" className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <SectionEyebrow icon="camera-outline">{content.text_1}</SectionEyebrow>
-          <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight">{content.text_2}</h2>
+          <SectionEyebrow icon="camera-outline"><FormattedText value={content.text_1} /></SectionEyebrow>
+          <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight"><FormattedText value={content.text_2} /></h2>
         </div>
         <a
           href={content.href_3}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs tracking-[0.08em] uppercase text-accent underline"
-        >{content.text_4}</a>
+        ><FormattedText value={content.text_4} links={false} /></a>
       </Reveal>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {content.galleryPosts.map((post, i) => (
@@ -48,7 +50,7 @@ export default async function GallerySection() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 via-black/0 to-black/0 opacity-0 transition-opacity group-hover:opacity-100">
-                  <p className="p-3 text-xs leading-snug text-background">{post.caption}</p>
+                  <p className="p-3 text-xs leading-snug text-background"><FormattedText value={post.caption} links={false} /></p>
                 </div>
               </a>
             </Parallax>

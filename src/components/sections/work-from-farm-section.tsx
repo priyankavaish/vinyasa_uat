@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_work_from_farm_section";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
@@ -27,12 +29,12 @@ export default async function WorkFromFarmSection() {
     <section className="organic-section relative overflow-hidden bg-clay-surface py-10 sm:py-14">
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-2 lg:gap-16">
         <Reveal variant="left" className="order-1">
-          <SectionEyebrow icon="leaf-outline">{content.text_1}</SectionEyebrow>
+          <SectionEyebrow icon="leaf-outline"><FormattedText value={content.text_1} /></SectionEyebrow>
 
-          <h2 className="mt-3 font-display text-4xl leading-[1.03] sm:text-5xl">{content.text_2}<span className="mt-1 block text-accent">{content.text_3}</span>
+          <h2 className="mt-3 font-display text-4xl leading-[1.03] sm:text-5xl"><FormattedText value={content.text_2} /><span className="mt-1 block text-accent"><FormattedText value={content.text_3} /></span>
           </h2>
 
-          <p className="mt-4 max-w-[46ch] leading-relaxed text-foreground-soft">{content.text_4}</p>
+          <p className="mt-4 max-w-[46ch] leading-relaxed text-foreground-soft"><FormattedText value={content.text_4} /></p>
 
           <ul className="mt-5 flex flex-wrap gap-2">
             {content.perks.map((p) => (
@@ -41,7 +43,7 @@ export default async function WorkFromFarmSection() {
                 className="inline-flex items-center gap-1.5 rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
               >
                 <Icon name={p.icon} size={12} />
-                {p.label}
+                <FormattedText value={p.label} />
               </li>
             ))}
           </ul>
@@ -49,15 +51,15 @@ export default async function WorkFromFarmSection() {
           <div className="mt-6 space-y-0">
             {points.map(([title, body]) => (
               <div key={title} className="border-t border-line py-3.5 last:border-b">
-                <h3 className="font-display text-base leading-snug text-foreground">{title}</h3>
-                <p className="mt-1 text-sm leading-6 text-foreground-soft">{body}</p>
+                <h3 className="font-display text-base leading-snug text-foreground"><FormattedText value={title} /></h3>
+                <p className="mt-1 text-sm leading-6 text-foreground-soft"><FormattedText value={body} /></p>
               </div>
             ))}
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href={content.href_6} className="btn btn-accent inline-flex">{content.text_7}</Link>
-            <Link href={content.href_8} className="btn btn-outline inline-flex">{content.text_9}</Link>
+            <Link href={content.href_6} className="btn btn-accent inline-flex"><FormattedText value={content.text_7} links={false} /></Link>
+            <Link href={content.href_8} className="btn btn-outline inline-flex"><FormattedText value={content.text_9} links={false} /></Link>
           </div>
         </Reveal>
 
@@ -74,7 +76,7 @@ export default async function WorkFromFarmSection() {
             />
             <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent p-4">
               <span className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.16em] text-white/90">
-                <Icon name="location-outline" size={12} />{content.text_11}</span>
+                <Icon name="location-outline" size={12} /><FormattedText value={content.text_11} /></span>
             </figcaption>
           </figure>
         </Reveal>

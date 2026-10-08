@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_next_event_ribbon";
 import { getEditorial } from "@/lib/editorial/server";
 import Link from "next/link";
@@ -30,14 +32,14 @@ export default async function NextEventRibbon() {
     <>
       <span className="flex items-center gap-1.5 rounded-full bg-[#e7b878] px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#5a2015]">
         <Icon name="calendar-outline" size={13} />
-        {month} {day}
+        <FormattedText value={month} /> {day}
       </span>
-      <span className="text-[12px] font-semibold uppercase tracking-[0.24em] text-[#f0c58c]">{content.text_1}</span>
+      <span className="text-[12px] font-semibold uppercase tracking-[0.24em] text-[#f0c58c]"><FormattedText value={content.text_1} /></span>
       <span className="font-display text-base font-medium leading-none text-white lg:text-lg">
-        {next.e.name}
+        <FormattedText value={next.e.name} />
       </span>
-      <span className="text-xs text-white/65">{next.e.dateLabel}</span>
-      <span className="flex items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_10px_rgba(0,0,0,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5">{content.text_2}<span className="arrow-nudge"><Icon name="arrow-forward-outline" size={14} className="transition-transform duration-300 group-hover:translate-x-1" /></span>
+      <span className="text-xs text-white/65"><FormattedText value={next.e.dateLabel} /></span>
+      <span className="flex items-center gap-1.5 bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-accent shadow-[0_2px_10px_rgba(0,0,0,0.22)] transition-transform duration-300 group-hover:-translate-y-0.5"><FormattedText value={content.text_2} /><span className="arrow-nudge"><Icon name="arrow-forward-outline" size={14} className="transition-transform duration-300 group-hover:translate-x-1" /></span>
       </span>
     </>
   );

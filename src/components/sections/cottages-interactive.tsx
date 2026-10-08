@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_cottages_interactive";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -60,9 +62,9 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
     <section aria-labelledby="cottages-heading" className="relative isolate overflow-hidden bg-surface py-12 sm:py-16 lg:py-20">
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon="home-outline" className="justify-center">{content.text_1}</SectionEyebrow>
-          <h2 id="cottages-heading" className="mt-3 font-display text-3xl leading-tight text-clay-ink sm:text-4xl lg:text-5xl">{content.text_2}</h2>
-          <p className="mx-auto mt-4 max-w-[48ch] text-sm leading-relaxed text-foreground-soft">{content.text_3}</p>
+          <SectionEyebrow icon="home-outline" className="justify-center"><FormattedText value={content.text_1} /></SectionEyebrow>
+          <h2 id="cottages-heading" className="mt-3 font-display text-3xl leading-tight text-clay-ink sm:text-4xl lg:text-5xl"><FormattedText value={content.text_2} /></h2>
+          <p className="mx-auto mt-4 max-w-[48ch] text-sm leading-relaxed text-foreground-soft"><FormattedText value={content.text_3} /></p>
         </div>
 
         <div className="mt-10 grid items-center gap-10 sm:mt-14 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
@@ -106,11 +108,11 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
           </div>
 
           <div className="min-w-0 border border-clay-ink/10 bg-clay-surface/50 p-6 sm:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay-ink">{content.text_12}</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay-ink"><FormattedText value={content.text_12} /></p>
             <div ref={tabsRef} className="-mx-1 mt-4 flex flex-nowrap gap-x-3 overflow-x-auto scroll-smooth border-b border-clay-ink/20 px-1 pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label={content.aria_label_13}>
               {rooms.map((room, index) => (
                 <button key={room.slug} type="button" aria-pressed={active === index} aria-controls="cottage-preview" onClick={() => setActive(index)} className={`min-h-11 shrink-0 whitespace-nowrap border-b px-1 py-2 font-display text-base transition-colors sm:text-lg ${active === index ? "border-accent text-accent" : "border-transparent text-foreground-soft hover:border-clay-ink/40 hover:text-clay-ink"}`}>
-                  {room.name}
+                  <FormattedText value={room.name} links={false} />
                 </button>
               ))}
             </div>
@@ -119,20 +121,20 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
               <div aria-live="polite" aria-atomic="true">
                 <div className="flex items-center gap-3 text-clay-ink">
                   <Icon name={current.icon as IconName} size={18} />
-                  <span className="text-xs uppercase tracking-[0.14em]">{current.element}</span>
+                  <span className="text-xs uppercase tracking-[0.14em]"><FormattedText value={current.element} /></span>
                   <span aria-hidden="true" className="h-px flex-1 bg-clay-ink/20" />
-                  <span className="text-xs tabular-nums">{String(active + 1).padStart(2, "0")} / {String(rooms.length).padStart(2, "0")}</span>
+                  <span className="text-xs tabular-nums"><FormattedText value={String(active + 1).padStart(2, "0")} /> / <FormattedText value={String(rooms.length).padStart(2, "0")} /></span>
                 </div>
-                <h3 className="mt-4 font-display text-3xl leading-tight text-clay-ink sm:text-4xl">{current.name}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{current.tagline}</p>
+                <h3 className="mt-4 font-display text-3xl leading-tight text-clay-ink sm:text-4xl"><FormattedText value={current.name} /></h3>
+                <p className="mt-3 text-sm leading-relaxed text-foreground-soft"><FormattedText value={current.tagline} /></p>
                 {current.quantity === 0 && <p className="mt-3 text-sm font-semibold text-accent">Sold out</p>}
               </div>
-              <p className="mt-6 max-w-[40ch] text-sm leading-relaxed text-foreground-soft">{content.text_16}</p>
+              <p className="mt-6 max-w-[40ch] text-sm leading-relaxed text-foreground-soft"><FormattedText value={content.text_16} /></p>
               <div className="mt-7 flex justify-end">
-                <Link href={`/stays/${current.slug}`} className="btn btn-accent btn-sm inline-flex items-center">{content.text_19}</Link>
+                <Link href={`/stays/${current.slug}`} className="btn btn-accent btn-sm inline-flex items-center"><FormattedText value={content.text_19} links={false} /></Link>
               </div>
             </article>
-            <Link href={content.href_20} className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-clay-ink/30 text-xs font-semibold uppercase tracking-[0.12em] text-clay-ink transition-colors hover:text-accent">{content.text_21}{rooms.length}{content.text_22}<Icon name="arrow-forward-outline" size={14} />
+            <Link href={content.href_20} className="mt-8 inline-flex min-h-11 items-center gap-3 border-b border-clay-ink/30 text-xs font-semibold uppercase tracking-[0.12em] text-clay-ink transition-colors hover:text-accent"><FormattedText value={content.text_21} links={false} />{rooms.length}<FormattedText value={content.text_22} links={false} /><Icon name="arrow-forward-outline" size={14} />
             </Link>
           </div>
         </div>

@@ -1,3 +1,5 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__events_page";
@@ -103,7 +105,7 @@ export default async function EventsPage() {
         <>
           <StaysHeroGallery variant="events" photos={slides.map((slide) => ({ src: slide.image, name: slide.name, slug: slide.slug, element: slide.label, date: slide.date }))} />
           <section className="mx-auto max-w-3xl px-5 pb-4 pt-4 text-center sm:px-8">
-            <p className="text-sm leading-relaxed text-foreground-soft sm:text-base">{content.text_1}</p>
+            <p className="text-sm leading-relaxed text-foreground-soft sm:text-base"><FormattedText value={content.text_1} /></p>
           </section>
         </>
       ) : (
@@ -121,8 +123,8 @@ export default async function EventsPage() {
 
       <AnimateInView delay={60}><section id="events-calendar" className="texture-linen mx-auto max-w-3xl scroll-mt-24 px-5 pb-8 pt-8 text-center sm:px-8">
         <Reveal variant="fade">
-          <SectionEyebrow icon="calendar-outline" className="justify-center">{content.text_7}</SectionEyebrow>
-          <p className="mt-3 text-sm leading-relaxed text-foreground-soft">{content.text_8}</p>
+          <SectionEyebrow icon="calendar-outline" className="justify-center"><FormattedText value={content.text_7} /></SectionEyebrow>
+          <p className="mt-3 text-sm leading-relaxed text-foreground-soft"><FormattedText value={content.text_8} /></p>
         </Reveal>
       </section></AnimateInView>
 
@@ -159,7 +161,7 @@ export default async function EventsPage() {
                         className="text-[12px] font-bold uppercase tracking-[0.12em]"
                         style={{ color: meta.accent }}
                       >
-                        {month || "—"}
+                        <FormattedText value={month || "—"} />
                       </span>
                       <span className="font-display text-xl text-foreground">{day || "?"}</span>
                     </span>
@@ -170,14 +172,14 @@ export default async function EventsPage() {
                         style={{ color: meta.accent }}
                       >
                         <Icon name={meta.icon} size={12} />
-                        {meta.label}
+                        <FormattedText value={meta.label} />
                       </span>
                       <h3 className="mt-1 font-display text-lg italic leading-tight text-foreground">
-                        {display.name}
+                        <FormattedText value={display.name} />
                       </h3>
                       <p className="mt-1 text-xs text-foreground-soft">
-                        {label}
-                        {display.duration ? ` · ${display.duration}` : ""} · {priceText(event.priceFrom)}
+                        <FormattedText value={label} />
+                        <FormattedText value={display.duration ? ` · ${display.duration}` : ""} /> · <FormattedText value={priceText(event.priceFrom)} />
                       </p>
                     </div>
 
@@ -189,12 +191,12 @@ export default async function EventsPage() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 border border-line bg-surface px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-clay-ink transition-colors hover:border-accent hover:text-accent"
                         >
-                          <Icon name="calendar-outline" size={12} />{content.text_9}</a>
+                          <Icon name="calendar-outline" size={12} /><FormattedText value={content.text_9} links={false} /></a>
                       )}
                       <Link
                         href={`/events/${event.slug}`}
                         className="inline-flex items-center gap-1.5 bg-accent px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white! transition-transform hover:-translate-y-0.5"
-                      >{content.text_10}<Icon name="arrow-forward-outline" size={12} />
+                      ><FormattedText value={content.text_10} links={false} /><Icon name="arrow-forward-outline" size={12} />
                       </Link>
                     </div>
                   </li>
@@ -209,7 +211,7 @@ export default async function EventsPage() {
               {Object.values(content.KIND_META).map((k) => (
                 <span key={k.label} className="inline-flex items-center gap-2">
                   <span className="h-3 w-3" style={{ backgroundColor: k.accent }} />
-                  {k.label}
+                  <FormattedText value={k.label} />
                 </span>
               ))}
             </div>

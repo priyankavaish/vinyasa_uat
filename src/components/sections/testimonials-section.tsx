@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_testimonials_section";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
@@ -70,13 +72,13 @@ export default async function TestimonialsSection() {
 
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon="people-outline" className="justify-center">{content.text_1}</SectionEyebrow>
+          <SectionEyebrow icon="people-outline" className="justify-center"><FormattedText value={content.text_1} /></SectionEyebrow>
           <h2
             id="testimonials-heading"
             className="mt-3 font-display text-4xl italic leading-tight tracking-tight text-clay-ink sm:text-5xl"
-          >{content.text_2}</h2>
-          <p className="mt-4 text-base font-medium leading-relaxed text-[#5a4632]">{content.text_3}{" "}
-            <span className="text-accent">{content.text_4}</span>.
+          ><FormattedText value={content.text_2} /></h2>
+          <p className="mt-4 text-base font-medium leading-relaxed text-[#5a4632]"><FormattedText value={content.text_3} /><FormattedText value={" "} />
+            <span className="text-accent"><FormattedText value={content.text_4} /></span>.
           </p>
           <span aria-hidden="true" className="mx-auto mt-7 block h-[3px] w-16 rounded-full bg-accent" />
         </div>
@@ -104,7 +106,7 @@ export default async function TestimonialsSection() {
                 </span>
 
                 <blockquote className="mt-3 text-[13.5px] leading-relaxed text-[#584635]">
-                  {testimonial.quote}
+                  <FormattedText value={testimonial.quote} />
                 </blockquote>
 
                 <figcaption className="mt-auto flex items-center gap-3 border-t border-black/10 pt-4">
@@ -120,10 +122,10 @@ export default async function TestimonialsSection() {
                   </span>
                   <span className="min-w-0">
                     <span className="block font-script text-2xl leading-none text-[#8f3b31]">
-                      {testimonial.name}
+                      <FormattedText value={testimonial.name} />
                     </span>
                     <span className="mt-1 block text-[12px] font-semibold uppercase tracking-[0.16em] text-[#6b4e33]">
-                      {testimonial.role}
+                      <FormattedText value={testimonial.role} />
                     </span>
                   </span>
                 </figcaption>

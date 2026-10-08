@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_forms_lead_form";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -64,56 +66,56 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
   if (status === "success") {
     return (
       <div className="border border-line bg-surface p-8 text-center">
-        <p className="font-display italic text-2xl">{content.text_1}</p>
-        <p className="mt-2 text-sm text-foreground-soft">{content.text_2}</p>
+        <p className="font-display italic text-2xl"><FormattedText value={content.text_1} /></p>
+        <p className="mt-2 text-sm text-foreground-soft"><FormattedText value={content.text_2} /></p>
         <button
           type="button"
           className="mt-5 text-xs tracking-[0.08em] uppercase text-accent underline"
           onClick={() => setStatus("idle")}
-        >{content.text_3}</button>
+        ><FormattedText value={content.text_3} links={false} /></button>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={compact ? "space-y-3" : "space-y-4"} noValidate>
-      <h3 className="font-display italic text-xl">{title}</h3>
+      <h3 className="font-display italic text-xl"><FormattedText value={title} /></h3>
 
       <div className={compact ? "grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2 [&>*]:min-w-0" : "space-y-4"}>
       <div>
-        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-name`}>{isVolunteer ? "First Name" : content.text_4}{requiredMark}</label>
+        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-name`}><FormattedText value={isVolunteer ? "First Name" : content.text_4} />{requiredMark}</label>
         <input
           id={`${source}-name`} required autoComplete={isVolunteer ? "given-name" : "name"}
           className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
           {...register("name")}
         />
-        {errors.name && <p className="mt-1 text-xs text-red-700">{errors.name.message}</p>}
+        {errors.name && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.name.message} /></p>}
       </div>
 
       {isVolunteer && (
         <div>
           <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-last-name`}>Last Name{requiredMark}</label>
           <input id={`${source}-last-name`} required autoComplete="family-name" aria-invalid={Boolean(errors.lastName)} aria-describedby={errors.lastName ? `${source}-last-name-error` : undefined} className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent" {...register("lastName")} />
-          {errors.lastName && <p id={`${source}-last-name-error`} role="alert" className="mt-1 text-xs text-red-700">{errors.lastName.message}</p>}
+          {errors.lastName && <p id={`${source}-last-name-error`} role="alert" className="mt-1 text-xs text-red-700"><FormattedText value={errors.lastName.message} /></p>}
         </div>
       )}
 
       <div>
-        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-email`}>{content.text_5}{requiredMark}</label>
+        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-email`}><FormattedText value={content.text_5} />{requiredMark}</label>
         <input
           id={`${source}-email`}
           type="email" required autoComplete="email"
           className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
           {...register("email")}
         />
-        {errors.email && <p className="mt-1 text-xs text-red-700">{errors.email.message}</p>}
+        {errors.email && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.email.message} /></p>}
       </div>
 
       {source === "contact" && (
         <div>
           <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-subject`}>Subject{requiredMark}</label>
           <input id={`${source}-subject`} required className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent" {...register("subject")} />
-          {errors.subject && <p className="mt-1 text-xs text-red-700">{errors.subject.message}</p>}
+          {errors.subject && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.subject.message} /></p>}
         </div>
       )}
       <div>
@@ -123,7 +125,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
           className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
           {...register("phone")}
         />
-        {errors.phone && <p className="mt-1 text-xs text-red-700">{errors.phone.message}</p>}
+        {errors.phone && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.phone.message} /></p>}
       </div>
 
       {isVolunteer && (
@@ -137,20 +139,20 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
               <option value="">Select volunteering type</option>
               {["Community Volunteering", "Skill Based (under 2 months)", "Skill Based (2+ Months)"].map(type => <option key={type} value={type}>{type}</option>)}
             </select>
-            {errors.volunteeringType && <p className="mt-1 text-xs text-red-700">{errors.volunteeringType.message}</p>}
+            {errors.volunteeringType && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.volunteeringType.message} /></p>}
           </div>
         </>
       )}
       {showMessage && !isVolunteer && (
         <div className={compact ? "sm:col-span-2" : undefined}>
-          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-message`}>{content.text_7}</label>
+          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-message`}><FormattedText value={content.text_7} /></label>
           <textarea
             id={`${source}-message`}
             rows={compact ? 3 : 4}
             className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
             {...register("message")}
           />
-          {errors.message && <p className="mt-1 text-xs text-red-700">{errors.message.message}</p>}
+          {errors.message && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.message.message} /></p>}
         </div>
       )}
 
@@ -158,7 +160,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
 
       {status === "error" && errorMessage && (
         <p role="alert" className="text-sm text-red-700">
-          {errorMessage}
+          <FormattedText value={errorMessage} />
         </p>
       )}
 
@@ -167,7 +169,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
         disabled={status === "submitting"}
         className="btn btn-accent w-full transition-opacity disabled:opacity-60"
       >
-        {status === "submitting" ? content.text_8 : submitLabel}
+        <FormattedText value={status === "submitting" ? content.text_8 : submitLabel} links={false} />
       </button>
     </form>
   );

@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_partner_cards";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -44,15 +46,15 @@ export default function PartnerCards({ partners }: { partners: readonly PartnerC
                 className="max-h-14 w-auto max-w-full object-contain"
               />
             </div>
-            <h3 className="mt-5 font-display text-xl italic text-foreground">{partner.name}</h3>
+            <h3 className="mt-5 font-display text-xl italic text-foreground"><FormattedText value={partner.name} /></h3>
             <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground-soft">
-              {partner.blurb}
+              <FormattedText value={partner.blurb} />
             </p>
             <button
               type="button"
               onClick={() => setActive(i)}
               className="mt-6 inline-flex w-fit items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-accent transition-[gap] duration-300 hover:gap-3.5"
-            >{content.text_1}<Icon name="arrow-forward-outline" size={13} />
+            ><FormattedText value={content.text_1} links={false} /><Icon name="arrow-forward-outline" size={13} />
             </button>
           </article>
         ))}
@@ -84,11 +86,11 @@ export default function PartnerCards({ partners }: { partners: readonly PartnerC
               </button>
             </div>
 
-            <h3 className="mt-6 font-display text-2xl italic text-clay-ink sm:text-3xl">{content.text_3}{current.name}
+            <h3 className="mt-6 font-display text-2xl italic text-clay-ink sm:text-3xl"><FormattedText value={content.text_3} /><FormattedText value={current.name} />
             </h3>
             <div className="mt-4 space-y-4 text-sm leading-relaxed text-foreground-soft">
               {current.about.map((para, p) => (
-                <p key={p}>{para}</p>
+                <p key={p}><FormattedText value={para} /></p>
               ))}
             </div>
           </div>

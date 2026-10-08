@@ -18,3 +18,10 @@ export function isEditorialAdvancedField(path: string): boolean {
   const field = path.split(".").pop() ?? "";
   return /^aria_label(?:_\d+)?$/i.test(field);
 }
+
+/** Formatting is only offered for visible copy, never URLs, SEO or media metadata. */
+export function isEditorialTextField(path: string): boolean {
+  if (/(?:^|\.)seo(?:\.|$)/i.test(path)) return false;
+  const field = path.split(".").pop()?.replace(/ \/ \d+$/, "") ?? "";
+  return /^(?:text|heading|title|description|eyebrow|blurb|body|quote|role|author|label|caption|q|a|answer|question|name|skill|commitment|compensation|note|tagline|intro|introduction|lead|subtitle|summary|heroTitle|heroTitleAccent|heroCaption|heroNote|exploreLabel|location|stayTitle|stayIntro|bookingNote|foodEyebrow|foodTitle|foodIntroduction|foodDetails|communityTitle|communityIntroduction|communityNotes|communityCaption|audienceTitle|audienceIntro|audienceNote|audience|faqEyebrow|faqTitle|bookingOptions|agreements|paragraphs|benefits|requirements|roles|amenities|takeaways|highlights|action|submitLabel)(?:_\d+)?$/i.test(field);
+}

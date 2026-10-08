@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_location_section";
 import { getEditorial } from "@/lib/editorial/server";
 import { Reveal } from "../ui/reveal";
@@ -21,8 +23,8 @@ async function LocationMap({ fullWidth = false }: { fullWidth?: boolean }) {
       <div className="absolute left-6 right-6 top-6 z-10 hidden border border-line bg-surface p-5 text-foreground shadow-[0_1rem_2.5rem_rgba(41,31,22,0.16)] sm:block sm:max-w-md">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="font-display text-2xl italic">{content.text_1}</h3>
-            <p className="mt-2 text-xs leading-relaxed text-foreground-soft">{content.ADDRESS}</p>
+            <h3 className="font-display text-2xl italic"><FormattedText value={content.text_1} /></h3>
+            <p className="mt-2 text-xs leading-relaxed text-foreground-soft"><FormattedText value={content.ADDRESS} /></p>
             <div className="mt-3 flex items-center gap-2 text-sm">
               <span className="font-semibold">{content.GOOGLE_RATING.score}</span>
               <Icon name="star" size={14} className="text-accent" />
@@ -53,9 +55,9 @@ export default async function LocationSection({ showContactForm = false }: { sho
       <div className="relative z-10 mx-auto grid max-w-7xl items-start gap-10 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
         {/* form first — visible on landing */}
         <Reveal variant="up">
-          <div className="border border-line bg-surface p-6 shadow-[0_1.5rem_4rem_rgba(78,58,38,0.12)] sm:p-7">
-            <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-accent">{content.text_4}</p>
-            <h2 className="mt-2 font-display text-3xl italic text-clay-ink sm:text-4xl">{content.text_5}</h2>
+          <div id="contact-form" className="scroll-mt-24 border border-line bg-surface p-6 shadow-[0_1.5rem_4rem_rgba(78,58,38,0.12)] sm:p-7">
+            <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-accent"><FormattedText value={content.text_4} /></p>
+            <h2 className="mt-2 font-display text-3xl italic text-clay-ink sm:text-4xl"><FormattedText value={content.text_5} /></h2>
             <div className="mt-4">
               <LeadForm source="contact" title={content.title_6} />
             </div>
@@ -65,8 +67,8 @@ export default async function LocationSection({ showContactForm = false }: { sho
         {/* location + details */}
         <Reveal variant="up" delay={100}>
           <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.22em] text-accent">
-            <Icon name="location-outline" size={16} />{content.text_7}</p>
-          <h2 className="mt-3 max-w-[18ch] font-display text-3xl italic leading-[1.1] text-clay-ink sm:text-4xl">{content.text_8}</h2>
+            <Icon name="location-outline" size={16} /><FormattedText value={content.text_7} /></p>
+          <h2 className="mt-3 max-w-[18ch] font-display text-3xl italic leading-[1.1] text-clay-ink sm:text-4xl"><FormattedText value={content.text_8} /></h2>
           <dl className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {content.CONTACT_ITEMS.map((item) => (
               <div key={item.label} className="group flex items-center gap-4">
@@ -75,12 +77,12 @@ export default async function LocationSection({ showContactForm = false }: { sho
                 </span>
                 <div className="min-w-0 border-l border-accent/20 pl-4">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
-                    {item.label}
+                    <FormattedText value={item.label} />
                   </dt>
                   <dd className="mt-0.5 max-w-[34ch] text-sm leading-relaxed text-foreground-soft">
                     {item.href ? (
                       <a href={item.href} className="transition-colors hover:text-foreground">
-                        {item.value}
+                        <FormattedText value={item.value} links={false} />
                       </a>
                     ) : (
                       item.value
@@ -95,7 +97,7 @@ export default async function LocationSection({ showContactForm = false }: { sho
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-accent mt-7"
-          ><span className="inline-flex flex-nowrap items-center gap-3"><span>{content.text_9}</span><Icon name="arrow-forward-outline" size={15} className="shrink-0" /></span>
+          ><span className="inline-flex flex-nowrap items-center gap-3"><span><FormattedText value={content.text_9} links={false} /></span><Icon name="arrow-forward-outline" size={15} className="shrink-0" /></span>
           </a>
         </Reveal>
       </div>

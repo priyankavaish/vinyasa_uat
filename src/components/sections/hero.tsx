@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_hero";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -75,21 +77,21 @@ export function HomeHero() {
       >
         <div className="hero-brand">
           <p className="hero-brand-place">
-            <span className="hero-brand-place-rule" aria-hidden />{content.text_3}<span className="hero-brand-place-rule" aria-hidden />
+            <span className="hero-brand-place-rule" aria-hidden /><FormattedText value={content.text_3} /><span className="hero-brand-place-rule" aria-hidden />
           </p>
 
-          <span className="hero-brand-kicker">{content.text_4}</span>
+          <span className="hero-brand-kicker"><FormattedText value={content.text_4} /></span>
 
           <h1 className="hero-brand-name">
-            <span className="hero-brand-name-primary">{content.text_5}</span>
-            <span className="hero-brand-name-primary">{content.text_6}</span>
+            <span className="hero-brand-name-primary"><FormattedText value={content.text_5} /></span>
+            <span className="hero-brand-name-primary"><FormattedText value={content.text_6} /></span>
           </h1>
 
           <span className="hero-brand-divider" aria-hidden="true">
             <span className="hero-brand-divider-rule" />
           </span>
 
-          <span className="hero-brand-values">{content.text_7}<i />{content.text_8}<i />{content.text_9}</span>
+          <span className="hero-brand-values"><FormattedText value={content.text_7} /><i /><FormattedText value={content.text_8} /><i /><FormattedText value={content.text_9} /></span>
         </div>
 
         {/* <p className="mt-7 max-w-[44ch] text-base leading-relaxed text-background/90">
@@ -147,20 +149,20 @@ export function PageHero({
           className={`${heroStyles.eyebrow} animate__animated animate__fadeInLeft`}
           style={{ animationDuration: "0.7s" }}
         >
-          {eyebrow}
+          <FormattedText value={eyebrow} />
         </p>
         <h1
           className={`${heroStyles.title} animate__animated animate__fadeInLeft`}
           style={{ animationDuration: "0.7s", animationDelay: "0.12s" }}
         >
-          {title}
+          <FormattedText value={title} />
         </h1>
         {description && (
           <p
             className={`${heroStyles.description} animate__animated animate__fadeInLeft`}
             style={{ animationDuration: "0.7s", animationDelay: "0.24s" }}
           >
-            {description}
+            <FormattedText value={description} />
           </p>
         )}
         {children && (

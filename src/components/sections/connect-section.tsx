@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_connect_section";
 import { getEditorial } from "@/lib/editorial/server";
 import type { ReactNode } from "react";
@@ -55,9 +57,9 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
     <section className="relative overflow-hidden pt-10 text-foreground sm:pt-14">
       <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
         <Reveal variant="up">
-          <SectionEyebrow tone="secondary" icon="compass-outline" className="justify-center">{content.text_1}</SectionEyebrow>
-          <h2 className="mt-4 font-display text-4xl leading-[1.08] sm:text-5xl">{content.text_2}</h2>
-          <p className="mx-auto mt-5 max-w-[52ch] text-lg leading-relaxed text-foreground">{content.text_3}</p>
+          <SectionEyebrow tone="secondary" icon="compass-outline" className="justify-center"><FormattedText value={content.text_1} /></SectionEyebrow>
+          <h2 className="mt-4 font-display text-4xl leading-[1.08] sm:text-5xl"><FormattedText value={content.text_2} /></h2>
+          <p className="mx-auto mt-5 max-w-[52ch] text-lg leading-relaxed text-foreground"><FormattedText value={content.text_3} /></p>
         </Reveal>
       </div>
 
@@ -86,10 +88,10 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
           >
             <span aria-hidden className="mb-4 block h-px w-10 bg-accent/45" />
             <h3 className="max-w-[16ch] font-display text-3xl leading-tight sm:text-4xl">
-              {content.FEATURE.title}
+              <FormattedText value={content.FEATURE.title} />
             </h3>
             <p className="mt-5 max-w-[42ch] text-base leading-relaxed text-foreground">
-              {content.FEATURE.blurb}
+              <FormattedText value={content.FEATURE.blurb} />
             </p>
 
             <ul className="mt-5 flex flex-wrap gap-2">
@@ -99,7 +101,7 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
                   className="inline-flex items-center gap-1.5 rounded-full border border-secondary/25 bg-secondary-surface px-3.5 py-1.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-secondary-ink"
                 >
                   <Icon name={p.icon} size={12} />
-                  {p.label}
+                  <FormattedText value={p.label} />
                 </li>
               ))}
             </ul>
@@ -108,7 +110,7 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
               href={content.FEATURE.href}
               className="group mt-7 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.16em] text-accent transition-[gap] duration-300 hover:gap-3.5"
             >
-              {content.text_4}
+              <FormattedText value={content.text_4} links={false} />
               <Icon name="arrow-forward-outline" size={16} />
             </Link>
           </Reveal>
@@ -126,8 +128,8 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
           feature block above instead of a generic matched-card grid. */}
       <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         <Reveal variant="up" className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow tone="secondary" icon="calendar-outline" className="justify-center">{content.text_5}</SectionEyebrow>
-          <h3 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">{content.text_6}</h3>
+          <SectionEyebrow tone="secondary" icon="calendar-outline" className="justify-center"><FormattedText value={content.text_5} /></SectionEyebrow>
+          <h3 className="mt-3 font-display text-3xl leading-tight sm:text-4xl"><FormattedText value={content.text_6} /></h3>
         </Reveal>
 
         <div className="mt-12 space-y-12 sm:mt-16 sm:space-y-16">
@@ -157,15 +159,15 @@ export default async function ConnectSection({ afterFirst }: { afterFirst?: Reac
                 </div>
                 <div>
                   <span className="font-display text-sm italic text-accent/70">
-                    {String(i + 1).padStart(2, "0")}
+                    <FormattedText value={String(i + 1).padStart(2, "0")} links={false} />
                   </span>
                   <span aria-hidden className="mt-2 mb-3 block h-px w-10 bg-accent/45" />
-                  <h4 className="font-display text-2xl leading-tight sm:text-3xl">{card.title}</h4>
+                  <h4 className="font-display text-2xl leading-tight sm:text-3xl"><FormattedText value={card.title} links={false} /></h4>
                   <p className="mt-4 max-w-[42ch] text-sm leading-relaxed text-foreground-soft sm:text-base">
-                    {card.blurb}
+                    <FormattedText value={card.blurb} links={false} />
                   </p>
                   <span className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent transition-[gap] duration-300 group-hover:gap-3.5">
-                    {content.text_8}
+                    <FormattedText value={content.text_8} links={false} />
                     <Icon name="arrow-forward-outline" size={13} />
                   </span>
                 </div>

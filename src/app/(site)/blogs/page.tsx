@@ -1,3 +1,5 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import Link from "next/link";
@@ -74,11 +76,11 @@ export default async function BlogsPage() {
     <>
       <section className="bg-clay-surface px-5 pb-12 pt-28 text-center sm:px-8 sm:pb-16 sm:pt-36">
         <div className="mx-auto max-w-2xl">
-          <SectionEyebrow icon="sparkles-outline" className="justify-center">{content.text_1}</SectionEyebrow>
-          <h1 className="mt-3 font-display text-4xl italic leading-tight text-clay-ink sm:text-5xl">{content.text_2}</h1>
-          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-foreground-soft">{content.text_3}</p>
+          <SectionEyebrow icon="sparkles-outline" className="justify-center"><FormattedText value={content.text_1} /></SectionEyebrow>
+          <h1 className="mt-3 font-display text-4xl italic leading-tight text-clay-ink sm:text-5xl"><FormattedText value={content.text_2} /></h1>
+          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-foreground-soft"><FormattedText value={content.text_3} /></p>
           <span aria-hidden="true" className="mx-auto mt-6 block h-[3px] w-16 rounded-full bg-accent" />
-          <p className="mt-6 text-xs uppercase tracking-[0.16em] text-muted">{content.text_4}</p>
+          <p className="mt-6 text-xs uppercase tracking-[0.16em] text-muted"><FormattedText value={content.text_4} /></p>
         </div>
       </section>
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="arch" />
@@ -98,13 +100,13 @@ export default async function BlogsPage() {
                     </div>
                   ) : null}
                   <div className="flex flex-1 flex-col p-6 sm:p-7">
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">{content.text_5}</span>
-                    <h3 className="mt-3 font-display italic text-xl leading-snug text-clay-ink">{post.title}</h3>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent"><FormattedText value={content.text_5} links={false} /></span>
+                    <h3 className="mt-3 font-display italic text-xl leading-snug text-clay-ink"><FormattedText value={post.title} links={false} /></h3>
                     {post.excerpt ? (
-                      <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground-soft">{post.excerpt}</p>
+                      <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground-soft"><FormattedText value={post.excerpt} links={false} /></p>
                     ) : null}
                     <span className="mt-5 inline-flex items-center gap-2 border-t border-line pt-4 text-xs font-bold uppercase tracking-[0.12em] text-accent">
-                      {content.text_6}
+                      <FormattedText value={content.text_6} links={false} />
                       <Icon name="arrow-forward-outline" size={14} className="-rotate-45 transition-transform group-hover:translate-x-1" />
                     </span>
                   </div>
@@ -128,14 +130,14 @@ export default async function BlogsPage() {
                 rel="noopener noreferrer"
                 className="group flex h-full flex-col border border-line bg-surface p-6 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)] sm:p-7"
               >
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">{content.text_5}</span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent"><FormattedText value={content.text_5} links={false} /></span>
                 <h3 className="mt-3 font-display italic text-xl leading-snug text-clay-ink">
-                  {post.title}
+                  <FormattedText value={post.title} links={false} />
                 </h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground-soft">
-                  {post.blurb}
+                  <FormattedText value={post.blurb} links={false} />
                 </p>
-                <span className="mt-5 inline-flex items-center gap-2 border-t border-line pt-4 text-xs font-bold uppercase tracking-[0.12em] text-accent">{content.text_6}<Icon
+                <span className="mt-5 inline-flex items-center gap-2 border-t border-line pt-4 text-xs font-bold uppercase tracking-[0.12em] text-accent"><FormattedText value={content.text_6} links={false} /><Icon
                     name="arrow-forward-outline"
                     size={14}
                     className="-rotate-45 transition-transform group-hover:translate-x-1"

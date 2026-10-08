@@ -11,6 +11,7 @@ import {
 } from "@/lib/blocks";
 import type { BuilderPage } from "@/lib/cms";
 import RichEditor from "./rich-editor";
+import FormattedTextField from "./formatted-text-field";
 import ImageField from "./image-field";
 import BlockInserter from "./block-inserter";
 import { useFormStatus } from "react-dom";
@@ -118,7 +119,7 @@ export default function PageBuilder({ page }: { page?: BuilderPage }) {
       </div>
 
       <BlockInserter onAdd={block => setBlocks(bs => [...bs, block])} />
-      <p className="text-sm text-foreground-soft">Add blocks and edit visually. Text tools include headings, lists, quotes, links and images.</p>
+      <p className="text-sm text-foreground-soft">Add blocks and edit visually. Text tools include bold, font family, colours, headings, lists, links and images.</p>
       <div className="space-y-4">
         {blocks.length === 0 && <p className="border border-dashed border-line p-8 text-center">Choose a block above to start.</p>}
         {blocks.map((b, i) => (
@@ -226,12 +227,7 @@ export default function PageBuilder({ page }: { page?: BuilderPage }) {
                     />
                   </div>
                   <div className="sm:col-span-2">
-                    <label className={label}>Caption</label>
-                    <input
-                      value={b.caption ?? ""}
-                      onChange={(e) => patch(b.id, { caption: e.target.value })}
-                      className={field}
-                    />
+                    <FormattedTextField label="Caption" value={b.caption ?? ""} onChange={caption => patch(b.id, { caption })} />
                   </div>
                 </div>
               )}
@@ -240,12 +236,7 @@ export default function PageBuilder({ page }: { page?: BuilderPage }) {
                 <div className="space-y-3">
                   <div className="grid gap-3 sm:grid-cols-2">
                     <div>
-                      <label className={label}>Heading (optional)</label>
-                      <input
-                        value={b.heading ?? ""}
-                        onChange={(e) => patch(b.id, { heading: e.target.value })}
-                        className={field}
-                      />
+                      <FormattedTextField label="Heading (optional)" value={b.heading ?? ""} onChange={heading => patch(b.id, { heading })} />
                     </div>
                     <label className="text-[11px]">
                       <span className={label}>Columns</span>
@@ -288,7 +279,7 @@ export default function PageBuilder({ page }: { page?: BuilderPage }) {
                       ).map(([k, lbl]) => (
                         <div key={k} className={k === "text" ? "sm:col-span-2" : ""}>
                           <label className={label}>{lbl}</label>
-                          {k === "image" ? <ImageField value={c.image ?? ""} onChange={image => patch(b.id, { cards: b.cards.map(x => x.id === c.id ? { ...x, image } : x) } as Partial<Block>)} /> : <input
+                          {k === "image" ? <ImageField value={c.image ?? ""} onChange={image => patch(b.id, { cards: b.cards.map(x => x.id === c.id ? { ...x, image } : x) } as Partial<Block>)} /> : k === "title" || k === "text" ? <FormattedTextField label={lbl} value={c[k] ?? ""} onChange={value => patch(b.id, { cards: b.cards.map(x => x.id === c.id ? { ...x, [k]: value } : x) } as Partial<Block>)} /> : <input
                             value={(c[k] as string) ?? ""}
                             onChange={(e) => {
                               const cards = b.cards.map((x) =>
