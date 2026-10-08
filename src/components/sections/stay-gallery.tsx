@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_stay_gallery";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -29,7 +31,7 @@ export default function StayGallery({ images, name }: { images: string[]; name: 
         ))}
       </div>
       <button type="button" className={styles.all} onClick={() => setIndex(0)}>
-        <Icon name="images-outline" size={16} />{content.text_3}{photos.length}{content.text_4}</button>
+        <Icon name="images-outline" size={16} /><FormattedText value={content.text_3} links={false} />{photos.length}<FormattedText value={content.text_4} links={false} /></button>
       <Lightbox open={index !== null} index={index ?? 0} close={() => setIndex(null)}
         slides={photos.map((src, i) => ({ src, alt: `${name}, photo ${i + 1}` }))} />
     </div>

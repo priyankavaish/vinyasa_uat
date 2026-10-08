@@ -1,3 +1,5 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { mudhouseText } from "@/lib/mudhouse-wording";
 import Link from "next/link";
@@ -70,8 +72,8 @@ export default async function AboutPage() {
       <AnimateInView delay={60}>
         <section className="texture-linen mx-auto max-w-6xl px-5 py-20 sm:px-8">
           <ConstructionStory
-            eyebrow={<SectionEyebrow icon="compass-outline">{content.construction_eyebrow}</SectionEyebrow>}
-            title={<h2 className="mt-3 font-display italic text-4xl leading-tight">{content.construction_title}</h2>}
+            eyebrow={<SectionEyebrow icon="compass-outline"><FormattedText value={content.construction_eyebrow} /></SectionEyebrow>}
+            title={<h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.construction_title} /></h2>}
             paragraphs={constructionParagraphs}
             image={content.construction_image}
             imageAlt={content.construction_image_alt}
@@ -87,8 +89,8 @@ export default async function AboutPage() {
         <section className="bg-dusk-surface py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-              <SectionEyebrow icon="images-outline" className="justify-center">{content.gallery_eyebrow}</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.gallery_title}</h2>
+              <SectionEyebrow icon="images-outline" className="justify-center"><FormattedText value={content.gallery_eyebrow} /></SectionEyebrow>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.gallery_title} /></h2>
             </Reveal>
 
             <div className="mt-10">
@@ -111,8 +113,8 @@ export default async function AboutPage() {
         <section className="organic-section bg-clay-surface py-16 sm:py-20">
           <div className="mx-auto max-w-5xl px-5 sm:px-8">
             <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-              <SectionEyebrow icon="leaf-outline" className="justify-center">{content.values_eyebrow}</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.values_title}</h2>
+              <SectionEyebrow icon="leaf-outline" className="justify-center"><FormattedText value={content.values_eyebrow} /></SectionEyebrow>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.values_title} /></h2>
             </Reveal>
 
             <div className="mt-14">
@@ -139,9 +141,9 @@ export default async function AboutPage() {
       <AnimateInView delay={100}>
         <section id="founder" className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
           <FounderStory
-            eyebrow={<SectionEyebrow icon="star-outline">{content.founder_eyebrow}</SectionEyebrow>}
-            title={<h2 className="mt-3 font-display italic text-4xl leading-tight">{content.founder_title}</h2>}
-            role={<p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-accent">{founderRole}</p>}
+            eyebrow={<SectionEyebrow icon="star-outline"><FormattedText value={content.founder_eyebrow} /></SectionEyebrow>}
+            title={<h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.founder_title} /></h2>}
+            role={<p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={founderRole} /></p>}
             paragraphs={founderParagraphs}
             pullquote={founderPullquote}
             image={content.founder_image}
@@ -182,8 +184,8 @@ export default async function AboutPage() {
             className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center sm:px-8"
           >
             <span className="mx-auto mb-7 block h-10 w-px bg-[#d88b50]/70" aria-hidden />
-            <p className="font-display text-[2.1rem] leading-snug text-[#fbf3e8] sm:text-[2.9rem]">{content.quote_text}</p>
-            <p className="mt-7 text-[13px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">{content.quote_caption}</p>
+            <p className="font-display text-[2.1rem] leading-snug text-[#fbf3e8] sm:text-[2.9rem]"><FormattedText value={content.quote_text} /></p>
+            <p className="mt-7 text-[13px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80"><FormattedText value={content.quote_caption} /></p>
           </Reveal>
         </section>
       </AnimateInView>

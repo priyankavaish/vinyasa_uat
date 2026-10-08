@@ -1,3 +1,5 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__book_page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -17,7 +19,7 @@ export default async function BookPage() {
   const cottages = await getCottages();
   return <section className={styles.page} aria-labelledby="booking-heading">
     <div className={styles.heading}>
-      <div className={styles.intro}><p className="eyebrow">{content.eyebrow_1} &middot; Vinyasa Earth</p><h1 id="booking-heading" className="font-display">{content.title_2}</h1><p>Select your stay option and dates. Your total includes 18% GST.</p></div>
+      <div className={styles.intro}><p className="eyebrow"><FormattedText value={content.eyebrow_1} /> &middot; Vinyasa Earth</p><h1 id="booking-heading" className="font-display"><FormattedText value={content.title_2} /></h1><p>Select your stay option and dates. Your total includes 18% GST.</p></div>
       <div className={styles.location}>
         <div><p>Maheshwas &middot; Jaipur</p><span>Mudhouses &middot; Tents &middot; Dorms</span></div>
       </div>

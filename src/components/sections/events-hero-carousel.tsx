@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_events_hero_carousel";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -85,21 +87,21 @@ export default function EventsHeroCarousel({ slides }: { slides: EventSlide[] })
             >
               <Icon name={cur.icon} size={11} className="text-white" />
             </span>
-            {cur.label}
+            <FormattedText value={cur.label} />
           </span>
           <h2 className="mt-3 max-w-[18ch] font-display text-2xl italic leading-[1.1] text-white drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)] sm:text-3xl lg:text-4xl">
-            {cur.name}
+            <FormattedText value={cur.name} />
           </h2>
           {cur.date && (
             <p className="mt-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white/90 sm:text-xs">
-              {cur.date}
+              <FormattedText value={cur.date} />
             </p>
           )}
           {cur.slug && (
             <Link
               href={`/events/${cur.slug}`}
               className="mt-5 inline-flex items-center gap-2 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-accent shadow-[0_4px_16px_rgba(0,0,0,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)]"
-            >{content.text_4}<Icon name="arrow-forward-outline" size={13} />
+            ><FormattedText value={content.text_4} links={false} /><Icon name="arrow-forward-outline" size={13} />
             </Link>
           )}
         </div>

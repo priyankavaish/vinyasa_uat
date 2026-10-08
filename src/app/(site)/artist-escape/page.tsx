@@ -1,3 +1,5 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__artist_escape_page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -47,12 +49,12 @@ export default async function ArtistEscapePage() {
           <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <Reveal variant="left" className="order-2 lg:order-1">
               <SectionEyebrow icon="sparkles-outline">Space to Create &middot; Artist Escape</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.vision_title}</h2>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.vision_title} /></h2>
               <div className="mt-5 space-y-5">
                 {content.vision_paragraphs.map((p) => (
                   <div key={p.label} className="border-l-2 border-accent/30 pl-5">
-                    <span className="font-display italic text-2xl leading-tight">{p.label}</span>
-                    <p className="mt-2 leading-relaxed text-foreground-soft">{p.body}</p>
+                    <span className="font-display italic text-2xl leading-tight"><FormattedText value={p.label} /></span>
+                    <p className="mt-2 leading-relaxed text-foreground-soft"><FormattedText value={p.body} /></p>
                   </div>
                 ))}
               </div>
@@ -92,11 +94,11 @@ export default async function ArtistEscapePage() {
               &ldquo;
             </span>
             <p className="-mt-8 font-display text-[2.3rem] italic leading-snug text-[#fbf3e8] sm:-mt-10 sm:text-[3.1rem]">
-              {content.pullquote_text}
+              <FormattedText value={content.pullquote_text} />
             </p>
             <span className="mx-auto mt-7 block h-px w-14 bg-[#d88b50]/70" aria-hidden />
             <p className="mt-5 text-[13px] font-semibold uppercase tracking-[0.3em] text-[#f0d9be]/80">
-              {content.pullquote_caption}
+              <FormattedText value={content.pullquote_caption} />
             </p>
           </Reveal>
         </section>
@@ -144,8 +146,8 @@ export default async function ArtistEscapePage() {
                     <span className="relative mx-auto grid h-9 w-9 place-items-center rounded-full bg-accent/10 text-accent ring-4 ring-surface">
                       <Icon name={PROCESS_ICONS[i] ?? "sparkles-outline"} size={20} />
                     </span>
-                    <h3 className="relative font-display italic text-2xl leading-tight">{step.title}</h3>
-                    <p className="relative mt-2 text-sm leading-relaxed text-foreground-soft">{step.body}</p>
+                    <h3 className="relative font-display italic text-2xl leading-tight"><FormattedText value={step.title} /></h3>
+                    <p className="relative mt-2 text-sm leading-relaxed text-foreground-soft"><FormattedText value={step.body} /></p>
                   </div>
                 </Reveal>
               ))}
@@ -156,7 +158,7 @@ export default async function ArtistEscapePage() {
                 <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent/10 text-accent">
                   <Icon name="calendar-outline" size={18} />
                 </span>
-                <h3 className="font-display italic text-2xl">{content.pricing_title}</h3>
+                <h3 className="font-display italic text-2xl"><FormattedText value={content.pricing_title} /></h3>
               </div>
               <div className="p-4 sm:p-5">
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -165,12 +167,12 @@ export default async function ArtistEscapePage() {
                       key={tier.label}
                       className={`rounded-tl-xl rounded-br-xl border p-3 ${i === 0 ? "border-accent/30 bg-accent/5" : "border-line"}`}
                     >
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">{tier.label}</p>
-                      <p className="mt-2 font-display italic text-3xl">{tier.price}</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent"><FormattedText value={tier.label} /></p>
+                      <p className="mt-2 font-display italic text-3xl"><FormattedText value={tier.price} /></p>
                     </div>
                   ))}
                 </div>
-                <p className="mt-3 text-sm text-foreground-soft">{content.pricing_note}</p>
+                <p className="mt-3 text-sm text-foreground-soft"><FormattedText value={content.pricing_note} /></p>
               </div>
             </Reveal>
           </div>
@@ -208,9 +210,9 @@ export default async function ArtistEscapePage() {
                     className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/35 to-transparent"
                   />
                   <div className="absolute inset-x-0 bottom-0 p-3 text-left text-background">
-                    <p className="font-display italic text-base leading-tight sm:text-lg">{artist.name}</p>
+                    <p className="font-display italic text-base leading-tight sm:text-lg"><FormattedText value={artist.name} /></p>
                     <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-background/80">
-                      {artist.skill}
+                      <FormattedText value={artist.skill} />
                     </p>
                   </div>
                 </Reveal>
@@ -228,20 +230,20 @@ export default async function ArtistEscapePage() {
           <div className="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
             <Reveal variant="left">
               <SectionEyebrow icon="sparkles-outline">Apply for Artist Escape</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.cta_title}</h2>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.cta_title} /></h2>
               <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
                 {content.cta_paragraphs.map((p, i) => (
-                  <p key={i}>{p}</p>
+                  <p key={i}><FormattedText value={p} /></p>
                 ))}
               </div>
               <div className="mt-6 space-y-2 text-sm">
                 <a href={`mailto:${content.cta_email}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  {content.cta_email}
+                  <FormattedText value={content.cta_email} links={false} />
                 </a>
                 <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  {content.cta_phone}
+                  <FormattedText value={content.cta_phone} links={false} />
                 </a>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80">{content.cta_location}</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80"><FormattedText value={content.cta_location} /></p>
               </div>
             </Reveal>
 

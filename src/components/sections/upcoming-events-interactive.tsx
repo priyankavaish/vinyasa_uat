@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_upcoming_events_interactive";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -53,11 +55,11 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
         {/* content — left (below the image on mobile) */}
         <div className="order-2 flex flex-col justify-center px-5 py-12 sm:px-12 sm:py-16 md:order-1 md:px-16 lg:px-20">
           <Reveal variant="up">
-            <SectionEyebrow icon="calendar-outline">{content.text_1}</SectionEyebrow>
-            <h2 className="mt-4 max-w-[15ch] font-display text-4xl italic leading-[1.05] tracking-tight text-accent sm:text-5xl lg:text-[3.4rem]">{content.text_2}</h2>
+            <SectionEyebrow icon="calendar-outline"><FormattedText value={content.text_1} /></SectionEyebrow>
+            <h2 className="mt-4 max-w-[15ch] font-display text-4xl italic leading-[1.05] tracking-tight text-accent sm:text-5xl lg:text-[3.4rem]"><FormattedText value={content.text_2} /></h2>
             <span aria-hidden className="mt-5 block h-[3px] w-16 rounded-full bg-accent" />
-            <p className="mt-5 max-w-[44ch] text-[17px] font-medium leading-relaxed text-foreground">{content.text_3}{" "}
-              <span className="text-clay-ink">{content.text_4}</span>
+            <p className="mt-5 max-w-[44ch] text-[17px] font-medium leading-relaxed text-foreground"><FormattedText value={content.text_3} /><FormattedText value={" "} />
+              <span className="text-clay-ink"><FormattedText value={content.text_4} /></span>
             </p>
           </Reveal>
 
@@ -92,7 +94,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                         className="text-[11px] font-bold uppercase tracking-[0.1em]"
                         style={{ color: meta.accent }}
                       >
-                        {it.month}
+                        <FormattedText value={it.month} links={false} />
                       </span>
                       <span className="font-display text-xl text-foreground sm:text-2xl">{it.day}</span>
                     </span>
@@ -104,13 +106,13 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                         style={{ color: meta.accent }}
                       >
                         <Icon name={meta.icon} size={11} />
-                        {meta.label}
+                        <FormattedText value={meta.label} links={false} />
                       </span>
                       <span className="mt-0.5 block truncate font-display text-lg leading-snug text-foreground sm:text-xl">
-                        {it.name}
+                        <FormattedText value={it.name} links={false} />
                       </span>
                       <span className="block truncate text-xs text-foreground-soft">
-                        {it.dateLabel} · {priceText(it.priceFrom)}
+                        <FormattedText value={it.dateLabel} links={false} /> · <FormattedText value={priceText(it.priceFrom)} links={false} />
                       </span>
                     </span>
                   </button>
@@ -128,7 +130,7 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
           </ul>
 
           <div className="mt-8">
-            <Link href={content.href_7} className="btn btn-accent inline-flex">{content.text_8}</Link>
+            <Link href={content.href_7} className="btn btn-accent inline-flex"><FormattedText value={content.text_8} links={false} /></Link>
           </div>
         </div>
 
@@ -145,20 +147,20 @@ export default function UpcomingEventsInteractive({ items }: { items: EventItem[
                   className="absolute left-4 top-4 inline-flex items-center gap-1.5 border border-white/60 bg-black/25 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm"
                 >
                   <Icon name={currentMeta.icon} size={12} />
-                  {currentMeta.label}
+                  <FormattedText value={currentMeta.label} links={false} />
                 </span>
                 <span className="absolute inset-x-4 bottom-4">
                   <span className="block text-[11px] font-bold uppercase tracking-[0.16em] text-white/80">
-                    {current.dateLabel}
+                    <FormattedText value={current.dateLabel} links={false} />
                   </span>
                   <span className="mt-1 block font-display text-2xl leading-tight text-white sm:text-3xl">
-                    {current.name}
+                    <FormattedText value={current.name} links={false} />
                   </span>
                 </span>
               </Link>
               <div className="flex flex-wrap items-center justify-between gap-4 p-5 sm:p-7">
-                <span className="font-display text-lg">{priceText(current.priceFrom)}</span>
-                <Link href={`/events/${current.slug}`} className="btn btn-accent btn-sm inline-flex">{content.text_9}</Link>
+                <span className="font-display text-lg"><FormattedText value={priceText(current.priceFrom)} /></span>
+                <Link href={`/events/${current.slug}`} className="btn btn-accent btn-sm inline-flex"><FormattedText value={content.text_9} links={false} /></Link>
               </div>
             </article>
           </div>

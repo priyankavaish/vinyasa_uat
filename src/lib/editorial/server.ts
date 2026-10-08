@@ -1,6 +1,7 @@
 import "server-only";
 import { getContent, getPartners } from "@/lib/cms";
 import { mergeEditorial } from "./merge";
+import { plainText } from "./text";
 import { getPageSettings } from "@/lib/page-routing-store";
 import { applyPageLinks } from "@/lib/page-routing";
 export async function getEditorial<T>(key: string, defaults: T): Promise<T> {
@@ -46,5 +47,18 @@ export async function getEditorial<T>(key: string, defaults: T): Promise<T> {
     }
   }
   const value = mergeEditorial(baseline as T, await getContent(`editorial:${key}`));
+  // Replace the original heading even when an older version was saved in the CMS.
+  if (key === "app/(site)/work-from-farm/page" && value && typeof value === "object") {
+    const fields = value as Record<string, unknown>;
+    const oldHeading = (text: unknown) => typeof text === "string" ? plainText(text).toLowerCase().replace(/[^a-z]/g, "") : "";
+    if (oldHeading(fields.heroTitle) === "alittlelessrush") fields.heroTitle = "Stay, work and slow down";
+    if (oldHeading(fields.heroTitleAccent) === "alittlemoreroom") fields.heroTitleAccent = "outside Jaipur";
+  }
+  // Keep previously saved Work from Farm booking links pointed at the enquiry form.
+  const workStayLink = key === "app/(site)/work-from-farm/page" ? "href_22" : key === "components/sections/work-from-farm-section" ? "href_6" : null;
+  if (workStayLink && value && typeof value === "object") {
+    const fields = value as Record<string, unknown>;
+    if (fields[workStayLink] === "/book") fields[workStayLink] = "/contact#contact-form";
+  }
   return applyPageLinks(value, await getPageSettings(), key === "components/layout/site-header" || key === "components/layout/site-footer");
 }

@@ -1,3 +1,6 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
+import { plainText } from "@/lib/editorial/text";
 import Link from "next/link";
 import sanitizeHtml from "sanitize-html";
 import RichContent from "@/components/ui/rich-content";
@@ -126,7 +129,7 @@ function BlockView({ block, layout }: { block: Block; layout: PageLayout }) {
         <figure className={inner}>
           {block.href ? <Anchor href={block.href}>{img}</Anchor> : img}
           {block.caption ? (
-            <figcaption className="mt-2 text-xs text-foreground-soft">{block.caption}</figcaption>
+            <figcaption className="mt-2 text-xs text-foreground-soft"><FormattedText value={block.caption} /></figcaption>
           ) : null}
         </figure>
       </section>
@@ -140,7 +143,7 @@ function BlockView({ block, layout }: { block: Block; layout: PageLayout }) {
     <section className={pad} style={sectionStyle(block)}>
       <div className={inner}>
         {block.heading ? (
-          <h2 className="mb-8 font-display text-3xl leading-tight sm:text-4xl">{block.heading}</h2>
+          <h2 className="mb-8 font-display text-3xl leading-tight sm:text-4xl"><FormattedText value={block.heading} /></h2>
         ) : null}
         <div className={`grid gap-5 ${colClass}`}>
           {block.cards.map((card) => {
@@ -151,11 +154,11 @@ function BlockView({ block, layout }: { block: Block; layout: PageLayout }) {
               >
                 {card.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={card.image} alt={card.title ?? ""} loading="lazy" className="aspect-[4/3] w-full object-cover" />
+                  <img src={card.image} alt={plainText(card.title ?? "")} loading="lazy" className="aspect-[4/3] w-full object-cover" />
                 ) : null}
                 <div className="flex flex-1 flex-col p-5">
-                  {card.title ? <h3 className="font-display text-xl leading-snug">{card.title}</h3> : null}
-                  {card.text ? <p className="mt-2 text-sm leading-relaxed opacity-90">{card.text}</p> : null}
+                  {card.title ? <h3 className="font-display text-xl leading-snug"><FormattedText value={card.title} /></h3> : null}
+                  {card.text ? <p className="mt-2 text-sm leading-relaxed opacity-90"><FormattedText value={card.text} /></p> : null}
                 </div>
               </div>
             );

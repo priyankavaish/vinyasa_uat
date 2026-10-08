@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_layout_site_footer";
 import { getEditorial } from "@/lib/editorial/server";
 import Link from "next/link";
@@ -40,17 +42,17 @@ export default async function SiteFooter() {
               <span className="h-px w-9 bg-current" />
               <Icon name="leaf-outline" size={18} />
             </div>
-            <p className="mt-4 font-display text-4xl leading-none text-clay-ink sm:text-[2.75rem]">{content.text_1}</p>
-            <p className="mt-4 max-w-md text-sm leading-6 text-clay-ink/85">{content.text_2}</p>
+            <p className="mt-4 font-display text-4xl leading-none text-clay-ink sm:text-[2.75rem]"><FormattedText value={content.text_1} /></p>
+            <p className="mt-4 max-w-md text-sm leading-6 text-clay-ink/85"><FormattedText value={content.text_2} /></p>
             <Link
               href={content.href_3}
               className="mt-6 inline-flex items-center gap-4 border-b border-secondary/60 pb-2 text-xs font-semibold uppercase tracking-[0.18em] text-secondary-ink transition-all hover:gap-6 hover:text-accent"
-            >{content.text_4}<span className="arrow-nudge"><Icon name="arrow-forward-outline" size={15} /></span>
+            ><FormattedText value={content.text_4} links={false} /><span className="arrow-nudge"><Icon name="arrow-forward-outline" size={15} /></span>
             </Link>
           </div>
 
           <nav aria-label={content.aria_label_5}>
-            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-secondary">{content.text_6}</p>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-secondary"><FormattedText value={content.text_6} /></p>
             <ul className="mt-4 space-y-2.5">
               {content.exploreLinks.map((link) => (
                 <li key={link.href}>
@@ -58,7 +60,7 @@ export default async function SiteFooter() {
                     href={link.href}
                     className="text-sm text-clay-ink/85 transition-colors hover:text-accent"
                   >
-                    {link.label}
+                    <FormattedText value={link.label} links={false} />
                   </Link>
                 </li>
               ))}
@@ -66,22 +68,22 @@ export default async function SiteFooter() {
           </nav>
 
           <div>
-            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-secondary">{content.text_7}</p>
-            <p className="mt-4 max-w-[32ch] text-sm leading-6 text-clay-ink/85">{content.ADDRESS}</p>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-secondary"><FormattedText value={content.text_7} /></p>
+            <p className="mt-4 max-w-[32ch] text-sm leading-6 text-clay-ink/85"><FormattedText value={content.ADDRESS} /></p>
             <div className="mt-4 space-y-2.5 text-sm">
               <a
                 href={`mailto:${content.CONTACT_EMAIL}`}
                 className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
                 <Icon name="ribbon-outline" size={16} className="text-secondary" />
-                {content.CONTACT_EMAIL}
+                <FormattedText value={content.CONTACT_EMAIL} links={false} />
               </a>
               <a
                 href={`tel:${phoneHref}`}
                 className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
                 <Icon name="circle-outline" size={16} className="text-secondary" />
-                {content.CONTACT_PHONE_DISPLAY}
+                <FormattedText value={content.CONTACT_PHONE_DISPLAY} links={false} />
               </a>
             </div>
 
@@ -119,18 +121,18 @@ export default async function SiteFooter() {
         </div>
 
         <div className="pt-5 text-[13px] uppercase tracking-[0.12em] text-clay-ink/85">
-          <p>{content.text_10}{new Date().getFullYear()}{content.text_11}</p>
+          <p><FormattedText value={content.text_10} />{new Date().getFullYear()}<FormattedText value={content.text_11} /></p>
         </div>
       </div>
 
       <div className="border-t border-clay-ink/10 bg-[#ddcaa9]">
-        <p className="mx-auto max-w-7xl px-5 py-3 text-center text-xs font-medium tracking-[0.06em] text-clay-ink/85 sm:px-8">{content.text_12}{" "}
+        <p className="mx-auto max-w-7xl px-5 py-3 text-center text-xs font-medium tracking-[0.06em] text-clay-ink/85 sm:px-8"><FormattedText value={content.text_12} /><FormattedText value={" "} />
           <a
             href={content.href_13}
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold text-secondary-ink transition-colors hover:text-accent"
-          >{content.text_14}</a>
+          ><FormattedText value={content.text_14} links={false} /></a>
         </p>
       </div>
     </footer>

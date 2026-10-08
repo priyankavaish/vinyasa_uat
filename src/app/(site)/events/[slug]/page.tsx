@@ -1,3 +1,5 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
 import PaymentButton from "@/components/ui/payment-button";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
@@ -206,7 +208,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   return (
     <>
       <PageHero framed={isPauseWithin || !!editorialEvent} eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
-        {(isPauseWithin || editorialEvent) && <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent">{editorialEvent?.cta ?? "Reserve your place"} <span aria-hidden>↗</span></PaymentButton>}
+        {(isPauseWithin || editorialEvent) && <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> <span aria-hidden>↗</span></PaymentButton>}
       </PageHero>
 
       {isPauseWithin ? (
@@ -215,8 +217,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">18-20 September 2026</p>
               <h2 className="mt-5 max-w-[16ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl">A little space to listen inward.</h2>
-              <p className="mt-7 max-w-2xl text-lg leading-8 text-foreground-soft">{PAUSE_WITHIN_CONTENT.intro}</p>
-              <p className="mt-5 max-w-2xl leading-7 text-foreground-soft">{PAUSE_WITHIN_CONTENT.context}</p>
+              <p className="mt-7 max-w-2xl text-lg leading-8 text-foreground-soft"><FormattedText value={PAUSE_WITHIN_CONTENT.intro} /></p>
+              <p className="mt-5 max-w-2xl leading-7 text-foreground-soft"><FormattedText value={PAUSE_WITHIN_CONTENT.context} /></p>
 
               <div className="mt-12 grid border-y border-line py-6 sm:grid-cols-3 sm:divide-x sm:divide-line">
                 <div className="pb-5 sm:px-5 sm:pb-0 sm:first:pl-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Duration</p><p className="mt-2 font-semibold">Two nights, two days</p></div>
@@ -229,14 +231,14 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">The retreat</p>
                   <h3 className="mt-4 font-display text-3xl leading-tight">What we will explore</h3>
                   <ul className="mt-6 space-y-4 text-foreground-soft">
-                    {PAUSE_WITHIN_CONTENT.explore.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />{item}</li>)}
+                    {PAUSE_WITHIN_CONTENT.explore.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" /><FormattedText value={item} /></li>)}
                   </ul>
                 </div>
                 <div className="border-t border-line pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">A gentle takeaway</p>
                   <h3 className="mt-4 font-display text-3xl leading-tight">What you may take back</h3>
                   <ul className="mt-6 space-y-4 text-foreground-soft">
-                    {PAUSE_WITHIN_CONTENT.takeBack.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />{item}</li>)}
+                    {PAUSE_WITHIN_CONTENT.takeBack.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" /><FormattedText value={item} /></li>)}
                   </ul>
                 </div>
               </div>
@@ -253,7 +255,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Choose your pass</p>
                 <p className="mt-3 text-sm leading-6 text-foreground-soft">Come with curiosity. There is nothing to fix and nowhere particular to arrive.</p>
                 <div className="mt-7 divide-y divide-line">
-                  {PAUSE_WITHIN_CONTENT.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold">{pass.name}</h3><span className="shrink-0 text-sm font-semibold text-accent">{pass.price.replace(/\s*\+\s*GST$/i, "")} + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft">{pass.detail}</p></div>)}
+                  {PAUSE_WITHIN_CONTENT.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold"><FormattedText value={pass.name} /></h3><span className="shrink-0 text-sm font-semibold text-accent"><FormattedText value={pass.price.replace(/\s*\+\s*GST$/i, "")} /> + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft"><FormattedText value={pass.detail} /></p></div>)}
                 </div>
                 <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center">Reserve your place <span aria-hidden>↗</span></PaymentButton>
               </div>
@@ -265,47 +267,47 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
         <main className="bg-background">
           <section className="mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:pb-24 lg:pt-8">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">{event.dateLabel || "Vinyasa Earth, Jaipur"}</p>
-              <h2 className="mt-5 max-w-[18ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl">{editorialEvent.introTitle}</h2>
-              <p className="mt-7 max-w-2xl text-lg leading-8 text-foreground-soft">{editorialEvent.intro}</p>
-              <p className="mt-5 max-w-2xl leading-7 text-foreground-soft">{editorialEvent.context}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={event.dateLabel || "Vinyasa Earth, Jaipur"} /></p>
+              <h2 className="mt-5 max-w-[18ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl"><FormattedText value={editorialEvent.introTitle} /></h2>
+              <p className="mt-7 max-w-2xl text-lg leading-8 text-foreground-soft"><FormattedText value={editorialEvent.intro} /></p>
+              <p className="mt-5 max-w-2xl leading-7 text-foreground-soft"><FormattedText value={editorialEvent.context} /></p>
 
               <div className="mt-12 grid border-y border-line py-6 sm:grid-cols-3 sm:divide-x sm:divide-line">
-                <div className="pb-5 sm:px-5 sm:pb-0 sm:first:pl-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Duration</p><p className="mt-2 font-semibold">{event.durationLabel || "At Vinyasa Earth"}</p></div>
-                <div className="border-t border-line pt-5 sm:border-t-0 sm:px-5 sm:pt-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Facilitator</p><p className="mt-2 font-semibold">{event.facilitator || "Vinyasa Earth"}</p></div>
+                <div className="pb-5 sm:px-5 sm:pb-0 sm:first:pl-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Duration</p><p className="mt-2 font-semibold"><FormattedText value={event.durationLabel || "At Vinyasa Earth"} /></p></div>
+                <div className="border-t border-line pt-5 sm:border-t-0 sm:px-5 sm:pt-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Facilitator</p><p className="mt-2 font-semibold"><FormattedText value={event.facilitator || "Vinyasa Earth"} /></p></div>
                 <div className="border-t border-line pt-5 sm:border-t-0 sm:px-5 sm:pt-0 sm:last:pr-0"><p className="text-xs uppercase tracking-[0.16em] text-muted">Venue</p><p className="mt-2 font-semibold">Vinyasa Earth, Jaipur</p></div>
               </div>
 
               <div className="mt-16 grid gap-12 md:grid-cols-2">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">The experience</p>
-                  <h3 className="mt-4 font-display text-3xl leading-tight">{editorialEvent.exploreTitle}</h3>
+                  <h3 className="mt-4 font-display text-3xl leading-tight"><FormattedText value={editorialEvent.exploreTitle} /></h3>
                   <ul className="mt-6 space-y-4 text-foreground-soft">
-                    {editorialEvent.explore.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />{item}</li>)}
+                    {editorialEvent.explore.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" /><FormattedText value={item} /></li>)}
                   </ul>
                 </div>
                 <div className="border-t border-line pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">A closer look</p>
-                  <h3 className="mt-4 font-display text-3xl leading-tight">{editorialEvent.takeawayTitle}</h3>
+                  <h3 className="mt-4 font-display text-3xl leading-tight"><FormattedText value={editorialEvent.takeawayTitle} /></h3>
                   <ul className="mt-6 space-y-4 text-foreground-soft">
-                    {editorialEvent.takeaways.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" />{item}</li>)}
+                    {editorialEvent.takeaways.map((item) => <li key={item} className="flex gap-3 leading-6"><span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" /><FormattedText value={item} /></li>)}
                   </ul>
                 </div>
               </div>
 
               <div className="mt-16 border-t border-line pt-10">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Beyond the schedule</p>
-                <h3 className="mt-4 max-w-xl font-display text-3xl leading-tight">{editorialEvent.aboutTitle}</h3>
-                <p className="mt-5 max-w-2xl leading-7 text-foreground-soft">{editorialEvent.about}</p>
+                <h3 className="mt-4 max-w-xl font-display text-3xl leading-tight"><FormattedText value={editorialEvent.aboutTitle} /></h3>
+                <p className="mt-5 max-w-2xl leading-7 text-foreground-soft"><FormattedText value={editorialEvent.about} /></p>
               </div>
             </div>
 
             <aside className="self-start lg:sticky lg:top-28">
               <div className="border border-line bg-surface p-6 sm:p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">{editorialEvent.passes ? "Ways to join" : "Make space for it"}</p>
-                <p className="mt-3 text-sm leading-6 text-foreground-soft">{event.description}</p>
-                {editorialEvent.passes ? <div className="mt-7 divide-y divide-line">{editorialEvent.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold">{pass.name}</h3><span className="shrink-0 text-sm font-semibold text-accent">{pass.price.replace(/\s*\+\s*GST$/i, "")} + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft">{pass.detail}</p></div>)}</div> : <p className="mt-7 border-y border-line py-5 text-2xl font-semibold">{priceLabel}</p>}
-                <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center">{editorialEvent.cta} <span aria-hidden>↗</span></PaymentButton>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={editorialEvent.passes ? "Ways to join" : "Make space for it"} /></p>
+                <p className="mt-3 text-sm leading-6 text-foreground-soft"><FormattedText value={event.description} /></p>
+                {editorialEvent.passes ? <div className="mt-7 divide-y divide-line">{editorialEvent.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold"><FormattedText value={pass.name} /></h3><span className="shrink-0 text-sm font-semibold text-accent"><FormattedText value={pass.price.replace(/\s*\+\s*GST$/i, "")} /> + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft"><FormattedText value={pass.detail} /></p></div>)}</div> : <p className="mt-7 border-y border-line py-5 text-2xl font-semibold"><FormattedText value={priceLabel} /></p>}
+                <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center"><FormattedText value={editorialEvent.cta} links={false} /> <span aria-hidden>↗</span></PaymentButton>
               </div>
               <p className="mt-4 text-center text-xs leading-5 text-muted">Vinyasa Earth, Jaipur</p>
             </aside>
@@ -313,47 +315,47 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
         </main>
       ) : (
       <section className="mx-auto max-w-4xl px-5 py-14 sm:px-8">
-        <Link href={content.href_1} className="text-xs uppercase tracking-[0.08em] text-accent underline">{content.text_2}</Link>
+        <Link href={content.href_1} className="text-xs uppercase tracking-[0.08em] text-accent underline"><FormattedText value={content.text_2} links={false} /></Link>
         <div className="mt-8 grid gap-10 sm:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="font-display italic text-2xl">{content.text_3}</h2>
+            <h2 className="font-display italic text-2xl"><FormattedText value={content.text_3} /></h2>
             <dl className="mt-4 space-y-3 text-sm text-foreground-soft">
               {event.dateLabel && (
                 <div className="flex items-center gap-3">
                   <Icon name="calendar-outline" size={15} className="text-accent" />
-                  <span>{event.dateLabel}</span>
+                  <span><FormattedText value={event.dateLabel} /></span>
                 </div>
               )}
               <div className="flex items-center gap-3">
                 <Icon name="sunny-outline" size={15} className="text-accent" />
-                <span>{event.durationLabel}</span>
+                <span><FormattedText value={event.durationLabel} /></span>
               </div>
               {event.facilitator && (
                 <div className="flex items-center gap-3">
                   <Icon name="people-outline" size={15} className="text-accent" />
-                  <span>{content.text_4}{event.facilitator}</span>
+                  <span><FormattedText value={content.text_4} /><FormattedText value={event.facilitator} /></span>
                 </div>
               )}
               <div className="flex items-center gap-3">
                 <Icon name="location-outline" size={15} className="text-accent" />
-                <span>{content.text_5}</span>
+                <span><FormattedText value={content.text_5} /></span>
               </div>
             </dl>
                         {event.bodyHtml ? <RichContent html={event.bodyHtml} className="mt-8" /> : details && (
               <div className="mt-10 border-t border-line pt-8">
-                <h2 className="font-display italic text-3xl">{details.heading}</h2>
-                {details.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 leading-7 text-foreground-soft">{paragraph}</p>)}
-                <h3 className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-accent">{content.text_6}</h3>
+                <h2 className="font-display italic text-3xl"><FormattedText value={details.heading} /></h2>
+                {details.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 leading-7 text-foreground-soft"><FormattedText value={paragraph} /></p>)}
+                <h3 className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-accent"><FormattedText value={content.text_6} /></h3>
                 <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {details.highlights.map((item) => <li key={item} className="border-l-2 border-accent/50 bg-clay-surface px-4 py-3 text-sm text-foreground-soft">{item}</li>)}
+                  {details.highlights.map((item) => <li key={item} className="border-l-2 border-accent/50 bg-clay-surface px-4 py-3 text-sm text-foreground-soft"><FormattedText value={item} /></li>)}
                 </ul>
               </div>
             )}
           </div>
           <div className="border border-line bg-surface p-6">
-            <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_7}</p>
-            <p className="mt-1 font-sans text-3xl font-bold tracking-tight tabular-nums">{priceLabel}</p>
-            <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-5 block text-center">{content.text_8}</PaymentButton>
+            <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_7} /></p>
+            <p className="mt-1 font-sans text-3xl font-bold tracking-tight tabular-nums"><FormattedText value={priceLabel} /></p>
+            <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-5 block text-center"><FormattedText value={content.text_8} links={false} /></PaymentButton>
           </div>
         </div>
       </section>

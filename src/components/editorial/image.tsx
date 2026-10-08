@@ -1,3 +1,4 @@
+import { plainText } from "@/lib/editorial/text";
 ﻿import NextImage, { type ImageProps } from "next/image";
 export type { ImageProps, StaticImageData } from "next/image";
 
@@ -21,5 +22,5 @@ export default function EditorialImage(props: ImageProps) {
       return false;
     }
   })();
-  return <NextImage {...props} unoptimized={props.unoptimized || (external && !optimizable)} />;
+  return <NextImage {...props} alt={plainText(props.alt)} unoptimized={props.unoptimized || (external && !optimizable)} />;
 }

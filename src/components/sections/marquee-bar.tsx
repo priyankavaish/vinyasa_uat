@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_marquee_bar";
 import { getEditorial } from "@/lib/editorial/server";
 import { Icon } from "@/components/ui/icon";
@@ -26,7 +28,7 @@ export default async function MarqueeBar() {
         {loop.map((item, index) => (
           <span key={`${item}-${index}`} className="flex shrink-0 items-center">
             <span className="px-5 font-display text-sm uppercase tracking-[0.14em] text-clay-ink whitespace-nowrap sm:px-7 sm:text-base">
-              {item}
+              <FormattedText value={item} />
             </span>
             <span aria-hidden="true" className="grid place-items-center text-accent">
               <Icon name="leaf-outline" size={13} className="-rotate-45" />

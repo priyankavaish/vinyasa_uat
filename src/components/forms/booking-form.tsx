@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_forms_booking_form";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -178,8 +180,8 @@ export default function BookingForm({
   if (status === "success") {
     return (
       <div className="border border-line bg-surface p-10 text-center">
-        <p className="font-display italic text-3xl">{content.text_1}</p>
-        <p className="mt-3 text-sm text-foreground-soft">{content.text_2}<span className="font-mono">{confirmedId}</span>{content.text_3}<span className="font-mono">{content.text_4}</span>.
+        <p className="font-display italic text-3xl"><FormattedText value={content.text_1} /></p>
+        <p className="mt-3 text-sm text-foreground-soft"><FormattedText value={content.text_2} /><span className="font-mono"><FormattedText value={confirmedId} /></span><FormattedText value={content.text_3} /><span className="font-mono"><FormattedText value={content.text_4} /></span>.
         </p>
       </div>
     );
@@ -191,7 +193,7 @@ export default function BookingForm({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_6}</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_6} /></label>
             <select
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
               {...register("type")}
@@ -201,7 +203,7 @@ export default function BookingForm({
           </div>
           <div>
             <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">
-              {type === "stay" ? (content.text_9 === "Mudhouse" ? "Stay option" : content.text_9) : content.text_10}
+              <FormattedText value={type === "stay" ? (content.text_9 === "Mudhouse" ? "Stay option" : content.text_9) : content.text_10} />
             </label>
             <select
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
@@ -219,27 +221,27 @@ export default function BookingForm({
         {type === "stay" ? (
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_11}</label>
+              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_11} /></label>
               <input
                 type="date"
                 className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
                 {...register("checkIn")}
               />
-              {errors.checkIn && <p className="mt-1 text-xs text-red-700">{errors.checkIn.message}</p>}
+              {errors.checkIn && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.checkIn.message} /></p>}
             </div>
             <div>
-              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_12}</label>
+              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_12} /></label>
               <input
                 type="date"
                 className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
                 {...register("checkOut")}
               />
-              {errors.checkOut && <p className="mt-1 text-xs text-red-700">{errors.checkOut.message}</p>}
+              {errors.checkOut && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.checkOut.message} /></p>}
             </div>
           </div>
         ) : (
           <div>
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_13}</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_13} /></label>
             <input
               type="date"
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
@@ -249,7 +251,7 @@ export default function BookingForm({
         )}
 
         <div>
-          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_14}</label>
+          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_14} /></label>
           <input
             type="number"
             min={1}
@@ -257,47 +259,47 @@ export default function BookingForm({
             className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
             {...register("guests")}
           />
-          {errors.guests && <p className="mt-1 text-xs text-red-700">{errors.guests.message}</p>}
+          {errors.guests && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.guests.message} /></p>}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_15}</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_15} /></label>
             <input
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
               {...register("guestName")}
             />
-            {errors.guestName && <p className="mt-1 text-xs text-red-700">{errors.guestName.message}</p>}
+            {errors.guestName && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.guestName.message} /></p>}
           </div>
           <div>
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_16}</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_16} /></label>
             <input
               type="email"
               className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
               {...register("guestEmail")}
             />
-            {errors.guestEmail && <p className="mt-1 text-xs text-red-700">{errors.guestEmail.message}</p>}
+            {errors.guestEmail && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.guestEmail.message} /></p>}
           </div>
         </div>
 
         <div>
-          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">{content.text_17}</label>
+          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_17} /></label>
           <input
             className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
             {...register("guestPhone")}
           />
-          {errors.guestPhone && <p className="mt-1 text-xs text-red-700">{errors.guestPhone.message}</p>}
+          {errors.guestPhone && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.guestPhone.message} /></p>}
         </div>
 
-        <div className="space-y-2 text-sm text-foreground-soft"><div className="flex justify-between gap-4"><span>Base price (excluding GST)</span><span>₹{money(pricing.baseAmount)}</span></div><div className="flex justify-between gap-4"><span>GST (18%)</span><span>₹{money(pricing.gstAmount)}</span></div></div>
+        <div className="space-y-2 text-sm text-foreground-soft"><div className="flex justify-between gap-4"><span>Base price (excluding GST)</span><span>₹<FormattedText value={money(pricing.baseAmount)} /></span></div><div className="flex justify-between gap-4"><span>GST (18%)</span><span>₹<FormattedText value={money(pricing.gstAmount)} /></span></div></div>
         <div className="flex items-center justify-between border border-line bg-surface px-4 py-3">
           <span className="text-sm text-foreground-soft">Total including 18% GST</span>
-          <span className="tabular-nums text-xl font-semibold text-foreground">₹{amount.toLocaleString("en-IN")}</span>
+          <span className="tabular-nums text-xl font-semibold text-foreground">₹<FormattedText value={amount.toLocaleString("en-IN")} /></span>
         </div>
 
         {status === "error" && errorMessage && (
           <p role="alert" className="text-sm text-red-700">
-            {errorMessage}
+            <FormattedText value={errorMessage} />
           </p>
         )}
 
@@ -306,7 +308,7 @@ export default function BookingForm({
           disabled={submitting || soldOut || !item}
           className="btn btn-accent w-full transition-opacity disabled:opacity-60"
         >
-          {soldOut ? "Sold out" : !item ? "Unavailable" : submitting ? content.text_19 : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`}
+          <FormattedText value={soldOut ? "Sold out" : !item ? "Unavailable" : submitting ? content.text_19 : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`} links={false} />
         </button>
       </form>
     </>

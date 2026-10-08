@@ -1,3 +1,5 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__stays_page";
@@ -85,7 +87,7 @@ export default async function StaysPage() {
 
       <AnimateInView delay={60}><section id="stays-intro" className="mx-auto max-w-6xl px-5 pb-7 pt-4 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-3xl text-center">
-          <p className="leading-relaxed text-foreground-soft">{content.text_1}</p>
+          <p className="leading-relaxed text-foreground-soft"><FormattedText value={content.text_1} /></p>
         </Reveal>
 
 
@@ -97,10 +99,10 @@ export default async function StaysPage() {
       <SectionWave from="var(--footer-background)" to="#f3f1ea" variant="arch" />
       <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon="sparkles-outline">{content.text_2}</SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_3}</h2>
-          <p className="mt-4 text-foreground-soft leading-relaxed">{content.text_4}{" "}
-            <a href={content.href_5} className="text-accent underline">{content.text_6}</a>{" "}{content.text_7}</p>
+          <SectionEyebrow icon="sparkles-outline"><FormattedText value={content.text_2} /></SectionEyebrow>
+          <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.text_3} /></h2>
+          <p className="mt-4 text-foreground-soft leading-relaxed"><FormattedText value={content.text_4} /><FormattedText value={" "} />
+            <a href={content.href_5} className="text-accent underline"><FormattedText value={content.text_6} links={false} /></a><FormattedText value={" "} /><FormattedText value={content.text_7} /></p>
         </Reveal>
 
         <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -123,8 +125,8 @@ export default async function StaysPage() {
         <AnimateInView delay={100}><section className="organic-section texture-linen relative overflow-hidden bg-dusk-surface py-20">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-              <SectionEyebrow icon="calendar-outline">{content.text_23}</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_24}</h2>
+              <SectionEyebrow icon="calendar-outline"><FormattedText value={content.text_23} /></SectionEyebrow>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.text_24} /></h2>
             </Reveal>
 
             <div className="mt-10 grid gap-5 sm:grid-cols-2">
@@ -149,8 +151,8 @@ export default async function StaysPage() {
                     )}
                     <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/55 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                      <h3 className="font-display italic text-xl leading-tight text-white sm:text-2xl">{option.title}</h3>
-                      <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-white/85">{option.description}</p>
+                      <h3 className="font-display italic text-xl leading-tight text-white sm:text-2xl"><FormattedText value={option.title} /></h3>
+                      <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-white/85"><FormattedText value={option.description} /></p>
                     </div>
                   </div>
                 </Reveal>
@@ -165,9 +167,9 @@ export default async function StaysPage() {
 
       <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon="ribbon-outline" className="justify-center">{content.text_25}</SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-3xl leading-tight">{content.text_26}</h2>
-          <p className="mx-auto mt-3 text-sm leading-relaxed text-foreground-soft">{content.text_27}</p>
+          <SectionEyebrow icon="ribbon-outline" className="justify-center"><FormattedText value={content.text_25} /></SectionEyebrow>
+          <h2 className="mt-3 font-display italic text-3xl leading-tight"><FormattedText value={content.text_26} /></h2>
+          <p className="mx-auto mt-3 text-sm leading-relaxed text-foreground-soft"><FormattedText value={content.text_27} /></p>
         </Reveal>
 
         <PartnerCards partners={content.ACCESSORY_PARTNERS} />

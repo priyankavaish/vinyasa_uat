@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_layout_site_header";
 import { useEditorial } from "@/components/editorial/provider";
 import { pageForPath, type PageSettingsMap } from "@/lib/page-routing";
@@ -173,7 +175,7 @@ export default function SiteHeader({ pageSettings = {} }: { pageSettings?: PageS
                   aria-current={active ? "page" : undefined}
                   className={`${linkClass} ${active ? activeClass : ""}`}
                 >
-                  {pageForPath(link.href.split(/[?#]/)[0], pageSettings)?.path === "/artist-escape" && !pageSettings[pageForPath(link.href.split(/[?#]/)[0], pageSettings)!.id]?.menuLabel ? "For the Artists" : link.label}
+                  <FormattedText value={pageForPath(link.href.split(/[?#]/)[0], pageSettings)?.path === "/artist-escape" && !pageSettings[pageForPath(link.href.split(/[?#]/)[0], pageSettings)!.id]?.menuLabel ? "For the Artists" : link.label} links={false} />
                 </Link>
               </li>
             );
@@ -185,7 +187,7 @@ export default function SiteHeader({ pageSettings = {} }: { pageSettings?: PageS
             href={content.href_11}
             className="hidden items-center justify-center px-5 py-2.5 text-xs font-semibold tracking-[0.12em] text-white uppercase transition-all hover:-translate-y-0.5 hover:brightness-110 lg:inline-flex"
             style={{ backgroundColor: "#8f3b31", color: "#ffffff", fontSize: "0.8rem" }}
-          >{content.text_12}</Link>
+          ><FormattedText value={content.text_12} links={false} /></Link>
           <button
             type="button"
             aria-expanded={open}
@@ -193,7 +195,7 @@ export default function SiteHeader({ pageSettings = {} }: { pageSettings?: PageS
             className="menu-toggle grid h-12 w-12 place-items-center lg:hidden"
             onClick={() => setOpen((v) => !v)}
           >
-            <span className="sr-only">{content.text_14}</span>
+            <span className="sr-only"><FormattedText value={content.text_14} links={false} /></span>
             <Icon
               name={open ? "close-outline" : "menu-outline"}
               size={28}
@@ -221,7 +223,7 @@ export default function SiteHeader({ pageSettings = {} }: { pageSettings?: PageS
                         : ""
                     }
                   >
-                    {pageForPath(link.href.split(/[?#]/)[0], pageSettings)?.path === "/artist-escape" && !pageSettings[pageForPath(link.href.split(/[?#]/)[0], pageSettings)!.id]?.menuLabel ? "For the Artists" : link.label}
+                    <FormattedText value={pageForPath(link.href.split(/[?#]/)[0], pageSettings)?.path === "/artist-escape" && !pageSettings[pageForPath(link.href.split(/[?#]/)[0], pageSettings)!.id]?.menuLabel ? "For the Artists" : link.label} links={false} />
                   </Link>
                 </li>
               );
@@ -232,7 +234,7 @@ export default function SiteHeader({ pageSettings = {} }: { pageSettings?: PageS
                 onClick={() => setOpen(false)}
                 className="inline-flex px-5 py-3 font-semibold text-white"
                 style={{ backgroundColor: "#8f3b31", color: "#ffffff", fontSize: "0.8rem" }}
-              >{content.text_21}</Link>
+              ><FormattedText value={content.text_21} links={false} /></Link>
             </li>
           </ul>
         </nav>

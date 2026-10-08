@@ -991,3 +991,7 @@ label[for] {
   background: transparent;
   color: var(--payment-background, var(--accent));
 }
+
+/* Inline CMS formatting keeps the existing section layout. */
+.formatted-text strong, .rich strong { font-weight: 700; }
+.formatted-text a { text-decoration: underline; text-underline-offset: 3px; }

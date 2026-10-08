@@ -1,4 +1,6 @@
 
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_reviews_section";
 import { getEditorial } from "@/lib/editorial/server";
 import Image from "@/components/editorial/image";
@@ -64,10 +66,10 @@ export default async function ReviewsSection() {
         <Reveal variant="up" className="relative mx-auto max-w-2xl border border-line/70 bg-surface/90 px-6 py-6 text-center shadow-[0_2rem_5rem_rgba(75,55,35,0.09)] backdrop-blur-sm sm:px-14 sm:py-9">
           <div className="flex flex-wrap items-center justify-center gap-2">
             <GoogleLogo size={20} />
-            <span className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">{content.text_5}</span>
+            <span className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={content.text_5} /></span>
           </div>
           <p className="mt-1.5 text-xs text-foreground-soft">
-            {content.GOOGLE_RATING.category} <span className="mx-1.5 text-line">{content.text_6}</span> {content.GOOGLE_RATING.hours}
+            <FormattedText value={content.GOOGLE_RATING.category} /> <span className="mx-1.5 text-line"><FormattedText value={content.text_6} /></span> <FormattedText value={content.GOOGLE_RATING.hours} />
           </p>
 
           <Parallax speed={-0.025} className="relative">
@@ -88,7 +90,7 @@ export default async function ReviewsSection() {
                 rel="noopener noreferrer"
                 className="mt-2.5 inline-flex items-center gap-1.5 border border-line bg-background/70 px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-accent hover:text-accent"
               >
-                {content.GOOGLE_RATING.count}{content.text_7}<Icon name="arrow-forward-outline" size={11} />
+                {content.GOOGLE_RATING.count}<FormattedText value={content.text_7} links={false} /><Icon name="arrow-forward-outline" size={11} />
               </a>
             </Reveal>
           </Parallax>
@@ -97,7 +99,7 @@ export default async function ReviewsSection() {
             <Reveal variant="up" delay={150} className="mt-5 text-center">
               <blockquote className="relative mx-auto max-w-[34ch] font-display text-lg leading-snug text-foreground sm:text-xl">
                 <span className="absolute -left-3 -top-4 text-4xl text-accent/45 sm:-left-8" aria-hidden>&ldquo;</span>
-                {pullQuote}
+                <FormattedText value={pullQuote} />
                 <span className="ml-1 text-2xl text-accent/45" aria-hidden>&rdquo;</span>
               </blockquote>
               <div className="mx-auto mt-3 flex w-fit items-center gap-2 text-secondary/65" aria-hidden="true">
@@ -117,7 +119,7 @@ export default async function ReviewsSection() {
                     <span className="grid h-8 w-8 place-items-center border border-current/10 bg-background/80 shadow-sm transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105" style={{ color: style.accent }}>
                       <Icon name={style.icon} size={16} />
                     </span>
-                    <span className="mt-2 text-[13px] font-semibold leading-snug text-foreground">{topic}</span>
+                    <span className="mt-2 text-[13px] font-semibold leading-snug text-foreground"><FormattedText value={topic} /></span>
                     <span className="mt-2 h-px w-7 opacity-45" style={{ backgroundColor: style.accent }} aria-hidden="true" />
                   </div>
                 </Reveal>

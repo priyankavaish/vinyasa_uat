@@ -5,45 +5,81 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
-import { TextStyle, Color } from "@tiptap/extension-text-style";
+import { TextStyle, Color, FontFamily } from "@tiptap/extension-text-style";
 
 const COLORS = ["#2b2620", "#8f3b31", "#6b7a5e", "#6b7a9e", "#a06a2c", "#ffffff"];
+
+const Btn = ({
+    on,
+    active,
+    children,
+    title,
+  }: {
+    on: () => void;
+    active?: boolean;
+    children: React.ReactNode;
+    title: string;
+  }) => (
+    <button
+      type="button"
+      title={title}
+      onMouseDown={event => event.preventDefault()}
+      onClick={on}
+      className={`rounded px-2 py-1 text-xs font-semibold ${
+        active ? "bg-accent text-white" : "bg-white text-foreground hover:bg-[#f0ebe0]"
+      }`}
+    >
+      {children}
+    </button>
+  );
+
 
 export default function RichEditor({
   value,
   onChange,
   blockTools = false,
   onUploadStateChange,
+  inline = false,
+  label = "Page content",
 }: {
   value: string;
   onChange: (html: string) => void;
   blockTools?: boolean;
   onUploadStateChange?: (busy: boolean) => void;
+  inline?: boolean;
+  label?: string;
 }) {
+  const serialize = (html: string, text: string) => inline
+    ? /<(?:strong|em|s|span|a|br)\b/i.test(html) ? html.replace(/<\/p>\s*<p[^>]*>/g, "<br>").replace(/<\/?p[^>]*>/g, "") : text
+    : html;
+  const editorContent = (html: string) => /<\/?[a-z][^>]*>/i.test(html) ? html : `<p>${html.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>")}</p>`;
   const [blockMenu, setBlockMenu] = useState(false);
   const editor = useEditor({
     immediatelyRender: false,
+    shouldRerenderOnTransaction: true,
     extensions: [
       StarterKit.configure({ link: false, heading: { levels: [2, 3, 4] } }),
       TextStyle,
       Color,
+      FontFamily,
       Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: "noopener" } }),
       Image.configure({ HTMLAttributes: { class: "rich-img" } }),
     ],
-    content: value || "<p></p>",
+    content: editorContent(value),
     editorProps: {
       attributes: {
-        class:
-          "rich min-h-[240px] max-w-none rounded-b-md border border-t-0 border-line bg-white px-4 py-3 text-sm focus:outline-none",
+        "aria-label": label,
+        role: "textbox",
+        class: `rich ${inline ? "min-h-[70px]" : "min-h-[240px]"} max-w-none rounded-b-md border border-t-0 border-line bg-white px-4 py-3 text-sm focus:outline-none`,
       },
     },
-    onUpdate: ({ editor }) => onChange(editor.getHTML()),
+    onUpdate: ({ editor }) => onChange(serialize(editor.getHTML(), editor.getText())),
   });
 
   // keep external resets in sync (e.g. after save)
   useEffect(() => {
-    if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value, { emitUpdate: false });
+    if (editor && value !== serialize(editor.getHTML(), editor.getText())) {
+      editor.commands.setContent(editorContent(value), { emitUpdate: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, value]);
@@ -97,28 +133,6 @@ export default function RichEditor({
 
   if (!editor) return null;
 
-  const Btn = ({
-    on,
-    active,
-    children,
-    title,
-  }: {
-    on: () => void;
-    active?: boolean;
-    children: React.ReactNode;
-    title: string;
-  }) => (
-    <button
-      type="button"
-      title={title}
-      onClick={on}
-      className={`rounded px-2 py-1 text-xs font-semibold ${
-        active ? "bg-accent text-white" : "bg-white text-foreground hover:bg-[#f0ebe0]"
-      }`}
-    >
-      {children}
-    </button>
-  );
 
   return (
     <div>
@@ -133,6 +147,7 @@ export default function RichEditor({
           <span className="line-through">S</span>
         </Btn>
         <span className="mx-1 h-4 w-px bg-line" />
+        {!inline && <>
         <Btn on={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })} title="Heading 2">
           H2
         </Btn>
@@ -149,6 +164,16 @@ export default function RichEditor({
           &ldquo;&rdquo;
         </Btn>
         <span className="mx-1 h-4 w-px bg-line" />
+        </>}
+        <label className="flex items-center gap-1 text-xs">Font
+          <select aria-label="Font family" className="max-w-40 border border-line bg-white px-2 py-1 text-xs" value={editor.getAttributes("textStyle").fontFamily ?? ""} onChange={event => { if (event.target.value) editor.chain().focus().setFontFamily(event.target.value).run(); else editor.chain().focus().unsetFontFamily().run(); }}>
+            <option value="">Theme default</option>
+            <option value="var(--font-display)">Vinyasa display</option>
+            <option value="var(--font-bellefair)">Bellefair</option>
+            <option value="var(--font-sans)">Vinyasa sans</option>
+            <option value="Arial">Arial</option><option value="Georgia">Georgia</option><option value="Verdana">Verdana</option><option value="monospace">Monospace</option>
+          </select>
+        </label>
         {COLORS.map((c) => (
           <button
             key={c}
@@ -159,6 +184,7 @@ export default function RichEditor({
             style={{ backgroundColor: c }}
           />
         ))}
+        <label className="flex items-center gap-1 text-xs">Colour<input aria-label="Custom text colour" type="color" value={/^#[0-9a-f]{6}$/i.test(editor.getAttributes("textStyle").color ?? "") ? editor.getAttributes("textStyle").color : "#2b2620"} onChange={event => editor.chain().focus().setColor(event.target.value).run()} className="h-6 w-7 cursor-pointer border border-line" /></label>
         <Btn on={() => editor.chain().focus().unsetColor().run()} title="Clear colour">
           ⨯
         </Btn>
@@ -166,12 +192,15 @@ export default function RichEditor({
         <Btn on={setLink} active={editor.isActive("link")} title="Add / edit link">
           Link
         </Btn>
+        {editor.isActive("link") && <Btn on={() => editor.chain().focus().unsetLink().run()} title="Remove link">Unlink</Btn>}
+        {!inline && <>
         <Btn on={addImage} title="Insert image">
           Image
         </Btn>
         <Btn on={addButton} title="Insert call-to-action link">
           Call to action
         </Btn>
+        </>}
       </div>
       {blockTools && <div className="border-x border-line bg-white p-2"><button type="button" aria-expanded={blockMenu} onClick={() => setBlockMenu(!blockMenu)} className="btn btn-outline">+ Add block</button><button type="button" onClick={() => editor.chain().focus().undo().run()} className="ml-3 text-sm underline">Undo</button><button type="button" onClick={() => editor.chain().focus().redo().run()} className="ml-3 text-sm underline">Redo</button>{blockMenu && <div className="mt-3 flex flex-wrap gap-2">{[
         ["Paragraph", () => editor.chain().focus().insertContent("<p>New paragraph</p>").run()],

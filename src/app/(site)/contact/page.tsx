@@ -1,3 +1,5 @@
+
+import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__contact_page";
@@ -93,13 +95,13 @@ export default async function ContactPage() {
         </span>
         <div className="relative z-10 mx-auto max-w-2xl">
           <SectionEyebrow icon="sparkles-outline" className="justify-center">
-            {content.text_1}
+            <FormattedText value={content.text_1} />
           </SectionEyebrow>
           <h1 className="mt-2 font-display text-3xl italic leading-tight text-clay-ink sm:text-4xl">
-            {content.text_2}
+            <FormattedText value={content.text_2} />
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-foreground-soft sm:text-base">
-            {content.text_3}
+            <FormattedText value={content.text_3} />
           </p>
         </div>
       </section>
@@ -109,8 +111,8 @@ export default async function ContactPage() {
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
       <AnimateInView delay={80}><section className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
         <Reveal variant="fade" className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow icon="sparkles-outline" className="justify-center">{content.text_4}</SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-3xl leading-tight sm:text-4xl">{content.text_5}</h2>
+          <SectionEyebrow icon="sparkles-outline" className="justify-center"><FormattedText value={content.text_4} /></SectionEyebrow>
+          <h2 className="mt-3 font-display italic text-3xl leading-tight sm:text-4xl"><FormattedText value={content.text_5} /></h2>
         </Reveal>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s, i) => (
@@ -119,8 +121,8 @@ export default async function ContactPage() {
                 <span className="grid h-11 w-11 place-items-center rounded-full border border-accent/40 text-accent">
                   <Icon name={s.icon} size={19} />
                 </span>
-                <h3 className="mt-4 font-display italic text-xl leading-tight">{s.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-foreground-soft">{s.body}</p>
+                <h3 className="mt-4 font-display italic text-xl leading-tight"><FormattedText value={s.title} /></h3>
+                <p className="mt-2 text-sm leading-6 text-foreground-soft"><FormattedText value={s.body} /></p>
               </div>
             </Reveal>
           ))}
@@ -129,22 +131,22 @@ export default async function ContactPage() {
 
       <AnimateInView delay={80}><section className="mx-auto max-w-3xl px-5 pb-16 pt-2 sm:px-8">
         <Reveal variant="fade" className="text-center">
-          <SectionEyebrow icon="compass-outline" className="justify-center">{content.text_6}</SectionEyebrow>
-          <h2 className="mt-3 font-display italic text-4xl leading-tight">{content.text_7}</h2>
+          <SectionEyebrow icon="compass-outline" className="justify-center"><FormattedText value={content.text_6} /></SectionEyebrow>
+          <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.text_7} /></h2>
         </Reveal>
         <div className="mt-10 divide-y divide-line border-y border-line">
           {FAQ.map((item, i) => (
             <Reveal key={item.q} variant="up" delay={(i % 3) * 70}>
               <details className="group py-5">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display italic text-lg text-foreground">
-                  {item.q}
+                  <FormattedText value={item.q} links={false} />
                   <Icon
                     name="arrow-forward-outline"
                     size={16}
                     className="shrink-0 text-accent transition-transform duration-300 group-open:rotate-90"
                   />
                 </summary>
-                <p className="mt-3 text-sm leading-6 text-foreground-soft">{item.a}</p>
+                <p className="mt-3 text-sm leading-6 text-foreground-soft"><FormattedText value={item.a} /></p>
               </details>
             </Reveal>
           ))}

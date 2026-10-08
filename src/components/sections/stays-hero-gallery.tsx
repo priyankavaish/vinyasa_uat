@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_stays_hero_gallery";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -144,21 +146,21 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
                 quality={80} sizes="(min-width: 640px) 1100px, 640px" className={styles.image} /></span>
               <span className={styles.caption}>
                 <span className={styles.captionMeta}>
-                  <span>{isEvents ? photo.element || "Upcoming programme" : stayElementLabel(photo.element || "nature")}</span>
-                  {photo.date && <span className={styles.captionDate}>{photo.date}</span>}
+                  <span><FormattedText value={isEvents ? photo.element || "Upcoming programme" : stayElementLabel(photo.element || "nature")} links={false} /></span>
+                  {photo.date && <span className={styles.captionDate}><FormattedText value={photo.date} links={false} /></span>}
                 </span>
-                <span className={styles.captionName}>{photo.name}</span>
+                <span className={styles.captionName}><FormattedText value={photo.name} links={false} /></span>
               </span>
             </Link>;
           })}
         </div>
         <div className={styles.footer}>
-          <div><p className={styles.eyebrow}>{isEvents ? content.text_7 : content.text_8}</p>
-            <h1>{isEvents ? content.text_9 : content.text_10}</h1>
+          <div><p className={styles.eyebrow}><FormattedText value={isEvents ? content.text_7 : content.text_8} /></p>
+            <h1><FormattedText value={isEvents ? content.text_9 : content.text_10} /></h1>
           </div>
           {photos.length > 1 && <div className={styles.controls}>
             <button type="button" onClick={() => move(-1)} aria-label={isEvents ? content.text_13 : content.text_14}><span className={styles.previous}><Icon name="arrow-forward-outline" size={18} /></span></button>
-            <span className={styles.count}>{String(active + 1).padStart(2, "0")} / {String(photos.length).padStart(2, "0")}</span>
+            <span className={styles.count}><FormattedText value={String(active + 1).padStart(2, "0")} /> / <FormattedText value={String(photos.length).padStart(2, "0")} /></span>
             <button type="button" onClick={() => move(1)} aria-label={isEvents ? content.text_15 : content.text_16}><Icon name="arrow-forward-outline" size={18} /></button>
           </div>}
         </div>

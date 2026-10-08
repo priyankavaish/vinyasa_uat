@@ -1,4 +1,6 @@
 "use client";
+import FormattedText from "@/components/editorial/formatted-text";
+
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_sections_photo_masonry";
 import { useEditorial } from "@/components/editorial/provider";
 
@@ -34,8 +36,8 @@ export default function PhotoMasonry() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal variant="up" className="mb-7">
-          <SectionEyebrow icon="images-outline">{content.text_1}</SectionEyebrow>
-          <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight">{content.text_2}</h2>
+          <SectionEyebrow icon="images-outline"><FormattedText value={content.text_1} /></SectionEyebrow>
+          <h2 className="mt-3 max-w-[26ch] font-display text-4xl leading-tight"><FormattedText value={content.text_2} /></h2>
         </Reveal>
       </div>
 
@@ -61,7 +63,7 @@ export default function PhotoMasonry() {
                     <Icon name="expand-outline" size={15} />
                   </span>
                   <span className="absolute bottom-3 left-3 text-[11px] font-bold uppercase tracking-[0.16em] text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    {String(i + 1).padStart(2, "0")}
+                    <FormattedText value={String(i + 1).padStart(2, "0")} links={false} />
                   </span>
                 </button>
               </div>
@@ -69,7 +71,7 @@ export default function PhotoMasonry() {
           </div>
         </div>
         <div className="mx-auto mt-6 flex max-w-6xl items-center justify-between px-5 sm:justify-end sm:px-8">
-          <span className="text-[12px] font-bold uppercase tracking-[.2em] text-dusk-ink/65 sm:hidden">{content.text_3}</span>
+          <span className="text-[12px] font-bold uppercase tracking-[.2em] text-dusk-ink/65 sm:hidden"><FormattedText value={content.text_3} /></span>
           <div className="flex gap-2 p-1">
             <button type="button" onClick={scrollPrev} aria-label={content.aria_label_4} className="grid h-9 w-9 place-items-center rounded-full transition-colors hover:bg-dusk-ink hover:text-dusk-surface">
               <Icon name="arrow-forward-outline" size={15} className="rotate-180" />
