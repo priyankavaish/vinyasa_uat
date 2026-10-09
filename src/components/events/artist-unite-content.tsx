@@ -1,3 +1,4 @@
+import AnimatedButtonArrow from "@/components/ui/animated-button-arrow";
 import Link from "next/link";
 import EventContentImage from "./event-content-image";
 import FormattedText from "@/components/editorial/formatted-text";
@@ -18,7 +19,7 @@ export default function ArtistUniteContent({ content }: { content: typeof artist
           <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl"><FormattedText value={section.title} /></h2>
           {section.image && <EventContentImage src={section.image} alt={section.imageAlt} width={section.imageWidth} />}
           <RichContent eventActions html={section.bodyHtml} className="mt-6 text-foreground-soft [&_strong]:text-foreground" />
-          {index === 3 && <Link href="#artist-unite-application" className="btn btn-accent mt-5">Apply for Artist Unite &#8599;</Link>}
+          {index === 3 && <Link href="#artist-unite-application" className="btn btn-accent mt-5">Apply for Artist Unite <AnimatedButtonArrow /></Link>}
         </section>)}
       </article>
       <aside className="self-start lg:sticky lg:top-28">
@@ -29,7 +30,7 @@ export default function ArtistUniteContent({ content }: { content: typeof artist
           <p className="mt-4 text-sm leading-7 text-foreground-soft">10 nights in a dormitory, daily breakfast and dinner, two shared artist-process spaces each day, creative spaces and participation at Zariya.</p>
           <p className="mt-3 text-sm leading-7 text-muted">Lunch can be ordered separately and is not included in the residency fee.</p>
           <dl className="mt-5 space-y-3 border-t border-line pt-5 text-sm"><div><dt className="font-semibold">Arrival</dt><dd className="mt-1 text-foreground-soft"><FormattedText value={content.arrival} /></dd></div><div><dt className="font-semibold">Zariya</dt><dd className="mt-1 text-foreground-soft"><FormattedText value={content.zariya} /></dd></div><div><dt className="font-semibold">Checkout</dt><dd className="mt-1 text-foreground-soft"><FormattedText value={content.checkout} /></dd></div></dl>
-          <Link href="#artist-unite-application" className="btn btn-accent mt-6 flex justify-center text-center">Apply for Artist Unite &#8599;</Link>
+          <Link href="#artist-unite-application" className="btn btn-accent mt-6 flex justify-center text-center">Apply for Artist Unite <AnimatedButtonArrow /></Link>
         </div>
       </aside>
     </section>

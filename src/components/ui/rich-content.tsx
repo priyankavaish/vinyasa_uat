@@ -1,3 +1,4 @@
+import { buttonArrowMarkup } from "@/lib/button-arrow";
 import sanitizeHtml from "sanitize-html";
 
 /** Renders admin-authored HTML (blog posts, cottage/event detail bodies).
@@ -22,7 +23,8 @@ export default function RichContent({ html, className = "", eventActions = false
     allowedSchemes: ["https", "http", "mailto", "tel"],
     allowProtocolRelative: false,
   });
+  const rendered = eventActions ? clean.replace(/(<a\b[^>]*\bdata-btn[^>]*>)([\s\S]*?)(<\/a>)/gi, (_, open, body, close) => open + body.replace(/(?:\u2197|\u2192|&rarr;|&#8599;)/g, "").trim() + " " + buttonArrowMarkup + close) : clean;
   return (
-    <div className={`rich ${className}`} dangerouslySetInnerHTML={{ __html: clean }} />
+    <div className={`rich ${className}`} dangerouslySetInnerHTML={{ __html: rendered }} />
   );
 }
