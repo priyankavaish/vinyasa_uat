@@ -7,6 +7,9 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import { TextStyle, Color, FontFamily } from "@tiptap/extension-text-style";
 
+const ButtonLink = Link.extend({
+ addAttributes() { return {...this.parent?.(), "data-btn":{default:null}, "data-variant":{default:null}}; }
+});
 const COLORS = ["#2b2620", "#8f3b31", "#6b7a5e", "#6b7a9e", "#a06a2c", "#ffffff"];
 
 const Btn = ({
@@ -62,8 +65,8 @@ export default function RichEditor({
       TextStyle,
       Color,
       FontFamily,
-      Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: "noopener" } }),
-      Image.configure({ HTMLAttributes: { class: "rich-img" } }),
+      ButtonLink.configure({ openOnClick: false, autolink: true, HTMLAttributes: { rel: "noopener" } }),
+      Image.configure({ HTMLAttributes: { class: "rich-img" }, resize:{enabled:true,directions:["bottom-right"],minWidth:80,minHeight:40,alwaysPreserveAspectRatio:true} }),
     ],
     content: editorContent(value),
     editorProps: {
@@ -127,7 +130,7 @@ export default function RichEditor({
     editor
       .chain()
       .focus()
-      .insertContent({ type: "paragraph", content: [{ type: "text", text: label, marks: [{ type: "link", attrs: { href: url } }] }] })
+      .insertContent({ type: "paragraph", content: [{ type: "text", text: label, marks: [{ type: "link", attrs: { href: url, "data-btn":"true", "data-variant":"accent" } }] }] })
       .run();
   }, [editor]);
 
@@ -197,7 +200,7 @@ export default function RichEditor({
         <Btn on={addImage} title="Insert image">
           Image
         </Btn>
-        <Btn on={addButton} title="Insert call-to-action link">
+        <Btn on={addButton} title="Insert theme button">
           Call to action
         </Btn>
         </>}

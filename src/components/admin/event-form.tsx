@@ -1,3 +1,7 @@
+import EventContentFields from "./event-content-fields";
+import { getEditorial } from "@/lib/editorial/server";
+import { defaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
+import { eventEditorialKey, eventDetailValue } from "@/lib/editorial/event-details";
 import { saveEvent } from "@/lib/admin/actions";
 import ImageField from "@/components/admin/image-field";
 import RichEditorField from "@/components/admin/rich-editor-field";
@@ -6,9 +10,11 @@ import type { EventRow } from "@/lib/db/schema";
 const field = "mt-1.5 w-full border border-line bg-background px-3 py-2 text-sm outline-none focus:border-accent";
 const label = "block text-xs font-semibold uppercase tracking-[0.1em] text-foreground-soft";
 
-export default function EventForm({ event }: { event?: EventRow }) {
+export default async function EventForm({ event }: { event?: EventRow }) {
+  const details = event ? eventDetailValue(await getEditorial(eventEditorialKey, defaults), event.slug) : null;
+  const template = event ? eventDetailValue(defaults, event.slug) : null;
   return (
-    <form action={saveEvent} className="max-w-2xl space-y-5">
+    <form action={saveEvent} className="min-w-0 max-w-4xl space-y-5">
       {event && <input type="hidden" name="id" value={event.id} />}
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -18,7 +24,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
         </div>
         <div>
           <label className={label}>Slug</label>
-          <input name="slug" defaultValue={event?.slug} placeholder="auto from name" className={field} />
+          <input name="slug" readOnly={!!details} defaultValue={event?.slug} placeholder="auto from name" className={field} />
         </div>
         <div>
           <label className={label}>Kind</label>
@@ -62,7 +68,7 @@ export default function EventForm({ event }: { event?: EventRow }) {
 
       <ImageField name="imageUrl" label="Image" defaultValue={event?.imageUrl ?? ""} />
 
-      <RichEditorField name="bodyHtml" label="Detail page content" defaultValue={event?.bodyHtml ?? ""} />
+      {details ? <><input type="hidden" name="bodyHtml" value={event?.bodyHtml ?? ""} /><EventContentFields key={event?.slug} value={details} template={template} /></> : <RichEditorField name="bodyHtml" label="Detail page content" defaultValue={event?.bodyHtml ?? ""} />}
 
       <div className="flex gap-3">
         <button type="submit" className="btn btn-accent">Save event</button>

@@ -6,7 +6,7 @@ import sanitizeHtml from "sanitize-html";
  *  Uses sanitize-html (pure JS, htmlparser2) rather than isomorphic-dompurify:
  *  dompurify's jsdom dependency crashes at runtime on Vercel's serverless
  *  functions. */
-export default function RichContent({ html, className = "" }: { html: string; className?: string }) {
+export default function RichContent({ html, className = "", eventActions = false }: { html: string; className?: string; eventActions?: boolean }) {
   if (!html) return null;
   const clean = sanitizeHtml(html, {
     allowedTags: [
@@ -16,8 +16,9 @@ export default function RichContent({ html, className = "" }: { html: string; cl
     allowedAttributes: {
       "*": ["style", "class"],
       a: ["href", "title", "target", "rel", "data-btn", "data-variant"],
-      img: ["src", "alt", "title"],
+      img: ["src", "alt", "title", "width", "height"],
     },
+    transformTags: eventActions ? { a: (tagName, attribs) => ({tagName, attribs: {...attribs, ...(/(?:#(?:residency|artist-unite)-application|\/book(?:\?|$)|rzp\.io|\/contact(?:#|$))/.test(attribs.href || "") && !/^(mailto|tel):/.test(attribs.href || "") ? {"data-btn":"true","data-variant":"accent"} : {})}}) } : undefined,
     allowedSchemes: ["https", "http", "mailto", "tel"],
     allowProtocolRelative: false,
   });

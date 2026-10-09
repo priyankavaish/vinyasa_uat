@@ -995,3 +995,9 @@ label[for] {
 /* Inline CMS formatting keeps the existing section layout. */
 .formatted-text strong, .rich strong { font-weight: 700; }
 .formatted-text a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Responsive image resizing inside content editors and public event bodies. */
+.rich { overflow-wrap: anywhere; min-width: 0; }
+.rich a[data-btn] { max-width:100%; white-space:normal; text-align:center; justify-content:center; }
+.rich [data-resize-container], .rich [data-node-view-wrapper] { max-width:100%; }
+.rich [data-resize-handle] { width:16px; height:16px; background:var(--accent); border:2px solid white; }

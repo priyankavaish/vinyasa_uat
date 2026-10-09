@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "@/components/editorial/image";
+import EventContentImage from "./event-content-image";
 import FormattedText from "@/components/editorial/formatted-text";
 import RichContent from "@/components/ui/rich-content";
 import ResidencyApplicationForm from "@/components/forms/residency-application-form";
@@ -12,12 +12,12 @@ export default function ArtistUniteContent({ content }: { content: typeof artist
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={content.dateLabel} /></p>
         <p className="mt-2 text-sm leading-6 text-muted"><FormattedText value={content.timeLabel} /></p>
         <h2 className="mt-5 font-display text-4xl leading-tight sm:text-5xl">Live inside an artistic community.</h2>
-        <RichContent html={content.introductionHtml} className="mt-6 text-foreground-soft" />
+        <RichContent eventActions html={content.introductionHtml} className="mt-6 text-foreground-soft" />
         {content.sections.map((section, index) => <section key={index} className="mt-12 border-b border-line pb-10 last:border-0">
           <p className="text-xs font-semibold tracking-[0.2em] text-accent">{String(index + 1).padStart(2, "0")}</p>
           <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl"><FormattedText value={section.title} /></h2>
-          {section.image && <div className="relative mt-6 aspect-[16/9] overflow-hidden border border-line"><Image src={section.image} alt={section.imageAlt} fill sizes="(min-width:1024px) 700px, 100vw" className="object-cover" /></div>}
-          <RichContent html={section.bodyHtml} className="mt-6 text-foreground-soft [&_strong]:text-foreground" />
+          {section.image && <EventContentImage src={section.image} alt={section.imageAlt} width={section.imageWidth} />}
+          <RichContent eventActions html={section.bodyHtml} className="mt-6 text-foreground-soft [&_strong]:text-foreground" />
           {index === 3 && <Link href="#artist-unite-application" className="btn btn-accent mt-5">Apply for Artist Unite &#8599;</Link>}
         </section>)}
       </article>

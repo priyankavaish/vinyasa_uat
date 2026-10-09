@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "@/components/editorial/image";
+import EventContentImage from "./event-content-image";
 import FormattedText from "@/components/editorial/formatted-text";
 import RichContent from "@/components/ui/rich-content";
 import ResidencyApplicationForm from "@/components/forms/residency-application-form";
@@ -22,8 +22,8 @@ export default function ArtistResidencyContent({ content }: Props) {
         {content.sections.map((section, index) => <section key={index} className="mt-12 border-b border-line pb-10 last:border-0">
           <p className="text-xs font-semibold tracking-[0.2em] text-accent">{String(index + 1).padStart(2, "0")}</p>
           <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl"><FormattedText value={section.title} /></h2>
-          {section.image && <div className="relative mt-6 aspect-[16/9] overflow-hidden border border-line"><Image src={section.image} alt={section.imageAlt} fill sizes="(min-width:1024px) 700px, 100vw" className="object-cover" /></div>}
-          <RichContent html={section.bodyHtml} className="mt-6 text-foreground-soft [&_h3]:text-foreground [&_strong]:text-foreground" />
+          {section.image && <EventContentImage src={section.image} alt={section.imageAlt} width={section.imageWidth} />}
+          <RichContent eventActions html={section.bodyHtml} className="mt-6 text-foreground-soft [&_h3]:text-foreground [&_strong]:text-foreground" />
         </section>)}
       </article>
       <aside className="self-start lg:sticky lg:top-28">
@@ -40,7 +40,7 @@ export default function ArtistResidencyContent({ content }: Props) {
           <p className="mt-2"><FormattedText value={content.organizer.venue} /></p>
           <a href={`tel:${content.organizer.phone.replace(/[^+0-9]/g, "")}`} className="mt-3 block text-accent underline">{content.organizer.phone}</a>
           <a href={`mailto:${content.organizer.email}`} className="block break-words text-accent underline">{content.organizer.email}</a>
-          <a href={content.organizer.mapHref} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-accent underline">Get directions &#8599;</a>
+          <a href={content.organizer.mapHref} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-4">Get directions &#8599;</a>
         </div>
       </aside>
     </section>
