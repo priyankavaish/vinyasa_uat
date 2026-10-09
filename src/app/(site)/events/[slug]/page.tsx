@@ -1,3 +1,4 @@
+import SeasonalEventContent from "@/components/events/seasonal-event-content";
 
 import FormattedText from "@/components/editorial/formatted-text";
 import PaymentButton from "@/components/ui/payment-button";
@@ -10,6 +11,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Icon } from "@/components/ui/icon";
 import RichContent from "@/components/ui/rich-content";
+import ArtistUniteContent from "@/components/events/artist-unite-content";
+import ArtistResidencyContent from "@/components/events/artist-residency-content";
 import { getEvent, getEvents } from "@/lib/cms";
 
 export const revalidate = 300;
@@ -103,11 +106,11 @@ const EDITORIAL_EVENTS: Record<string, EditorialEvent> = {
   "artist-in-residence": {
     introTitle: "A slower way to let practice evolve.",
     intro: "The Vinyasa Artist-in-Residence Program is a four-month living and research opportunity for artists and practitioners who want to deepen their practice within a nature-led, community-oriented environment.",
-    context: "Two selected artists live, explore and create between June and September. This is not a retreat and not a production residency. It is a process-driven immersion in which practice can be questioned, documented and reshaped in dialogue with land, people and time.",
+    context: "Two selected artists live, explore and create between October and January. This is not a retreat and not a production residency. It is a process-driven immersion in which practice can be questioned, documented and reshaped in dialogue with land, people and time.",
     exploreTitle: "What the residency offers",
     explore: ["Four-month residential stay at Vinyasa Earth", "Dormitory accommodation and daily vegetarian meals", "Access to natural, architectural and community spaces", "Space for independent research and artistic inquiry", "Opportunity to host workshops, sessions or offerings", "A growing body of practice-led work for the Vinyasa Archive"],
     takeawayTitle: "What the application asks for",
-    takeaways: ["A clear research topic and central question", "Scope, methodology and proposed outcomes", "A tentative June-September timeline", "A plan for process documentation", "A willingness to offer consistent, accessible engagements to the community"],
+    takeaways: ["A clear research topic and central question", "Scope, methodology and proposed outcomes", "A tentative October-January timeline", "A plan for process documentation", "A willingness to offer consistent, accessible engagements to the community"],
     aboutTitle: "Research as practice.",
     about: "Residents are expected to develop their inquiry into a well-structured research document, with written reflections, process journals, visual documentation or practice-based findings. Artists retain authorship while contributing to Vinyasa's growing archive of knowledge.",
     cta: "Apply for the residency",
@@ -202,16 +205,25 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const image = event.image || content.EVENT_IMAGES[event.slug] || "/seed/grounds-06.jpg";
   const details = content.EVENT_DETAILS[event.slug];
   const priceLabel = event.priceFrom === 0 ? "By donation" : `₹${event.priceFrom.toLocaleString("en-IN")} + 18% GST`;
+  const seasonalEvent = content.SEASONAL_EVENTS[event.slug as keyof typeof content.SEASONAL_EVENTS];
+  const isArtistUnite = event.slug === "artist-unite";
+  const isArtistResidency = event.slug === "artist-in-residence";
   const isPauseWithin = event.slug === "the-pause-within";
   const editorialEvent = EDITORIAL_EVENTS[event.slug];
 
   return (
     <>
-      <PageHero framed={isPauseWithin || !!editorialEvent} eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
-        {(isPauseWithin || editorialEvent) && <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> <span aria-hidden>↗</span></PaymentButton>}
+      <PageHero framed={!!seasonalEvent || isPauseWithin || !!editorialEvent} eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
+        {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <span aria-hidden>&#8599;</span></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent">Apply for the residency <span aria-hidden>&#8599;</span></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent">Apply for Artist Unite <span aria-hidden>&#8599;</span></Link> : (isPauseWithin || editorialEvent) && <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> <span aria-hidden>↗</span></PaymentButton>}
       </PageHero>
 
-      {isPauseWithin ? (
+      {seasonalEvent ? (
+        <SeasonalEventContent content={seasonalEvent} />
+      ) : isArtistResidency ? (
+        <ArtistResidencyContent content={content.ARTIST_IN_RESIDENCE} />
+      ) : isArtistUnite ? (
+        <ArtistUniteContent content={content.ARTIST_UNITE} />
+      ) : isPauseWithin ? (
         <main className="bg-background">
           <section className="mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:pb-24 lg:pt-8">
             <div>

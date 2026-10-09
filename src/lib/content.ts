@@ -177,13 +177,13 @@ export const events: EventProgram[] = [
   {
     slug: "artist-in-residence",
     image: "/seed/community-05.jpg",
-    name: "Artist-in-Residence Program",
+    name: "Artist-in-Residence Program (October \u2013 Jan 2027)",
     kind: "residency",
-    durationLabel: "4 months · Jun–Sep",
-    dateLabel: "1 Jun – 30 Sep 2026",
+    durationLabel: "4 months - October to January",
+    dateLabel: "1 Oct 2026 - 31 Jan 2027",
     priceFrom: 0,
     description:
-      "A four-month immersive residency. Two selected artists live, explore, and create between June and September, engaging with the community-oriented, nature-led environment of the farm.",
+      "A four-month immersive residency. Two selected artists live, explore, and create between October and January, engaging with the community-oriented, nature-led environment of the farm.",
     placeholder: false,
   },
   {
@@ -236,6 +236,18 @@ export const events: EventProgram[] = [
       "Vinyasa Earth's annual gathering, unfolding around sunset — art, conversations, performances, music, and time among artists and creative professionals.",
     placeholder: false,
   },
+  {
+  "slug": "become-your-own-muse",
+  "image": "/seed/grounds-05.jpg",
+  "name": "Become Your Own Muse – Women’s Retreat",
+  "kind": "retreat",
+  "durationLabel": "27-30 November 2026",
+  "dateLabel": "27-30 Nov 2026",
+  "facilitator": "Shreya Dalela & Anangsha Alammyan",
+  "priceFrom": 9000,
+  "description": "A creative retreat for women, exploring self-expression through writing, painting, movement, nature and spoken word.",
+  "placeholder": false
+},
   {
     slug: "drishti-new-years-retreat",
     image: "/seed/grounds-08.jpg",

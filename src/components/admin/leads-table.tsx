@@ -5,7 +5,7 @@ import EnquiryReplyForm from "@/components/admin/enquiry-reply-form";
 import type {EnquiryReply} from "@/lib/enquiry-replies";
 import type { Lead } from "@/lib/store";
 
-const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape"] as const;
+const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape", "artist-residence", "artist-unite"] as const;
 
 export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; replies?: EnquiryReply[] }) {
   const [filter, setFilter] = useState<(typeof SOURCES)[number]>("all");

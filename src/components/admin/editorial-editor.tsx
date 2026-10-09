@@ -94,7 +94,7 @@ function Fields({ value, template, path, onChange }: { value: unknown; template:
       </div>
     );
   }
-  if (isEditorialTextField(path)) return <FormattedTextField name={path} label={human(path)} value={text} onChange={onChange} />;
+  if (isEditorialTextField(path)) return <FormattedTextField inline={!/\.(bodyHtml|introductionHtml)$/.test(path)} name={path} label={human(path)} value={text} onChange={onChange} />;
   return <label className="grid min-w-0 gap-2 break-words text-sm">{human(path)}<textarea name={path} data-field={path} className="w-full border border-line bg-white p-3 leading-relaxed" rows={text.length > 160 ? 4 : 2} value={text} onChange={e => onChange(e.target.value)} /></label>;
 }
 export default function EditorialEditor({ sections, initialSection }: { sections: Section[]; initialSection?: string }) {

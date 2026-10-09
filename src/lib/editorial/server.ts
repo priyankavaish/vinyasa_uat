@@ -47,6 +47,17 @@ export async function getEditorial<T>(key: string, defaults: T): Promise<T> {
     }
   }
   const value = mergeEditorial(baseline as T, await getContent(`editorial:${key}`));
+  // Bring previously saved residency copy onto the event's confirmed Oct-Jan period.
+  if (key === "app/(site)/events/[slug]/page" && value && typeof value === "object") {
+    const fields = value as Record<string, unknown>;
+    function period(node: unknown): unknown {
+      if (typeof node === "string") return node.replace(/1 June - 30 September 2026/g, "1 October 2026 - 31 January 2027").replace(/between June and September/g, "between October and January").replace(/June[\u2013-]September/g, "October\u2013January");
+      if (Array.isArray(node)) return node.map(period);
+      if (node && typeof node === "object") return Object.fromEntries(Object.entries(node).map(([name, entry]) => [name, period(entry)]));
+      return node;
+    }
+    if (fields.ARTIST_IN_RESIDENCE) fields.ARTIST_IN_RESIDENCE = period(fields.ARTIST_IN_RESIDENCE);
+  }
   // Replace the original heading even when an older version was saved in the CMS.
   if (key === "app/(site)/work-from-farm/page" && value && typeof value === "object") {
     const fields = value as Record<string, unknown>;
