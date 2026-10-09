@@ -118,6 +118,7 @@ export function PageHero({
   mobileImagePosition,
   contain = false,
   framed = false,
+  imageQuality = 80,
   children,
 }: {
   eyebrow: string;
@@ -129,6 +130,7 @@ export function PageHero({
   mobileImagePosition?: string;
   contain?: boolean;
   framed?: boolean;
+  imageQuality?: number;
   children?: ReactNode;
 }) {
   return (
@@ -136,11 +138,11 @@ export function PageHero({
       "--hero-position": imagePosition,
       "--hero-mobile-position": mobileImagePosition ?? imagePosition,
     } as CSSProperties}>
-      {image && (contain ? (
-        <Image src={image} alt={imageAlt} fill priority quality={80} sizes="100vw" className={heroStyles.imageContain} />
+      {image && (contain || framed ? (
+        <Image src={image} alt={imageAlt} fill priority quality={imageQuality} sizes={framed ? "(min-width: 1160px) 1120px, 100vw" : "100vw"} className={contain ? heroStyles.imageContain : heroStyles.image} />
       ) : (
         <ParallaxHeroImage>
-          <Image src={image} alt={imageAlt} fill priority quality={80} sizes="100vw" className={heroStyles.image} />
+          <Image src={image} alt={imageAlt} fill priority quality={imageQuality} sizes="100vw" className={heroStyles.image} />
         </ParallaxHeroImage>
       ))}
       <div className={heroStyles.overlay} aria-hidden="true" />

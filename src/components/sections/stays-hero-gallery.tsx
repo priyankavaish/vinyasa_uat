@@ -143,7 +143,7 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
               style={{ zIndex: Math.round(10 - Math.abs(d) * 3), "--offset": d * 100 + "%", "--scale": 1 - Math.min(Math.abs(d), 2) * .10, visibility: visible ? "visible" : "hidden" } as CSSProperties}>
               <span className={styles.imageLayer}><Image src={photo.src} alt={`${photo.name} at Vinyasa Earth`} fill
                 priority={index < 5} loading={index < 5 ? undefined : "eager"}
-                quality={80} sizes="(min-width: 640px) 1100px, 640px" className={styles.image} /></span>
+                quality={isEvents ? 95 : 80} sizes="(min-width: 640px) 1100px, 640px" className={styles.image} /></span>
               <span className={styles.caption}>
                 <span className={styles.captionMeta}>
                   <span><FormattedText value={isEvents ? photo.element || "Upcoming programme" : stayElementLabel(photo.element || "nature")} links={false} /></span>

@@ -2,9 +2,9 @@
 // (FUNCTION_PAYLOAD_TOO_LARGE), so downscale and re-encode large photos before
 // they are uploaded. Small files and animated GIFs pass through untouched.
 
-const MAX_DIMENSION = 2000;
+const MAX_DIMENSION = 3200;
 const TARGET_BYTES = 3.5 * 1024 * 1024;
-const PASSTHROUGH_BYTES = 1.5 * 1024 * 1024;
+const PASSTHROUGH_BYTES = 3.5 * 1024 * 1024;
 
 function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -32,12 +32,23 @@ export async function compressImage(file: File): Promise<File> {
     canvas.height = h;
     const ctx = canvas.getContext("2d");
     if (!ctx) return file;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
     ctx.drawImage(img, 0, 0, w, h);
 
-    let quality = 0.85;
+    let quality = 0.95;
     let blob = await toBlob(canvas, quality);
-    while (blob && blob.size > TARGET_BYTES && quality > 0.4) {
-      quality -= 0.15;
+    while (blob && blob.size > TARGET_BYTES && quality > 0.75) {
+      quality -= 0.05;
+      blob = await toBlob(canvas, quality);
+    }
+    // Keep detailed photos within the upload limit without dropping quality heavily.
+    for (let attempt = 0; blob && blob.size > TARGET_BYTES && attempt < 8; attempt++) {
+      canvas.width = Math.max(1, Math.round(canvas.width * 0.85));
+      canvas.height = Math.max(1, Math.round(canvas.height * 0.85));
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       blob = await toBlob(canvas, quality);
     }
     if (!blob || blob.size >= file.size) return file;

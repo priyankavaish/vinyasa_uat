@@ -38,7 +38,7 @@ async function cleanHtml(html: string) {
     allowedAttributes: {
       "*": ["style", "class"],
       a: ["href", "title", "target", "rel", "data-btn", "data-variant"],
-      img: ["src", "alt", "title"],
+      img: ["src", "alt", "title", "width", "height"],
     },
     allowedSchemes: ["https", "http", "mailto", "tel"],
     allowProtocolRelative: false,
@@ -154,6 +154,12 @@ export async function saveEvent(form: FormData) {
     published: form.get("published") === "on",
     updatedAt: new Date(),
   };
+  if (data.id && form.has("eventDetails")) {
+    const [original] = await db.select({slug:t.events.slug}).from(t.events).where(eq(t.events.id,data.id)).limit(1);
+    if (!original) throw new Error("Event not found");
+    const { saveEventDetails } = await import("@/lib/editorial/actions");
+    await saveEventDetails(original.slug, JSON.parse(String(form.get("eventDetails"))));
+  }
   if (data.id) {
     await db.update(t.events).set(values).where(eq(t.events.id, data.id));
   } else {

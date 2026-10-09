@@ -266,55 +266,55 @@ export const artistInResidence = {
       "title": "Who This Is For",
       "bodyHtml": "<p>We invite applications from individuals working across disciplines such as:</p>\n<ul>\n<li>Wellness Practitioners</li>\n\n\n\n<li>Yoga Artists / Movement Practitioners</li>\n\n\n\n<li>Cinematographers</li>\n\n\n\n<li>Photographers</li>\n\n\n\n<li>Permaculturist</li>\n</ul>\n<p>This residency is for those who are not only skilled in their craft but are also curious, self-driven, and willing to engage deeply with process over outcome.</p>\n",
       "image": "/seed/community-02.jpg",
-      "imageAlt": "Artists and community spaces at Vinyasa Earth"
+      "imageAlt": "Artists and community spaces at Vinyasa Earth", "imageWidth": 100
     },
     {
       "title": "What the Residency Offers",
       "bodyHtml": "<ul>\n<li>4-month residential stay at Vinyasa Earth</li>\n\n\n\n<li>Dormitory accommodation</li>\n\n\n\n<li>Vegetarian meals (daily)</li>\n\n\n\n<li>Access to Vinyasa’s natural, architectural, and community spaces</li>\n\n\n\n<li>Opportunity to earn through workshops, sessions, or offerings hosted at the space</li>\n\n\n\n<li>A supportive environment for independent research and artistic inquiry</li>\n</ul>\n",
       "image": "",
-      "imageAlt": ""
+      "imageAlt": "", "imageWidth": 100
     },
     {
       "title": "Residency Focus: Research-Led Practice",
       "bodyHtml": "<p>At the heart of this residency lies research as practice.</p>\n<p>Each artist is required to submit a detailed research proposal at the time of application. This proposal should clearly articulate:</p>\n<h3>1. Research Topic</h3>\n<ul>\n<li>What is the central question or inquiry?</li>\n\n\n\n<li>Why is this relevant to your practice and the current moment?</li>\n</ul>\n<h3>2. Scope &amp; Depth</h3>\n<ul>\n<li>What themes, mediums, or approaches will you explore?</li>\n\n\n\n<li>How will Vinyasa as a space influence or support this inquiry?</li>\n</ul>\n<h3>3. Methodology</h3>\n<ul>\n<li>How do you plan to conduct your research?</li>\n\n\n\n<li>(e.g., movement exploration, documentation, interviews, community engagement, site-based practice)</li>\n</ul>\n<h3>4. Process Documentation</h3>\n<ul>\n<li>How will you record or document your journey?</li>\n\n\n\n<li>(journals, video logs, photo essays, written reflections, etc.)</li>\n</ul>\n<h3>5. Proposed Outcomes</h3>\n<ul>\n<li>What form might the research take by the end?</li>\n\n\n\n<li>(open-ended sharing, installation, performance, film, written work, etc.)</li>\n</ul>\n<h3>6. Tentative Timeline (October–January)</h3>\n<p>A clear, month-wise or phase-wise breakdown including:</p>\n<ul>\n<li>Exploration phase</li>\n\n\n\n<li>Experimentation phase</li>\n\n\n\n<li>Consolidation phase</li>\n\n\n\n<li>Sharing / presentation phase</li>\n</ul>\n<p><a href=\"#residency-application\">Apply for the Residency &rarr;</a></p>\n",
       "image": "/seed/grounds-08.jpg",
-      "imageAlt": "Artists and community spaces at Vinyasa Earth"
+      "imageAlt": "Artists and community spaces at Vinyasa Earth", "imageWidth": 100
     },
     {
       "title": "Contribution to the Space",
       "bodyHtml": "<p>Residency at Vinyasa functions as a collaborative exchange, and contributions will be shaped based on the artist’s discipline, strengths, and the evolving needs of the space.</p>\n<p>While the exact nature of engagement will be discussed and mutually aligned over a call prior to final selection, a tentative framework is outlined below:</p>\n<ul>\n<li>Artists are expected to offer consistent, accessible engagements for the community.<br /><em>For example:</em> A yoga practitioner may offer a daily 30-minute open session, accessible to everyone present at Vinyasa.</li>\n\n\n\n<li>Additionally, artists will curate a deeper weekly or weekend offering, such as:\n<ul>\n<li>A 45–60 minute curated session</li>\n\n\n\n<li>A themed workshop or immersive practice</li>\n</ul>\n</li>\n\n\n\n<li>These offerings are intended to build rhythm, community participation, and shared experience within the space.</li>\n</ul>\n<h3>Independent Offerings &amp; Revenue Sharing</h3>\n<p>As the residency does not include a stipend, artists are encouraged to design and host their own paid offerings, such as:</p>\n<ul>\n<li>Workshops</li>\n\n\n\n<li>Masterclasses</li>\n\n\n\n<li>Private sessions</li>\n\n\n\n<li>Specialized experiences</li>\n</ul>\n<p>These will operate on a revenue-sharing model, with a 60–40 split (Artist–Vinyasa).</p>\n<p>This structure allows artists to sustain themselves financially while deepening their engagement with their practice and audience.</p>\n",
       "image": "/seed/community-06.jpg",
-      "imageAlt": "Artists and community spaces at Vinyasa Earth"
+      "imageAlt": "Artists and community spaces at Vinyasa Earth", "imageWidth": 100
     },
     {
       "title": "Research Documentation & Submission",
       "bodyHtml": "<p>The residency places strong emphasis on rigorous documentation and knowledge creation.</p>\n<p>Artists are required to:</p>\n<ul>\n<li>Develop their research into a well-structured white paper or research document</li>\n\n\n\n<li>Maintain consistent documentation throughout the residency period</li>\n\n\n\n<li>Submit their work in phases, aligned with their proposed timeline</li>\n</ul>\n<h3>Documentation may include:</h3>\n<ul>\n<li>Written reflections and analytical notes</li>\n\n\n\n<li>Process journals</li>\n\n\n\n<li>Visual documentation (photo/video)</li>\n\n\n\n<li>Interviews, observations, or community interactions</li>\n\n\n\n<li>Practice-based insights and findings</li>\n</ul>\n<h3>Final Submission Format</h3>\n<p>The final output must take the form of a comprehensive research document, clearly articulating:</p>\n<ul>\n<li>Research intent and context</li>\n\n\n\n<li>Methodology and process</li>\n\n\n\n<li>Key observations and learnings</li>\n\n\n\n<li>Evolution of practice</li>\n\n\n\n<li>Final outcomes or propositions</li>\n</ul>\n<p>This document will become part of the Vinyasa Archive, contributing to a growing body of practice-led research emerging from the space.</p>\n<p><a href=\"#residency-application\">Apply for the Residency &rarr;</a></p>\n",
       "image": "/seed/community-03.jpg",
-      "imageAlt": "Artists and community spaces at Vinyasa Earth"
+      "imageAlt": "Artists and community spaces at Vinyasa Earth", "imageWidth": 100
     },
     {
       "title": "Archiving & Knowledge Building",
       "bodyHtml": "<p>All research developed during the residency will become part of the Vinyasa Archive.</p>\n<p>This archive aims to:</p>\n<ul>\n<li>Build a growing body of practice-based knowledge</li>\n\n\n\n<li>Document diverse approaches to art, movement, and wellness</li>\n\n\n\n<li>Serve as a resource for future residents and collaborators</li>\n</ul>\n<p>Artists will retain authorship, while granting Vinyasa the right to document and share the work for archival, educational and institutional purposes.</p>\n",
       "image": "",
-      "imageAlt": ""
+      "imageAlt": "", "imageWidth": 100
     },
     {
       "title": "Application Process",
       "bodyHtml": "<p>The selection process is designed to understand both the depth of the artist’s practice and their alignment with the space.</p>\n<h3>Step 0: Start your application</h3>\n<p>Fill in the form to start your application below</p>\n<p><a href=\"#residency-application\">Apply for the Residency &rarr;</a></p>\n<h3>Step 1: Proposal Submission</h3>\n<p>Applicants are required to send a proposal via email to Vinyasa, including:</p>\n<ul>\n<li>Artist Statement</li>\n\n\n\n<li>Research Inquiry / Hypothesis</li>\n\n\n\n<li>Tentative Approach &amp; Methodology</li>\n\n\n\n<li>Timeline Projection of Research (October–January)</li>\n</ul>\n<p>The proposal should clearly communicate the intent, depth, and direction of the artist’s inquiry.</p>\n<h3>Step 2: Interview &amp; Dialogue</h3>\n<p>Shortlisted applicants will be invited for a conversation with the Vinyasa team. This interaction will focus on:</p>\n<ul>\n<li>Review of past work and practice</li>\n\n\n\n<li>Presentation and discussion of the proposed research</li>\n\n\n\n<li>Alignment on contributions to the space</li>\n\n\n\n<li>Understanding expectations from both the artist and Vinyasa</li>\n</ul>\n<h3>Step 3: Agreement &amp; Alignment</h3>\n<p>Selected artists will proceed with:</p>\n<ul>\n<li>Formalizing the residency through an agreement</li>\n\n\n\n<li>Aligning on roles, contributions, timelines, and shared expectations</li>\n</ul>\n",
       "image": "/seed/grounds-05.jpg",
-      "imageAlt": "Artists and community spaces at Vinyasa Earth"
+      "imageAlt": "Artists and community spaces at Vinyasa Earth", "imageWidth": 100
     },
     {
       "title": "Selection & Availability",
       "bodyHtml": "<ul>\n<li>Only 2 residency spots available</li>\n\n\n\n<li>Selection will be based on:\n<ul>\n<li>Depth and clarity of proposal</li>\n\n\n\n<li>Alignment with Vinyasa’s ethos</li>\n\n\n\n<li>Potential for meaningful engagement with the space</li>\n</ul>\n</li>\n</ul>\n",
       "image": "/seed/community-01.jpg",
-      "imageAlt": "Artists and community spaces at Vinyasa Earth"
+      "imageAlt": "Artists and community spaces at Vinyasa Earth", "imageWidth": 100
     },
     {
       "title": "Closing Note",
       "bodyHtml": "<p>This is not a retreat.<br />This is not a production residency.</p>\n<p>This is a slow, intentional, process-driven immersion — for those who wish to live their practice, question it, and allow it to evolve in dialogue with land, people, and time.</p>\n",
       "image": "",
-      "imageAlt": ""
+      "imageAlt": "", "imageWidth": 100
     }
   ],
   "application": {

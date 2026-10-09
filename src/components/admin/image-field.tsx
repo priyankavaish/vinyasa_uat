@@ -93,7 +93,7 @@ export default function ImageField({
         <div className="relative h-28 w-40 shrink-0 overflow-hidden rounded border border-line bg-[#f4efe6]">
           {isValidSrc(url) ? (
             <>
-              <Image src={url} alt="" fill sizes="160px" className="object-cover" />
+              <Image src={url} alt="" fill sizes="160px" className="object-contain" />
               <button
                 type="button"
                 onClick={() => setUrl("")}

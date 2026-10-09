@@ -2,6 +2,9 @@
 import { cookies } from "next/headers";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { getDb } from "@/lib/db";
+import { sql } from "drizzle-orm";
+import { eventDetailScope, eventDetailValue, eventEditorialKey } from "./event-details";
+import { defaults as eventDefaults } from "./defaults/app__site__events__slug__page";
 import { siteContent } from "@/lib/db/schema";
 import { SESSION_COOKIE, isValidSessionToken } from "@/lib/auth";
 import { editorialCatalog } from "./catalog";
@@ -39,4 +42,16 @@ export async function saveEditorial(key: string, value: unknown) {
   }
   revalidateTag("content");
   revalidatePath("/", "layout");
+}
+
+export async function saveEventDetails(slug: string, value: unknown) {
+ const token = (await cookies()).get(SESSION_COOKIE)?.value;
+ if (!await isValidSessionToken(token)) throw new Error("Unauthorized");
+ const scope = eventDetailScope(slug); if (!scope) throw new Error("Unknown event content");
+ if (JSON.stringify(value).length > 600000) throw new Error("Event content is too large.");
+ validate(value,eventDetailValue(eventDefaults,slug));
+ const patch = scope.child ? {[scope.key]:{[scope.child]:value}} : {[scope.key]:value};
+ const merged = scope.child ? sql`${siteContent.value} || jsonb_build_object(${scope.key}::text, COALESCE(${siteContent.value}->${scope.key}, '{}'::jsonb) || ${JSON.stringify({[scope.child]:value})}::jsonb)` : sql`${siteContent.value} || ${JSON.stringify(patch)}::jsonb`;
+ await getDb().insert(siteContent).values({key:"editorial:"+eventEditorialKey,value:patch,updatedAt:new Date()}).onConflictDoUpdate({target:siteContent.key,set:{value:merged,updatedAt:new Date()}});
+ revalidateTag("content"); revalidatePath("/events/"+slug); revalidatePath("/admin/events");
 }

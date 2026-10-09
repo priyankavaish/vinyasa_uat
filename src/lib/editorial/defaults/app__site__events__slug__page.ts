@@ -1,3 +1,4 @@
+import { PAUSE_WITHIN_CONTENT, EDITORIAL_EVENTS } from "./event-stories";
 import { seasonalEvents } from "./seasonal-events";
 import { artistUnite } from "./artist-unite";
 import { artistInResidence } from "./artist-in-residence";
@@ -52,6 +53,8 @@ const EVENT_DETAILS: Record<string, { heading: string; paragraphs: string[]; hig
 
 
 export const defaults = {
+"PAUSE_WITHIN_CONTENT": PAUSE_WITHIN_CONTENT,
+"EDITORIAL_EVENTS": EDITORIAL_EVENTS,
 "SEASONAL_EVENTS": seasonalEvents,
 "ARTIST_IN_RESIDENCE": artistInResidence,
 "ARTIST_UNITE": artistUnite,
