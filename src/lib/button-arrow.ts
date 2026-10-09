@@ -1,0 +1,3 @@
+// The same Ionicons arrow-forward-outline geometry used by the Stays CTA.
+// Trusted markup appended after sanitising admin-authored button content.
+export const buttonArrowMarkup = '<span aria-hidden="true" class="arrow-nudge relative top-px inline-flex shrink-0 items-center leading-none"><svg width="16" height="16" viewBox="0 0 512 512" aria-hidden="true"><polyline points="268 112 412 256 268 400" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"></polyline><line x1="392" y1="256" x2="100" y2="256" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"></line></svg></span>';

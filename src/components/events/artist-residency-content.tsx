@@ -1,3 +1,4 @@
+import AnimatedButtonArrow from "@/components/ui/animated-button-arrow";
 import Link from "next/link";
 import EventContentImage from "./event-content-image";
 import FormattedText from "@/components/editorial/formatted-text";
@@ -32,7 +33,7 @@ export default function ArtistResidencyContent({ content }: Props) {
           <h2 className="mt-4 font-display text-3xl leading-tight">Make room for your practice.</h2>
           <p className="mt-4 text-sm leading-7 text-foreground-soft">Four months of community living, independent research and artistic inquiry. Only two residency spots are available.</p>
           <p className="mt-5 border-y border-line py-4 text-sm leading-7 text-foreground-soft">Dormitory accommodation and daily vegetarian meals included. No stipend; independent paid offerings follow a 60&ndash;40 Artist&ndash;Vinyasa revenue split.</p>
-          <Link href="#residency-application" className="btn btn-accent mt-6 flex justify-center text-center">Apply for the residency <span aria-hidden className="ml-2">&#8599;</span></Link>
+          <Link href="#residency-application" className="btn btn-accent mt-6 flex justify-center text-center">Apply for the residency <AnimatedButtonArrow /></Link>
           <p className="mt-5 text-xs leading-6 text-muted">Send your research proposal to <a href={`mailto:${content.organizer.email}`} className="break-words text-accent underline">{content.organizer.email}</a>.</p>
         </div>
         <div className="mt-5 border border-line p-6 text-sm leading-7 text-foreground-soft">
@@ -40,7 +41,7 @@ export default function ArtistResidencyContent({ content }: Props) {
           <p className="mt-2"><FormattedText value={content.organizer.venue} /></p>
           <a href={`tel:${content.organizer.phone.replace(/[^+0-9]/g, "")}`} className="mt-3 block text-accent underline">{content.organizer.phone}</a>
           <a href={`mailto:${content.organizer.email}`} className="block break-words text-accent underline">{content.organizer.email}</a>
-          <a href={content.organizer.mapHref} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-4">Get directions &#8599;</a>
+          <a href={content.organizer.mapHref} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-4">Get directions <AnimatedButtonArrow /></a>
         </div>
       </aside>
     </section>

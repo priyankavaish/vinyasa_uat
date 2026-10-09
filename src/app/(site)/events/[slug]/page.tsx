@@ -1,3 +1,4 @@
+import AnimatedButtonArrow from "@/components/ui/animated-button-arrow";
 import SeasonalEventContent from "@/components/events/seasonal-event-content";
 
 import FormattedText from "@/components/editorial/formatted-text";
@@ -99,7 +100,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   return (
     <>
       <PageHero imageQuality={95} framed={!!seasonalEvent || isPauseWithin || !!editorialEvent} eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
-        {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <span aria-hidden>&#8599;</span></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent">Apply for the residency <span aria-hidden>&#8599;</span></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent">Apply for Artist Unite <span aria-hidden>&#8599;</span></Link> : (isPauseWithin || editorialEvent) && <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> <span aria-hidden>↗</span></PaymentButton>}
+        {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent">Apply for the residency <AnimatedButtonArrow /></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent">Apply for Artist Unite <AnimatedButtonArrow /></Link> : (isPauseWithin || editorialEvent) && <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> </PaymentButton>}
       </PageHero>
 
       {seasonalEvent ? (
@@ -154,7 +155,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <div className="mt-7 divide-y divide-line">
                   {PAUSE_WITHIN_CONTENT.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold"><FormattedText value={pass.name} /></h3><span className="shrink-0 text-sm font-semibold text-accent"><FormattedText value={pass.price.replace(/\s*\+\s*GST$/i, "")} /> + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft"><FormattedText value={pass.detail} /></p></div>)}
                 </div>
-                <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center">Reserve your place <span aria-hidden>↗</span></PaymentButton>
+                <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center">Reserve your place </PaymentButton>
               </div>
               <p className="mt-4 text-center text-xs leading-5 text-muted">Part of The Collective Body, Vinyasa Earth's Artist-in-Residence programme.</p>
             </aside>
@@ -204,7 +205,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={editorialEvent.passes ? "Ways to join" : "Make space for it"} /></p>
                 <p className="mt-3 text-sm leading-6 text-foreground-soft"><FormattedText value={event.description} /></p>
                 {editorialEvent.passes ? <div className="mt-7 divide-y divide-line">{editorialEvent.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold"><FormattedText value={pass.name} /></h3><span className="shrink-0 text-sm font-semibold text-accent"><FormattedText value={pass.price.replace(/\s*\+\s*GST$/i, "")} /> + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft"><FormattedText value={pass.detail} /></p></div>)}</div> : <p className="mt-7 border-y border-line py-5 text-2xl font-semibold"><FormattedText value={priceLabel} /></p>}
-                <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center"><FormattedText value={editorialEvent.cta} links={false} /> <span aria-hidden>↗</span></PaymentButton>
+                <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center"><FormattedText value={editorialEvent.cta} links={false} /> </PaymentButton>
               </div>
               <p className="mt-4 text-center text-xs leading-5 text-muted">Vinyasa Earth, Jaipur</p>
             </aside>
@@ -238,7 +239,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <span><FormattedText value={content.text_5} /></span>
               </div>
             </dl>
-                        {event.bodyHtml ? <RichContent html={event.bodyHtml} className="mt-8" /> : details && (
+                        {event.bodyHtml ? <RichContent eventActions html={event.bodyHtml} className="mt-8" /> : details && (
               <div className="mt-10 border-t border-line pt-8">
                 <h2 className="font-display italic text-3xl"><FormattedText value={details.heading} /></h2>
                 {details.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 leading-7 text-foreground-soft"><FormattedText value={paragraph} /></p>)}
@@ -252,7 +253,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           <div className="border border-line bg-surface p-6">
             <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_7} /></p>
             <p className="mt-1 font-sans text-3xl font-bold tracking-tight tabular-nums"><FormattedText value={priceLabel} /></p>
-            <PaymentButton target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-5 block text-center"><FormattedText value={content.text_8} links={false} /></PaymentButton>
+            <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-5 block text-center"><FormattedText value={content.text_8} links={false} /></PaymentButton>
           </div>
         </div>
       </section>
