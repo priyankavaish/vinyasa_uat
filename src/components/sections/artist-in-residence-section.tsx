@@ -25,7 +25,9 @@ export default async function ArtistInResidenceSection() {
             <h2 className="mt-3 font-display text-4xl italic leading-tight sm:text-5xl">Artist in Residence</h2>
             <p className="mt-5 text-lg leading-8 text-foreground-soft">Live with a question. Give your practice time to unfold.</p>
             <p className="mt-5 border-y border-line py-4 text-xs font-semibold uppercase tracking-[0.13em] text-accent">{residency?.durationLabel ?? info.durationLabel} &middot; {info.placesValue}</p>
-            <div className="mt-6 flex flex-wrap gap-3"><a href="/events/artist-in-residence" className="btn btn-accent">Explore the residency</a><a href="/events/artist-in-residence#residency-application" className="btn btn-accent">{info.applyCta}</a></div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {/* <a href="/events/artist-in-residence" className="btn btn-accent">Explore the residency</a> */}
+            <a href="/events/artist-in-residence#residency-application" className="btn btn-accent">{info.applyCta}</a></div>
           </Reveal>
           <Reveal variant="right" className="relative aspect-[4/3] overflow-hidden rounded-tl-[3rem] rounded-br-[3rem]">
             <Image src={livingImage} alt="Reading in Vinyasa's bamboo dorm accommodation" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />

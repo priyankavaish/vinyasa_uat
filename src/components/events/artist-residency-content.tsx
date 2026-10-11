@@ -1,5 +1,6 @@
 import AnimatedButtonArrow from "@/components/ui/animated-button-arrow";
 import Link from "next/link";
+import HashScroll from "@/components/ui/hash-scroll";
 import EventContentImage from "./event-content-image";
 import FormattedText from "@/components/editorial/formatted-text";
 import RichContent from "@/components/ui/rich-content";
@@ -8,7 +9,7 @@ import type { artistInResidence } from "@/lib/editorial/defaults/artist-in-resid
 
 type Props = { content: typeof artistInResidence };
 export default function ArtistResidencyContent({ content }: Props) {
-  return <main className="bg-background">
+  return <main className="bg-background"><HashScroll />
     <section className="mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16 lg:pt-8">
       <article className="min-w-0">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={content.dateLabel} /></p>
