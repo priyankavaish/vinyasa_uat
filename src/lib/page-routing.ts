@@ -3,7 +3,7 @@ export const ROUTING_KEY = "page-routing";
 export const routablePages = managedPages.filter(p => p.path.startsWith("/") && !p.path.includes("["));
 export type PageSettings = { title: string; path: string; menuLabel: string; menuHref: string; aliases: string[] };
 export type PageSettingsMap = Record<string, PageSettings>;
-export const reservedPaths = ["/admin", "/api", "/_next", "/media", "/corporate", "/icon", "/apple-icon", "/opengraph-image", "/robots", "/sitemap", "/manifest", "/favicon"];
+export const reservedPaths = ["/admin", "/api", "/_next", "/media", "/corporate", "/icon", "/icon.png", "/apple-icon", "/apple-icon.png", "/opengraph-image", "/robots", "/sitemap", "/manifest", "/favicon"];
 export function normalisePagePath(input: string): string {
   const path = "/" + input.trim().replace(/^\/+|\/+$/g, "");
   if (path !== "/" && !/^\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(path)) throw new Error("Use a simple URL such as /our-story: lowercase letters, numbers and hyphens.");
