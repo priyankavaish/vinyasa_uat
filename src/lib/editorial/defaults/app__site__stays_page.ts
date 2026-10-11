@@ -99,5 +99,10 @@ seo: {
 "text_24": "You don't have to stay the night",
 "text_25": "Accessory partners",
 "text_26": "Brands that align with how we build",
-"text_27": "The makers we turn to for the textiles and rugs that dress a Vinyasa room."
+"text_27": "The makers we turn to for the textiles and rugs that dress a Vinyasa room.",
+"visitEyebrow": "Unleash the Power of creation",
+"visitHeading": "A space where the energy of creating art is the most sacred. Be it ours or yours.",
+"visitText": "Want to practice self care in our studio, have a performance at the amphitheater or connect with your group?",
+"visitCtaLabel": "Connect with us",
+"visitCtaHref": "/contact"
 };
