@@ -1,3 +1,4 @@
+import { defaults as dPaymentReturn } from "./defaults/components_layout_payment_return_dialog";
 import { defaults as whatsappDefaults } from "./defaults/whatsapp";
 import { defaults as homeDefaults } from "./defaults/app__site__page";
 import { defaults as d0 } from "./defaults/app__site__about_page";
@@ -74,5 +75,6 @@ export const editorialCatalog = {
 "components/layout/site-footer": d31,
 "components/layout/site-header": d32,
 "components/forms/booking-form": d33,
-"components/forms/lead-form": d34
+"components/forms/lead-form": d34,
+"components/layout/payment-return-dialog": dPaymentReturn
 };

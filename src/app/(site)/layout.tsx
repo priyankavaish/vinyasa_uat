@@ -5,6 +5,7 @@ import { getPageSettings } from "@/lib/page-routing-store";
 import SectionMotion from "@/components/layout/section-motion";
 import SiteHeader from "@/components/layout/site-header";
 import SiteFooter from "@/components/layout/site-footer";
+import PaymentReturnDialog from "@/components/layout/payment-return-dialog";
 import WhatsappButton from "@/components/ui/whatsapp-button";
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
@@ -15,6 +16,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       <SectionMotion>{children}</SectionMotion>
       <SiteFooter />
       <WhatsappButton />
+      <PaymentReturnDialog />
     </EditorialProvider>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, type ReactNode } from "react";
 
-export default function SuccessDialog({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
+export default function SuccessDialog({ open, onClose, children, closeLabel = "Close" }: { open: boolean; onClose: () => void; children: ReactNode; closeLabel?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const dlg = ref.current;
@@ -17,7 +17,7 @@ export default function SuccessDialog({ open, onClose, children }: { open: boole
   >
     <div role="status" className="p-7 text-center sm:p-9">
       {children}
-      <button type="button" onClick={onClose} className="btn btn-accent mt-6">Close</button>
+      <button type="button" onClick={onClose} className="btn btn-accent mt-6">{closeLabel}</button>
     </div>
   </dialog>;
 }

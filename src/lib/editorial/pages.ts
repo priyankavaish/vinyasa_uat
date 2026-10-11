@@ -16,7 +16,7 @@ export const managedPages: ManagedPage[] = [
   { id: "blogs", title: "Blogs", path: "/blogs", sections: [page("blogs")] },
   { id: "useful-links", title: "Useful Links", path: "/useful-links", sections: [page("useful-links"), "app/(site)/useful-links/copy-field"] },
   { id: "stay-template", title: "Stay details - shared text", path: "/stays/[slug]", sections: [page("stays/[slug]"), section("stay-gallery")] },
-  { id: "shared", title: "Header, Footer & WhatsApp", path: "All pages", sections: ["components/layout/site-header", "components/layout/site-footer", "shared/whatsapp"] },
+  { id: "shared", title: "Header, Footer & WhatsApp", path: "All pages", sections: ["components/layout/site-header", "components/layout/site-footer", "shared/whatsapp", "components/layout/payment-return-dialog"] },
 ];
 export function sectionLabel(key: string) {
   if (key in SECTION_TITLES) return SECTION_TITLES[key];
@@ -31,6 +31,7 @@ export function sectionHint(key: string): string | undefined {
 // Friendlier names for sections whose raw component name (e.g.
 // "cottages-interactive") wouldn't mean much to someone editing content.
 const SECTION_TITLES: Record<string, string> = {
+  "components/layout/payment-return-dialog": "Payment success popup",
   "components/sections/hero": "Top banner (video + headline)",
   "components/sections/next-event-ribbon": "\"Next event\" strip",
   "components/sections/cottages-interactive": "Stays showcase",
