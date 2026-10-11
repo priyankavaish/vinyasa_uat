@@ -37,8 +37,9 @@ export const leadSchema = z.object({
   country: z.string().trim().max(100).optional(),
   researchInquiry: z.string().trim().max(4000, "Please keep your research enquiry under 4,001 characters.").optional(),
   volunteeringDates: z.array(z.string().date("Please select a valid volunteering date.")).optional(),
+  whatsapp: z.string().trim().max(20, "Please enter a WhatsApp number with no more than 20 characters.").regex(/^[0-9+\-\s()]*$/, "Please enter a valid WhatsApp number.").optional().or(z.literal("")),
   programType: z.string().trim().max(100).optional(),
-  volunteeringType: z.enum(["Community Volunteering", "Skill Based (under 2 months)", "Skill Based (2+ Months)"], { errorMap: () => ({ message: "Please select a volunteering type." }) }).optional().or(z.literal("")),
+  volunteeringType: z.string().trim().max(100).optional().or(z.literal("")),
 }).superRefine((data, ctx) => {
   const required = (path: string, message: string) => ctx.addIssue({ code: z.ZodIssueCode.custom, path: [path], message });
   if (data.name.length < 2) {

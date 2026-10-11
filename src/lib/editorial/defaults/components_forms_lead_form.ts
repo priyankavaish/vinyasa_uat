@@ -17,6 +17,10 @@ export const defaults = {
 "text_6": "Phone (optional)",
 "text_7": "Message",
 "text_8": "Sending…",
+"volunteeringTypeLabel": "Volunteering Type",
+"volunteeringTypePlaceholder": "Select volunteering type",
+"volunteeringTypes": ["Community Volunteering", "Skill based (under 2 months)", "Skill based (2+ months)"],
+"whatsappLabel": "WhatsApp number (optional)",
 "volunteerSuccessTitle": "Thank you, application received.",
 "volunteerSuccessMessage": "The Vinyasa team will review your application and get in touch. Submitting the form does not confirm a place.",
 "closeLabel": "Close"
