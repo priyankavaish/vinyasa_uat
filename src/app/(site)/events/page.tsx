@@ -37,7 +37,6 @@ const EVENT_DISPLAY: Record<string, { name: string; date: string; duration: stri
   "artist-unite": { name: "Artist Unite - A Residency of Self Creation", date: "15-24 Oct 2026", duration: "10 days", description: "An intensive residency on collaborative artistic practice and a chance to experience how other artists work.", image: "/seed/community-06.jpg" },
   zariya: { name: "Zariya - Connecting Creators", date: "24 Oct 2026", duration: "One day - 4:00 to 11:00 pm", description: "Vinyasa Earth's annual sunset gathering of art, conversations, performances, music and creative people.", image: "/seed/community-01.jpg" },
   "drishti-new-years-retreat": { name: "Drishti - New Year's Retreat", date: "29 Dec 2026 - 1 Jan 2027", duration: "3 days", description: "Step away from the noise, reflect on the year that has been and make grounded space for the one ahead.", image: "/seed/grounds-05.jpg" },
-  "performing-lab-retreat": { name: "Performing Lab Retreat", date: "17-22 Jan 2027", duration: "5 days", facilitator: "Sukh Ahlstrom", description: "A five-day intensive in physical theatre, Kalaripayattu and movement for performers and creative explorers.", image: "/seed/community-03.jpg" },
 };
 
 function priceText(from: number) {

@@ -260,19 +260,6 @@ export const events: EventProgram[] = [
       "Step away from the noise, look back at the year that has been, and make space for the one about to begin.",
     placeholder: false,
   },
-  {
-    slug: "performing-lab-retreat",
-    image: "/seed/community-06.jpg",
-    name: "Performing Lab Retreat",
-    kind: "retreat",
-    durationLabel: "5 days",
-    dateLabel: "17–22 Jan 2027",
-    facilitator: "Sukh Ahlström",
-    priceFrom: 24475,
-    description:
-      "A five-day intensive for performers, dancers, actors, and creative explorers — physical theatre, Kalaripayattu, and movement led by theatre practitioner Sukh Ahlström.",
-    placeholder: false,
-  },
 ];
 
 export type GalleryPost = {

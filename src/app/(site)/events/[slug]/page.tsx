@@ -25,7 +25,6 @@ const EVENT_IMAGES: Record<string, string> = {
   "artist-unite": "/seed/community-06.jpg",
   zariya: "/seed/community-01.jpg",
   "drishti-new-years-retreat": "/seed/grounds-05.jpg",
-  "performing-lab-retreat": "/seed/community-03.jpg",
 };
 const EVENT_DETAILS: Record<string, { heading: string; paragraphs: string[]; highlights: string[] }> = {
   "artist-in-residence": {
@@ -57,11 +56,6 @@ const EVENT_DETAILS: Record<string, { heading: string; paragraphs: string[]; hig
     heading: "See the year with fresh eyes",
     paragraphs: ["Step away from the noise, look back at the year that has been and make grounded space for the one about to begin.", "Days follow the slower rhythm of the farm through shared practice, nourishing meals, reflection, movement and conversations around the fire."],
     highlights: ["Guided year-end reflection", "Movement and grounding", "Community meals", "A gentle New Year's celebration"],
-  },
-  "performing-lab-retreat": {
-    heading: "A five-day performing lab",
-    paragraphs: ["A physical intensive for performers, dancers, actors and creative explorers led by theatre practitioner Sukh AhlstrÃ¶m.", "Train, experiment and reconnect with the body as an expressive instrument through physical theatre, Kalaripayattu and movement."],
-    highlights: ["Daily physical training", "Improvisation and ensemble work", "Movement research", "Reflection and sharing"],
   },
 };
 

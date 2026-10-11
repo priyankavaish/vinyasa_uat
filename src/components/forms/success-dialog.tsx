@@ -15,9 +15,9 @@ export default function SuccessDialog({ open, onClose, children, closeLabel = "C
     onClick={(e) => { if (e.target === ref.current) onClose(); }}
     className="m-auto w-[min(92vw,30rem)] border border-line bg-surface p-0 text-foreground shadow-[0_40px_100px_-30px_rgba(35,25,15,0.5)] backdrop:bg-black/55 backdrop:backdrop-blur-sm"
   >
-    <div role="status" className="p-7 text-center sm:p-9">
+    {open && <div role="status" className="p-7 text-center sm:p-9">
       {children}
       <button type="button" onClick={onClose} className="btn btn-accent mt-6">{closeLabel}</button>
-    </div>
+    </div>}
   </dialog>;
 }
