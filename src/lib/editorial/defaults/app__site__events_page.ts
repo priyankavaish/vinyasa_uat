@@ -36,5 +36,22 @@ seo: {
 "text_7": "The 2026-27 calendar",
 "text_8": "Every gathering, closest first — add the ones you want straight to your Google Calendar, or open the full programme.",
 "text_9": "Add to calendar",
-"text_10": "Details"
+"text_10": "Details",
+"organizerEyebrow": "Host with us",
+"organizerTitle": "Want to organize your program or event?",
+"organizerText": "Vinyasa Earth is open to organizers, artists, event planners and businesses who wish to host a mindful program, event or workshop. Let's brew something interesting together.",
+"organizerNameLabel": "Name",
+"organizerProgramTypeLabel": "Program Type",
+"organizerProgramTypePlaceholder": "Select program type",
+"organizerProgramTypes": ["Workshop", "Event", "Offsite", "Retreat"],
+"organizerEmailLabel": "Email",
+"organizerPhoneLabel": "Phone",
+"organizerSubmitLabel": "Get the Deck",
+"organizerSendingLabel": "Sending...",
+"organizerSuccessTitle": "Thank you, we have your enquiry.",
+"organizerSuccessMessage": "The Vinyasa team will get in touch with you shortly. For anything urgent, write to vinyasa.ashram@gmail.com.",
+"organizerDeckUrl": "",
+"organizerDeckLabel": "Download the Organizer's Deck",
+"organizerCloseLabel": "Close",
+"hostCtaLabel": "Host Your Own"
 };

@@ -19,7 +19,7 @@ export const bookingRequestSchema = z.object({
 export type BookingRequest = z.infer<typeof bookingRequestSchema>;
 
 export const leadSchema = z.object({
-  source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape", "artist-residence", "artist-unite"]),
+  source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape", "artist-residence", "artist-unite", "organizer"]),
   name: z.string({ required_error: "Please enter your name.", invalid_type_error: "Please enter your name." }).trim().max(121, "Please keep your name under 122 characters."),
   email: z.string({ required_error: "Please enter your email address.", invalid_type_error: "Please enter a valid email address." }).trim().min(1, "Please enter your email address.").email("Please enter a valid email address, like name@example.com.").max(150, "Please keep your email address under 151 characters."),
   phone: z
@@ -37,6 +37,7 @@ export const leadSchema = z.object({
   country: z.string().trim().max(100).optional(),
   researchInquiry: z.string().trim().max(4000, "Please keep your research enquiry under 4,001 characters.").optional(),
   volunteeringDates: z.array(z.string().date("Please select a valid volunteering date.")).optional(),
+  programType: z.string().trim().max(100).optional(),
   volunteeringType: z.enum(["Community Volunteering", "Skill Based (under 2 months)", "Skill Based (2+ Months)"], { errorMap: () => ({ message: "Please select a volunteering type." }) }).optional().or(z.literal("")),
 }).superRefine((data, ctx) => {
   const required = (path: string, message: string) => ctx.addIssue({ code: z.ZodIssueCode.custom, path: [path], message });
@@ -52,6 +53,10 @@ export const leadSchema = z.object({
     if (data.source === "artist-unite" && !data.lastName) required("lastName", "Please enter your last name.");
     if (data.source === "artist-residence" && !data.country) required("country", "Please select your country.");
     if (data.source === "artist-residence" && !data.researchInquiry) required("researchInquiry", "Please briefly describe your research or enquiry.");
+  }
+  if (data.source === "organizer") {
+    if (!data.programType) required("programType", "Please select a program type.");
+    if (!data.phone || data.phone.replace(/[^0-9]/g, "").length < 7) required("phone", "Please enter a valid phone number.");
   }
   if (data.source === "volunteer") {
     if (!data.lastName) required("lastName", "Please enter your last name.");
