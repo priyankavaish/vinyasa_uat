@@ -16,7 +16,6 @@ export const managedPages: ManagedPage[] = [
   { id: "blogs", title: "Blogs", path: "/blogs", sections: [page("blogs")] },
   { id: "useful-links", title: "Useful Links", path: "/useful-links", sections: [page("useful-links"), "app/(site)/useful-links/copy-field"] },
   { id: "stay-template", title: "Stay details - shared text", path: "/stays/[slug]", sections: [page("stays/[slug]"), section("stay-gallery")] },
-  { id: "event-template", title: "Event details - shared text", path: "/events/[slug]", sections: [page("events/[slug]")] },
   { id: "shared", title: "Header, Footer & WhatsApp", path: "All pages", sections: ["components/layout/site-header", "components/layout/site-footer", "shared/whatsapp"] },
 ];
 export function sectionLabel(key: string) {

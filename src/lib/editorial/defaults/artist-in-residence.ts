@@ -254,6 +254,7 @@ export const residencyCountries = [
 
 export const artistInResidence = {
   "eyebrow": "Artist-in-Residence Program",
+  "heading": "An immersive, research-led residency",
   "dateLabel": "1 October 2026 - 31 January 2027",
   "durationLabel": "4 months",
   "timeLabel": "Starts 1 October 2026 at 12:00 pm; ends 31 January 2027 at 1:00 pm.",

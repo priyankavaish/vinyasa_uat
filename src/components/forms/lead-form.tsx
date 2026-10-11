@@ -8,6 +8,7 @@ import { useEditorial } from "@/components/editorial/provider";
 import MultiDateCalendar from "./multi-date-calendar";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import SuccessDialog from "./success-dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { leadSchema, type LeadRequest } from "@/lib/schemas";
 
@@ -63,21 +64,12 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
     }
   }
 
-  if (status === "success") {
-    return (
-      <div className="border border-line bg-surface p-8 text-center">
-        <p className="font-display italic text-2xl"><FormattedText value={content.text_1} /></p>
-        <p className="mt-2 text-sm text-foreground-soft"><FormattedText value={content.text_2} /></p>
-        <button
-          type="button"
-          className="mt-5 text-xs tracking-[0.08em] uppercase text-accent underline"
-          onClick={() => setStatus("idle")}
-        ><FormattedText value={content.text_3} links={false} /></button>
-      </div>
-    );
-  }
-
   return (
+    <>
+    <SuccessDialog open={status === "success"} onClose={() => setStatus("idle")}>
+      <p className="font-display italic text-2xl"><FormattedText value={content.text_1} /></p>
+      <p className="mt-2 text-sm text-foreground-soft"><FormattedText value={content.text_2} /></p>
+    </SuccessDialog>
     <form onSubmit={handleSubmit(onSubmit)} className={compact ? "space-y-3" : "space-y-4"} noValidate>
       <h3 className="font-display italic text-xl"><FormattedText value={title} /></h3>
 
@@ -172,5 +164,6 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
         <FormattedText value={status === "submitting" ? content.text_8 : submitLabel} links={false} />
       </button>
     </form>
+    </>
   );
 }

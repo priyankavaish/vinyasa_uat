@@ -13,7 +13,7 @@ export default function ArtistResidencyContent({ content }: Props) {
       <article className="min-w-0">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={content.dateLabel} /></p>
         <p className="mt-2 text-sm leading-6 text-muted"><FormattedText value={content.timeLabel} /></p>
-        <h2 className="mt-5 font-display text-4xl leading-tight sm:text-5xl">An immersive, research-led residency</h2>
+        <h2 className="mt-5 font-display text-4xl leading-tight sm:text-5xl"><FormattedText value={content.heading} /></h2>
         {content.introduction.map((paragraph, index) => <p key={index} className="mt-5 text-base leading-8 text-foreground-soft"><FormattedText value={paragraph} /></p>)}
         <dl className="mt-8 grid grid-cols-2 gap-5 border-y border-line py-5 sm:grid-cols-3">
           <div><dt className="text-xs uppercase tracking-widest text-muted">Duration</dt><dd className="mt-2 font-semibold"><FormattedText value={content.durationLabel} /></dd></div>
