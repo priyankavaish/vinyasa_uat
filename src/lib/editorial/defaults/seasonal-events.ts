@@ -2,6 +2,9 @@
 export const seasonalEvents = {
   "zariya": {
     "slug": "zariya",
+    "backLabel": "All programmes",
+    "sidebarEyebrow": "At Vinyasa Earth",
+    "venueText": "Vinyasa Earth, Jaipur, Rajasthan",
     "source": "zariya-connecting-creators",
     "title": "Zariya — Connecting Creators",
     "dateLabel": "24 October 2026",
@@ -22,6 +25,9 @@ export const seasonalEvents = {
   },
   "drishti-new-years-retreat": {
     "slug": "drishti-new-years-retreat",
+    "backLabel": "All programmes",
+    "sidebarEyebrow": "At Vinyasa Earth",
+    "venueText": "Vinyasa Earth, Jaipur, Rajasthan",
     "source": "drishti-new-years-retreat",
     "title": "Drishti – New Years retreat",
     "dateLabel": "29 December 2026 - 1 January 2027",
@@ -54,6 +60,9 @@ export const seasonalEvents = {
   },
   "become-your-own-muse": {
     "slug": "become-your-own-muse",
+    "backLabel": "All programmes",
+    "sidebarEyebrow": "At Vinyasa Earth",
+    "venueText": "Vinyasa Earth, Jaipur, Rajasthan",
     "source": "become-your-own-muse",
     "title": "Become Your Own Muse – Women’s Retreat",
     "dateLabel": "27-30 November 2026",

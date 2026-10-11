@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { leadSchema, type LeadRequest } from "@/lib/schemas";
 import SuccessDialog from "./success-dialog";
+import FormattedText from "@/components/editorial/formatted-text";
 import { residencyCountries, type artistInResidence } from "@/lib/editorial/defaults/artist-in-residence";
 
 const inputClass = "mt-2 w-full border border-line bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent";
@@ -37,7 +38,7 @@ export default function ResidencyApplicationForm({ options, source = "artist-res
     { key: "country", label: "Country", required: true },
     { key: "researchInquiry", label: "Area of Research/Enquiry", required: true, hint: "Describe in brief" },
   ] as const;
-  const dialog = <SuccessDialog open={saved} onClose={() => { setSaved(false); reset(); }}><h3 className="font-display text-3xl">Thank you for applying.</h3><p className="mt-4 leading-7 text-foreground-soft">{source === "artist-unite" ? "Your Artist Unite application has been received. The Vinyasa team will review your details and get in touch." : "Your application has been received. Please email your detailed research proposal to vinyasa.ashram@gmail.com to complete the next step."}</p></SuccessDialog>;
+  const dialog = <SuccessDialog open={saved} onClose={() => { setSaved(false); reset(); }}><h3 className="font-display text-3xl"><FormattedText value={options.successTitle} /></h3><p className="mt-4 leading-7 text-foreground-soft"><FormattedText value={options.successMessage} /></p></SuccessDialog>;
   return <><form onSubmit={handleSubmit(submit)} noValidate className="border border-line bg-surface p-5 sm:p-7">
     <fieldset disabled={isSubmitting} className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
       <legend className="sr-only">{source === "artist-unite" ? "Artist Unite application" : "Artist-in-Residence application"}</legend>
