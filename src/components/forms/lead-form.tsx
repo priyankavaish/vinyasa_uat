@@ -66,9 +66,9 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
 
   return (
     <>
-    <SuccessDialog open={status === "success"} onClose={() => setStatus("idle")}>
-      <p className="font-display italic text-2xl"><FormattedText value={content.text_1} /></p>
-      <p className="mt-2 text-sm text-foreground-soft"><FormattedText value={content.text_2} /></p>
+    <SuccessDialog open={status === "success"} onClose={() => setStatus("idle")} closeLabel={content.closeLabel}>
+      <p className="font-display italic text-2xl"><FormattedText value={isVolunteer ? content.volunteerSuccessTitle : content.text_1} /></p>
+      <p className="mt-2 text-sm text-foreground-soft"><FormattedText value={isVolunteer ? content.volunteerSuccessMessage : content.text_2} /></p>
     </SuccessDialog>
     <form onSubmit={handleSubmit(onSubmit)} className={compact ? "space-y-3" : "space-y-4"} noValidate>
       <h3 className="font-display italic text-xl"><FormattedText value={title} /></h3>

@@ -23,7 +23,6 @@ const EVENT_IMAGES: Record<string, string> = {
   "artist-unite": "/seed/community-06.jpg",
   zariya: "/seed/community-01.jpg",
   "drishti-new-years-retreat": "/seed/grounds-05.jpg",
-  "performing-lab-retreat": "/seed/community-03.jpg",
 };
 
 async function main() {

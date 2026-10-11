@@ -2,10 +2,10 @@
 type Status = "idle" | "creating-booking" | "awaiting-payment" | "verifying" | "success" | "error";
 
 export const defaults = {
-"text_1": "Booking confirmed",
+"text_1": "Thank you, payment received.",
 "text_2": "Reference ",
-"text_3": ". A confirmation has been recorded. Our demo admin dashboard shows this booking under ",
-"text_4": "/admin/bookings",
+"text_3": ". The Vinyasa team will confirm your booking details with you shortly",
+"text_4": "",
 
 "text_6": "Booking type",
 "text_7": "Stay",
