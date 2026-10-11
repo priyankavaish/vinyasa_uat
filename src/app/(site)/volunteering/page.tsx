@@ -44,7 +44,7 @@ export default async function VolunteerPage() {
             </div>
           </div>
 
-          <div className={`${styles.availability} ${styles.availabilityInline}`}><FormattedText value={content.text_7} /><span aria-hidden="true">·</span><FormattedText value={content.text_8} /><a href={content.href_9}><FormattedText value={content.text_10} links={false} /></a></div>
+          <div className={`${styles.availability} ${styles.availabilityInline}`}><FormattedText value={content.text_7} /><span aria-hidden="true">·</span><FormattedText value={content.text_8} /><a href={content.href_9} className="btn btn-accent"><FormattedText value={content.text_10} links={false} /></a></div>
         </div>
       </section>
       <SectionWave from="#f3e6d8" to="#f3f1ea" variant="wave" />
@@ -66,13 +66,17 @@ export default async function VolunteerPage() {
           </Reveal>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            {content.volunteerTracks.map((track, i) => (
+            {content.volunteerTracks.map((rawTrack, i) => {
+              const fallback = volunteerTracks.find((t) => t.slug === rawTrack.slug);
+              const track = { ...rawTrack, summary: rawTrack.summary ?? fallback?.summary, cta: rawTrack.cta ?? fallback?.cta, ctaHref: rawTrack.ctaHref ?? fallback?.ctaHref };
+              return (
               <Reveal key={track.slug} variant="up" delay={i * 100} className="h-full">
                 <div className={styles.track}>
                   <span className={styles.number}><FormattedText value={content.text_17} />{i + 1} / <FormattedText value={i === 0 ? content.text_13 : content.text_14} /></span>
                   <h3 className="font-display italic text-2xl leading-tight text-foreground">
                     <FormattedText value={track.name} />
                   </h3>
+                  {track.summary && <p className="mt-2 text-sm font-semibold text-accent"><FormattedText value={track.summary} links={false} /></p>}
                   <p className="mt-3 text-sm leading-6 text-foreground-soft"><FormattedText value={i === 0 ? track.description : content.text_15} /></p>
 
                   <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-line py-5 text-sm">
@@ -95,9 +99,11 @@ export default async function VolunteerPage() {
                       </li>
                     ))}
                   </ul>
+                  {track.cta && <a href={track.ctaHref || "#apply"} className="btn btn-accent text-center"><FormattedText value={track.cta} links={false} /></a>}
                 </div>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section></AnimateInView>

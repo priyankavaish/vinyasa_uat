@@ -138,7 +138,7 @@ export default async function StaysPage() {
                   delay={i * 90}
                   className={i % 2 === 1 ? "sm:mt-10" : ""}
                 >
-                  <Link href="/contact#contact-form" className="group relative block aspect-[4/3] overflow-hidden border border-line transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent hover:-translate-y-0.5 hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)] sm:aspect-[16/10]">
+                  <div className="group relative block aspect-[4/3] overflow-hidden border border-line sm:aspect-[16/10]">
                     {option.image ? (
                       <Image
                         src={option.image}
@@ -155,10 +155,17 @@ export default async function StaysPage() {
                       <h3 className="font-display italic text-xl leading-tight text-white sm:text-2xl"><FormattedText value={option.title} links={false} /></h3>
                       <p className="mt-2 max-w-[42ch] text-sm leading-relaxed text-white/85"><FormattedText value={option.description} links={false} /></p>
                     </div>
-                  </Link>
+                  </div>
                 </Reveal>
               ))}
             </div>
+
+            <Reveal variant="fade" className="mt-12">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground"><FormattedText value={content.visitEyebrow} /></p>
+              <h2 className="mt-4 max-w-4xl font-display text-xl leading-snug sm:text-2xl lg:text-[1.65rem]"><FormattedText value={content.visitHeading} /></h2>
+              <p className="mt-5 max-w-3xl text-sm leading-7 text-foreground-soft sm:text-base"><FormattedText value={content.visitText} /></p>
+              <Link href={content.visitCtaHref} className="btn btn-accent mt-8"><FormattedText value={content.visitCtaLabel} links={false} /></Link>
+            </Reveal>
           </div>
         </section></AnimateInView>
       )}

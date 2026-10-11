@@ -79,10 +79,6 @@ export const metadata: Metadata = {
     description,
     images: ["/opengraph-image"],
   },
-  icons: {
-    icon: [{ url: "/icon", type: "image/png" }],
-    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
-  },
   manifest: "/manifest.webmanifest",
   robots: {
     index: true,

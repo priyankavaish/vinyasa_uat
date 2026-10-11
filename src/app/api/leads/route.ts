@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
         : data.source === "artist-residence"
         ? `Artist-in-Residence application\nArt practice: ${data.artPractice}\nPortfolio: ${data.portfolio}\nCountry: ${data.country}\n\nArea of Research/Enquiry:\n${data.researchInquiry}`
         : data.source === "volunteer"
-        ? `Volunteering period days: ${[...new Set(data.volunteeringDates)].sort().join(", ")}\nVolunteering type: ${data.volunteeringType}`
+        ? `Volunteering period days: ${[...new Set(data.volunteeringDates)].sort().join(", ")}\nVolunteering type: ${data.volunteeringType}${data.whatsapp ? `\nWhatsApp: ${data.whatsapp}` : ""}`
         : data.source === "contact"
           ? `Subject: ${data.subject}${data.message ? `\n\n${data.message}` : ""}`
           : data.message,

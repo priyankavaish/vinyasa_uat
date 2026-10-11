@@ -40,7 +40,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
   } = useForm<LeadRequest>({
     resolver: zodResolver(leadSchema),
     mode: "onTouched",
-    defaultValues: { source, name: "", email: "", phone: "", message: "", subject: "", lastName: "", volunteeringDates: [] },
+    defaultValues: { source, name: "", email: "", phone: "", whatsapp: "", message: "", subject: "", lastName: "", volunteeringDates: [] },
   });
 
   async function onSubmit(values: LeadRequest) {
@@ -119,6 +119,13 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
         />
         {errors.phone && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.phone.message} /></p>}
       </div>
+      {isVolunteer && (
+        <div>
+          <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-whatsapp`}><FormattedText value={content.whatsappLabel} links={false} /></label>
+          <input id={`${source}-whatsapp`} type="tel" autoComplete="tel" className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent" {...register("whatsapp")} />
+          {errors.whatsapp && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.whatsapp.message} /></p>}
+        </div>
+      )}
 
       {isVolunteer && (
         <>
@@ -126,10 +133,10 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
           <MultiDateCalendar id={`${source}-dates`} value={watch("volunteeringDates") ?? []} onChange={dates => setValue("volunteeringDates", dates, { shouldValidate: true, shouldDirty: true })} error={errors.volunteeringDates?.message} />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-type`}>Volunteering Type{requiredMark}</label>
+            <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-type`}><FormattedText value={content.volunteeringTypeLabel} links={false} />{requiredMark}</label>
             <select id={`${source}-type`} required className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent" {...register("volunteeringType")}>
-              <option value="">Select volunteering type</option>
-              {["Community Volunteering", "Skill Based (under 2 months)", "Skill Based (2+ Months)"].map(type => <option key={type} value={type}>{type}</option>)}
+              <option value="">{content.volunteeringTypePlaceholder}</option>
+              {content.volunteeringTypes.map(type => <option key={type} value={type}>{type}</option>)}
             </select>
             {errors.volunteeringType && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.volunteeringType.message} /></p>}
           </div>

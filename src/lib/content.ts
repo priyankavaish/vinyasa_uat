@@ -347,6 +347,9 @@ export type VolunteerTrack = {
   compensation: string;
   description: string;
   roles: string[];
+  summary?: string;
+  cta?: string;
+  ctaHref?: string;
 };
 
 export const volunteerTracks: VolunteerTrack[] = [
@@ -354,27 +357,33 @@ export const volunteerTracks: VolunteerTrack[] = [
     slug: "community",
     name: "Community Volunteering",
     commitment: "Minimum 1 week",
-    compensation: "₹5,000 per week",
+    compensation: "\u20b95,000 for 7 days",
+    summary: "\u20b95000 / 7 days \u00b7 Minimum 1 week",
+    cta: "Apply for Community Volunteering",
+    ctaHref: "#apply",
     description:
-      "Live in the community and lend a hand across the farm — a short, hands-on way to know whether Vinyasa is home for you.",
+      "Open to anyone \u2014 no specific skill required. Volunteers contribute toward food and stay at a minimum affordable rate while supporting daily life at Vinyasa.",
     roles: [
-      "Garden maintenance & permaculture",
-      "Hospitality & guest services",
-      "Property maintenance & repairs",
-      "Social media & website support",
+      "Garden: organic gardening, permaculture and supporting the farm-to-table kitchen",
+      "Hospitality: guest welcome, cottage prep, check-in/out",
+      "Maintenance: cottage upkeep, repairs and event decor",
+      "Social media: storytelling, data organization and website help",
     ],
   },
   {
     slug: "skill-exchange",
     name: "Skill-Based Exchange",
     commitment: "Minimum 1 month",
-    compensation: "Full barter for stays of 2+ months",
+    summary: "Barter \u00b7 Minimum 1 month",
+    cta: "Apply for Skill-Based Exchange",
+    ctaHref: "mailto:vinyasa.ashram@gmail.com?subject=Skill-Based%20Exchange%20application",
+    compensation: "Under 1 month: \u20b94,000/week. Over 1 month: food & stay barter, subject to skill review",
     description:
-      "Bring a specific craft and trade it for room, board, and time on the land. Longer commitments move to a full barter arrangement.",
+      "A barter model for limited roles where a skill directly benefits Vinyasa.",
     roles: [
       "Content creator",
-      "Social media management",
-      "Permaculture / gardening",
+      "Social media",
+      "Permaculture (gardening)",
       "Website design",
       "Property management",
     ],
@@ -384,14 +393,17 @@ export const volunteerTracks: VolunteerTrack[] = [
 export const volunteerInfo = {
   benefits: [
     "Dormitory accommodation",
-    "Three vegetarian meals a day",
+    "Three vegetarian meals daily",
     "Access to all community spaces",
-    "Subsidised workshop participation",
+    "Free or subsidized community workshops and events",
+    "Opportunities to learn new skills and meet others",
   ],
   requirements: [
-    "Minimum age 18",
-    "Self-motivated and respectful",
-    "Comfortable in a rural, quiet setting",
+    "At least 1 week's commitment",
+    "Age 18+",
+    "Openness to community living and willingness to follow eco-conscious practices",
+    "Self-motivated and respectful of diverse backgrounds",
+    "Interested in sustainable living and comfortable in a quiet rural setting",
     "International volunteers welcome",
   ],
   note:
