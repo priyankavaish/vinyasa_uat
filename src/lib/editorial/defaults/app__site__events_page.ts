@@ -48,7 +48,7 @@ seo: {
 "organizerSubmitLabel": "Get the Deck",
 "organizerSendingLabel": "Sending...",
 "organizerSuccessTitle": "Thank you, we have your enquiry.",
-"organizerSuccessMessage": "The Vinyasa team will get in touch with you shortly. For anything urgent, write to vinyasa.ashram@gmail.com.",
+"organizerSuccessMessage": "The Vinyasa team will get in touch with you shortly. This is an enquiry, not a confirmed booking. For anything urgent, write to vinyasa.ashram@gmail.com.",
 "organizerDeckUrl": "https://drive.google.com/file/d/1GAJc_SYZG-jIfRq1RQ1nm_ACqO2x4pBr/view",
 "organizerDeckLabel": "Download the Organizer's Deck",
 "organizerCloseLabel": "Close",
