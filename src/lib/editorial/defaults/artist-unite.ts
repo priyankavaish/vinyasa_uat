@@ -1,6 +1,17 @@
 // Complete Artist Unite event copy from the owner-provided page.
 export const artistUnite = {
   "title": "Artist Unite – A residency of self creation",
+  "heading": "Live inside an artistic community.",
+  "sidebarEyebrow": "Artist Unite 2026",
+  "sidebarTitle": "Ten days to live, create & share.",
+  "includedText": "10 nights in a dormitory, daily breakfast and dinner, two shared artist-process spaces each day, creative spaces and participation at Zariya.",
+  "lunchNote": "Lunch can be ordered separately and is not included in the residency fee.",
+  "arrivalLabel": "Arrival",
+  "zariyaLabel": "Zariya",
+  "checkoutLabel": "Checkout",
+  "applyCta": "Apply for Artist Unite",
+  "applicationEyebrow": "Bring your practice",
+  "applicationText": "Share your artform and portfolio to initiate your application for Artist Unite.",
   "dateLabel": "15–24 October 2026",
   "timeLabel": "15 October, 8:00 am – 24 October, 5:00 pm",
   "introductionHtml": "<p>Most artists spend a large part of their creative lives working within their own practice. A dancer rehearses in a studio. A painter spends hours with a canvas. A theatre-maker develops an idea with a small group. We meet other artists at performances, exhibitions and festivals—but rarely do we get to experience how they actually live and create.</p>\n<p><strong>Artist Unite is a ten-day interdisciplinary residency built around that experience.</strong></p>\n<p>Artists from different disciplines come together to live, create, exchange practices and experience what it feels like to be part of an artistic community.</p>\n<p>There are no masterclasses here.</p>\n<p>Instead, resident artists open up their practices to one another. A painter might invite you into the way they observe. A dancer might share how they begin creating movement. A theatre artist might introduce a game they use to discover characters. A visual artist might take everyone outdoors to collect, arrange or respond to materials.</p>\n<p>You don’t need to belong to that discipline to participate.</p>\n<p>The intention isn’t to teach everyone how to paint, dance or perform. It is to <strong>experience how another artist thinks through their art.</strong></p>",
@@ -50,6 +61,8 @@ export const artistUnite = {
   ],
   "application": {
     "title": "Apply for Artist Unite",
+    "successTitle": "Thank you for applying.",
+    "successMessage": "Your Artist Unite application has been received. The Vinyasa team will review your details and get in touch.",
     "artPractices": []
   },
   "priceLabel": "₹18,500 + GST",
