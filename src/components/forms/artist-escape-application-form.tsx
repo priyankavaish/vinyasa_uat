@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import SuccessDialog from "./success-dialog";
 
 const COUNTRIES = [
   "India", "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
@@ -84,23 +85,12 @@ export default function ArtistEscapeApplicationForm() {
     }
   }
 
-  if (status === "success") {
-    return (
-      <div className="border border-line bg-surface p-8 text-center">
-        <p className="font-display italic text-2xl">Application sent</p>
-        <p className="mt-2 text-sm text-foreground-soft">We'll be in touch to set up a 1:1 call.</p>
-        <button
-          type="button"
-          className="mt-5 text-xs tracking-[0.08em] uppercase text-accent underline"
-          onClick={() => setStatus("idle")}
-        >
-          Submit another application
-        </button>
-      </div>
-    );
-  }
-
   return (
+    <>
+    <SuccessDialog open={status === "success"} onClose={() => setStatus("idle")}>
+      <p className="font-display italic text-2xl">Application sent</p>
+      <p className="mt-2 text-sm text-foreground-soft">We'll be in touch to set up a 1:1 call.</p>
+    </SuccessDialog>
     <form onSubmit={handleSubmit(onSubmit)} className="border border-line bg-surface p-6 sm:p-9" noValidate>
       <h3 className="font-display italic text-2xl">Artist Escape Application</h3>
 
@@ -166,5 +156,6 @@ export default function ArtistEscapeApplicationForm() {
         {status === "submitting" ? "Submitting…" : "Submit"}
       </button>
     </form>
+    </>
   );
 }

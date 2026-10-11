@@ -3,6 +3,7 @@ import { useId, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { leadSchema, type LeadRequest } from "@/lib/schemas";
+import SuccessDialog from "./success-dialog";
 import { residencyCountries, type artistInResidence } from "@/lib/editorial/defaults/artist-in-residence";
 
 const inputClass = "mt-2 w-full border border-line bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent";
@@ -10,7 +11,7 @@ export default function ResidencyApplicationForm({ options, source = "artist-res
   const id = useId();
   const [saved, setSaved] = useState(false);
   const [failure, setFailure] = useState("");
-  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<LeadRequest>({
+  const { register, handleSubmit, setError, reset, formState: { errors, isSubmitting } } = useForm<LeadRequest>({
     resolver: zodResolver(leadSchema), mode: "onTouched",
     defaultValues: { source, name: "", lastName: "", email: "", phone: "", artPractice: "", portfolio: "", country: "", researchInquiry: "" },
   });
@@ -26,7 +27,6 @@ export default function ResidencyApplicationForm({ options, source = "artist-res
       setSaved(true);
     } catch (error) { setFailure(error instanceof Error ? error.message : "We could not send your application. Please try again."); }
   }
-  if (saved) return <div role="status" className="self-start border border-line bg-surface p-7"><h3 className="font-display text-3xl">Thank you for applying.</h3><p className="mt-4 leading-7 text-foreground-soft">{source === "artist-unite" ? "Your Artist Unite application has been received. The Vinyasa team will review your details and get in touch." : "Your application has been received. Please email your detailed research proposal to vinyasa.ashram@gmail.com to complete the next step."}</p></div>;
   const fields = [
     { key: "name", label: "First Name", type: "text", autoComplete: "given-name", required: true },
     { key: "lastName", label: "Last Name", type: "text", autoComplete: "family-name", required: false },
@@ -37,7 +37,8 @@ export default function ResidencyApplicationForm({ options, source = "artist-res
     { key: "country", label: "Country", required: true },
     { key: "researchInquiry", label: "Area of Research/Enquiry", required: true, hint: "Describe in brief" },
   ] as const;
-  return <form onSubmit={handleSubmit(submit)} noValidate className="border border-line bg-surface p-5 sm:p-7">
+  const dialog = <SuccessDialog open={saved} onClose={() => { setSaved(false); reset(); }}><h3 className="font-display text-3xl">Thank you for applying.</h3><p className="mt-4 leading-7 text-foreground-soft">{source === "artist-unite" ? "Your Artist Unite application has been received. The Vinyasa team will review your details and get in touch." : "Your application has been received. Please email your detailed research proposal to vinyasa.ashram@gmail.com to complete the next step."}</p></SuccessDialog>;
+  return <><form onSubmit={handleSubmit(submit)} noValidate className="border border-line bg-surface p-5 sm:p-7">
     <fieldset disabled={isSubmitting} className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
       <legend className="sr-only">{source === "artist-unite" ? "Artist Unite application" : "Artist-in-Residence application"}</legend>
       {fields.filter(field => source === "artist-residence" || !["country", "researchInquiry"].includes(field.key)).map(field => {
@@ -56,5 +57,5 @@ export default function ResidencyApplicationForm({ options, source = "artist-res
       <button type="submit" className="btn btn-accent mt-1 sm:col-span-2">{isSubmitting ? "Sending..." : source === "artist-unite" ? "Initiate application" : "Submit application"}</button>
     </fieldset>
     {failure && <p role="alert" className="mt-4 text-sm text-accent">{failure}</p>}
-  </form>;
+  </form>{dialog}</>;
 }

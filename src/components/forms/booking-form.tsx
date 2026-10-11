@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Script from "next/script";
+import SuccessDialog from "./success-dialog";
 import {
   cottages as seedCottages,
   events as seedEvents,
@@ -54,6 +55,7 @@ export default function BookingForm({
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [confirmedId, setConfirmedId] = useState<string | null>(null);
+  const [dialogClosed, setDialogClosed] = useState(false);
 
   const {
     register,
@@ -179,11 +181,18 @@ export default function BookingForm({
 
   if (status === "success") {
     return (
+      <>
+      <SuccessDialog open={!dialogClosed} onClose={() => setDialogClosed(true)}>
+        <p className="font-display italic text-3xl"><FormattedText value={content.text_1} /></p>
+        <p className="mt-3 text-sm text-foreground-soft"><FormattedText value={content.text_2} /><span className="font-mono"><FormattedText value={confirmedId} /></span><FormattedText value={content.text_3} /><span className="font-mono"><FormattedText value={content.text_4} /></span>.
+        </p>
+      </SuccessDialog>
       <div className="border border-line bg-surface p-10 text-center">
         <p className="font-display italic text-3xl"><FormattedText value={content.text_1} /></p>
         <p className="mt-3 text-sm text-foreground-soft"><FormattedText value={content.text_2} /><span className="font-mono"><FormattedText value={confirmedId} /></span><FormattedText value={content.text_3} /><span className="font-mono"><FormattedText value={content.text_4} /></span>.
         </p>
       </div>
+      </>
     );
   }
 
