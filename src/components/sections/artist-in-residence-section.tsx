@@ -1,6 +1,9 @@
 import Image from "@/components/editorial/image";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
+import { getEvent } from "@/lib/cms";
+import { getEditorial } from "@/lib/editorial/server";
+import { defaults as eventDefaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
 import livingImage from "@/app/assets/artist-in-residence/GPS_4871-2-edited-1024x768.webp";
 import researchImage from "@/app/assets/artist-in-residence/WhatsApp-Image-2024-07-31-at-2.01.34-PM-edited-1024x768.webp";
 
@@ -10,7 +13,9 @@ const details = [
   { title: "Research & the archive", body: "Develop a proposal with your question, methods, documentation and timeline. A final research document joins the Vinyasa Archive; authorship remains yours, with Vinyasa permitted to share it for educational and archival purposes." },
 ];
 
-export default function ArtistInResidenceSection() {
+export default async function ArtistInResidenceSection() {
+  const [residency, eventContent] = await Promise.all([getEvent("artist-in-residence"), getEditorial("app/(site)/events/[slug]/page", eventDefaults)]);
+  const info = eventContent.ARTIST_IN_RESIDENCE;
   return (
     <section id="artist-in-residence" className="scroll-mt-24 bg-secondary-surface py-14 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -19,8 +24,8 @@ export default function ArtistInResidenceSection() {
             <SectionEyebrow icon="compass-outline">Rooted in Practice</SectionEyebrow>
             <h2 className="mt-3 font-display text-4xl italic leading-tight sm:text-5xl">Artist in Residence</h2>
             <p className="mt-5 text-lg leading-8 text-foreground-soft">Live with a question. Give your practice time to unfold.</p>
-            <p className="mt-5 border-y border-line py-4 text-xs font-semibold uppercase tracking-[0.13em] text-accent">June to September programme &middot; Four months &middot; Two artists</p>
-            <a href="#residency-enquiry" className="btn btn-accent mt-6">Enquire about the next intake</a>
+            <p className="mt-5 border-y border-line py-4 text-xs font-semibold uppercase tracking-[0.13em] text-accent">{residency?.durationLabel ?? info.durationLabel} &middot; {info.placesValue}</p>
+            <div className="mt-6 flex flex-wrap gap-3"><a href="/events/artist-in-residence" className="btn btn-accent">Explore the residency</a><a href="/events/artist-in-residence#residency-application" className="btn btn-accent">{info.applyCta}</a></div>
           </Reveal>
           <Reveal variant="right" className="relative aspect-[4/3] overflow-hidden rounded-tl-[3rem] rounded-br-[3rem]">
             <Image src={livingImage} alt="Reading in Vinyasa's bamboo dorm accommodation" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
