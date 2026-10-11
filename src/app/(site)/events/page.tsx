@@ -14,6 +14,7 @@ import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
+import OrganizerEnquiryForm from "@/components/forms/organizer-enquiry-form";
 import { getEvents } from "@/lib/cms";
 import { parseEventStart, parseEventEnd } from "@/lib/event-dates";
 
@@ -123,6 +124,7 @@ export default async function EventsPage() {
 
       <AnimateInView delay={60}><section id="events-calendar" className="texture-linen mx-auto max-w-3xl scroll-mt-24 px-5 pb-8 pt-8 text-center sm:px-8">
         <Reveal variant="fade">
+          <a href="#organize-with-us" className="btn btn-accent mb-6"><FormattedText value={content.hostCtaLabel} links={false} /></a>
           <SectionEyebrow icon="calendar-outline" className="justify-center"><FormattedText value={content.text_7} /></SectionEyebrow>
           <p className="mt-3 text-sm leading-relaxed text-foreground-soft"><FormattedText value={content.text_8} /></p>
         </Reveal>
@@ -218,6 +220,24 @@ export default async function EventsPage() {
             <EventsCalendar entries={calEntries} />
           </Reveal>
           </div>
+        </div>
+      </section></AnimateInView>
+
+      <AnimateInView delay={60}><section id="organize-with-us" className="texture-linen scroll-mt-24 px-5 py-14 sm:px-8 sm:py-16">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+          <Reveal variant="left">
+            <SectionEyebrow icon="people-outline"><FormattedText value={content.organizerEyebrow} /></SectionEyebrow>
+            <h2 className="mt-4 font-display text-4xl leading-tight"><FormattedText value={content.organizerTitle} /></h2>
+            <p className="mt-5 leading-7 text-foreground-soft"><FormattedText value={content.organizerText} /></p>
+          </Reveal>
+          <Reveal variant="right">
+            <OrganizerEnquiryForm content={{
+              nameLabel: content.organizerNameLabel, programTypeLabel: content.organizerProgramTypeLabel, programTypePlaceholder: content.organizerProgramTypePlaceholder,
+              programTypes: content.organizerProgramTypes, emailLabel: content.organizerEmailLabel, phoneLabel: content.organizerPhoneLabel,
+              submitLabel: content.organizerSubmitLabel, sendingLabel: content.organizerSendingLabel,
+              successTitle: content.organizerSuccessTitle, successMessage: content.organizerSuccessMessage, closeLabel: content.organizerCloseLabel, deckUrl: content.organizerDeckUrl, deckLabel: content.organizerDeckLabel,
+            }} />
+          </Reveal>
         </div>
       </section></AnimateInView>
     </div>

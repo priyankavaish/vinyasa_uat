@@ -38,7 +38,9 @@ export async function POST(req: NextRequest) {
       name: data.source === "volunteer" || data.source === "artist-residence" || data.source === "artist-unite" ? [data.name, data.lastName].filter(Boolean).join(" ") : data.name,
       email: data.email,
       phone: data.phone,
-      message: data.source === "artist-unite"
+      message: data.source === "organizer"
+        ? `Organizer enquiry\nProgram type: ${data.programType}`
+        : data.source === "artist-unite"
         ? `Artist Unite application\nArtform: ${data.artPractice}\nPortfolio / URL: ${data.portfolio}`
         : data.source === "artist-residence"
         ? `Artist-in-Residence application\nArt practice: ${data.artPractice}\nPortfolio: ${data.portfolio}\nCountry: ${data.country}\n\nArea of Research/Enquiry:\n${data.researchInquiry}`
