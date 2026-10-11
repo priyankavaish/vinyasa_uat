@@ -13,6 +13,12 @@ export type OrganizerFormContent = {
 };
 const inputClass = "mt-2 w-full border border-line bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent";
 
+// Turn a normal Google Drive "view" link into a direct download link.
+function downloadUrl(url: string) {
+  const id = url.match(/drive\.google\.com\/file\/d\/([^/?#]+)/)?.[1];
+  return id ? `https://drive.google.com/uc?export=download&id=${id}` : url;
+}
+
 export default function OrganizerEnquiryForm({ content }: { content: OrganizerFormContent }) {
   const id = useId();
   const [saved, setSaved] = useState(false);
@@ -60,7 +66,7 @@ export default function OrganizerEnquiryForm({ content }: { content: OrganizerFo
     <SuccessDialog open={saved} onClose={() => { setSaved(false); reset(); }} closeLabel={content.closeLabel}>
       <h3 className="font-display text-3xl"><FormattedText value={content.successTitle} /></h3>
       <p className="mt-4 leading-7 text-foreground-soft"><FormattedText value={content.successMessage} /></p>
-      {content.deckUrl && <a href={content.deckUrl} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-5"><FormattedText value={content.deckLabel} links={false} /></a>}
+      {content.deckUrl && <a href={downloadUrl(content.deckUrl)} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-5"><FormattedText value={content.deckLabel} links={false} /></a>}
     </SuccessDialog>
   </>;
 }
