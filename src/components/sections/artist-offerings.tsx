@@ -2,15 +2,19 @@ import Image from "@/components/editorial/image";
 import styles from "./artist-offerings.module.css";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
+import { getEvent } from "@/lib/cms";
+import { getEditorial } from "@/lib/editorial/server";
+import { defaults as eventDefaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
 import residenceImage from "@/app/assets/artist-in-residence/Arthur-1024x683 (2).webp";
 
-export default function ArtistOfferings({ escapeImage }: { escapeImage: string }) {
+export default async function ArtistOfferings({ escapeImage }: { escapeImage: string }) {
+  const [residency, eventContent] = await Promise.all([getEvent("artist-in-residence"), getEditorial("app/(site)/events/[slug]/page", eventDefaults)]);
   const offerings = [
     {
-      name: "Artist in Residence", href: "#artist-in-residence",
+      name: "Artist in Residence", href: "#artist-in-residence", link: "/events/artist-in-residence",
       image: residenceImage, alt: "An artist playing guitar in an earthen space at Vinyasa",
-      label: "A focused residency", detail: "June to September", companion: "Two selected artists",
-      description: "For two selected artists developing a creative inquiry from June to September. Deepen your practice while living and creating within the Vinyasa community.",
+      label: "A focused residency", detail: residency?.durationLabel ?? eventContent.ARTIST_IN_RESIDENCE.durationLabel, companion: eventContent.ARTIST_IN_RESIDENCE.placesValue,
+      description: residency?.description ?? eventContent.ARTIST_IN_RESIDENCE.introduction[0],
       action: "Explore Artist in Residence",
     },
     {
@@ -47,7 +51,7 @@ export default function ArtistOfferings({ escapeImage }: { escapeImage: string }
                   <h3 className={styles.title}>{offering.name}</h3>
                   <p className={styles.description}>{offering.description}</p>
                   <div className={styles.details}><span>{offering.detail}</span><span>{offering.companion}</span></div>
-                  <a href={offering.href} className={`btn btn-accent ${styles.action}`}>{offering.action}<span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span></a>
+                  <a href={offering.link ?? offering.href} className={`btn btn-accent ${styles.action}`}>{offering.action}<span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span></a>
                 </div>
               </article>
             </Reveal>
