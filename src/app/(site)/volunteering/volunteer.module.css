@@ -18,7 +18,7 @@
 }
 .availabilityInline { gap: 10px 12px; padding-inline: 20px; }
 .availabilityInline :global(.btn) { padding: 0.6rem 1.1rem; font-size: 0.7rem; letter-spacing: 0.06em; }
-.track { height: 100%; display: flex; flex-direction: column; padding: clamp(24px, 3vw, 40px); background: #fffaf2; border-top: 3px solid #8f3b31; }
+.track { display: flex; flex-direction: column; padding: clamp(24px, 3vw, 40px); background: #fffaf2; border-top: 3px solid #8f3b31; }
 .track .number { font-size: 11px; text-transform: uppercase; letter-spacing: .13em; color: #8f3b31; margin-bottom: 22px; }
 .track > a { margin-top: auto; margin-block-start: 24px; }
 .life { max-width: 1152px; margin: auto; padding: 56px 32px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
