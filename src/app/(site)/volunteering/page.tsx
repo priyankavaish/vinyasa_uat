@@ -65,12 +65,12 @@ export default async function VolunteerPage() {
             <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.text_12} /></h2>
           </Reveal>
 
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid items-start gap-6 lg:grid-cols-2">
             {content.volunteerTracks.map((rawTrack, i) => {
               const fallback = volunteerTracks.find((t) => t.slug === rawTrack.slug);
               const track = { ...rawTrack, summary: rawTrack.summary ?? fallback?.summary, cta: rawTrack.cta ?? fallback?.cta, ctaHref: rawTrack.ctaHref ?? fallback?.ctaHref };
               return (
-              <Reveal key={track.slug} variant="up" delay={i * 100} className="h-full">
+              <Reveal key={track.slug} variant="up" delay={i * 100}>
                 <div className={styles.track}>
                   <span className={styles.number}><FormattedText value={content.text_17} />{i + 1} / <FormattedText value={i === 0 ? content.text_13 : content.text_14} /></span>
                   <h3 className="font-display italic text-2xl leading-tight text-foreground">
