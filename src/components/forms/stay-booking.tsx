@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
+import { useEditorial } from "@/components/editorial/provider";
+import { defaults as whatsappDefaults } from "@/lib/editorial/defaults/whatsapp";
+import { Icon } from "@/components/ui/icon";
 import FormattedText from "@/components/editorial/formatted-text";
 import Image from "@/components/editorial/image";
 import type { Cottage } from "@/lib/content";
@@ -11,7 +14,7 @@ import styles from "@/app/(site)/book/booking.module.css";
 export type StayBookingContent = StayEnquiryContent & {
   searchTitle: string; checkInLabel: string; checkOutLabel: string; adultsLabel: string; childrenLabel: string; roomsLabel: string;
   searchButton: string; resultsTitle: string; resultsSearchedTitle: string; noResults: string;
-  availableLabel: string; soldOutLabel: string; enquireLabel: string; guestsUnit: string;
+  availableLabel: string; soldOutLabel: string; whatsappLabel: string; whatsappMessage: string; guestsUnit: string;
   enquiryTitle: string; enquiryText: string;
 };
 
@@ -27,6 +30,7 @@ export default function StayBooking({ cottages, content, aside }: { cottages: Co
   const [search, setSearch] = useState({ checkIn: "", checkOut: "", adults: "2", children: "0", rooms: "1" });
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState("");
+  const whatsapp = useEditorial("shared/whatsapp", whatsappDefaults);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [thanks, setThanks] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -72,7 +76,11 @@ export default function StayBooking({ cottages, content, aside }: { cottages: Co
     setDialogOpen(true);
   }
 
-  function enquire(stay: Cottage) { openForm(stay.name); }
+  function whatsappLink(stay: Cottage) {
+    const dates = searched ? ` Dates: ${search.checkIn} to ${search.checkOut}, ${guests} guest${guests === 1 ? "" : "s"}.` : "";
+    const message = content.whatsappMessage.replace("{stay}", stay.name) + dates;
+    return `https://wa.me/${whatsapp.phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
+  }
 
   const enquirySection = (
       <section id="stay-enquiry" className={`${styles.form} scroll-mt-28`} aria-labelledby="stay-enquiry-title">
@@ -108,7 +116,7 @@ export default function StayBooking({ cottages, content, aside }: { cottages: Co
                   <FormattedText value={stay.tagline} links={false} />{stay.maxGuests ? <> · {stay.maxGuests} {content.guestsUnit}</> : null}
                 </p>
                 {priceText(stay) && <p className="mt-2 text-sm font-semibold">{priceText(stay)} <span className="font-normal text-muted">+ 18% GST</span></p>}
-                <button type="button" onClick={() => enquire(stay)} disabled={soldOut} className="btn btn-accent mt-4 self-start disabled:opacity-50">{content.enquireLabel}</button>
+                <a href={whatsappLink(stay)} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-4 inline-flex! flex-row items-center gap-2 self-start"><Icon name="logo-whatsapp" size={16} />{content.whatsappLabel}</a>
               </div>
             </li>)}
           </ul>}

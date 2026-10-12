@@ -35,7 +35,7 @@ export default async function BookPage() {
           adultsLabel: content.adultsLabel, childrenLabel: content.childrenLabel, roomsLabel: content.roomsLabel,
           searchButton: content.searchButton, resultsTitle: content.resultsTitle, resultsSearchedTitle: content.resultsSearchedTitle,
           noResults: content.noResults, availableLabel: content.availableLabel, soldOutLabel: content.soldOutLabel,
-          enquireLabel: content.enquireLabel, guestsUnit: content.guestsUnit, enquiryTitle: content.enquiryTitle, enquiryText: content.enquiryText,
+          whatsappLabel: content.whatsappLabel, whatsappMessage: content.whatsappMessage, guestsUnit: content.guestsUnit, enquiryTitle: content.enquiryTitle, enquiryText: content.enquiryText,
         }} />
       </Suspense>
     </div>
