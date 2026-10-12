@@ -118,6 +118,7 @@ export function PageHero({
   mobileImagePosition,
   contain = false,
   framed = false,
+  landscape = false,
   imageQuality = 80,
   children,
 }: {
@@ -130,15 +131,16 @@ export function PageHero({
   mobileImagePosition?: string;
   contain?: boolean;
   framed?: boolean;
+  landscape?: boolean;
   imageQuality?: number;
   children?: ReactNode;
 }) {
   return (
-    <section data-hero className={`${heroStyles.hero} ${contain ? heroStyles.heroContain : ""} ${framed ? heroStyles.heroFramed : ""}`} style={{
+    <section data-hero className={`${heroStyles.hero} ${contain ? heroStyles.heroContain : ""} ${framed ? heroStyles.heroFramed : ""} ${landscape ? heroStyles.heroLandscape : ""}`} style={{
       "--hero-position": imagePosition,
       "--hero-mobile-position": mobileImagePosition ?? imagePosition,
     } as CSSProperties}>
-      {image && (contain || framed ? (
+      {image && (contain || framed || landscape ? (
         <Image src={image} alt={imageAlt} fill priority quality={imageQuality} sizes={framed ? "(min-width: 1160px) 1120px, 100vw" : "100vw"} className={contain ? heroStyles.imageContain : heroStyles.image} />
       ) : (
         <ParallaxHeroImage>

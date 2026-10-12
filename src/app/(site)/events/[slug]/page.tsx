@@ -93,7 +93,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
   return (
     <>
-      <PageHero imageQuality={95} framed={!!seasonalEvent || isPauseWithin || !!editorialEvent} eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
+      <PageHero imageQuality={95} framed landscape eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
         {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent"><FormattedText value={content.ARTIST_IN_RESIDENCE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent"><FormattedText value={content.ARTIST_UNITE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : (isPauseWithin || editorialEvent) && <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> </PaymentButton>}
       </PageHero>
 
