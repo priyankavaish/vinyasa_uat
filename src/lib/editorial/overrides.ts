@@ -17,4 +17,4 @@ export const getEditorialOverrides = unstable_cache(async (): Promise<EditorialO
   values[headerKey] = mergeEditorial(headerDefaults, values[headerKey]);
   return Object.fromEntries(Object.entries(values).map(([key, value]) => [key, applyPageLinks(value, settings, key === headerKey || key === "components/layout/site-footer")]));
   } catch { return {}; }
-}, ["editorial:overrides:plain-v2"], { tags: ["content", "page-routing"] });
+}, ["editorial:overrides:plain-v3"], { tags: ["content", "page-routing"] });

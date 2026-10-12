@@ -115,7 +115,7 @@ const getCottageCatalog = unstable_cache(
       return SEED_COTTAGES;
     }
   },
-  ["cms:cottages:v6"],
+  ["cms:cottages:v7"],
   { tags: ["cottages"] }
 );
 
@@ -145,7 +145,7 @@ export const getAllEvents = unstable_cache(
       return SEED_EVENTS;
     }
   },
-  ["cms:events:v5"],
+  ["cms:events:v6"],
   { tags: ["events"] }
 );
 
@@ -172,7 +172,7 @@ export const getVisitOptions = unstable_cache(
       return SEED_VISIT_OPTIONS;
     }
   },
-  ["cms:visit-options:v3"],
+  ["cms:visit-options:v4"],
   { tags: ["visit-options"] }
 );
 
@@ -193,7 +193,7 @@ export const getPartners = unstable_cache(
       return SEED_PARTNERS;
     }
   },
-  ["cms:partners:plain-v2"],
+  ["cms:partners:plain-v3"],
   { tags: ["partners"] }
 );
 
@@ -220,7 +220,7 @@ export const getPublishedBlogs = unstable_cache(
       return [];
     }
   },
-  ["cms:blogs:plain-v3"],
+  ["cms:blogs:plain-v4"],
   { tags: ["blogs"] }
 );
 
@@ -244,7 +244,7 @@ export const getContent = unstable_cache(
       return fallback;
     }
   },
-  ["cms:content:plain-v2"],
+  ["cms:content:plain-v3"],
   { tags: ["content"] }
 );
 
@@ -280,7 +280,7 @@ export const getBuilderPages = unstable_cache(
       return [];
     }
   },
-  ["cms:pages:plain-v2"],
+  ["cms:pages:plain-v3"],
   { tags: ["pages"] },
 );
 
@@ -309,6 +309,6 @@ export const getPublishedPage = unstable_cache(
       return null;
     }
   },
-  ["cms:page:plain-v2"],
+  ["cms:page:plain-v3"],
   { tags: ["pages"] },
 );
