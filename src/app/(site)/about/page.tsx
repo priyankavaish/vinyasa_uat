@@ -1,7 +1,6 @@
 
 import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
-import { mudhouseText } from "@/lib/mudhouse-wording";
 import Link from "next/link";
 import { defaults as editorialDefaults, previousConstructionParagraphs, previousValues, previousFounderParagraphs, previousFounderPullquote } from "@/lib/editorial/defaults/app__site__about_page";
 import { getEditorial } from "@/lib/editorial/server";
@@ -29,7 +28,7 @@ export default async function AboutPage() {
   const constructionParagraphs = content.construction_paragraphs.map((paragraph) => {
     const previous = previousConstructionParagraphs.find((item) => item.label === paragraph.label);
     const updated = editorialDefaults.construction_paragraphs.find((item) => item.label === paragraph.label);
-    return updated && (previous?.body === paragraph.body || mudhouseText(updated.body) === paragraph.body) ? { ...paragraph, body: updated.body } : paragraph;
+    return updated && (previous?.body === paragraph.body || updated.body === paragraph.body) ? { ...paragraph, body: updated.body } : paragraph;
   });
   const founderParagraphs = JSON.stringify(content.founder_paragraphs) === JSON.stringify(previousFounderParagraphs)
     ? editorialDefaults.founder_paragraphs : content.founder_paragraphs;

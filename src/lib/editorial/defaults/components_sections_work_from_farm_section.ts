@@ -17,7 +17,7 @@ export const defaults = {
 "text_3": "at Vinyasa",
 "text_4": "Step away from the work-from-home routine without stepping away from work — laptop in hand, among mudhouses and open skies, close to Jaipur but far from its rush.",
 "text_5": "0",
-"href_6": "/contact#contact-form",
+"href_6": "/book",
 "text_7": "Plan your work stay",
 "href_8": "/work-from-farm",
 "text_9": "Learn more",

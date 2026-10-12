@@ -4,9 +4,7 @@ import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__book_page";
 import { getEditorial } from "@/lib/editorial/server";
 import { Suspense } from "react";
-import Link from "next/link";
-import Image from "@/components/editorial/image";
-import BookingForm from "@/components/forms/booking-form";
+import StayBooking from "@/components/forms/stay-booking";
 import { getCottages } from "@/lib/cms";
 import styles from "./booking.module.css";
 
@@ -19,19 +17,27 @@ export default async function BookPage() {
   const cottages = await getCottages();
   return <section className={styles.page} aria-labelledby="booking-heading">
     <div className={styles.heading}>
-      <div className={styles.intro}><p className="eyebrow"><FormattedText value={content.eyebrow_1} /> &middot; Vinyasa Earth</p><h1 id="booking-heading" className="font-display"><FormattedText value={content.title_2} /></h1><p>Select your stay option and dates. Your total includes 18% GST.</p></div>
+      <div className={styles.intro}><p className="eyebrow"><FormattedText value={content.eyebrow_1} /> &middot; Vinyasa Earth</p><h1 id="booking-heading" className="font-display"><FormattedText value={content.title_2} /></h1><p><FormattedText value={content.intro} /></p></div>
       <div className={styles.location}>
         <div><p>Maheshwas &middot; Jaipur</p><span>Mudhouses &middot; Tents &middot; Dorms</span></div>
       </div>
     </div>
     <div className={styles.layout}>
-      <div id="stay-booking" className={styles.form}><Suspense fallback={<p className="text-sm text-foreground-soft">Loading booking form...</p>}><BookingForm mode="stay" cottages={cottages} events={[]} /></Suspense></div>
-      <aside className={styles.aside}>
-        <div className={styles.photo}><Image src={content.image_3} alt={content.imageAlt_4} fill priority quality={80} sizes="(min-width: 1024px) 330px, 90vw" className={styles.image} /></div>
-        <h2 className="font-display">A little room to simply be.</h2>
-        <p className={styles.description}>Hand-built mudhouses, open skies, and unhurried mornings at Vinyasa Earth, Jaipur.</p>
-        <Link href="/stays" className={styles.explore}>Explore our stays <span aria-hidden="true">↗</span></Link>
-      </aside>
+      <Suspense fallback={<p className="text-sm text-foreground-soft">Loading booking form...</p>}>
+        <StayBooking cottages={cottages} content={{
+          nameLabel: content.nameLabel, guestsLabel: content.guestsLabel, stayTypeLabel: content.stayTypeLabel, dateLabel: content.dateLabel,
+          phoneLabel: content.phoneLabel, phoneHint: content.phoneHint, emailLabel: content.emailLabel,
+          reserveLabel: content.reserveLabel, reserveOptions: content.reserveOptions,
+          intentionLabel: content.intentionLabel, intentionOptions: content.intentionOptions,
+          submitLabel: content.submitLabel, sendingLabel: content.sendingLabel,
+          successTitle: content.successTitle, successMessage: content.successMessage, closeLabel: content.closeLabel,
+          searchTitle: content.searchTitle, checkInLabel: content.checkInLabel, checkOutLabel: content.checkOutLabel,
+          adultsLabel: content.adultsLabel, childrenLabel: content.childrenLabel, roomsLabel: content.roomsLabel,
+          searchButton: content.searchButton, resultsTitle: content.resultsTitle, resultsSearchedTitle: content.resultsSearchedTitle,
+          noResults: content.noResults, availableLabel: content.availableLabel, soldOutLabel: content.soldOutLabel,
+          whatsappLabel: content.whatsappLabel, whatsappMessage: content.whatsappMessage, guestsUnit: content.guestsUnit, enquiryTitle: content.enquiryTitle, enquiryText: content.enquiryText,
+        }} />
+      </Suspense>
     </div>
   </section>;
 }

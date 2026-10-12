@@ -1,4 +1,3 @@
-import { mudhouseContent } from "@/lib/mudhouse-wording";
 import { unstable_cache } from "next/cache";
 import { like } from "drizzle-orm";
 import { getDb, hasDb } from "@/lib/db";
@@ -11,11 +10,11 @@ export const getEditorialOverrides = unstable_cache(async (): Promise<EditorialO
   if (!hasDb()) return {};
   try {
   const rows = await getDb().select().from(siteContent).where(like(siteContent.key, "editorial:%"));
-  const values = Object.fromEntries(rows.map(row => [row.key.slice(10), mudhouseContent(row.value)]));
+  const values = Object.fromEntries(rows.map(row => [row.key.slice(10), row.value]));
   const settings = await getPageSettings();
   if (!Object.keys(settings).length) return values;
   const headerKey = "components/layout/site-header";
   values[headerKey] = mergeEditorial(headerDefaults, values[headerKey]);
   return Object.fromEntries(Object.entries(values).map(([key, value]) => [key, applyPageLinks(value, settings, key === headerKey || key === "components/layout/site-footer")]));
   } catch { return {}; }
-}, ["editorial:overrides:mudhouse-v1"], { tags: ["content", "page-routing"] });
+}, ["editorial:overrides:plain-v3"], { tags: ["content", "page-routing"] });

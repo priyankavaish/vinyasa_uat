@@ -26,7 +26,7 @@ export type Booking = {
 
 export type Lead = {
   id: string;
-  source: "contact" | "corporate" | "newsletter" | "volunteer" | "artist-escape" | "artist-residence" | "artist-unite" | "organizer";
+  source: "contact" | "corporate" | "newsletter" | "volunteer" | "artist-escape" | "artist-residence" | "artist-unite" | "organizer" | "stay-enquiry";
   name: string;
   email: string;
   phone?: string;

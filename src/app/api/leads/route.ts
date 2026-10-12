@@ -38,7 +38,9 @@ export async function POST(req: NextRequest) {
       name: data.source === "volunteer" || data.source === "artist-residence" || data.source === "artist-unite" ? [data.name, data.lastName].filter(Boolean).join(" ") : data.name,
       email: data.email,
       phone: data.phone,
-      message: data.source === "organizer"
+      message: data.source === "stay-enquiry"
+        ? `Stay enquiry\nStay: ${data.stayType}\nDate to check: ${data.checkInDate}${data.checkOutDate ? ` to ${data.checkOutDate}` : ""}\nGuests: ${data.guests}${data.rooms ? ` (rooms: ${data.rooms})` : ""}\nReservation preference: ${data.reservePreference}\nIntention of visit: ${data.intentions?.length ? data.intentions.join(", ") : "Not specified"}`
+        : data.source === "organizer"
         ? `Organizer enquiry\nProgram type: ${data.programType}`
         : data.source === "artist-unite"
         ? `Artist Unite application\nArtform: ${data.artPractice}\nPortfolio / URL: ${data.portfolio}`

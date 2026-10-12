@@ -197,7 +197,7 @@ const content = {
     "Up to 15 nights: Book directly online",
     "More than 15 nights: Send an enquiry"
   ],
-  "href_22": "/contact#contact-form",
+  "href_22": "/book",
   "text_23": "Check Availability & Book",
   "text_24": "Enquire For A Longer Stay"
 };
