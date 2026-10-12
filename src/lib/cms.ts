@@ -1,7 +1,6 @@
 import { ensureArtistResidencyEvent, ensureMuseEvent } from "@/lib/db/event-catalog";
 import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import { getStayInventory } from "@/lib/stay-inventory";
-import { mudhouseContent, mudhouseText } from "./mudhouse-wording";
 import { unstable_cache, unstable_noStore } from "next/cache";
 import { isEventActive } from "@/lib/event-dates";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
@@ -58,21 +57,21 @@ function rowToCottage(r: t.CottageRow): Cottage {
   );
   return {
     slug: r.slug,
-    name: mudhouseText(r.name),
-    element: mudhouseText(r.element),
-    tagline: mudhouseText(r.tagline),
+    name: r.name,
+    element: r.element,
+    tagline: r.tagline,
     description: defaults && (!r.description || r.description === legacy?.description)
-      ? defaults.description : mudhouseText(r.description),
+      ? defaults.description : r.description,
     icon: r.icon,
     accent: r.accent,
     pricePerNight: r.pricePerNight,
     maxGuests: defaults && r.maxGuests === legacy?.maxGuests ? defaults.maxGuests : r.maxGuests,
     amenities: defaults && (!(r.amenities ?? []).length || JSON.stringify(r.amenities) === JSON.stringify(legacy?.amenities))
-      ? defaults.amenities : mudhouseContent(r.amenities ?? []),
+      ? defaults.amenities : r.amenities ?? [],
     image: toWebPath(r.imageUrl) || defaults?.image || "/seed/room-agni-1.jpg",
     gallery: usesSeedGallery && defaults ? defaults.gallery
       : gallery.length ? gallery : [toWebPath(r.imageUrl)].filter(Boolean),
-    bodyHtml: mudhouseText(r.bodyHtml || "") || defaults?.bodyHtml || undefined,
+    bodyHtml: r.bodyHtml || defaults?.bodyHtml || undefined,
     placeholder: false,
   };
 }
@@ -80,16 +79,16 @@ function rowToCottage(r: t.CottageRow): Cottage {
 function rowToEvent(r: t.EventRow): EventProgram {
   return {
     slug: r.slug,
-    name: mudhouseText(r.name),
+    name: r.name,
     kind: (r.kind as EventProgram["kind"]) ?? "retreat",
     durationLabel: r.durationLabel,
     priceFrom: r.priceFrom,
-    description: mudhouseText(r.description),
+    description: r.description,
     placeholder: false,
     dateLabel: r.dateLabel || undefined,
     facilitator: r.facilitator || undefined,
     image: toWebPath(r.imageUrl) || undefined,
-    bodyHtml: mudhouseText(r.bodyHtml || "") || undefined,
+    bodyHtml: r.bodyHtml || undefined,
   };
 }
 
@@ -168,7 +167,7 @@ export const getVisitOptions = unstable_cache(
     if (!hasDb()) return SEED_VISIT_OPTIONS;
     try {
       const rows = await getDb().select().from(t.visitOptions).orderBy(asc(t.visitOptions.sort));
-      return rows.map((r) => ({ title: mudhouseText(r.title), description: mudhouseText(r.description), image: toWebPath(r.imageUrl) }));
+      return rows.map((r) => ({ title: r.title, description: r.description, image: toWebPath(r.imageUrl) }));
     } catch {
       return SEED_VISIT_OPTIONS;
     }
@@ -184,9 +183,9 @@ export const getPartners = unstable_cache(
       const rows = await getDb().select().from(t.partners).orderBy(asc(t.partners.sort));
       return rows.length
         ? rows.map((r) => ({
-            name: mudhouseText(r.name),
+            name: r.name,
             logo: r.logoUrl,
-            description: mudhouseText(r.description),
+            description: r.description,
             link: r.link,
           }))
         : SEED_PARTNERS;
@@ -194,7 +193,7 @@ export const getPartners = unstable_cache(
       return SEED_PARTNERS;
     }
   },
-  ["cms:partners:mudhouse-v1"],
+  ["cms:partners:plain-v2"],
   { tags: ["partners"] }
 );
 
@@ -211,17 +210,17 @@ export const getPublishedBlogs = unstable_cache(
       return rows.map(({ post: r, settings }) => ({
         ...readBlogSettings(settings),
         slug: r.slug,
-        title: mudhouseText(r.title),
-        excerpt: mudhouseText(r.excerpt),
+        title: r.title,
+        excerpt: r.excerpt,
         coverUrl: r.coverUrl,
-        bodyHtml: mudhouseText(r.bodyHtml),
+        bodyHtml: r.bodyHtml,
         publishedAt: r.publishedAt ? r.publishedAt.toISOString() : null,
       }));
     } catch {
       return [];
     }
   },
-  ["cms:blogs:mudhouse-v2"],
+  ["cms:blogs:plain-v3"],
   { tags: ["blogs"] }
 );
 
@@ -240,12 +239,12 @@ export const getContent = unstable_cache(
         .from(t.siteContent)
         .where(eq(t.siteContent.key, key))
         .limit(1);
-      return row ? mudhouseContent(row.value as T) : fallback;
+      return row ? row.value as T : fallback;
     } catch {
       return fallback;
     }
   },
-  ["cms:content:mudhouse-v1"],
+  ["cms:content:plain-v2"],
   { tags: ["content"] }
 );
 
@@ -270,18 +269,18 @@ export const getBuilderPages = unstable_cache(
       return rows.map((r) => ({
         id: r.id,
         slug: r.slug,
-        title: mudhouseText(r.title),
+        title: r.title,
         layout: r.layout,
         status: r.status === "published" ? "published" : "draft",
-        blocks: mudhouseContent((r.blocks ?? []) as unknown[]),
-        seoTitle: mudhouseText(r.seoTitle),
-        seoDescription: mudhouseText(r.seoDescription),
+        blocks: (r.blocks ?? []) as unknown[],
+        seoTitle: r.seoTitle,
+        seoDescription: r.seoDescription,
       }));
     } catch {
       return [];
     }
   },
-  ["cms:pages:mudhouse-v1"],
+  ["cms:pages:plain-v2"],
   { tags: ["pages"] },
 );
 
@@ -299,17 +298,17 @@ export const getPublishedPage = unstable_cache(
       return {
         id: r.id,
         slug: r.slug,
-        title: mudhouseText(r.title),
+        title: r.title,
         layout: r.layout,
         status: r.status === "published" ? "published" : "draft",
-        blocks: mudhouseContent((r.blocks ?? []) as unknown[]),
-        seoTitle: mudhouseText(r.seoTitle),
-        seoDescription: mudhouseText(r.seoDescription),
+        blocks: (r.blocks ?? []) as unknown[],
+        seoTitle: r.seoTitle,
+        seoDescription: r.seoDescription,
       };
     } catch {
       return null;
     }
   },
-  ["cms:page:mudhouse-v1"],
+  ["cms:page:plain-v2"],
   { tags: ["pages"] },
 );
