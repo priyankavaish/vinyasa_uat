@@ -110,8 +110,10 @@
   .eventsHero .eyebrow { font-size: 11px; }
   .eventsHero .controls { justify-content: flex-start; border: 0; padding: 0; margin: 0; }
   .eventsHero .controls button { min-height: 38px; min-width: 38px; }
-  .eventsHero .track { height: auto; }
-  .eventsHero .slide { width: 76%; height: 87%; }
+  /* Show each event image in a wide landscape frame instead of a tall crop. */
+  .eventsHero { height: auto; min-height: 0; }
+  .eventsHero .track { flex: none; height: 62vw; min-height: 200px; }
+  .eventsHero .slide { width: 76%; height: auto; aspect-ratio: 16 / 10; }
   .eventsHero .slide[data-active="true"] { width: 88%; }
   .eventsHero .caption { inset: auto 0 0; gap: 6px; padding: 50px 17px 18px; }
   .eventsHero .captionMeta { font-size: 13px; }
