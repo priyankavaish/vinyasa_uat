@@ -19,7 +19,7 @@ export const bookingRequestSchema = z.object({
 export type BookingRequest = z.infer<typeof bookingRequestSchema>;
 
 export const leadSchema = z.object({
-  source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape", "artist-residence", "artist-unite", "organizer"]),
+  source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry"]),
   name: z.string({ required_error: "Please enter your name.", invalid_type_error: "Please enter your name." }).trim().max(121, "Please keep your name under 122 characters."),
   email: z.string({ required_error: "Please enter your email address.", invalid_type_error: "Please enter a valid email address." }).trim().min(1, "Please enter your email address.").email("Please enter a valid email address, like name@example.com.").max(150, "Please keep your email address under 151 characters."),
   phone: z
@@ -38,6 +38,13 @@ export const leadSchema = z.object({
   researchInquiry: z.string().trim().max(4000, "Please keep your research enquiry under 4,001 characters.").optional(),
   volunteeringDates: z.array(z.string().date("Please select a valid volunteering date.")).optional(),
   whatsapp: z.string().trim().max(20, "Please enter a WhatsApp number with no more than 20 characters.").regex(/^[0-9+\-\s()]*$/, "Please enter a valid WhatsApp number.").optional().or(z.literal("")),
+  guests: z.string().trim().max(4).optional(),
+  stayType: z.string().trim().max(150).optional(),
+  checkInDate: z.string().trim().max(20).optional(),
+  checkOutDate: z.string().trim().max(20).optional(),
+  rooms: z.string().trim().max(3).optional(),
+  reservePreference: z.string().trim().max(100).optional(),
+  intentions: z.array(z.string().trim().max(60)).max(8).optional(),
   programType: z.string().trim().max(100).optional(),
   volunteeringType: z.string().trim().max(100).optional().or(z.literal("")),
 }).superRefine((data, ctx) => {
@@ -54,6 +61,14 @@ export const leadSchema = z.object({
     if (data.source === "artist-unite" && !data.lastName) required("lastName", "Please enter your last name.");
     if (data.source === "artist-residence" && !data.country) required("country", "Please select your country.");
     if (data.source === "artist-residence" && !data.researchInquiry) required("researchInquiry", "Please briefly describe your research or enquiry.");
+  }
+  if (data.source === "stay-enquiry") {
+    if (!data.phone || data.phone.replace(/[^0-9]/g, "").length < 7) required("phone", "Please enter a valid contact number.");
+    const guests = Number(data.guests);
+    if (!data.guests || !Number.isInteger(guests) || guests < 1 || guests > 50) required("guests", "Please enter the number of guests.");
+    if (!data.stayType) required("stayType", "Please select a stay type.");
+    if (!data.checkInDate || !/^\d{4}-\d{2}-\d{2}$/.test(data.checkInDate) || Number.isNaN(Date.parse(data.checkInDate))) required("checkInDate", "Please choose the date you want to check availability for.");
+    if (!data.reservePreference) required("reservePreference", "Please choose how you would like to reserve.");
   }
   if (data.source === "organizer") {
     if (!data.programType) required("programType", "Please select a program type.");
