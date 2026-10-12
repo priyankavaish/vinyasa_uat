@@ -69,12 +69,9 @@
 }
 @media (max-width: 359px) { .title { font-size: 30px; } }
 
-/* Keep event copy over a landscape image without cropping the source. */
-.hero.heroLandscape { display: flex; height: auto; min-height: 0; aspect-ratio: 16 / 9; }
-.heroLandscape > img { object-fit: contain; }
-.heroLandscape .content { padding-block: 32px; }
+/* Event hero sizing adjustments apply only to mobile. */
 @media (max-width: 639px) {
-  .hero.heroLandscape { aspect-ratio: 3 / 2; min-height: 280px; }
+  .hero.heroLandscape { display: flex; height: auto; aspect-ratio: 3 / 2; min-height: 280px; }
   .heroLandscape > img { object-fit: cover; }
   .heroLandscape .content { padding: 20px 16px; }
   .heroLandscape .eyebrow { margin-bottom: 8px; font-size: 10px; }
