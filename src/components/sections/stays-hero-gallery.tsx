@@ -28,11 +28,13 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
   const cards = useRef<(HTMLAnchorElement | null)[]>([]);
   const position = useRef(photos.length > 4 ? 2 : 0);
   const current = useRef(position.current);
+  const resumeAt = useRef(0);
   const [active, setActive] = useState(position.current);
 
   const [compact, setCompact] = useState(false);
   const visibleRange = isEvents ? (compact ? 1.65 : 1.8) : (compact ? 1.5 : 2.5);
   const [focused, setFocused] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const [reduced, setReduced] = useState(true);
   const [hidden, setHidden] = useState(false);
 
@@ -95,12 +97,19 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
 
   useEffect(() => {
     paint();
-    if (photos.length < 2 || focused || reduced || hidden) return;
+    if (photos.length < 2 || focused || hovered || reduced || hidden) return;
     let frame = 0;
     let last = 0;
     let elapsed = 0;
     let previousProgress = 0;
     const tick = (time: number) => {
+      if (time < resumeAt.current) {
+        last = 0;
+        elapsed = 0;
+        previousProgress = 0;
+        frame = requestAnimationFrame(tick);
+        return;
+      }
       if (last) {
         const delta = Math.min(time - last, 50);
         if (isEvents) {
@@ -108,7 +117,7 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
           const cycle = Math.floor(elapsed / 2800);
           const glide = Math.max(0, (elapsed % 2800 - 1800) / 1000);
           const progress = cycle + (1 - Math.cos(Math.PI * glide)) / 2;
-          position.current = (position.current - (progress - previousProgress) + photos.length) % photos.length;
+          position.current = (position.current + (progress - previousProgress) + photos.length) % photos.length;
           previousProgress = progress;
         } else {
           position.current = (position.current + delta / 5000) % photos.length;
@@ -120,20 +129,24 @@ export default function StaysHeroGallery({ photos, variant = "stays" }: { photos
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [photos.length, focused, reduced, hidden, compact, isEvents]);
+  }, [photos.length, focused, hovered, reduced, hidden, compact, isEvents]);
 
   function move(direction: number) {
-    position.current = (Math.round(position.current) + direction + photos.length) % photos.length;
+    if (photos.length < 2) return;
+    resumeAt.current = performance.now() + 5000;
+    position.current = (current.current + direction + photos.length) % photos.length;
     paint();
   }
 
   if (!photos.length) return null;
   return (
-    <section ref={hero} data-hero className={`${styles.hero} ${isEvents ? styles.eventsHero : ""}`} aria-label={isEvents ? content.text_1 : content.text_2} aria-roledescription="carousel">
+    <section ref={hero} data-hero className={`${styles.hero} ${isEvents ? styles.eventsHero : ""}`} aria-label={isEvents ? content.text_1 : content.text_2} aria-roledescription="carousel"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}>
       <div className={styles.container}>
-        <div className={styles.track}
-          onFocusCapture={() => setFocused(true)}
-          onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}>
+        <div className={styles.track}>
           {photos.map((photo, index) => {
             const d = distance(index, photos.length > 4 ? 2 : 0, photos.length);
             const visible = d >= -visibleRange && d < visibleRange;
