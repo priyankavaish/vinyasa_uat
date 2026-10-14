@@ -99,7 +99,7 @@
 .eventsHero .imageLayer { inset: 0; transform: none; }
 /* Keep desktop posters fully visible within the existing uniform card frames. */
 @media (min-width: 640px) {
-  .eventsHero .slide { height: 83%; }
+  .eventsHero { min-height: 572px; height: min(calc(100svh - 48px), 852px); }
   .eventsHero .image { object-fit: fill; }
 }
 .eventsHero .controls { padding-bottom: 10px; gap: 8px; }
