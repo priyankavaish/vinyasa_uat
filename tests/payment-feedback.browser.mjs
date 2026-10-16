@@ -23,7 +23,7 @@ try {
   await cp("next.config.mjs", path.join(folder, "next.config.mjs"));
   await symlink(path.resolve("node_modules"), path.join(folder, "node_modules"), "junction");
   await symlink(path.resolve("public"), path.join(folder, "public"), "junction");
-  server = spawn(process.execPath, [path.resolve("node_modules/next/dist/bin/next"), "start", "-p", "3196"], { cwd: folder, env: { ...process.env, DATABASE_URL: `pglite:${path.join(folder, "db")}`, SESSION_SECRET: "test-only-session", RAZORPAY_KEY_ID: "rzp_test_browser", RAZORPAY_KEY_SECRET: "test-only-callback-secret" }, stdio: "pipe" });
+  server = spawn(process.execPath, [path.resolve("node_modules/next/dist/bin/next"), "start", "-p", "3196"], { cwd: folder, env: { ...process.env, DATABASE_URL: `pglite:${path.join(folder, "db")}`, SESSION_SECRET: "test-only-session", RAZORPAY_KEY_ID: "", RAZORPAY_KEY_SECRET: "test-only-callback-secret" }, stdio: "pipe" });
   server.stdout.on("data", chunk => output += chunk); server.stderr.on("data", chunk => output += chunk);
   let ready = false;
   for (let i = 0; i < 60; i++) {
@@ -67,9 +67,9 @@ try {
     const dialog = page.locator("dialog[open]"); await dialog.waitFor();
     if (mode === "success") await dialog.getByText("Thank you, payment received.", { exact: true }).waitFor();
     else {
-      await dialog.getByText("Payment not completed", { exact: true }).waitFor();
+      await dialog.getByText(mode === "failed" ? "Payment failed" : mode === "cancelled" ? "Payment cancelled" : "Payment confirmation pending", { exact: true }).waitFor();
       const message = await dialog.textContent();
-      assert.match(message, mode === "failed" ? /Payment failed/ : mode === "cancelled" ? /cancelled/ : /could not confirm/);
+      assert.match(message, mode === "failed" ? /could not be completed/ : mode === "cancelled" ? /cancelled/ : /could not confirm/);
     }
     await dialog.getByRole("button", { name: "Close", exact: true }).click();
     assert.equal(await page.locator("dialog[open]").count(), 0);
@@ -78,7 +78,7 @@ try {
   }
   const params = new URLSearchParams({ razorpay_payment_link_id: "plink_test", razorpay_payment_link_reference_id: "", razorpay_payment_link_status: "paid", razorpay_payment_id: "pay_test" });
   params.set("razorpay_signature", createHmac("sha256", "test-only-callback-secret").update("plink_test||paid|pay_test").digest("hex"));
-  for (const [query, title] of [[params.toString(), "Thank you, payment received."], ["payment=success", "Payment confirmation pending"], ["payment=failed", "Payment not completed"], ["payment=cancelled", "Payment cancelled"]]) {
+  for (const [query, title] of [[params.toString(), "Payment confirmation pending"], ["payment=success", "Payment confirmation pending"], ["payment=failed", "Payment failed"], ["payment=cancelled", "Payment cancelled"]]) {
     await page.goto(base + "/contact?" + query);
     const dialog = page.locator("dialog[open]");
     await dialog.getByText(title, { exact: true }).waitFor();

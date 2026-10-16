@@ -88,3 +88,13 @@ export function verifyPaymentLinkSignature(params: URLSearchParams): boolean {
   const expected = createHmac("sha256", secret).update(payload).digest();
   return timingSafeEqual(expected, Buffer.from(signature, "hex"));
 }
+
+export async function fetchRazorpayPayment(paymentId: string) {
+  if (!/^pay_[a-zA-Z0-9]+$/.test(paymentId) || !hasRealKeys()) throw new Error("Payment service is not configured.");
+  const response = await fetch(`${RAZORPAY_API}/payments/${encodeURIComponent(paymentId)}`, {
+    headers: { Authorization: "Basic " + Buffer.from(`${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`).toString("base64") },
+    cache: "no-store", signal: AbortSignal.timeout(10000),
+  });
+  if (!response.ok) throw new Error("Payment could not be confirmed.");
+  return response.json();
+}

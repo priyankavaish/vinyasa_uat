@@ -1,3 +1,4 @@
+import PaymentWebhookHelp from "@/components/admin/payment-webhook-help";
 import NotificationRecipientsEditor from "@/components/admin/notification-recipients-editor";
 import { getNotificationRouting } from "@/lib/notification-routing-store";
 import { getEmailSummary } from "@/lib/email-notifications";
@@ -17,6 +18,7 @@ export default async function AdminSettingsPage() {
 
       <NotificationRecipientsEditor routing={routing} />
       <EmailSettings summary={emailSummary} />
+      <PaymentWebhookHelp configured={!!process.env.RAZORPAY_WEBHOOK_SECRET} />
       <div className="mt-6 rounded-lg border border-line bg-white p-6">
         <h2 className="font-display text-xl italic">Change password</h2>
         <ChangePasswordForm />

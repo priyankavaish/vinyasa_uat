@@ -7,9 +7,11 @@ import { siteContent, leads } from "@/lib/db/schema";
 import { getBooking, type Booking, type Lead } from "@/lib/store";
 import { getNotificationRouting } from "@/lib/notification-routing-store";
 import { type NotificationRecipients } from "@/lib/notification-routing";
+import { paymentEmailContent, type PaymentReceipt } from "@/lib/payment-email-content";
 import { SITE_ORIGIN } from "@/lib/site";
 export const EMAIL_CONFIG_KEY = "email-notifications:config";
-export type EmailKind = "lead" | "booking" | "payment";
+export type EmailKind = "lead" | "booking" | "payment" | "payment-customer" | "payment-receipt" | "payment-receipt-customer";
+type EmailEntry = Lead | Booking | PaymentReceipt;
 export type EmailConfig = { provider: "gmail" | "smtp" | "resend"; sender: string; host: string; port: number; user: string; secret: string; siteUrl?: string };
 export type EmailState = { kind: EmailKind; entryId: string; state: "sending" | "sent" | "failed" | "unconfigured"; updatedAt: string; error?: string };
 function key() {
@@ -60,7 +62,8 @@ export async function sendNotificationEmail(config: EmailConfig, subject: string
  const routing = await getNotificationRouting();
  return sendEmail(config, routing.defaults, subject, text, replyTo, idempotencyKey);
 }
-function messageFor(kind: EmailKind, entry: Lead | Booking, origin: string) {
+function messageFor(kind: EmailKind, entry: EmailEntry, origin: string) {
+ if (kind.startsWith("payment")) return { ...paymentEmailContent(entry as Booking | PaymentReceipt, kind.endsWith("customer")), replyTo: (entry as Booking | PaymentReceipt).guestEmail || undefined };
  const url = new URL(kind === "lead" ? "/admin/contact" : "/admin/bookings", origin).toString();
  if (kind === "lead") {
   const lead = entry as Lead;
@@ -69,7 +72,12 @@ function messageFor(kind: EmailKind, entry: Lead | Booking, origin: string) {
  const booking = entry as Booking;
  return { subject: "Vinyasa Earth: " + (kind === "payment" ? "payment confirmed" : "new booking") + " (" + booking.type + ")", replyTo: booking.guestEmail, text: ["Reference: " + booking.id, "Type: " + booking.type, "Stay / event: " + booking.itemSlug, "Guest: " + booking.guestName, "Email: " + booking.guestEmail, "Phone: " + booking.guestPhone, "Guests: " + booking.guests, "Check-in: " + (booking.checkIn || "—"), "Check-out: " + (booking.checkOut || "—"), "Event date: " + (booking.eventDate || "—"), "Total including GST: INR " + booking.amount.toFixed(2), "Payment status: " + booking.status, "Order: " + (booking.razorpayOrderId || "—"), "", "View entry: " + url].join("\n") };
 }
-export async function notifyEntry(kind: EmailKind, entry: Lead | Booking) {
+export async function notifyEntry(kind: EmailKind, entry: EmailEntry) {
+ if (kind.startsWith("payment") && "status" in entry && entry.status !== "paid") return;
+ const kinds: EmailKind[] = kind === "payment" ? ["payment", "payment-customer"] : kind === "payment-receipt" ? ["payment-receipt", "payment-receipt-customer"] : [kind];
+ await Promise.all(kinds.map(next => deliverNotification(next, entry)));
+}
+async function deliverNotification(kind: EmailKind, entry: EmailEntry) {
  const notificationKey = "notification:" + kind + ":" + entry.id;
  let claimed = false;
  try {
@@ -84,8 +92,15 @@ export async function notifyEntry(kind: EmailKind, entry: Lead | Booking) {
   if (!config) { state.state = "unconfigured"; state.error = "Email setup is required in Settings."; }
   else {
    const mail = messageFor(kind, entry, config.siteUrl || SITE_ORIGIN);
-   try { await sendNotificationEmail(config, mail.subject, mail.text, mail.replyTo, notificationKey); state.state = "sent"; }
-   catch { state.state = "failed"; state.error = "Delivery failed. Check email settings and retry."; }
+   try {
+    if (kind.endsWith("customer")) {
+      const email = (entry as Booking | PaymentReceipt).guestEmail;
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Customer email is missing.");
+      await sendAccountEmail(config, email, mail.subject, mail.text, config.sender, notificationKey);
+    } else await sendNotificationEmail(config, mail.subject, mail.text, mail.replyTo, notificationKey);
+    state.state = "sent";
+   }
+   catch { state.state = "failed"; state.error = kind.endsWith("customer") && !(entry as Booking | PaymentReceipt).guestEmail ? "Customer email is missing from this payment. Admin delivery is tracked separately." : "Delivery failed. Check email settings and retry."; }
   }
   state.updatedAt = new Date().toISOString();
   await getDb().update(siteContent).set({ value: state, updatedAt: new Date() }).where(eq(siteContent.key, notificationKey));
@@ -95,6 +110,11 @@ export async function notifyEntry(kind: EmailKind, entry: Lead | Booking) {
  }
 }
 export async function retryNotification(kind: EmailKind, id: string) {
+ if (kind.startsWith("payment-receipt")) {
+  const [row] = await getDb().select().from(siteContent).where(eq(siteContent.key, "payment-receipt:" + id)).limit(1);
+  if (!row) throw new Error("Payment receipt no longer exists.");
+  await notifyEntry(kind, row.value as PaymentReceipt); return;
+ }
  const entry = kind === "lead" ? (await getDb().select().from(leads).where(eq(leads.id, id)).limit(1))[0] : await getBooking(id);
  if (!entry) throw new Error("Entry no longer exists.");
  await notifyEntry(kind, kind === "lead" ? { ...entry, createdAt: (entry as typeof leads.$inferSelect).createdAt.toISOString() } as Lead : entry as Booking);

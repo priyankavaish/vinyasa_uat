@@ -171,3 +171,13 @@ export async function ensureBookingCurrencyPrecision() {
   }
   await upgrade;
 }
+
+export async function getBookingByOrderId(orderId: string): Promise<Booking | null> {
+  const [row] = await getDb().select().from(bookingsTable).where(eq(bookingsTable.razorpayOrderId, orderId)).limit(1);
+  return row ? toBooking(row) : null;
+}
+
+export async function getBookingByPaymentId(paymentId: string): Promise<Booking | null> {
+  const [row] = await getDb().select().from(bookingsTable).where(and(eq(bookingsTable.razorpayPaymentId, paymentId),eq(bookingsTable.status,"paid"))).limit(1);
+  return row ? toBooking(row) : null;
+}
