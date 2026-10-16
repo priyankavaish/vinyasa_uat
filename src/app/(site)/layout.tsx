@@ -1,3 +1,4 @@
+import UatPaymentLinks from "@/components/layout/uat-payment-links";
 import { EditorialProvider } from "@/components/editorial/provider";
 import { getEditorialOverrides } from "@/lib/editorial/overrides";
 import type { ReactNode } from "react";
@@ -17,6 +18,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       <SiteFooter />
       <WhatsappButton />
       <PaymentReturnDialog />
+      {process.env.UAT_MODE === "true" && <UatPaymentLinks />}
     </EditorialProvider>
   );
 }

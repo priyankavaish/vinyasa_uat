@@ -13,3 +13,5 @@ data/*.jsonl
 
 # locally uploaded media (served via /media/[name])
 /uploads/
+.vercel
+.env*

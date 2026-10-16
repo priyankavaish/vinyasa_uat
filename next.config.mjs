@@ -14,6 +14,9 @@ const nextConfig = {
       { protocol: "https", hostname: "vinyasa.earth" },
     ],
   },
+  async headers() {
+    return process.env.UAT_MODE === "true" ? [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }] }] : [];
+  },
   async redirects() {
     // /corporate was renamed to /volunteering — keep old links/bookmarks working.
     return [{ source: "/corporate", destination: "/volunteering", permanent: true }];

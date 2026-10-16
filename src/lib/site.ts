@@ -1,4 +1,4 @@
-export const SITE_ORIGIN = process.env.SITE_ORIGIN || "https://vinyasa-seven.vercel.app";
+export const SITE_ORIGIN = process.env.SITE_ORIGIN || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://vinyasa-seven.vercel.app");
 export const SITE_NAME = "Vinyasa Earth";
 export const WHATSAPP_NUMBER = "917737607227"; // +91 77376 07227, published contact number
 export const CONTACT_EMAIL = "vinyasa.ashram@gmail.com";
