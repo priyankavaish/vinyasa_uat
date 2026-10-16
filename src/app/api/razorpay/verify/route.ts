@@ -30,22 +30,24 @@ export async function POST(req: NextRequest) {
   // match it exactly.
   if (razorpay_order_id !== booking.razorpayOrderId) {
     console.warn("[api/razorpay/verify] order id mismatch", { bookingId, got: razorpay_order_id });
-    await updateBookingStatus(bookingId, "failed");
     return NextResponse.json({ error: "Payment could not be verified." }, { status: 400 });
   }
 
-  if (booking.status === "paid") return NextResponse.json({ booking });
-
   const isMockOrder = booking.razorpayOrderId?.startsWith("order_mock") ?? false;
+
+  if (isMockOrder && process.env.NODE_ENV === "production") {
+    return NextResponse.json({ error: "Payment could not be verified." }, { status: 400 });
+  }
 
   if (!isMockOrder) {
     const valid = verifySignature(razorpay_order_id, razorpay_payment_id, razorpay_signature);
     if (!valid) {
       console.warn("[api/razorpay/verify] signature verification failed", { bookingId });
-      await updateBookingStatus(bookingId, "failed");
-      return NextResponse.json({ error: "Payment could not be verified." }, { status: 400 });
+        return NextResponse.json({ error: "Payment could not be verified." }, { status: 400 });
     }
   }
+
+  if (booking.status === "paid") return NextResponse.json({ booking });
 
   const updated = await updateBookingStatus(bookingId, "paid", {
     razorpayPaymentId: razorpay_payment_id,

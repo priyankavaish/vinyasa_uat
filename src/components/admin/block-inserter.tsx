@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { emptyBlock, type Block } from "@/lib/blocks";
 const choices = [
+  { name: "Button", description: "A button with a link and optional custom colours", html: '<p><a href="/contact" data-btn="true" data-variant="accent">Learn more</a></p>' },
   { name: "Paragraph", description: "Text with formatting, links and lists", html: "<p>Write your text here.</p>" },
   { name: "Heading", description: "A section title", html: "<h2>Your heading</h2>" },
   { name: "List", description: "Bullet points", html: "<ul><li>First item</li><li>Second item</li></ul>" },

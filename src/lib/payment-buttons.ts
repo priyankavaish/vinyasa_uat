@@ -42,3 +42,12 @@ export function paymentStyle(settings: PaymentButtonSettings): CSSProperties {
     "--payment-foreground": `var(--${settings.foreground})`,
   } as CSSProperties;
 }
+
+/** Older callers without these fields leave payment settings untouched. */
+export function paymentSettingsFromForm(form: FormData): PaymentButtonSettings | null {
+  if (!form.has("paymentUrl")) return null;
+  return paymentButtonSchema.parse({
+    url: form.get("paymentUrl"), label: form.get("paymentLabel"),
+    background: form.get("paymentBackground"), foreground: form.get("paymentForeground"),
+  });
+}

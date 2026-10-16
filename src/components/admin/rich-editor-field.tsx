@@ -32,7 +32,7 @@ export default function RichEditorField({
       </label>
       <input type="hidden" name={name} value={html} />
       <div className="mt-1.5">
-        <RichEditor value={defaultValue} onChange={setHtml} />
+        <RichEditor value={html} onChange={setHtml} />
       </div>
     </div>
   );

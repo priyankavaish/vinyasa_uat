@@ -8,7 +8,10 @@ import Image from "@tiptap/extension-image";
 import { TextStyle, Color, FontFamily } from "@tiptap/extension-text-style";
 
 const ButtonLink = Link.extend({
- addAttributes() { return {...this.parent?.(), "data-btn":{default:null}, "data-variant":{default:null}}; }
+ addAttributes() { return {...this.parent?.(), "data-btn":{default:null}, "data-variant":{default:null}, style:{default:null, parseHTML: element => {
+   const styles = ["background-color", "color", "border-color"].map(key => { const value = element.style.getPropertyValue(key); return /^#[0-9a-f]{3,8}$/i.test(value) || /^rgba?\([0-9.,%\s]+\)$/i.test(value) ? `${key}: ${value}` : ""; }).filter(Boolean);
+   return styles.join("; ") || null;
+ }}}; }
 });
 const COLORS = ["#2b2620", "#8f3b31", "#6b7a5e", "#6b7a9e", "#a06a2c", "#ffffff"];
 
@@ -40,7 +43,7 @@ const Btn = ({
 export default function RichEditor({
   value,
   onChange,
-  blockTools = false,
+  blockTools = true,
   onUploadStateChange,
   inline = false,
   label = "Page content",
@@ -57,6 +60,9 @@ export default function RichEditor({
     : html;
   const editorContent = (html: string) => /<\/?[a-z][^>]*>/i.test(html) ? html : `<p>${html.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>")}</p>`;
   const [blockMenu, setBlockMenu] = useState(false);
+  const [buttonBg, setButtonBg] = useState("");
+  const [buttonText, setButtonText] = useState("");
+  const buttonStyle = (bg: string, text: string) => [bg && `background-color: ${bg}; border-color: ${bg}`, text && `color: ${text}`].filter(Boolean).join("; ") || null;
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: true,
@@ -130,9 +136,9 @@ export default function RichEditor({
     editor
       .chain()
       .focus()
-      .insertContent({ type: "paragraph", content: [{ type: "text", text: label, marks: [{ type: "link", attrs: { href: url, "data-btn":"true", "data-variant":"accent" } }] }] })
+      .insertContent(inline ? { type: "text", text: label, marks: [{ type: "link", attrs: { href: url, "data-btn": "true", "data-variant": "accent", style: buttonStyle(buttonBg, buttonText) } }] } : { type: "paragraph", content: [{ type: "text", text: label, marks: [{ type: "link", attrs: { href: url, "data-btn":"true", "data-variant":"accent", style: buttonStyle(buttonBg, buttonText) } }] }] })
       .run();
-  }, [editor]);
+  }, [editor, buttonBg, buttonText, inline]);
 
   if (!editor) return null;
 
@@ -200,15 +206,29 @@ export default function RichEditor({
         <Btn on={addImage} title="Insert image">
           Image
         </Btn>
-        <Btn on={addButton} title="Insert theme button">
-          Call to action
-        </Btn>
         </>}
+        <Btn on={addButton} title="Insert button">
+          Button
+        </Btn>
       </div>
-      {blockTools && <div className="border-x border-line bg-white p-2"><button type="button" aria-expanded={blockMenu} onClick={() => setBlockMenu(!blockMenu)} className="btn btn-outline">+ Add block</button><button type="button" onClick={() => editor.chain().focus().undo().run()} className="ml-3 text-sm underline">Undo</button><button type="button" onClick={() => editor.chain().focus().redo().run()} className="ml-3 text-sm underline">Redo</button>{blockMenu && <div className="mt-3 flex flex-wrap gap-2">{[
+      {<div className="flex flex-wrap items-center gap-3 border-x border-line bg-white p-2 text-xs">
+        <span>Button colours {editor.isActive("link", { "data-btn": "true" }) ? "(selected button)" : "(new button)"}</span>
+        {([["Background", buttonBg, setButtonBg], ["Text", buttonText, setButtonText]] as const).map(([title, value, setValue]) => <label key={title} className="flex items-center gap-2">{title}<input type="color" aria-label={`Button ${title.toLowerCase()} colour`} value={value || (title === "Background" ? "#8f3b31" : "#ffffff")} onChange={event => {
+          const next = event.target.value; setValue(next);
+          if (editor.isActive("link", { "data-btn": "true" })) {
+            const existing = editor.getAttributes("link").style || "";
+            const styles = Object.fromEntries(existing.split(";").map((part: string) => part.split(":").map(v => v.trim())).filter((parts: string[]) => parts.length === 2));
+            const bg = title === "Background" ? next : styles["background-color"] || "";
+            const text = title === "Text" ? next : styles.color || "";
+            editor.chain().focus().extendMarkRange("link").updateAttributes("link", { style: buttonStyle(bg, text) }).run();
+          }
+        }} className="h-7 w-9 border border-line" /></label>)}
+        <Btn title="Restore theme button colours" on={() => { setButtonBg(""); setButtonText(""); if (editor.isActive("link", { "data-btn": "true" })) editor.chain().focus().extendMarkRange("link").updateAttributes("link", { style: null }).run(); }}>Theme default</Btn>
+      </div>}
+      {!inline && blockTools && <div className="border-x border-line bg-white p-2"><button type="button" aria-expanded={blockMenu} onClick={() => setBlockMenu(!blockMenu)} className="btn btn-outline">+ Add block</button><button type="button" onClick={() => editor.chain().focus().undo().run()} className="ml-3 text-sm underline">Undo</button><button type="button" onClick={() => editor.chain().focus().redo().run()} className="ml-3 text-sm underline">Redo</button>{blockMenu && <div className="mt-3 flex flex-wrap gap-2">{[
         ["Paragraph", () => editor.chain().focus().insertContent("<p>New paragraph</p>").run()],
         ["Heading", () => editor.chain().focus().insertContent("<h2>New heading</h2>").run()],
-        ["Photo", addImage], ["Link", setLink],
+        ["Photo", addImage], ["Link", setLink], ["Button", addButton],
         ["Bullet list", () => editor.chain().focus().insertContent("<ul><li><p>List item</p></li></ul>").run()],
         ["Numbered list", () => editor.chain().focus().insertContent("<ol><li><p>List item</p></li></ol>").run()],
         ["Quote", () => editor.chain().focus().insertContent("<blockquote><p>Your quote</p></blockquote>").run()],

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { DEFAULT_PAYMENT_BUTTON, isRazorpayLink, paymentButtonSchema } from "../src/lib/payment-buttons";
+import { DEFAULT_PAYMENT_BUTTON, paymentSettingsFromForm, isRazorpayLink, paymentButtonSchema } from "../src/lib/payment-buttons";
 
 test("accepts supported Razorpay HTTPS payment links", () => {
   for (const url of ["https://rzp.io/l/example", "https://rzp.to/example", "https://razorpay.me/@vinyasaverse", "https://pages.razorpay.com/event", "https://payments.razorpay.com/event"]) {
@@ -25,4 +25,16 @@ test("server validation only accepts theme colors", () => {
 test("rejects identical colors and excessively long button labels", () => {
   assert.equal(paymentButtonSchema.safeParse({ ...DEFAULT_PAYMENT_BUTTON, foreground: "accent" }).success, false);
   assert.equal(paymentButtonSchema.safeParse({ ...DEFAULT_PAYMENT_BUTTON, label: "a".repeat(61) }).success, false);
+});
+
+test("inline booking settings validate and older forms leave settings untouched", () => {
+  const form = new FormData();
+  assert.equal(paymentSettingsFromForm(form), null);
+  form.set("paymentUrl", " https://rzp.io/l/inline ");
+  form.set("paymentLabel", " Pay advance ");
+  form.set("paymentBackground", "secondary");
+  form.set("paymentForeground", "accent-ink");
+  assert.deepEqual(paymentSettingsFromForm(form), { url: "https://rzp.io/l/inline", label: "Pay advance", background: "secondary", foreground: "accent-ink" });
+  form.set("paymentUrl", "https://example.com/pay");
+  assert.throws(() => paymentSettingsFromForm(form));
 });

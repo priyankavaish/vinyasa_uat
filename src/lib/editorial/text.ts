@@ -6,8 +6,12 @@ export const hasTextFormatting = (value: string) => /<\/?(?:strong|b|em|i|u|s|sp
 export function cleanInlineText(value: string, links = true): string {
   return sanitizeHtml(value, {
     allowedTags: ["strong", "b", "em", "i", "u", "s", "span", "br", ...(links ? ["a"] : [])],
-    allowedAttributes: { span: ["style"], a: ["href", "title", "target", "rel"] },
-    allowedStyles: { span: {
+    allowedAttributes: { span: ["style"], a: ["href", "title", "target", "rel", "data-btn", "data-variant", "style"] },
+    allowedStyles: { a: {
+      "background-color": [/^#[0-9a-f]{3,8}$/i, /^rgba?\([0-9.,%\s]+\)$/i],
+      color: [/^#[0-9a-f]{3,8}$/i, /^rgba?\([0-9.,%\s]+\)$/i],
+      "border-color": [/^#[0-9a-f]{3,8}$/i, /^rgba?\([0-9.,%\s]+\)$/i],
+    }, span: {
       color: [/^#[0-9a-f]{3,8}$/i, /^rgba?\([0-9.,%\s]+\)$/i, /^[a-z]+$/i, /^var\(--[a-z0-9-]+\)$/i],
       "font-family": [/^[a-z0-9 ,\-'"()]+$/i],
     } },

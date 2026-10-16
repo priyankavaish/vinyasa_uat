@@ -1,4 +1,5 @@
 "use client";
+import PaymentReturnHelp from "./payment-return-help";
 
 import ThemeColorControl from "@/components/admin/theme-color-control";
 import { useActionState, useState } from "react";
@@ -54,6 +55,7 @@ function ButtonForm({ target, initial, onDirty, onSaved }: {
           placeholder="https://rzp.io/..." className={field} aria-describedby="payment-help" />
         <p id="payment-help" className="mt-2 text-xs text-muted">Copy the payment link from Razorpay. Leave blank to use the original booking link.</p>
       </div>
+      <PaymentReturnHelp />
       <div>
         <label htmlFor="payment-label" className="text-sm font-semibold">Button text (optional)</label>
         <input id="payment-label" name="label" maxLength={60} value={value.label} onChange={(e) => update("label", e.target.value)}

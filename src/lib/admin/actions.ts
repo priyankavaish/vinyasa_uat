@@ -8,6 +8,8 @@ import { cookies } from "next/headers";
 import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import { getDb } from "@/lib/db";
 import * as t from "@/lib/db/schema";
+import { paymentSettingsFromForm } from "@/lib/payment-buttons";
+import { storeBookingButton } from "./booking-button-store";
 import { SESSION_COOKIE, isValidSessionToken } from "@/lib/auth";
 
 async function assertAdmin() {
@@ -76,7 +78,10 @@ export async function saveCottage(form: FormData) {
   await ensureManagedTent();
   const raw = Object.fromEntries(form);
   const data = cottageSchema.parse(raw);
+  const payment = paymentSettingsFromForm(form);
   const db = getDb();
+  const original = data.id ? (await db.select({ slug: t.cottages.slug }).from(t.cottages).where(eq(t.cottages.id, data.id)).limit(1))[0] : undefined;
+  if (data.id && !original) throw new Error("Item not found");
 
   const values = {
     slug: slugify(data.slug || data.name),
@@ -104,6 +109,11 @@ export async function saveCottage(form: FormData) {
   } else {
     await db.insert(t.cottages).values(values);
   }
+  await storeBookingButton("stay", values.slug, original?.slug, payment);
+  revalidateTag("content");
+  revalidatePath("/admin/payment-buttons");
+  if (original) revalidatePath(`/stays/${original.slug}`);
+  revalidatePath(`/stays/${values.slug}`);
   revalidateTag("cottages");
   revalidatePath("/stays");
   redirect("/admin/stays");
@@ -138,7 +148,10 @@ const eventSchema = z.object({
 export async function saveEvent(form: FormData) {
   await assertAdmin();
   const data = eventSchema.parse(Object.fromEntries(form));
+  const payment = paymentSettingsFromForm(form);
   const db = getDb();
+  const original = data.id ? (await db.select({ slug: t.events.slug }).from(t.events).where(eq(t.events.id, data.id)).limit(1))[0] : undefined;
+  if (data.id && !original) throw new Error("Item not found");
   const values = {
     slug: slugify(data.slug || data.name),
     name: data.name,
@@ -155,7 +168,6 @@ export async function saveEvent(form: FormData) {
     updatedAt: new Date(),
   };
   if (data.id && form.has("eventDetails")) {
-    const [original] = await db.select({slug:t.events.slug}).from(t.events).where(eq(t.events.id,data.id)).limit(1);
     if (!original) throw new Error("Event not found");
     const { saveEventDetails } = await import("@/lib/editorial/actions");
     await saveEventDetails(original.slug, JSON.parse(String(form.get("eventDetails"))));
@@ -165,9 +177,13 @@ export async function saveEvent(form: FormData) {
   } else {
     await db.insert(t.events).values(values);
   }
+  await storeBookingButton("event", values.slug, original?.slug, payment);
+  revalidateTag("content");
+  revalidatePath("/admin/payment-buttons");
+  if (original) revalidatePath(`/events/${original.slug}`);
+  revalidatePath(`/events/${values.slug}`);
   revalidateTag("events");
   revalidatePath("/events");
-  revalidatePath(`/events/${values.slug}`);
   redirect("/admin/events");
 }
 

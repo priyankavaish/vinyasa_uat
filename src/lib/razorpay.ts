@@ -19,6 +19,7 @@ function hasRealKeys(): boolean {
  */
 export async function createOrder(amountInPaise: number, receipt: string): Promise<RazorpayOrder> {
   if (!hasRealKeys()) {
+    if (process.env.NODE_ENV === "production") throw new Error("Payment service is not configured.");
     return {
       id: `order_mock_${Date.now()}`,
       amount: amountInPaise,
@@ -43,13 +44,7 @@ export async function createOrder(amountInPaise: number, receipt: string): Promi
   if (!res.ok) {
     const body = await res.text();
     console.error("[razorpay] create-order failed", res.status, body);
-    // Degrade to mock rather than blocking the demo on a Razorpay outage.
-    return {
-      id: `order_mock_fallback_${Date.now()}`,
-      amount: amountInPaise,
-      currency: "INR",
-      mock: true,
-    };
+    throw new Error("Payment service is unavailable. Please try again later.");
   }
 
   const order = (await res.json()) as { id: string; amount: number; currency: string };
@@ -79,4 +74,17 @@ export function verifySignature(
   const actualBuf = Buffer.from(signature, "hex");
   if (expectedBuf.length !== actualBuf.length) return false;
   return timingSafeEqual(expectedBuf, actualBuf);
+}
+
+/** Razorpay Payment Links sign link id, reference, status and payment id. */
+export function verifyPaymentLinkSignature(params: URLSearchParams): boolean {
+  const secret = process.env.RAZORPAY_KEY_SECRET;
+  const id = params.get("razorpay_payment_link_id");
+  const payment = params.get("razorpay_payment_id");
+  const status = params.get("razorpay_payment_link_status");
+  const signature = params.get("razorpay_signature") || "";
+  if (!secret || !id || !payment || !status || !/^[a-f0-9]{64}$/i.test(signature)) return false;
+  const payload = [id, params.get("razorpay_payment_link_reference_id") || "", status, payment].join("|");
+  const expected = createHmac("sha256", secret).update(payload).digest();
+  return timingSafeEqual(expected, Buffer.from(signature, "hex"));
 }

@@ -1,3 +1,5 @@
+import BookingButtonFields from "./booking-button-fields";
+import { loadBookingButton } from "@/lib/admin/booking-button-store";
 import EventContentFields from "./event-content-fields";
 import { getEditorial } from "@/lib/editorial/server";
 import { defaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
@@ -13,6 +15,7 @@ const label = "block text-xs font-semibold uppercase tracking-[0.1em] text-foreg
 export default async function EventForm({ event }: { event?: EventRow }) {
   const details = event ? eventDetailValue(await getEditorial(eventEditorialKey, defaults), event.slug) : null;
   const template = event ? eventDetailValue(defaults, event.slug) : null;
+  const payment = event ? await loadBookingButton(`event:${event.slug}`) : undefined;
   return (
     <form action={saveEvent} className="min-w-0 max-w-4xl space-y-5">
       {event && <input type="hidden" name="id" value={event.id} />}
@@ -69,6 +72,8 @@ export default async function EventForm({ event }: { event?: EventRow }) {
       <ImageField name="imageUrl" label="Image" defaultValue={event?.imageUrl ?? ""} />
 
       {details ? <><input type="hidden" name="bodyHtml" value={event?.bodyHtml ?? ""} /><EventContentFields key={event?.slug} value={details} template={template} /></> : <RichEditorField name="bodyHtml" label="Detail page content" defaultValue={event?.bodyHtml ?? ""} />}
+
+      <BookingButtonFields initial={payment} />
 
       <div className="flex gap-3">
         <button type="submit" className="btn btn-accent">Save event</button>

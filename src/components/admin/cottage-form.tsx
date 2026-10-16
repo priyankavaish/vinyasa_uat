@@ -1,3 +1,5 @@
+import BookingButtonFields from "./booking-button-fields";
+import { loadBookingButton } from "@/lib/admin/booking-button-store";
 import { saveCottage } from "@/lib/admin/actions";
 import ImageField from "@/components/admin/image-field";
 import GalleryField from "@/components/admin/gallery-field";
@@ -12,7 +14,8 @@ const ICONS = [
 const field = "mt-1.5 w-full border border-line bg-background px-3 py-2 text-sm outline-none focus:border-accent";
 const label = "block text-xs font-semibold uppercase tracking-[0.1em] text-foreground-soft";
 
-export default function CottageForm({ cottage }: { cottage?: CottageRow }) {
+export default async function CottageForm({ cottage }: { cottage?: CottageRow }) {
+  const payment = cottage ? await loadBookingButton(`stay:${cottage.slug}`) : undefined;
   return (
     <form action={saveCottage} className="max-w-2xl space-y-5">
       {cottage && <input type="hidden" name="id" value={cottage.id} />}
@@ -84,6 +87,8 @@ export default function CottageForm({ cottage }: { cottage?: CottageRow }) {
       <GalleryField name="gallery" label="Gallery" defaultValue={cottage?.gallery ?? []} />
 
       <RichEditorField name="bodyHtml" label="Detail page content" defaultValue={cottage?.bodyHtml ?? ""} />
+
+      <BookingButtonFields initial={payment} />
 
       <div className="flex gap-3">
         <button type="submit" className="btn btn-accent">Save stay</button>

@@ -23,7 +23,7 @@ import { bookingRequestSchema, type BookingRequest } from "@/lib/schemas";
 
 declare global {
   interface Window {
-    Razorpay: new (options: Record<string, unknown>) => { open: () => void };
+    Razorpay: new (options: Record<string, unknown>) => { open: () => void; close: () => void; on: (event: "payment.failed", callback: () => void) => void };
   }
 }
 
@@ -55,6 +55,7 @@ export default function BookingForm({
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [confirmedId, setConfirmedId] = useState<string | null>(null);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [dialogClosed, setDialogClosed] = useState(false);
 
   const {
@@ -104,6 +105,8 @@ export default function BookingForm({
     if (soldOut || !item) return;
     setStatus("creating-booking");
     setErrorMessage(null);
+    setErrorDialogOpen(false);
+    setDialogClosed(false);
     try {
       const bookingRes = await fetch("/api/bookings", {
         method: "POST",
@@ -118,11 +121,13 @@ export default function BookingForm({
 
       setStatus("awaiting-payment");
 
+      let checkoutPhase: "waiting" | "verifying" | "success" | "failed" = "waiting";
       async function verify(payload: {
         razorpay_order_id: string;
         razorpay_payment_id: string;
         razorpay_signature: string;
       }) {
+        checkoutPhase = "verifying";
         setStatus("verifying");
         try {
           const verifyRes = await fetch("/api/razorpay/verify", {
@@ -131,11 +136,13 @@ export default function BookingForm({
             body: JSON.stringify({ bookingId: booking.id, ...payload }),
           });
           if (!verifyRes.ok) throw new Error("Payment could not be verified.");
+          checkoutPhase = "success";
           setStatus("success");
           setConfirmedId(booking.id);
         } catch (err) {
           setStatus("error");
-          setErrorMessage(err instanceof Error ? err.message : "Payment could not be verified.");
+          setErrorMessage("We could not confirm your payment. If money was deducted, contact Vinyasa with your payment reference before paying again.");
+          setErrorDialogOpen(true);
         }
       }
 
@@ -150,6 +157,7 @@ export default function BookingForm({
         return;
       }
 
+      if (!window.Razorpay) throw new Error("Payment checkout could not load. Please refresh and try again.");
       const rzp = new window.Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? "",
         amount: order.amount,
@@ -166,14 +174,29 @@ export default function BookingForm({
         }) => {
           void verify(response);
         },
+        retry: { enabled: false },
         modal: {
-          ondismiss: () => setStatus("idle"),
+          ondismiss: () => {
+            if (checkoutPhase !== "waiting") return;
+            setStatus("error");
+            setErrorMessage("Payment was cancelled or the payment window was closed. Your booking is not confirmed. You can try again when ready.");
+            setErrorDialogOpen(true);
+          },
         },
+      });
+      rzp.on("payment.failed", () => {
+        if (checkoutPhase !== "waiting") return;
+        checkoutPhase = "failed";
+        rzp.close();
+        setStatus("error");
+        setErrorMessage("Payment failed. Please try again. If money was deducted, contact Vinyasa before paying again.");
+        setErrorDialogOpen(true);
       });
       rzp.open();
     } catch (err) {
       setStatus("error");
       setErrorMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setErrorDialogOpen(true);
     }
   }
 
@@ -198,6 +221,10 @@ export default function BookingForm({
 
   return (
     <>
+      <SuccessDialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)}>
+        <h3 className="font-display text-3xl">Payment not completed</h3>
+        <p role="alert" className="mt-4 text-sm text-foreground-soft">{errorMessage}</p>
+      </SuccessDialog>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         <div className="grid gap-4 sm:grid-cols-2">
