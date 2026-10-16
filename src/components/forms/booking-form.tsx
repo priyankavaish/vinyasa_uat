@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Script from "next/script";
+import { PAYMENT_MESSAGES } from "@/lib/payment-messages";
 import SuccessDialog from "./success-dialog";
 import {
   cottages as seedCottages,
@@ -53,6 +54,7 @@ export default function BookingForm({
   const initialSlug = options.find(item => item.slug === requestedSlug)?.slug ?? options[0]?.slug ?? "";
 
   const [status, setStatus] = useState<Status>("idle");
+  const [errorTitle, setErrorTitle] = useState<string>(PAYMENT_MESSAGES.failed.title);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [confirmedId, setConfirmedId] = useState<string | null>(null);
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
@@ -105,6 +107,7 @@ export default function BookingForm({
     if (soldOut || !item) return;
     setStatus("creating-booking");
     setErrorMessage(null);
+    setErrorTitle(PAYMENT_MESSAGES.failed.title);
     setErrorDialogOpen(false);
     setDialogClosed(false);
     try {
@@ -141,7 +144,8 @@ export default function BookingForm({
           setConfirmedId(booking.id);
         } catch (err) {
           setStatus("error");
-          setErrorMessage("We could not confirm your payment. If money was deducted, contact Vinyasa with your payment reference before paying again.");
+          setErrorTitle(PAYMENT_MESSAGES.unverified.title);
+          setErrorMessage(PAYMENT_MESSAGES.unverified.message);
           setErrorDialogOpen(true);
         }
       }
@@ -179,7 +183,8 @@ export default function BookingForm({
           ondismiss: () => {
             if (checkoutPhase !== "waiting") return;
             setStatus("error");
-            setErrorMessage("Payment was cancelled or the payment window was closed. Your booking is not confirmed. You can try again when ready.");
+            setErrorTitle(PAYMENT_MESSAGES.cancelled.title);
+            setErrorMessage(PAYMENT_MESSAGES.cancelled.message);
             setErrorDialogOpen(true);
           },
         },
@@ -189,7 +194,8 @@ export default function BookingForm({
         checkoutPhase = "failed";
         rzp.close();
         setStatus("error");
-        setErrorMessage("Payment failed. Please try again. If money was deducted, contact Vinyasa before paying again.");
+        setErrorTitle(PAYMENT_MESSAGES.failed.title);
+        setErrorMessage(PAYMENT_MESSAGES.failed.message);
         setErrorDialogOpen(true);
       });
       rzp.open();
@@ -206,12 +212,12 @@ export default function BookingForm({
     return (
       <>
       <SuccessDialog open={!dialogClosed} onClose={() => setDialogClosed(true)}>
-        <p className="font-display italic text-3xl"><FormattedText value={content.text_1} /></p>
+        <p className="font-display italic text-3xl"><FormattedText value={PAYMENT_MESSAGES.success.title} /></p>
         <p className="mt-3 text-sm text-foreground-soft"><FormattedText value={content.text_2} /><span className="font-mono"><FormattedText value={confirmedId} /></span><FormattedText value={content.text_3} /><span className="font-mono"><FormattedText value={content.text_4} /></span>.
         </p>
       </SuccessDialog>
       <div className="border border-line bg-surface p-10 text-center">
-        <p className="font-display italic text-3xl"><FormattedText value={content.text_1} /></p>
+        <p className="font-display italic text-3xl"><FormattedText value={PAYMENT_MESSAGES.success.title} /></p>
         <p className="mt-3 text-sm text-foreground-soft"><FormattedText value={content.text_2} /><span className="font-mono"><FormattedText value={confirmedId} /></span><FormattedText value={content.text_3} /><span className="font-mono"><FormattedText value={content.text_4} /></span>.
         </p>
       </div>
@@ -222,7 +228,7 @@ export default function BookingForm({
   return (
     <>
       <SuccessDialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)}>
-        <h3 className="font-display text-3xl">Payment not completed</h3>
+        <h3 className="font-display text-3xl">{errorTitle}</h3>
         <p role="alert" className="mt-4 text-sm text-foreground-soft">{errorMessage}</p>
       </SuccessDialog>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />

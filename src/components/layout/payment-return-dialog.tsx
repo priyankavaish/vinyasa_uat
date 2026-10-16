@@ -5,6 +5,7 @@ import FormattedText from "@/components/editorial/formatted-text";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_layout_payment_return_dialog";
 import { useEditorial } from "@/components/editorial/provider";
 import { hasPaymentReturn, PAYMENT_RETURN_PARAMS, type PaymentReturnStatus } from "@/lib/payment-return";
+import { PAYMENT_MESSAGES } from "@/lib/payment-messages";
 import SuccessDialog from "@/components/forms/success-dialog";
 
 
@@ -31,16 +32,9 @@ function Inner() {
     PAYMENT_RETURN_PARAMS.forEach(name => url.searchParams.delete(name));
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
   }
-  const messages = {
-    checking: ["Checking payment?", "Please wait while we confirm your payment."],
-    success: [content.title, content.message],
-    failed: ["Payment not completed", "The payment attempt was unsuccessful. You can try again. If money was deducted, contact us before paying again."],
-    cancelled: ["Payment cancelled", "Payment was not completed. You can close this message and try again when ready."],
-    unverified: ["Payment confirmation pending", "We could not confirm your payment. If money was deducted, please contact Vinyasa with your payment reference before paying again."],
-  };
   return <SuccessDialog open={open} onClose={close} closeLabel={content.closeLabel}>
-    <h3 className="font-display text-3xl"><FormattedText value={messages[status][0]} /></h3>
-    <p className="mt-4 leading-7 text-foreground-soft"><FormattedText value={messages[status][1]} /></p>
+    <h3 className="font-display text-3xl"><FormattedText value={PAYMENT_MESSAGES[status].title} /></h3>
+    <p className="mt-4 leading-7 text-foreground-soft"><FormattedText value={PAYMENT_MESSAGES[status].message} /></p>
   </SuccessDialog>;
 }
 export default function PaymentReturnDialog() { return <Suspense fallback={null}><Inner /></Suspense>; }

@@ -36,7 +36,7 @@ export async function testEmailSettings() {
 }
 export async function resendEntryEmail(kind: EmailKind, id: string) {
  await requireAdmin();
- if (!["lead", "booking", "payment"].includes(kind) || !z.string().uuid().safeParse(id).success) throw new Error("Invalid entry.");
+ if (!["lead", "booking", "payment", "payment-customer", "payment-receipt", "payment-receipt-customer"].includes(kind) || !(kind.startsWith("payment-receipt") ? /^pay_[a-zA-Z0-9]+$/.test(id) : z.string().uuid().safeParse(id).success)) throw new Error("Invalid entry.");
  await retryNotification(kind, id);
  revalidatePath("/admin/contact"); revalidatePath("/admin/bookings"); revalidatePath("/admin/settings");
 }

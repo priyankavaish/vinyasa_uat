@@ -1,9 +1,10 @@
-import { notifyEntry } from "@/lib/email-notifications";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { razorpayVerifySchema } from "@/lib/schemas";
 import { getBooking, updateBookingStatus } from "@/lib/store";
-import { verifySignature } from "@/lib/razorpay";
+import { capturedPaymentSchema } from "@/lib/razorpay-events";
+import { confirmCapturedPayment } from "@/lib/payment-confirmation";
+import { fetchRazorpayPayment, verifySignature } from "@/lib/razorpay";
 
 export async function POST(req: NextRequest) {
   let body: unknown;
@@ -43,16 +44,20 @@ export async function POST(req: NextRequest) {
     const valid = verifySignature(razorpay_order_id, razorpay_payment_id, razorpay_signature);
     if (!valid) {
       console.warn("[api/razorpay/verify] signature verification failed", { bookingId });
-        return NextResponse.json({ error: "Payment could not be verified." }, { status: 400 });
+      return NextResponse.json({ error: "Payment could not be verified." }, { status: 400 });
     }
   }
 
-  if (booking.status === "paid") return NextResponse.json({ booking });
-
-  const updated = await updateBookingStatus(bookingId, "paid", {
-    razorpayPaymentId: razorpay_payment_id,
-  });
-  if (updated) await notifyEntry("payment", updated);
-  revalidatePath("/admin/bookings");
-  return NextResponse.json({ booking: updated });
+  if (!isMockOrder) {
+    try {
+      const payment = capturedPaymentSchema.safeParse(await fetchRazorpayPayment(razorpay_payment_id));
+      if (!payment.success || payment.data.order_id !== booking.razorpayOrderId) return NextResponse.json({error:"Payment confirmation is pending."},{status:409});
+      const paid = await confirmCapturedPayment(payment.data);
+      revalidatePath("/admin/bookings");
+      return NextResponse.json({booking:paid});
+    } catch { return NextResponse.json({error:"Payment could not be confirmed."},{status:503}); }
+  }
+  // Local development only; mock orders cannot send payment confirmation emails.
+  const updated = await updateBookingStatus(bookingId, "paid", { razorpayPaymentId: razorpay_payment_id });
+  return NextResponse.json({booking:updated});
 }
