@@ -7,7 +7,7 @@ import Image from "@/components/editorial/image";
 import Link from "next/link";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon, type IconName } from "@/components/ui/icon";
-import { whatsappLink } from "@/lib/site";
+import { farmStayId, WORK_FROM_FARM_BOOK_PATH } from "@/lib/work-from-farm";
 import styles from "./work-from-farm.module.css";
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
@@ -16,7 +16,6 @@ export async function generateMetadata(): Promise<import("next").Metadata> {
 
 export default async function WorkFromFarmPage() {
   const content = await getEditorial("app/(site)/work-from-farm/page", editorialDefaults);
-  const enquiry = whatsappLink("Hi Vinyasa Earth, I'd like to enquire about a Work From Farm stay longer than 15 nights.");
   return (
     <div className={styles.page}>
       <section className={`${styles.container} ${styles.hero}`} aria-labelledby="farm-title">
@@ -48,7 +47,7 @@ export default async function WorkFromFarmPage() {
           <div className={styles.stayTop}><Icon name={stay.icon as IconName} size={22} /><span>0{i + 1}</span></div>
           <h3><FormattedText value={stay.name} /></h3><p className={styles.stayDescription}><FormattedText value={stay.description} /></p>
           <dl>{stay.rows.map((row, index) => <div key={index}><dt><FormattedText value={row.label} /></dt><dd><strong><FormattedText value={row.price.split("/")[0].trim()} /></strong>{row.price.includes("/") && <small> / <FormattedText value={row.price.split("/").slice(1).join("/").trim()} /></small>}</dd></div>)}</dl>
-          <Link href={content.href_22} className={styles.stayLink}><FormattedText value={content.text_23} links={false} /><Icon name="arrow-forward-outline" size={18} /></Link>
+          <Link href={{ pathname: WORK_FROM_FARM_BOOK_PATH, query: { stay: farmStayId(stay.name) } }} className={styles.stayLink}><FormattedText value={content.text_23} links={false} /><Icon name="arrow-forward-outline" size={18} /></Link>
         </Reveal>)}</div>
         <p className={styles.priceNote}><FormattedText value={content.text_13} /></p>
         <p className={styles.bookingNote}><FormattedText value={content.bookingNote} /></p>
@@ -63,7 +62,7 @@ export default async function WorkFromFarmPage() {
       </section>
       <section className={`${styles.container} ${styles.audience}`} aria-labelledby="farm-audience"><div><p className={styles.eyebrow}><FormattedText value={content.audienceIntro} /></p><h2 id="farm-audience"><FormattedText value={content.audienceTitle} /></h2><p><FormattedText value={content.audienceNote} /></p></div><ul>{content.audience.map((item, index) => <li key={index}><Icon name="leaf-outline" size={17} /><span><FormattedText value={item} /></span></li>)}</ul></section>
       <section className={`${styles.container} ${styles.faq}`} aria-labelledby="farm-faq"><div><p className={styles.eyebrow}><FormattedText value={content.faqEyebrow} /></p><h2 id="farm-faq"><FormattedText value={content.faqTitle} /></h2><p><FormattedText value={content.location} /></p></div><div className={styles.questions}>{content.faqs.map(({question, answer}, index) => <details key={index}><summary><span className={styles.questionText}><FormattedText value={question} links={false} /></span><span aria-hidden="true">+</span></summary><p><FormattedText value={answer} /></p></details>)}</div></section>
-      <section className={styles.cta} aria-labelledby="farm-book"><div className={styles.container}><p className={styles.eyebrow}><FormattedText value={content.eyebrow_1} /></p><h2 id="farm-book"><FormattedText value={content.text_20} /></h2><p><FormattedText value={content.text_21} /></p>{content.bookingOptions.map((option, index) => <p key={index}><FormattedText value={option} /></p>)}<div className={styles.actions}><Link href={content.href_22} className={`btn btn-accent ${styles.button}`}><FormattedText value={content.text_23} links={false} /><Icon name="arrow-forward-outline" size={17} /></Link><a href={enquiry} className={`btn btn-outline ${styles.button}`}><FormattedText value={content.text_24} links={false} /></a></div></div></section>
+      <section className={styles.cta} aria-labelledby="farm-book"><div className={styles.container}><p className={styles.eyebrow}><FormattedText value={content.eyebrow_1} /></p><h2 id="farm-book"><FormattedText value={content.text_20} /></h2><p><FormattedText value={content.text_21} /></p>{content.bookingOptions.map((option, index) => <p key={index}><FormattedText value={option} /></p>)}<div className={styles.actions}><Link href={content.href_22} className={`btn btn-accent ${styles.button}`}><FormattedText value={content.text_23} links={false} /><Icon name="arrow-forward-outline" size={17} /></Link><Link href={`${WORK_FROM_FARM_BOOK_PATH}#farm-enquiry`} className={`btn btn-outline ${styles.button}`}><FormattedText value={content.text_24} links={false} /></Link></div></div></section>
     </div>
   );
 }

@@ -129,25 +129,30 @@ export async function getCottage(slug: string): Promise<Cottage | null> {
   return all.find((c) => c.slug === slug) ?? null;
 }
 
-export const getAllEvents = unstable_cache(
+const getEventCatalog = unstable_cache(
   async (): Promise<EventProgram[]> => {
-    if (!hasDb()) return SEED_EVENTS;
-    try {
-      await ensureArtistResidencyEvent();
-      await ensureMuseEvent();
-      const rows = await getDb()
-        .select()
-        .from(t.events)
-        .where(eq(t.events.published, true))
-        .orderBy(asc(t.events.sort));
-      return rows.map(rowToEvent);
-    } catch {
-      return SEED_EVENTS;
-    }
+    await ensureArtistResidencyEvent();
+    await ensureMuseEvent();
+    const rows = await getDb()
+      .select()
+      .from(t.events)
+      .where(eq(t.events.published, true))
+      .orderBy(asc(t.events.sort));
+    return rows.map(rowToEvent);
   },
-  ["cms:events:v6"],
+  ["cms:events:v7"],
   { tags: ["events"] }
 );
+
+// A temporary database failure must not cache seed data as the live catalog.
+export async function getAllEvents(): Promise<EventProgram[]> {
+  if (!hasDb()) return SEED_EVENTS;
+  try {
+    return await getEventCatalog();
+  } catch {
+    return SEED_EVENTS;
+  }
+}
 
 // Evaluate expiry on every request, outside the cached CMS data.
 export async function getEvents(): Promise<EventProgram[]> {

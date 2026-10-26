@@ -65,11 +65,11 @@ export async function getEditorial<T>(key: string, defaults: T): Promise<T> {
     if (oldHeading(fields.heroTitle) === "alittlelessrush") fields.heroTitle = "Stay, work and slow down";
     if (oldHeading(fields.heroTitleAccent) === "alittlemoreroom") fields.heroTitleAccent = "outside Jaipur";
   }
-  // Work from Farm booking buttons open the Book Your Stay page, including older saved content.
+  // Keep older Work from Farm buttons on its own rates and enquiry flow.
   const workStayLink = key === "app/(site)/work-from-farm/page" ? "href_22" : key === "components/sections/work-from-farm-section" ? "href_6" : null;
   if (workStayLink && value && typeof value === "object") {
     const fields = value as Record<string, unknown>;
-    if (fields[workStayLink] === "/contact#contact-form") fields[workStayLink] = "/book";
+    if (typeof fields[workStayLink] === "string" && /^(?:\/book(?:[?#].*)?|\/contact(?:#contact-form)?)$/.test(fields[workStayLink] as string)) fields[workStayLink] = "/work-from-farm/book";
     if (key === "app/(site)/work-from-farm/page" && typeof fields.text_23 === "string" && plainText(fields.text_23).trim().toLowerCase() === "request a booking") fields.text_23 = "Check Availability & Book";
   }
   return applyPageLinks(value, await getPageSettings(), key === "components/layout/site-header" || key === "components/layout/site-footer");

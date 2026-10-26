@@ -1,6 +1,8 @@
 import BookingButtonFields from "./booking-button-fields";
 import { loadBookingButton } from "@/lib/admin/booking-button-store";
 import EventContentFields from "./event-content-fields";
+import EventHostFields from "./event-host-fields";
+import { loadEventHosts } from "@/lib/admin/event-hosts-store";
 import { getEditorial } from "@/lib/editorial/server";
 import { defaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
 import { eventEditorialKey, eventDetailValue } from "@/lib/editorial/event-details";
@@ -15,6 +17,7 @@ const label = "block text-xs font-semibold uppercase tracking-[0.1em] text-foreg
 export default async function EventForm({ event }: { event?: EventRow }) {
   const details = event ? eventDetailValue(await getEditorial(eventEditorialKey, defaults), event.slug) : null;
   const template = event ? eventDetailValue(defaults, event.slug) : null;
+  const hostSettings = event ? await loadEventHosts(event.slug, details) : { hosts: [], heading: "Host" as const };
   const payment = event ? await loadBookingButton(`event:${event.slug}`) : undefined;
   return (
     <form action={saveEvent} className="min-w-0 max-w-4xl space-y-5">
@@ -71,8 +74,9 @@ export default async function EventForm({ event }: { event?: EventRow }) {
 
       <ImageField name="imageUrl" label="Image" defaultValue={event?.imageUrl ?? ""} />
 
-      {details ? <><input type="hidden" name="bodyHtml" value={event?.bodyHtml ?? ""} /><EventContentFields key={event?.slug} value={details} template={template} /></> : <RichEditorField name="bodyHtml" label="Detail page content" defaultValue={event?.bodyHtml ?? ""} />}
+      {details ? <><input type="hidden" name="bodyHtml" value={event?.bodyHtml ?? ""} /><EventContentFields key={event?.slug} value={details} template={template} /></> : <div className="space-y-3"><p className="text-sm leading-6 text-muted">Every event uses the same page layout. Add headings to organize the programme into sections, and include photos or links where needed.</p><RichEditorField name="bodyHtml" label="About & programme" defaultValue={event?.bodyHtml ?? ""} /></div>}
 
+      <EventHostFields initial={hostSettings.hosts} heading={hostSettings.heading} />
       <BookingButtonFields initial={payment} />
 
       <div className="flex gap-3">

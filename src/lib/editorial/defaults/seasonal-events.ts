@@ -105,6 +105,10 @@ export const seasonalEvents = {
       },
       {
         "title": "Your Hosts :",
+        "portraits": [
+          { "name": "Shreya Dalela", "image": "/images/events/hosts/shreya-dalela.png", "imageAlt": "Shreya Dalela, retreat host", "href": "https://www.instagram.com/she.soulful/" },
+          { "name": "Anangsha Alammyan", "image": "/images/events/hosts/anangsha-alammyan.png", "imageAlt": "Anangsha Alammyan, retreat host", "href": "https://www.instagram.com/anangsha_/?hl=en" }
+        ],
         "bodyHtml": "<p><a href=\"https://www.instagram.com/she.soulful/\"><strong>Shreya Dalela</strong></a> is a writer and dancer exploring how creativity helps women return to themselves. Through movement, writing, and her study of women artists, she explores self-expression, freedom, and the courage to take our creative desires seriously.</p><p><a href=\"https://www.instagram.com/anangsha_/?hl=en\"><strong>Anangsha Alammyan</strong></a> is a writer, pole dancer, and entrepreneur who left academia to build a life around words, freedom, and creativity. She is the author of five books, and her writing reaches hundreds of thousands of readers. At the heart of her work is the belief that women are allowed to keep discovering new versions of themselves.</p>",
         "image": "",
         "imageAlt": "", "imageWidth": 100

@@ -27,10 +27,11 @@ export async function saveEmailSettings(form: FormData) {
   return { ok: true, message: "Saved. Send a test email to verify delivery." };
  } catch { return { ok: false, message: "Could not save email settings. Check the server configuration." }; }
 }
-export async function testEmailSettings() {
+export async function testEmailSettings(audience: "defaults" | "stays" = "defaults") {
  await requireAdmin();
+ if (!["defaults", "stays"].includes(audience)) return { ok: false, message: "Choose a valid notification group." };
  try { const config = await getEmailConfig(); if (!config) return { ok: false, message: "Configure the email sender connection below first." };
-  await sendNotificationEmail(config, "Vinyasa Earth: email notification test", "This test uses the shared To, CC and BCC recipients for all website forms. Website entries remain available in the admin panel.");
+  await sendNotificationEmail(config, "Vinyasa Earth: email notification test", audience === "stays" ? "This test uses the Stays & Work from Farm enquiry recipients. Reply to real enquiries from this inbox to contact your guest." : "This test uses the general notification recipients. Website entries remain available in the admin panel.", undefined, undefined, audience === "stays" ? "stay-enquiry" : undefined);
   return { ok: true, message: "Test email accepted by the provider. Check your notification recipients' Inbox and Spam." };
  } catch { return { ok: false, message: "Test delivery failed. Check sender, App Password/API key and provider settings." }; }
 }
@@ -47,5 +48,5 @@ export async function saveNotificationRouting(input: unknown) {
  if(!parsed.success) return {ok:false,message:parsed.error.issues[0]?.message || "Check the recipient email addresses."};
  await getDb().insert(siteContent).values({key:NOTIFICATION_ROUTING_KEY,value:parsed.data}).onConflictDoUpdate({target:siteContent.key,set:{value:parsed.data,updatedAt:new Date()}});
  revalidatePath("/admin/settings");revalidatePath("/admin/contact");revalidatePath("/admin/bookings");
- return {ok:true,message:"Saved. Notifications from every website form and pending email retries will use these recipients."};
+ return {ok:true,message:"Saved. Stays and Work from Farm enquiries use their dedicated recipients; other notifications use the general recipients."};
 }

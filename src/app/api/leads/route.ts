@@ -5,6 +5,9 @@ import { leadSchema } from "@/lib/schemas";
 import { createLead, listLeads } from "@/lib/store";
 import { requireAdminSession } from "@/lib/auth";
 import { hasDb } from "@/lib/db";
+import { getEditorial } from "@/lib/editorial/server";
+import { defaults as farmDefaults } from "@/lib/editorial/defaults/app__site__work_from_farm_page";
+import { farmOffers, farmUnit, farmEnquiryMessage } from "@/lib/work-from-farm";
 
 export const runtime = "nodejs";
 
@@ -33,12 +36,20 @@ export async function POST(req: NextRequest) {
 
   try {
     const data = parsed.data;
+    let farmMessage: string | undefined;
+    if (data.source === "work-from-farm") {
+      const content = await getEditorial("app/(site)/work-from-farm/page", farmDefaults);
+      const offer = farmOffers(content.stays).find(stay => stay.id === data.farmStayId);
+      if (!offer) return NextResponse.json({ error: "Please refresh to see the current Work from Farm stay options.", fieldErrors: { farmStayId: ["Please select a current accommodation option."] } }, { status: 400 });
+      if (farmUnit(offer) === "cottage" && Number(data.guests) > Number(data.rooms) * 2) return NextResponse.json({ error: "Please add enough cottages for your guests.", fieldErrors: { rooms: ["Each cottage accommodates up to two guests."] } }, { status: 400 });
+      farmMessage = farmEnquiryMessage(offer, { checkInDate: data.checkInDate!, checkOutDate: data.checkOutDate!, guests: data.guests!, rooms: data.rooms!, message: data.message });
+    }
     const lead = await createLead({
       source: data.source,
       name: data.source === "volunteer" || data.source === "artist-residence" || data.source === "artist-unite" ? [data.name, data.lastName].filter(Boolean).join(" ") : data.name,
       email: data.email,
       phone: data.phone,
-      message: data.source === "stay-enquiry"
+      message: data.source === "work-from-farm" ? farmMessage : data.source === "stay-enquiry"
         ? `Stay enquiry\nStay: ${data.stayType}\nDate to check: ${data.checkInDate}${data.checkOutDate ? ` to ${data.checkOutDate}` : ""}\nGuests: ${data.guests}${data.rooms ? ` (rooms: ${data.rooms})` : ""}\nReservation preference: ${data.reservePreference}\nIntention of visit: ${data.intentions?.length ? data.intentions.join(", ") : "Not specified"}`
         : data.source === "organizer"
         ? `Organizer enquiry\nProgram type: ${data.programType}`

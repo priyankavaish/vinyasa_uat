@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { farmDateValid, farmNights, farmToday } from "./work-from-farm";
 
 export const bookingRequestSchema = z.object({
   type: z.enum(["stay", "event"]),
@@ -19,7 +20,7 @@ export const bookingRequestSchema = z.object({
 export type BookingRequest = z.infer<typeof bookingRequestSchema>;
 
 export const leadSchema = z.object({
-  source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry"]),
+  source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry", "work-from-farm"]),
   name: z.string({ required_error: "Please enter your name.", invalid_type_error: "Please enter your name." }).trim().max(121, "Please keep your name under 122 characters."),
   email: z.string({ required_error: "Please enter your email address.", invalid_type_error: "Please enter a valid email address." }).trim().min(1, "Please enter your email address.").email("Please enter a valid email address, like name@example.com.").max(150, "Please keep your email address under 151 characters."),
   phone: z
@@ -40,6 +41,7 @@ export const leadSchema = z.object({
   whatsapp: z.string().trim().max(20, "Please enter a WhatsApp number with no more than 20 characters.").regex(/^[0-9+\-\s()]*$/, "Please enter a valid WhatsApp number.").optional().or(z.literal("")),
   guests: z.string().trim().max(4).optional(),
   stayType: z.string().trim().max(150).optional(),
+  farmStayId: z.string().trim().max(160).optional(),
   checkInDate: z.string().trim().max(20).optional(),
   checkOutDate: z.string().trim().max(20).optional(),
   rooms: z.string().trim().max(3).optional(),
@@ -53,7 +55,10 @@ export const leadSchema = z.object({
     const field = (data.source === "volunteer" || data.source === "artist-residence" || data.source === "artist-unite") ? "first name" : "name";
     required("name", data.name ? `Please enter at least 2 characters for your ${field}.` : `Please enter your ${field}.`);
   }
-  if (data.source === "contact" && !data.subject) required("subject", "Please enter a subject.");
+  if (data.source === "contact") {
+    if (!data.subject) required("subject", "Please enter a subject.");
+    if (!data.phone || data.phone.replace(/[^0-9]/g, "").length < 7) required("phone", "Please enter a valid phone number.");
+  }
   if (data.source === "artist-residence" || data.source === "artist-unite") {
     if (!data.phone || data.phone.replace(/[^0-9]/g, "").length < 7) required("phone", "Please enter a valid phone number.");
     if (!data.artPractice) required("artPractice", data.source === "artist-unite" ? "Please enter your artform." : "Please select your art practice.");
@@ -69,6 +74,16 @@ export const leadSchema = z.object({
     if (!data.stayType) required("stayType", "Please select a stay type.");
     if (!data.checkInDate || !/^\d{4}-\d{2}-\d{2}$/.test(data.checkInDate) || Number.isNaN(Date.parse(data.checkInDate))) required("checkInDate", "Please choose the date you want to check availability for.");
     if (!data.reservePreference) required("reservePreference", "Please choose how you would like to reserve.");
+  }
+  if (data.source === "work-from-farm") {
+    if (!data.phone || data.phone.replace(/[^0-9]/g, "").length < 7) required("phone", "Please enter a valid contact number.");
+    const guests = Number(data.guests);
+    if (!Number.isInteger(guests) || guests < 1 || guests > 50) required("guests", "Please enter between 1 and 50 guests.");
+    if (!data.farmStayId) required("farmStayId", "Please select a Work from Farm accommodation option.");
+    if (!data.checkInDate || !farmDateValid(data.checkInDate) || data.checkInDate < farmToday()) required("checkInDate", "Please choose a valid check-in date that is not in the past.");
+    if (!data.checkOutDate || !farmNights(data.checkInDate || "", data.checkOutDate)) required("checkOutDate", "Please choose a check-out date after check-in.");
+    const rooms = Number(data.rooms);
+    if (!Number.isInteger(rooms) || rooms < 1 || rooms > 50) required("rooms", "Please select a valid number of cottages.");
   }
   if (data.source === "organizer") {
     if (!data.programType) required("programType", "Please select a program type.");

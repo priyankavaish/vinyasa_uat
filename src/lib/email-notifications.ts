@@ -6,7 +6,7 @@ import { getDb } from "@/lib/db";
 import { siteContent, leads } from "@/lib/db/schema";
 import { getBooking, type Booking, type Lead } from "@/lib/store";
 import { getNotificationRouting } from "@/lib/notification-routing-store";
-import { type NotificationRecipients } from "@/lib/notification-routing";
+import { recipientsForSource, type NotificationRecipients } from "@/lib/notification-routing";
 import { paymentEmailContent, type PaymentReceipt } from "@/lib/payment-email-content";
 import { SITE_ORIGIN } from "@/lib/site";
 export const EMAIL_CONFIG_KEY = "email-notifications:config";
@@ -58,9 +58,9 @@ async function sendEmail(config: EmailConfig, recipients: NotificationRecipients
 export async function sendAccountEmail(config: EmailConfig, recipient: string, subject: string, text: string, replyTo?: string, idempotencyKey?: string) {
  return sendEmail(config, {to:[recipient],cc:[],bcc:[]}, subject, text, replyTo, idempotencyKey);
 }
-export async function sendNotificationEmail(config: EmailConfig, subject: string, text: string, replyTo?: string, idempotencyKey?: string) {
+export async function sendNotificationEmail(config: EmailConfig, subject: string, text: string, replyTo?: string, idempotencyKey?: string, source?: string) {
  const routing = await getNotificationRouting();
- return sendEmail(config, routing.defaults, subject, text, replyTo, idempotencyKey);
+ return sendEmail(config, recipientsForSource(routing, source), subject, text, replyTo, idempotencyKey);
 }
 function messageFor(kind: EmailKind, entry: EmailEntry, origin: string) {
  if (kind.startsWith("payment")) return { ...paymentEmailContent(entry as Booking | PaymentReceipt, kind.endsWith("customer")), replyTo: (entry as Booking | PaymentReceipt).guestEmail || undefined };
@@ -97,7 +97,7 @@ async function deliverNotification(kind: EmailKind, entry: EmailEntry) {
       const email = (entry as Booking | PaymentReceipt).guestEmail;
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Customer email is missing.");
       await sendAccountEmail(config, email, mail.subject, mail.text, config.sender, notificationKey);
-    } else await sendNotificationEmail(config, mail.subject, mail.text, mail.replyTo, notificationKey);
+    } else await sendNotificationEmail(config, mail.subject, mail.text, mail.replyTo, notificationKey, kind === "lead" ? (entry as Lead).source : undefined);
     state.state = "sent";
    }
    catch { state.state = "failed"; state.error = kind.endsWith("customer") && !(entry as Booking | PaymentReceipt).guestEmail ? "Customer email is missing from this payment. Admin delivery is tracked separately." : "Delivery failed. Check email settings and retry."; }

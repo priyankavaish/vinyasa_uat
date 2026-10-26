@@ -6,15 +6,20 @@ import PaymentButton from "@/components/ui/payment-button";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
 import { getEditorial } from "@/lib/editorial/server";
-import { PageHero } from "@/components/sections/hero";
+import EventDetailHero from "@/components/events/event-detail-hero";
+import styles from "@/components/events/event-detail.module.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Icon } from "@/components/ui/icon";
-import RichContent from "@/components/ui/rich-content";
+import EventDetailsContent from "@/components/events/event-details-content";
+import { splitEventContent } from "@/lib/event-content";
 import ArtistUniteContent from "@/components/events/artist-unite-content";
 import ArtistResidencyContent from "@/components/events/artist-residency-content";
-import { getEvent, getEvents } from "@/lib/cms";
+import { getEvent, getEvents, getContent } from "@/lib/cms";
+import EventHosts from "@/components/events/event-hosts";
+import { eventHostsKey, eventHostSettings } from "@/lib/event-hosts";
+import { legacyEventHosts } from "@/lib/event-hosts-legacy";
 
 export const revalidate = 300;
 
@@ -83,19 +88,25 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   if (!event) notFound();
   const image = event.image || content.EVENT_IMAGES[event.slug] || "/seed/grounds-06.jpg";
   const details = content.EVENT_DETAILS[event.slug];
+  const genericContent = splitEventContent(event.bodyHtml || "");
   const priceLabel = event.priceFrom === 0 ? "By donation" : `₹${event.priceFrom.toLocaleString("en-IN")} + 18% GST`;
   const seasonalEvent = content.SEASONAL_EVENTS[event.slug as keyof typeof content.SEASONAL_EVENTS];
+  const savedHosts = await getContent(eventHostsKey(event.slug));
+  const { hosts, heading: hostHeading } = eventHostSettings(savedHosts, legacyEventHosts(seasonalEvent));
   const isArtistUnite = event.slug === "artist-unite";
   const isArtistResidency = event.slug === "artist-in-residence";
   const isPauseWithin = event.slug === "the-pause-within";
   const editorialEvent = content.EDITORIAL_EVENTS[event.slug];
   const PAUSE_WITHIN_CONTENT = content.PAUSE_WITHIN_CONTENT;
+  const bookingLabel = isArtistResidency ? "Apply to join" : isArtistUnite ? content.ARTIST_UNITE.priceLabel : seasonalEvent?.href.includes("/contact") ? "Enquire for details" : event.priceFrom > 0 ? "From \u20b9" + event.priceFrom.toLocaleString("en-IN") + " + GST" : "By donation";
 
   return (
-    <>
-      <PageHero imageQuality={95} framed landscape eyebrow={isPauseWithin ? "A residential retreat" : editorialEvent ? event.kind : event.kind} title={event.name} description={event.description} image={image} imageAlt={event.name + " at Vinyasa Earth"}>
-        {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent"><FormattedText value={content.ARTIST_IN_RESIDENCE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent"><FormattedText value={content.ARTIST_UNITE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : (isPauseWithin || editorialEvent) && <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> </PaymentButton>}
-      </PageHero>
+    <div className={styles.page}>
+      <EventDetailHero hostSection={hosts.length ? <EventHosts hosts={hosts} heading={hostHeading} /> : undefined} name={event.name} kind={event.kind} description={event.description} image={image} bookingLabel={bookingLabel} time={seasonalEvent?.timeLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.timeLabel : isArtistUnite ? content.ARTIST_UNITE.timeLabel : undefined)} date={event.dateLabel || seasonalEvent?.dateLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.dateLabel : isArtistUnite ? content.ARTIST_UNITE.dateLabel : undefined)} duration={event.durationLabel} facilitator={event.facilitator}>
+        {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent"><FormattedText value={content.ARTIST_IN_RESIDENCE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent"><FormattedText value={content.ARTIST_UNITE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> </PaymentButton>}
+      </EventDetailHero>
+      <nav aria-label="Event page sections" className={styles.sectionNav}><div><a href="#event-overview">Overview</a>{(seasonalEvent || isArtistResidency || isArtistUnite || genericContent.sections.length > 0 || (!event.bodyHtml && details?.highlights.length)) && <a href="#event-programme">Programme</a>}{!!hosts.length && <a href="#event-hosts">{hostHeading}</a>}<a href="#event-registration">How to join <Icon name="arrow-forward-outline" size={14} /></a></div></nav>
+      <div id="event-overview" className={styles.details}>
 
       {seasonalEvent ? (
         <SeasonalEventContent content={seasonalEvent} />
@@ -142,7 +153,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               </div>
             </div>
 
-            <aside className="self-start lg:sticky lg:top-28">
+            <aside id="event-registration" className="self-start lg:sticky lg:top-28">
               <div className="border border-line bg-surface p-6 sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Choose your pass</p>
                 <p className="mt-3 text-sm leading-6 text-foreground-soft">Come with curiosity. There is nothing to fix and nowhere particular to arrive.</p>
@@ -194,7 +205,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               </div>
             </div>
 
-            <aside className="self-start lg:sticky lg:top-28">
+            <aside id="event-registration" className="self-start lg:sticky lg:top-28">
               <div className="border border-line bg-surface p-6 sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={editorialEvent.passes ? "Ways to join" : "Make space for it"} /></p>
                 <p className="mt-3 text-sm leading-6 text-foreground-soft"><FormattedText value={event.description} /></p>
@@ -206,52 +217,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
           </section>
         </main>
       ) : (
-      <section className="mx-auto max-w-4xl px-5 py-14 sm:px-8">
-        <Link href={content.href_1} className="text-xs uppercase tracking-[0.08em] text-accent underline"><FormattedText value={content.text_2} links={false} /></Link>
-        <div className="mt-8 grid gap-10 sm:grid-cols-[1.4fr_1fr]">
-          <div>
-            <h2 className="font-display italic text-2xl"><FormattedText value={content.text_3} /></h2>
-            <dl className="mt-4 space-y-3 text-sm text-foreground-soft">
-              {event.dateLabel && (
-                <div className="flex items-center gap-3">
-                  <Icon name="calendar-outline" size={15} className="text-accent" />
-                  <span><FormattedText value={event.dateLabel} /></span>
-                </div>
-              )}
-              <div className="flex items-center gap-3">
-                <Icon name="sunny-outline" size={15} className="text-accent" />
-                <span><FormattedText value={event.durationLabel} /></span>
-              </div>
-              {event.facilitator && (
-                <div className="flex items-center gap-3">
-                  <Icon name="people-outline" size={15} className="text-accent" />
-                  <span><FormattedText value={content.text_4} /><FormattedText value={event.facilitator} /></span>
-                </div>
-              )}
-              <div className="flex items-center gap-3">
-                <Icon name="location-outline" size={15} className="text-accent" />
-                <span><FormattedText value={content.text_5} /></span>
-              </div>
-            </dl>
-                        {event.bodyHtml ? <RichContent eventActions html={event.bodyHtml} className="mt-8" /> : details && (
-              <div className="mt-10 border-t border-line pt-8">
-                <h2 className="font-display italic text-3xl"><FormattedText value={details.heading} /></h2>
-                {details.paragraphs.map((paragraph) => <p key={paragraph} className="mt-4 leading-7 text-foreground-soft"><FormattedText value={paragraph} /></p>)}
-                <h3 className="mt-8 text-xs font-bold uppercase tracking-[0.16em] text-accent"><FormattedText value={content.text_6} /></h3>
-                <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {details.highlights.map((item) => <li key={item} className="border-l-2 border-accent/50 bg-clay-surface px-4 py-3 text-sm text-foreground-soft"><FormattedText value={item} /></li>)}
-                </ul>
-              </div>
-            )}
-          </div>
-          <div className="border border-line bg-surface p-6">
-            <p className="text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_7} /></p>
-            <p className="mt-1 font-sans text-3xl font-bold tracking-tight tabular-nums"><FormattedText value={priceLabel} /></p>
-            <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-5 block text-center"><FormattedText value={content.text_8} links={false} /></PaymentButton>
-          </div>
-        </div>
-      </section>
+        <EventDetailsContent event={event} content={genericContent} fallback={details} priceLabel={priceLabel} />
       )}
-    </>
+      </div>
+    </div>
   );
 }
