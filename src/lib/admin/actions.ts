@@ -12,6 +12,8 @@ import { paymentSettingsFromForm } from "@/lib/payment-buttons";
 import { storeBookingButton } from "./booking-button-store";
 import { eventHostsFromForm, eventHostsKey, eventHostHeadingSchema } from "@/lib/event-hosts";
 import { storeEventHosts } from "./event-hosts-store";
+import { eventGalleryFromForm, eventGalleryKey } from "@/lib/event-gallery";
+import { storeEventGallery } from "./event-gallery-store";
 import { SESSION_COOKIE, isValidSessionToken } from "@/lib/auth";
 
 async function assertAdmin() {
@@ -151,6 +153,7 @@ export async function saveEvent(form: FormData) {
   await assertAdmin();
   const data = eventSchema.parse(Object.fromEntries(form));
   const hosts = eventHostsFromForm(form);
+  const gallery = eventGalleryFromForm(form);
   const hostHeading = form.has("eventHostHeading") ? eventHostHeadingSchema.parse(form.get("eventHostHeading")) : null;
   const payment = paymentSettingsFromForm(form);
   const db = getDb();
@@ -183,6 +186,7 @@ export async function saveEvent(form: FormData) {
   }
   await storeBookingButton("event", values.slug, original?.slug, payment);
   await storeEventHosts(values.slug, original?.slug, hosts, hostHeading);
+  await storeEventGallery(values.slug, original?.slug, gallery);
   revalidateTag("content");
   revalidatePath("/admin/payment-buttons");
   if (original) revalidatePath(`/events/${original.slug}`);
@@ -197,7 +201,10 @@ export async function deleteEvent(id: string) {
   const db = getDb();
   const [event] = await db.select({ slug: t.events.slug }).from(t.events).where(eq(t.events.id, id)).limit(1);
   await db.delete(t.events).where(eq(t.events.id, id));
-  if (event) await db.delete(t.siteContent).where(eq(t.siteContent.key, eventHostsKey(event.slug)));
+  if (event) {
+    await db.delete(t.siteContent).where(eq(t.siteContent.key, eventHostsKey(event.slug)));
+    await db.delete(t.siteContent).where(eq(t.siteContent.key, eventGalleryKey(event.slug)));
+  }
   revalidateTag("content");
   revalidateTag("events");
   revalidatePath("/events");

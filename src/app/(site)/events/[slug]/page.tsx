@@ -7,6 +7,8 @@ import PaymentButton from "@/components/ui/payment-button";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
 import { getEditorial } from "@/lib/editorial/server";
 import EventDetailHero from "@/components/events/event-detail-hero";
+import EventGallery from "@/components/events/event-gallery";
+import { eventGalleryKey, eventGallerySettings, eventGalleryPhotos, eventVenuePhotos } from "@/lib/event-gallery";
 import styles from "@/components/events/event-detail.module.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -91,7 +93,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const genericContent = splitEventContent(event.bodyHtml || "");
   const priceLabel = event.priceFrom === 0 ? "By donation" : `₹${event.priceFrom.toLocaleString("en-IN")} + 18% GST`;
   const seasonalEvent = content.SEASONAL_EVENTS[event.slug as keyof typeof content.SEASONAL_EVENTS];
-  const savedHosts = await getContent(eventHostsKey(event.slug));
+  const [savedHosts, savedGallery] = await Promise.all([
+    getContent(eventHostsKey(event.slug)),
+    getContent(eventGalleryKey(event.slug)),
+  ]);
+  const gallery = eventGallerySettings(savedGallery);
+  const galleryPhotos = eventGalleryPhotos(gallery, event.name, eventVenuePhotos);
   const { hosts, heading: hostHeading } = eventHostSettings(savedHosts, legacyEventHosts(seasonalEvent));
   const isArtistUnite = event.slug === "artist-unite";
   const isArtistResidency = event.slug === "artist-in-residence";
@@ -105,8 +112,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
       <EventDetailHero hostSection={hosts.length ? <EventHosts hosts={hosts} heading={hostHeading} /> : undefined} name={event.name} kind={event.kind} description={event.description} image={image} bookingLabel={bookingLabel} time={seasonalEvent?.timeLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.timeLabel : isArtistUnite ? content.ARTIST_UNITE.timeLabel : undefined)} date={event.dateLabel || seasonalEvent?.dateLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.dateLabel : isArtistUnite ? content.ARTIST_UNITE.dateLabel : undefined)} duration={event.durationLabel} facilitator={event.facilitator}>
         {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent"><FormattedText value={content.ARTIST_IN_RESIDENCE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent"><FormattedText value={content.ARTIST_UNITE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> </PaymentButton>}
       </EventDetailHero>
-      <nav aria-label="Event page sections" className={styles.sectionNav}><div><a href="#event-overview">Overview</a>{(seasonalEvent || isArtistResidency || isArtistUnite || genericContent.sections.length > 0 || (!event.bodyHtml && details?.highlights.length)) && <a href="#event-programme">Programme</a>}{!!hosts.length && <a href="#event-hosts">{hostHeading}</a>}<a href="#event-registration">How to join <Icon name="arrow-forward-outline" size={14} /></a></div></nav>
+      <nav aria-label="Event page sections" className={styles.sectionNav}><div><a href="#event-overview">Overview</a>{galleryPhotos.length > 0 && <a href="#event-gallery">Gallery</a>}{(seasonalEvent || isArtistResidency || isArtistUnite || genericContent.sections.length > 0 || (!event.bodyHtml && details?.highlights.length)) && <a href="#event-programme">Programme</a>}{!!hosts.length && <a href="#event-hosts">{hostHeading}</a>}<a href="#event-registration">How to join <Icon name="arrow-forward-outline" size={14} /></a></div></nav>
       <div id="event-overview" className={styles.details}>
+      <EventGallery photos={galleryPhotos} eventPhotos={gallery.images.length > 0} />
 
       {seasonalEvent ? (
         <SeasonalEventContent content={seasonalEvent} />

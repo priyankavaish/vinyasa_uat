@@ -232,3 +232,19 @@
 @media (min-width: 640px) and (max-width: 1023px) {
   .bookingRail .hostList { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* A warmer rhythm through the programme, with the same square card language. */
+.details { counter-reset: event-section; }
+.contentSection { counter-increment: event-section; border-left: 2px solid #d5bfa6; padding-left: 20px; transition: border-color .2s ease; }
+.contentSection[open] { border-left-color: #8f3b31; }
+.contentSection > summary::before { content: counter(event-section, decimal-leading-zero); flex-shrink: 0; align-self: flex-start; padding-top: 3px; color: #a9785d; font-size: 13px; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.contentSection > summary h2 { flex: 1; }
+.contentSection > summary:hover h2 { color: #8f3b31; }
+.bookingCard { border-top: 3px solid #8f3b31; }
+@media (max-width: 767px) {
+  .contentSection { padding-left: 0; border-left: 2px solid #d5bfa6; }
+  .contentSection[open] { background: #f8f1e7; }
+  .contentSection > summary { gap: 12px; }
+  .contentSection > summary::before { font-size: 12px; padding-top: 2px; }
+}
+@media (prefers-reduced-motion: reduce) { .contentSection { transition: none; } }

@@ -22,7 +22,7 @@ try {
   await migrate(drizzle(database), { migrationsFolder: "./drizzle" });
   if (process.env.EVENT_TEST_FOLDER) {
     await database.query("DELETE FROM events WHERE slug = 'dynamic-creative-workshop'");
-    await database.query("DELETE FROM site_content WHERE key IN ('event-hosts:dynamic-creative-workshop', 'event-hosts:become-your-own-muse')");
+    await database.query("DELETE FROM site_content WHERE key IN ('event-hosts:dynamic-creative-workshop', 'event-hosts:become-your-own-muse', 'event-gallery:dynamic-creative-workshop')");
   }
   await database.query("INSERT INTO admin_users (email,password_hash) VALUES ($1,$2) ON CONFLICT(email) DO UPDATE SET password_hash=EXCLUDED.password_hash", ["event-test@example.com", await bcrypt.hash("test-only-event-password", 4)]);
   await database.close();
@@ -70,6 +70,12 @@ try {
   await page.getByPlaceholder(/paste an image URL/).first().fill(uploadedImage);
   await page.getByPlaceholder(/paste an image URL/).first().blur();
   await page.waitForFunction(() => document.querySelector('input[name="imageUrl"]').value.startsWith("/media/"));
+  const galleryEditor = page.locator("[data-event-gallery-editor]");
+  await galleryEditor.locator('input[type="file"]').setInputFiles([
+    {name:"portrait.jpg",mimeType:"image/jpeg",buffer:await readFile("public/seed/community-05.jpg")},
+    {name:"landscape.jpg",mimeType:"image/jpeg",buffer:await readFile("public/seed/grounds-04.jpg")},
+  ]);
+  await page.waitForFunction(() => document.querySelector('input[name="eventGallery"]').value.split("\n").filter(Boolean).length === 2);
   await page.getByRole("combobox", { name: "Section heading", exact: true }).selectOption("Artist");
   await page.getByRole("button", { name: "Add host / artist", exact: true }).click();
   const firstHost = page.locator("[data-host-editor]").nth(0);
@@ -112,6 +118,10 @@ try {
     assert.equal(await page.locator("h1").innerText(), "Dynamic Creative Workshop");
     assert.equal(await page.getByRole("heading", { name: "About the event", exact: true }).count(), 1);
     assert.equal(await page.locator("#event-overview details").count(), 2);
+    const gallery = page.locator("#event-gallery");
+    assert.equal(await gallery.getByRole("button", {name:/Open photo/}).count(),2,"custom event gallery persists");
+    assert(await gallery.getByRole("heading", {name:"Inside the experience",exact:true}).isVisible());
+    assert.equal(await gallery.locator("img:not([aria-hidden])").first().evaluate(image=>getComputedStyle(image).objectFit),"contain","portrait and landscape uploads are shown without cropping");
     const hosts = page.locator("#event-hosts");
     assert.equal(await hosts.getByRole("heading", { name: "Artist", exact: true }).count(), 1);
     assert.equal(await hosts.locator("[data-host-name]").count(), 2);
@@ -151,6 +161,8 @@ try {
   await page.locator("[data-host-editor]").first().waitFor();
   assert.equal(await page.locator("[data-host-editor]").count(), 2, "saved people reload into admin");
   assert.equal(await page.getByRole("combobox", { name: "Section heading", exact: true }).inputValue(), "Artist", "heading selection persists");
+  assert.equal((await page.locator('input[name="eventGallery"]').inputValue()).split("\n").filter(Boolean).length,2,"saved gallery reloads in admin");
+  await page.locator('input[name="eventGalleryEnabled"]').uncheck();
   await page.getByRole("button", { name: "Remove host 1", exact: true }).click();
   await page.getByRole("button", { name: "Remove host 1", exact: true }).click();
   await page.locator('input[name="name"]').fill("Updated Creative Workshop");
@@ -166,6 +178,9 @@ try {
   assert.match(await page.getByRole("complementary", { name: "Event booking details" }).innerText(), /1 Jan 2100/);
   assert.equal(await page.locator("#event-hosts").count(), 0, "removing all people hides the section");
   assert.equal(await page.locator('a[href="#event-hosts"]').count(), 0, "empty section has no navigation link");
+  assert.equal(await page.locator("#event-gallery").count(),0,"gallery can be hidden for this event");
+  assert.equal(await page.locator('a[href="#event-gallery"]').count(),0,"hidden gallery has no navigation link");
+  console.log("PASS event gallery uploads, persists, reloads and can be hidden from admin");
   console.log("PASS hosts and links save, reorder, reload and can all be removed");
   console.log("PASS edits in admin update the same event page, including its date and price");
   await page.goto(base + "/events", { waitUntil: "networkidle" });

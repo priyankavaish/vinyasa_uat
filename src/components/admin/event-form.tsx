@@ -2,6 +2,8 @@ import BookingButtonFields from "./booking-button-fields";
 import { loadBookingButton } from "@/lib/admin/booking-button-store";
 import EventContentFields from "./event-content-fields";
 import EventHostFields from "./event-host-fields";
+import GalleryField from "./gallery-field";
+import { loadEventGallery } from "@/lib/admin/event-gallery-store";
 import { loadEventHosts } from "@/lib/admin/event-hosts-store";
 import { getEditorial } from "@/lib/editorial/server";
 import { defaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
@@ -18,6 +20,7 @@ export default async function EventForm({ event }: { event?: EventRow }) {
   const details = event ? eventDetailValue(await getEditorial(eventEditorialKey, defaults), event.slug) : null;
   const template = event ? eventDetailValue(defaults, event.slug) : null;
   const hostSettings = event ? await loadEventHosts(event.slug, details) : { hosts: [], heading: "Host" as const };
+  const gallery = event ? await loadEventGallery(event.slug) : { enabled: true, images: [] };
   const payment = event ? await loadBookingButton(`event:${event.slug}`) : undefined;
   return (
     <form action={saveEvent} className="min-w-0 max-w-4xl space-y-5">
@@ -76,6 +79,12 @@ export default async function EventForm({ event }: { event?: EventRow }) {
 
       {details ? <><input type="hidden" name="bodyHtml" value={event?.bodyHtml ?? ""} /><EventContentFields key={event?.slug} value={details} template={template} /></> : <div className="space-y-3"><p className="text-sm leading-6 text-muted">Every event uses the same page layout. Add headings to organize the programme into sections, and include photos or links where needed.</p><RichEditorField name="bodyHtml" label="About & programme" defaultValue={event?.bodyHtml ?? ""} /></div>}
 
+      <section className="space-y-3 border-t border-line pt-5" data-event-gallery-editor>
+        <h2 className="font-display text-xl">Photo gallery</h2>
+        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="eventGalleryEnabled" defaultChecked={gallery.enabled} />Show photo gallery on this event</label>
+        <GalleryField name="eventGallery" label="Event gallery photos" defaultValue={gallery.images} />
+        <p className="text-sm leading-6 text-muted">Upload photos for this event, then drag to reorder. With no event photos, the page shows original photos of the Vinyasa grounds. Untick the option above to hide the gallery.</p>
+      </section>
       <EventHostFields initial={hostSettings.hosts} heading={hostSettings.heading} />
       <BookingButtonFields initial={payment} />
 
