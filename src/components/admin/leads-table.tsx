@@ -5,7 +5,7 @@ import EnquiryReplyForm from "@/components/admin/enquiry-reply-form";
 import type {EnquiryReply} from "@/lib/enquiry-replies";
 import type { Lead } from "@/lib/store";
 
-const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry"] as const;
+const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry", "work-from-farm"] as const;
 
 export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; replies?: EnquiryReply[] }) {
   const [filter, setFilter] = useState<(typeof SOURCES)[number]>("all");
@@ -30,7 +30,7 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
                 : "border-line bg-white text-foreground-soft"
             }`}
           >
-            {s}
+            {s === "work-from-farm" ? "Work from Farm" : s}
           </button>
         ))}
       </div>
@@ -61,7 +61,7 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
                       onClick={() => setOpenId(open ? null : l.id)}
                     >
                       <td className="px-4 py-3 font-medium">{l.name}</td>
-                      <td className="px-4 py-3 capitalize">{l.source}</td>
+                      <td className="px-4 py-3 capitalize">{l.source === "work-from-farm" ? "Work from Farm" : l.source}</td>
                       <td className="hidden px-4 py-3 text-foreground-soft sm:table-cell">{l.email}</td>
                       <td className="hidden px-4 py-3 text-xs text-muted md:table-cell">
                         {new Date(l.createdAt).toLocaleString("en-IN")}
@@ -75,7 +75,7 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
                         <td colSpan={5} className="px-4 py-4">
                           <dl className="grid gap-3 sm:grid-cols-2">
                             <Detail label="Name" value={l.name} />
-                            <Detail label="Source" value={l.source} />
+                            <Detail label="Source" value={l.source === "work-from-farm" ? "Work from Farm" : l.source} />
                             <Detail label="Email" value={<a href={`mailto:${l.email}`} className="text-accent underline">{l.email}</a>} />
                             <Detail label="Phone" value={l.phone ? <a href={`tel:${l.phone}`} className="text-accent underline">{l.phone}</a> : "—"} />
                             <Detail label="Received" value={new Date(l.createdAt).toLocaleString("en-IN")} />

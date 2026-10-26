@@ -2,6 +2,8 @@ import AnimatedButtonArrow from "@/components/ui/animated-button-arrow";
 import Link from "next/link";
 import HashScroll from "@/components/ui/hash-scroll";
 import EventContentImage from "./event-content-image";
+import EventSection from "./event-section";
+import EventOverview from "./event-overview";
 import FormattedText from "@/components/editorial/formatted-text";
 import RichContent from "@/components/ui/rich-content";
 import ResidencyApplicationForm from "@/components/forms/residency-application-form";
@@ -15,20 +17,18 @@ export default function ArtistResidencyContent({ content }: Props) {
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={content.dateLabel} /></p>
         <p className="mt-2 text-sm leading-6 text-muted"><FormattedText value={content.timeLabel} /></p>
         <h2 className="mt-5 font-display text-4xl leading-tight sm:text-5xl"><FormattedText value={content.heading} /></h2>
-        {content.introduction.map((paragraph, index) => <p key={index} className="mt-5 text-base leading-8 text-foreground-soft"><FormattedText value={paragraph} /></p>)}
+        <EventOverview>{content.introduction.map((paragraph, index) => <p key={index} className="mt-5 text-base leading-8 text-foreground-soft"><FormattedText value={paragraph} /></p>)}</EventOverview>
         <dl className="mt-8 grid grid-cols-2 gap-5 border-y border-line py-5 sm:grid-cols-3">
           <div><dt className="text-xs uppercase tracking-widest text-muted"><FormattedText value={content.durationLabelTitle} /></dt><dd className="mt-2 font-semibold"><FormattedText value={content.durationLabel} /></dd></div>
           <div><dt className="text-xs uppercase tracking-widest text-muted"><FormattedText value={content.placesTitle} /></dt><dd className="mt-2 font-semibold"><FormattedText value={content.placesValue} /></dd></div>
           <div><dt className="text-xs uppercase tracking-widest text-muted"><FormattedText value={content.venueTitle} /></dt><dd className="mt-2 font-semibold"><FormattedText value={content.venueValue} /></dd></div>
         </dl>
-        {content.sections.map((section, index) => <section key={index} className="mt-12 border-b border-line pb-10 last:border-0">
-          <p className="text-xs font-semibold tracking-[0.2em] text-accent">{String(index + 1).padStart(2, "0")}</p>
-          <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl"><FormattedText value={section.title} /></h2>
+        {content.sections.map((section, index) => <EventSection key={index} id={index === 0 ? "event-programme" : "event-section-" + (index + 1)} title={section.title}>
           {section.image && <EventContentImage src={section.image} alt={section.imageAlt} width={section.imageWidth} />}
           <RichContent eventActions html={section.bodyHtml} className="mt-6 text-foreground-soft [&_h3]:text-foreground [&_strong]:text-foreground" />
-        </section>)}
+        </EventSection>)}
       </article>
-      <aside className="self-start lg:sticky lg:top-28">
+      <aside id="event-registration" className="self-start lg:sticky lg:top-28">
         <div className="border border-line bg-surface p-6 sm:p-7">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={content.sidebarEyebrow} /></p>
           <h2 className="mt-4 font-display text-3xl leading-tight"><FormattedText value={content.sidebarTitle} /></h2>

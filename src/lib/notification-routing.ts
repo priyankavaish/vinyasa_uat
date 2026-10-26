@@ -10,6 +10,9 @@ export const recipientsSchema=z.object({
  return {to:unique(value.to),cc:unique(value.cc),bcc:unique(value.bcc)};
 });
 export type NotificationRecipients=z.infer<typeof recipientsSchema>;
-export const routingSchema=z.object({defaults:recipientsSchema}).strict();
+export const routingSchema=z.object({defaults:recipientsSchema,stays:recipientsSchema.optional()}).strict();
 export type NotificationRouting=z.infer<typeof routingSchema>;
+export function recipientsForSource(routing:NotificationRouting,source?:string):NotificationRecipients {
+ return (source==="stay-enquiry" || source==="work-from-farm") && routing.stays ? routing.stays : routing.defaults;
+}
 export function parseEmailAddresses(value:string){return value.split(/[,;\n]+/).map(item=>item.trim()).filter(Boolean);}

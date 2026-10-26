@@ -18,6 +18,7 @@ export default function WhatsappButton() {
       href={`https://wa.me/${content.phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`}
       target="_blank"
       rel="noopener noreferrer"
+      data-whatsapp-button
       aria-label={content.label}
       className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1.25rem,env(safe-area-inset-right))] z-30 grid h-11 w-11 place-items-center rounded-full bg-[#1da851] text-white shadow-lg transition-transform hover:-translate-y-0.5"
     >

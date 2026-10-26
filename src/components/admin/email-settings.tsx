@@ -25,8 +25,8 @@ export default function EmailSettings({ summary }: { summary: Summary }) {
 
  return <section className="mt-6 border border-line bg-white p-6">
   <h2 className="font-display text-xl">Email sender (one-time connection)</h2>
-  <p className="mt-2 text-sm">Connect the account used to send notification emails. Choose who receives them in the To field above.</p>
-  <p className="mt-2 text-sm text-foreground-soft">Connect once for contact, volunteer, artist, newsletter, corporate and booking forms. No separate setup for each form.</p>
+  <p className="mt-2 text-sm">Connect the account used to send notification emails. Choose the recipients for general notifications and stay enquiries above.</p>
+  <p className="mt-2 text-sm text-foreground-soft">This connection sends website notifications. When replying to an enquiry from your inbox, send it using that mailbox account.</p>
   <div className="mt-5 border border-line bg-background p-4">
    <h3 className="text-sm font-semibold">One-time Gmail connection</h3>
    <ol className="mt-3 list-decimal space-y-3 pl-5 text-sm">

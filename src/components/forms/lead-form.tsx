@@ -26,6 +26,7 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
 
   const isVolunteer = source === "volunteer";
   const compact = isVolunteer || source === "contact";
+  const phoneRequired = isVolunteer || source === "contact";
   const requiredMark = <span className="text-accent" aria-hidden="true"> *</span>;
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -111,13 +112,14 @@ export default function LeadForm({ source, title, submitLabel = "Send", showMess
         </div>
       )}
       <div>
-        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-phone`}>{isVolunteer ? <>Mobile Number{requiredMark}</> : content.text_6}</label>
+        <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft" htmlFor={`${source}-phone`}>{isVolunteer ? <>Mobile Number{requiredMark}</> : source === "contact" ? <>Phone{requiredMark}</> : content.text_6}</label>
         <input
-          id={`${source}-phone`} type="tel" required={isVolunteer} autoComplete="tel"
+          id={`${source}-phone`} type="tel" required={phoneRequired} minLength={phoneRequired ? 7 : undefined} maxLength={20} autoComplete="tel"
+          aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? `${source}-phone-error` : undefined}
           className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
           {...register("phone")}
         />
-        {errors.phone && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.phone.message} /></p>}
+        {errors.phone && <p id={`${source}-phone-error`} role="alert" className="mt-1 text-xs text-red-700"><FormattedText value={errors.phone.message} /></p>}
       </div>
       {isVolunteer && (
         <div>

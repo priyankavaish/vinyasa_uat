@@ -10,6 +10,10 @@ import { getDb } from "@/lib/db";
 import * as t from "@/lib/db/schema";
 import { paymentSettingsFromForm } from "@/lib/payment-buttons";
 import { storeBookingButton } from "./booking-button-store";
+import { eventHostsFromForm, eventHostsKey, eventHostHeadingSchema } from "@/lib/event-hosts";
+import { storeEventHosts } from "./event-hosts-store";
+import { eventGalleryFromForm, eventGalleryKey } from "@/lib/event-gallery";
+import { storeEventGallery } from "./event-gallery-store";
 import { SESSION_COOKIE, isValidSessionToken } from "@/lib/auth";
 
 async function assertAdmin() {
@@ -133,7 +137,7 @@ export async function deleteCottage(id: string) {
 
 const eventSchema = z.object({
   id: z.string().optional(),
-  slug: z.string().min(1).max(80),
+  slug: z.string().max(80).default(""),
   name: z.string().min(1).max(160),
   kind: z.enum(["workshop", "retreat", "residency"]),
   durationLabel: z.string().max(120).default(""),
@@ -148,6 +152,9 @@ const eventSchema = z.object({
 export async function saveEvent(form: FormData) {
   await assertAdmin();
   const data = eventSchema.parse(Object.fromEntries(form));
+  const hosts = eventHostsFromForm(form);
+  const gallery = eventGalleryFromForm(form);
+  const hostHeading = form.has("eventHostHeading") ? eventHostHeadingSchema.parse(form.get("eventHostHeading")) : null;
   const payment = paymentSettingsFromForm(form);
   const db = getDb();
   const original = data.id ? (await db.select({ slug: t.events.slug }).from(t.events).where(eq(t.events.id, data.id)).limit(1))[0] : undefined;
@@ -178,6 +185,8 @@ export async function saveEvent(form: FormData) {
     await db.insert(t.events).values(values);
   }
   await storeBookingButton("event", values.slug, original?.slug, payment);
+  await storeEventHosts(values.slug, original?.slug, hosts, hostHeading);
+  await storeEventGallery(values.slug, original?.slug, gallery);
   revalidateTag("content");
   revalidatePath("/admin/payment-buttons");
   if (original) revalidatePath(`/events/${original.slug}`);
@@ -192,6 +201,11 @@ export async function deleteEvent(id: string) {
   const db = getDb();
   const [event] = await db.select({ slug: t.events.slug }).from(t.events).where(eq(t.events.id, id)).limit(1);
   await db.delete(t.events).where(eq(t.events.id, id));
+  if (event) {
+    await db.delete(t.siteContent).where(eq(t.siteContent.key, eventHostsKey(event.slug)));
+    await db.delete(t.siteContent).where(eq(t.siteContent.key, eventGalleryKey(event.slug)));
+  }
+  revalidateTag("content");
   revalidateTag("events");
   revalidatePath("/events");
   if (event?.slug) revalidatePath(`/events/${event.slug}`);

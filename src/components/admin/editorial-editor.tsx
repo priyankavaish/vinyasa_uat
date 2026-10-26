@@ -6,6 +6,7 @@ import ImageField from "./image-field";
 import ResizableImageField from "./resizable-image-field";
 import SeoFields from "./seo-fields";
 import FormattedTextField from "./formatted-text-field";
+import { isLegacyHostSection } from "@/lib/event-hosts";
 import { isEditorialImageField, isEditorialVideoField, isEditorialAdvancedField, isEditorialTextField } from "@/lib/editorial/fields";
 type Section = { key: string; defaults: unknown; value: unknown };
 type Data = Record<string, unknown>;
@@ -48,15 +49,15 @@ const human = (path: string) => {
   if (generated && GENERATED_FIELD_LABELS[generated[1]]) return GENERATED_FIELD_LABELS[generated[1]];
   return titleCase(last);
 };
-export function Fields({ value, template, path, onChange }: { value: unknown; template: unknown; path: string; onChange: (value: unknown) => void }) {
+export function Fields({ value, template, path, onChange, hideEventHosts = false }: { value: unknown; template: unknown; path: string; onChange: (value: unknown) => void; hideEventHosts?: boolean }) {
   if (path === "Content.seo" && value && typeof value === "object" && !Array.isArray(value)) return <SeoFields value={value} onChange={onChange} />;
-  if (Array.isArray(value)) return <fieldset className="min-w-0 space-y-3 border border-line p-4">{path !== "Content" && <legend className="max-w-full break-words px-2 font-semibold">{human(path)}</legend>}{value.map((entry, index) => <div key={index} className="space-y-2 border-b border-line pb-4"><Fields value={entry} template={Array.isArray(template) ? template[index] ?? template[0] : entry} path={`${path} / ${index + 1}`} onChange={next => onChange(value.map((old, i) => i === index ? next : old))} /><button type="button" className="text-sm text-accent underline" onClick={() => onChange(value.filter((_, i) => i !== index))}>Remove item</button></div>)}<button type="button" className="btn btn-outline" onClick={() => onChange([...value, structuredClone(Array.isArray(template) ? template[0] : "")])}>Add item</button></fieldset>;
+  if (Array.isArray(value)) return <fieldset className="min-w-0 space-y-3 border border-line p-4">{path !== "Content" && <legend className="max-w-full break-words px-2 font-semibold">{human(path)}</legend>}{value.map((entry, index) => hideEventHosts && isLegacyHostSection(entry) ? null : <div key={index} className="space-y-2 border-b border-line pb-4"><Fields value={entry} template={Array.isArray(template) ? template[index] ?? template[0] : entry} path={`${path} / ${index + 1}`} hideEventHosts={hideEventHosts} onChange={next => onChange(value.map((old, i) => i === index ? next : old))} /><button type="button" className="text-sm text-accent underline" onClick={() => onChange(value.filter((_, i) => i !== index))}>Remove item</button></div>)}<button type="button" className="btn btn-outline" onClick={() => onChange([...value, structuredClone(Array.isArray(template) ? template[0] : "")])}>Add item</button></fieldset>;
   if (value && typeof value === "object") {
     const entries = Object.entries(value).filter(([key]) => !["blurDataURL", "blurWidth", "blurHeight", ...(Object.hasOwn(value, "image") ? ["imageWidth"] : [])].includes(key));
     const main = entries.filter(([key]) => !isEditorialAdvancedField(`${path}.${key}`));
     const advanced = entries.filter(([key]) => isEditorialAdvancedField(`${path}.${key}`));
     const renderField = ([key, child]: [string, unknown]) => key === "image" && Object.hasOwn(value, "imageWidth") ? <ResizableImageField key={key} value={String(child ?? "")} width={Number((value as Data).imageWidth) || 100} onChange={(image,imageWidth) => onChange({...value,image,imageWidth})} /> : (
-      <Fields key={key} value={child} template={(template as Data)?.[key]} path={`${path}.${key}`} onChange={next => onChange({ ...value, [key]: next })} />
+      <Fields key={key} value={child} template={(template as Data)?.[key]} path={`${path}.${key}`} hideEventHosts={hideEventHosts} onChange={next => onChange({ ...value, [key]: next })} />
     );
     return (
       <fieldset className={path === "Content" ? "min-w-0 grid gap-4" : "min-w-0 grid gap-4 border border-line p-4"}>
