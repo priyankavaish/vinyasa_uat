@@ -15,6 +15,19 @@ export const eventVenuePhotos: EventGalleryPhoto[] = [
   { src: "/seed/grounds-01.jpg", alt: "The farm and bamboo walkway at Vinyasa Earth" },
   { src: "/seed/grounds-04.jpg", alt: "Earth-built courtyard and gathering space at Vinyasa" },
   { src: "/seed/grounds-06.jpg", alt: "Mudhouses and green spaces at Vinyasa Earth" },
+  { src: "/seed/grounds-02.jpg", alt: "Grounds and gardens at Vinyasa Earth" },
+  { src: "/seed/grounds-03.jpg", alt: "Grounds and gardens at Vinyasa Earth" },
+  { src: "/seed/grounds-05.jpg", alt: "Grounds and gardens at Vinyasa Earth" },
+  { src: "/seed/grounds-07.jpg", alt: "Grounds and gardens at Vinyasa Earth" },
+  { src: "/seed/grounds-08.jpg", alt: "Grounds and gardens at Vinyasa Earth" },
+  { src: "/seed/grounds-09.jpg", alt: "Grounds and gardens at Vinyasa Earth" },
+  { src: "/seed/grounds-10.jpg", alt: "Grounds and gardens at Vinyasa Earth" },
+  { src: "/seed/community-01.jpg", alt: "Community and gatherings at Vinyasa Earth" },
+  { src: "/seed/community-02.jpg", alt: "Community and gatherings at Vinyasa Earth" },
+  { src: "/seed/community-03.jpg", alt: "Community and gatherings at Vinyasa Earth" },
+  { src: "/seed/community-04.jpg", alt: "Community and gatherings at Vinyasa Earth" },
+  { src: "/seed/community-05.jpg", alt: "Community and gatherings at Vinyasa Earth" },
+  { src: "/seed/community-06.jpg", alt: "Community and gatherings at Vinyasa Earth" },
 ];
 export const eventGalleryKey = (slug: string) => "event-gallery:" + slug;
 export function eventGallerySettings(value: unknown): EventGallerySettings {

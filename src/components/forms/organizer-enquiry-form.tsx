@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormattedText from "@/components/editorial/formatted-text";
 import { leadSchema, type LeadRequest } from "@/lib/schemas";
 import SuccessDialog from "./success-dialog";
+import FormLoader from "./form-loader";
 
 export type OrganizerFormContent = {
   nameLabel: string; programTypeLabel: string; programTypePlaceholder: string; programTypes: string[];
@@ -31,7 +32,7 @@ export default function OrganizerEnquiryForm({ content }: { content: OrganizerFo
     setFailure("");
     try {
       const response = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         for (const [field, messages] of Object.entries(data.fieldErrors || {})) setError(field as keyof LeadRequest, { message: (messages as string[])[0] });
         throw Error(data.error || "We could not send your enquiry. Please try again.");
@@ -46,6 +47,7 @@ export default function OrganizerEnquiryForm({ content }: { content: OrganizerFo
     { key: "phone", label: content.phoneLabel, type: "tel", autoComplete: "tel" },
   ] as const;
   return <>
+  <FormLoader active={isSubmitting} />
     <form onSubmit={handleSubmit(submit)} noValidate className="border border-line bg-surface p-5 sm:p-7">
       <fieldset disabled={isSubmitting} className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
         {fields.map(field => {

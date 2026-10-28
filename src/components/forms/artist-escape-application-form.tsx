@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import SuccessDialog from "./success-dialog";
+import FormLoader from "./form-loader";
 
 const COUNTRIES = [
   "India", "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
@@ -91,6 +92,7 @@ export default function ArtistEscapeApplicationForm() {
       <p className="font-display italic text-2xl">Application sent</p>
       <p className="mt-2 text-sm text-foreground-soft">We'll be in touch to set up a 1:1 call.</p>
     </SuccessDialog>
+    <FormLoader active={status === "submitting"} />
     <form onSubmit={handleSubmit(onSubmit)} className="border border-line bg-surface p-6 sm:p-9" noValidate>
       <h3 className="font-display italic text-2xl">Artist Escape Application</h3>
 

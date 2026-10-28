@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Script from "next/script";
 import { PAYMENT_MESSAGES } from "@/lib/payment-messages";
 import SuccessDialog from "./success-dialog";
+import FormLoader from "./form-loader";
 import {
   cottages as seedCottages,
   events as seedEvents,
@@ -227,6 +228,7 @@ export default function BookingForm({
 
   return (
     <>
+      <FormLoader active={status === "creating-booking" || status === "verifying"} label="Processing…" />
       <SuccessDialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)}>
         <h3 className="font-display text-3xl">{errorTitle}</h3>
         <p role="alert" className="mt-4 text-sm text-foreground-soft">{errorMessage}</p>

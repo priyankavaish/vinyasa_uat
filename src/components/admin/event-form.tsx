@@ -83,7 +83,7 @@ export default async function EventForm({ event }: { event?: EventRow }) {
         <h2 className="font-display text-xl">Photo gallery</h2>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="eventGalleryEnabled" defaultChecked={gallery.enabled} />Show photo gallery on this event</label>
         <GalleryField name="eventGallery" label="Event gallery photos" defaultValue={gallery.images} />
-        <p className="text-sm leading-6 text-muted">Upload photos for this event, then drag to reorder. With no event photos, the page shows original photos of the Vinyasa grounds. Untick the option above to hide the gallery.</p>
+        <p className="text-sm leading-6 text-muted">Upload photos for this event, then drag to reorder. They show as a swipeable 2×4 grid (8 photos per slide) that auto-scrolls, same as the Volunteer page. With no event photos, the page shows original photos of the Vinyasa grounds. Untick the option above to hide the gallery.</p>
       </section>
       <EventHostFields initial={hostSettings.hosts} heading={hostSettings.heading} />
       <BookingButtonFields initial={payment} />
