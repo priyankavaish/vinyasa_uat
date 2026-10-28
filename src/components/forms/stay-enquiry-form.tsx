@@ -7,6 +7,7 @@ import FormattedText from "@/components/editorial/formatted-text";
 import { leadSchema, type LeadRequest } from "@/lib/schemas";
 import type { Cottage } from "@/lib/content";
 import SuccessDialog from "./success-dialog";
+import FormLoader from "./form-loader";
 
 export type StayEnquiryContent = {
   nameLabel: string; guestsLabel: string; stayTypeLabel: string; dateLabel: string;
@@ -48,7 +49,7 @@ export default function StayEnquiryForm({ cottages, content, prefill = {}, onSav
     setFailure("");
     try {
       const response = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         for (const [field, messages] of Object.entries(data.fieldErrors || {})) setError(field as keyof LeadRequest, { message: (messages as string[])[0] });
         throw Error(data.error || "We could not send your enquiry. Please try again.");
@@ -61,6 +62,7 @@ export default function StayEnquiryForm({ cottages, content, prefill = {}, onSav
   const err = (message?: string, fieldId?: string) => message ? <p id={fieldId && `${fieldId}-error`} role="alert" className="mt-1 text-xs text-red-700">{message}</p> : null;
 
   return <>
+    <FormLoader active={isSubmitting} />
     <form onSubmit={handleSubmit(submit)} noValidate className="space-y-5">
       <fieldset disabled={isSubmitting} className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">

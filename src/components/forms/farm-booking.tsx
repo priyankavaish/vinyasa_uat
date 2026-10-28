@@ -6,6 +6,7 @@ import FormattedText from "@/components/editorial/formatted-text";
 import { plainText } from "@/lib/editorial/text";
 import { Icon, type IconName } from "@/components/ui/icon";
 import SuccessDialog from "./success-dialog";
+import FormLoader from "./form-loader";
 import { farmMoney, farmNights, farmQuote, farmToday, farmUnit, type FarmOffer } from "@/lib/work-from-farm";
 import styles from "@/app/(site)/work-from-farm/book/farm-booking.module.css";
 
@@ -58,7 +59,7 @@ export default function FarmBooking({ offers, meals, taxNote }: { offers: FarmOf
           guests: dates.guests, rooms: dates.cottages, ...contact,
         }),
       });
-      const result = await response.json();
+      const result = await response.json().catch(() => ({}));
       if (!response.ok) throw Error(Object.values(result.fieldErrors || {}).flat().join(" ") || result.error || "We could not send your enquiry. Please try again.");
       setSuccess(true);
     } catch (failure) { setError(failure instanceof Error ? failure.message : "Please try again."); }
@@ -68,6 +69,7 @@ export default function FarmBooking({ offers, meals, taxNote }: { offers: FarmOf
   if (!offers.length) return <p className={styles.panel}>Work from Farm accommodation is being updated. Please contact Vinyasa Earth to plan your stay.</p>;
 
   return <>
+    <FormLoader active={busy && step === 2} />
     <nav className={styles.steps} aria-label="Enquiry progress">
       <button type="button" disabled={step === 1 || busy} onClick={() => changeStep(1)} aria-current={step === 1 ? "step" : undefined}><span>{step === 2 ? "✓" : "1"}</span> Stay &amp; dates</button>
       <span className={styles.stepLine} />

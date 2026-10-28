@@ -17,6 +17,14 @@ import { volunteerTracks, volunteerInfo } from "@/lib/content";
 import communityImg from "@/app/assets/new/community-05.jpg";
 import styles from "./volunteer.module.css";
 
+// mailto: does nothing when no desktop mail app is set, so open Gmail compose instead.
+function gmailCompose(href: string) {
+  if (!href.startsWith("mailto:")) return href;
+  const [to, query = ""] = href.slice(7).split("?");
+  const subject = new URLSearchParams(query).get("subject") ?? "";
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}`;
+}
+
 export async function generateMetadata(): Promise<import("next").Metadata> {
   return pageSeoMetadata((await getEditorial("app/(site)/corporate/page", editorialDefaults)).seo, editorialDefaults.seo);
 }
@@ -68,7 +76,7 @@ export default async function VolunteerPage() {
           <div className="grid items-start gap-6 lg:grid-cols-2">
             {content.volunteerTracks.map((rawTrack, i) => {
               const fallback = volunteerTracks.find((t) => t.slug === rawTrack.slug);
-              const track = { ...rawTrack, summary: rawTrack.summary ?? fallback?.summary, cta: rawTrack.cta ?? fallback?.cta, ctaHref: rawTrack.ctaHref ?? fallback?.ctaHref };
+              const track = { ...rawTrack, summary: rawTrack.summary ?? fallback?.summary, cta: rawTrack.cta || fallback?.cta, ctaHref: rawTrack.ctaHref || fallback?.ctaHref };
               return (
               <Reveal key={track.slug} variant="up" delay={i * 100}>
                 <div className={styles.track}>
@@ -99,7 +107,7 @@ export default async function VolunteerPage() {
                       </li>
                     ))}
                   </ul>
-                  {track.cta && <a href={track.ctaHref || "#apply"} className="btn btn-accent text-center"><FormattedText value={track.cta} links={false} /></a>}
+                  {track.cta && <a href={gmailCompose(track.ctaHref || "#apply")} {...(track.ctaHref?.startsWith("mailto:") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="btn btn-accent text-center"><FormattedText value={track.cta} links={false} /></a>}
                 </div>
               </Reveal>
               );

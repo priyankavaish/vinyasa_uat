@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { leadSchema, type LeadRequest } from "@/lib/schemas";
 import SuccessDialog from "./success-dialog";
+import FormLoader from "./form-loader";
 import FormattedText from "@/components/editorial/formatted-text";
 import { residencyCountries, type artistInResidence } from "@/lib/editorial/defaults/artist-in-residence";
 
@@ -20,7 +21,7 @@ export default function ResidencyApplicationForm({ options, source = "artist-res
     setFailure("");
     try {
       const response = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         for (const [field, messages] of Object.entries(data.fieldErrors || {})) setError(field as keyof LeadRequest, { message: (messages as string[])[0] });
         throw Error(data.error || "We could not send your application. Please try again.");
@@ -39,7 +40,7 @@ export default function ResidencyApplicationForm({ options, source = "artist-res
     { key: "researchInquiry", label: "Area of Research/Enquiry", required: true, hint: "Describe in brief" },
   ] as const;
   const dialog = <SuccessDialog open={saved} onClose={() => { setSaved(false); reset(); }}><h3 className="font-display text-3xl"><FormattedText value={options.successTitle} /></h3><p className="mt-4 leading-7 text-foreground-soft"><FormattedText value={options.successMessage} /></p></SuccessDialog>;
-  return <><form onSubmit={handleSubmit(submit)} noValidate className="border border-line bg-surface p-5 sm:p-7">
+  return <><FormLoader active={isSubmitting} /><form onSubmit={handleSubmit(submit)} noValidate className="border border-line bg-surface p-5 sm:p-7">
     <fieldset disabled={isSubmitting} className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
       <legend className="sr-only">{source === "artist-unite" ? "Artist Unite application" : "Artist-in-Residence application"}</legend>
       {fields.filter(field => source === "artist-residence" || !["country", "researchInquiry"].includes(field.key)).map(field => {
