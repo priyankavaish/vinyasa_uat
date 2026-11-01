@@ -13,7 +13,7 @@ seo: {
 "title_2": "Book your stay",
 "image_3": "/images/Vinyasa data (Space)/IMG_9276.jpg",
 "imageAlt_4": "A peaceful earth mudhouse room ready for a stay at Vinyasa Earth",
-"intro": "Pick your dates, see what is available and book instantly. Pay securely online and get your confirmation by email.",
+"intro": "Pick your dates, see what is available and book instantly.",
 "nameLabel": "Name",
 "guestsLabel": "Number of Guests",
 "stayTypeLabel": "Stay type",
