@@ -42,6 +42,7 @@ export const bookings = pgTable("bookings", {
   checkOut: text("check_out"),
   eventDate: text("event_date"),
   guests: integer("guests").notNull(),
+  rooms: integer("rooms").notNull().default(1), // units booked (rooms / tents / dorm beds)
   guestName: text("guest_name").notNull(),
   guestEmail: text("guest_email").notNull(),
   guestPhone: text("guest_phone").notNull(),
@@ -49,6 +50,9 @@ export const bookings = pgTable("bookings", {
   status: text("status").notNull().default("pending"), // pending | paid | failed
   razorpayOrderId: text("razorpay_order_id"),
   razorpayPaymentId: text("razorpay_payment_id"),
+  failureReason: text("failure_reason"),
+  termsAcceptedAt: timestamp("terms_accepted_at", { withTimezone: true }),
+  termsVersion: text("terms_version"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 

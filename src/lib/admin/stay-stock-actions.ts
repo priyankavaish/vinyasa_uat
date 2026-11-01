@@ -26,5 +26,5 @@ export async function saveStayQuantity(_state: { error?: string; success?: strin
   revalidatePath("/book");
   revalidatePath("/");
   revalidatePath("/admin/stays");
-  return { success: parsed.data === 0 ? "Saved — sold out." : "Quantity saved." };
+  return { success: parsed.data === 0 ? "Saved — currently not available." : "Quantity saved." };
 }

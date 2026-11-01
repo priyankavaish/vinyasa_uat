@@ -1,5 +1,6 @@
 import StayInventoryEditor from "@/components/admin/stay-inventory-editor";
 import { readStayInventory } from "@/lib/stay-inventory";
+import { bookedUnitsPerNight } from "@/lib/stay-availability";
 import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import SearchableTable from "@/components/admin/searchable-table";
 import Link from "next/link";
@@ -24,6 +25,10 @@ export default async function AdminStaysPage() {
   ]);
 
   const inventory = await readStayInventory();
+  const night = new Date(Date.now() + 5.5 * 3600_000);
+  const tonight = night.toISOString().slice(0, 10);
+  const tomorrow = new Date(night.getTime() + 86_400_000).toISOString().slice(0, 10);
+  const bookedTonight = await bookedUnitsPerNight(rows.map((room) => room.slug), tonight, tomorrow).catch(() => ({} as Record<string, number>));
 
   return (
     <div className="space-y-12">
@@ -61,7 +66,7 @@ export default async function AdminStaysPage() {
                 </tr>) }))} />
       </div>
 
-      <StayInventoryEditor stays={rows.map((room) => ({ slug: room.slug, name: room.name, quantity: inventory[room.slug] ?? null }))} />
+      <StayInventoryEditor stays={rows.map((room) => ({ slug: room.slug, name: room.name, quantity: inventory[room.slug] ?? null, bookedTonight: bookedTonight[room.slug] }))} />
       <VisitOptionsEditor items={vo} />
       <div className="border border-line bg-white p-6"><h2 className="text-xl">Partner logos & stay page content</h2><p className="mt-2 text-sm text-foreground-soft">Edit partner names, logos, descriptions and gallery images in the website content editor.</p><Link href="/admin/content?section=app%2F(site)%2Fstays%2Fpage" className="btn btn-outline mt-4">Edit stays page content</Link></div>
     </div>

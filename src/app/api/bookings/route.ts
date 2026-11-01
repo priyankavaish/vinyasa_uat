@@ -1,13 +1,16 @@
 import { notifyEntry } from "@/lib/email-notifications";
 import { revalidatePath } from "next/cache";
 import { bookingPrice } from "@/lib/booking-pricing";
-import { readStayInventory } from "@/lib/stay-inventory";
+import { unitsLeft } from "@/lib/stay-availability";
 import { NextRequest, NextResponse } from "next/server";
 import { bookingRequestSchema } from "@/lib/schemas";
 import { getCottages, getEvents } from "@/lib/cms";
 import { createBooking, ensureBookingCurrencyPrecision } from "@/lib/store";
 import { createOrder } from "@/lib/razorpay";
 import { requireAdminSession } from "@/lib/auth";
+
+// Bump when the Way of Living or booking terms text changes materially, so old acceptances stay traceable.
+const TERMS_VERSION = "2026-11-v1";
 
 function nightsBetween(checkIn?: string, checkOut?: string): number {
   if (!checkIn || !checkOut) return 1;
@@ -22,13 +25,14 @@ async function computeAmount(
   type: "stay" | "event",
   itemSlug: string,
   checkIn?: string,
-  checkOut?: string
+  checkOut?: string,
+  rooms = 1
 ): Promise<number | null> {
   if (type === "stay") {
     const cottages = await getCottages();
     const cottage = cottages.find((c) => c.slug === itemSlug);
     if (!cottage) return null;
-    return cottage.pricePerNight * nightsBetween(checkIn, checkOut);
+    return cottage.pricePerNight * nightsBetween(checkIn, checkOut) * rooms;
   }
   const events = await getEvents();
   const event = events.find((e) => e.slug === itemSlug);
@@ -52,18 +56,28 @@ export async function POST(req: NextRequest) {
     );
   }
   const values = parsed.data;
+  // Guests must accept the Way of Living and the booking terms before paying; the acceptance is stored with the booking.
+  const accepted = body && typeof body === "object" && (body as Record<string, unknown>).acceptGuidelines === true && (body as Record<string, unknown>).acceptTerms === true;
+  if (!accepted) return NextResponse.json({ error: "Please accept the Vinyasa Way of Living and the booking terms and cancellation policy to continue." }, { status: 400 });
+  const rooms = values.type === "stay" ? values.rooms : 1;
   if (values.type === "stay") {
     try {
-      const inventory = await readStayInventory();
-      if (inventory[values.itemSlug] === 0) {
-        return NextResponse.json({ error: "This stay is sold out. Please choose another stay." }, { status: 409 });
+      const stays = await getCottages();
+      const stay = stays.find((item) => item.slug === values.itemSlug);
+      if (!stay) return NextResponse.json({ error: "Could not find that stay." }, { status: 404 });
+      if (stay.maxGuests && values.guests > stay.maxGuests * rooms) {
+        return NextResponse.json({ error: `${stay.name} fits up to ${stay.maxGuests} guests per unit. Add more units or reduce guests.` }, { status: 400 });
+      }
+      const left = (await unitsLeft([stay], values.checkIn!, values.checkOut!))[stay.slug];
+      if (left !== null && left < rooms) {
+        return NextResponse.json({ error: left === 0 ? `${stay.name} is currently not available for these dates. Please choose other dates or another stay.` : `Only ${left} ${left === 1 ? "unit is" : "units are"} left of ${stay.name} for these dates.` }, { status: 409 });
       }
     } catch {
       return NextResponse.json({ error: "Could not check availability. Please try again." }, { status: 503 });
     }
   }
 
-  const baseAmount = await computeAmount(values.type, values.itemSlug, values.checkIn, values.checkOut);
+  const baseAmount = await computeAmount(values.type, values.itemSlug, values.checkIn, values.checkOut, rooms);
   if (baseAmount === null || baseAmount <= 0) {
     return NextResponse.json({ error: "Could not price that selection." }, { status: 400 });
   }
@@ -80,6 +94,9 @@ export async function POST(req: NextRequest) {
       checkOut: values.checkOut,
       eventDate: values.eventDate,
       guests: values.guests,
+      rooms,
+      termsAcceptedAt: new Date(),
+      termsVersion: TERMS_VERSION,
       guestName: values.guestName,
       guestEmail: values.guestEmail,
       guestPhone: values.guestPhone,
