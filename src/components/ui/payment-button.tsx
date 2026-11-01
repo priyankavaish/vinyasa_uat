@@ -7,7 +7,7 @@ import { paymentButtonSchema, paymentKey, paymentStyle } from "@/lib/payment-but
 export default async function PaymentButton({ target, href, className, children, unavailable = false, animatedArrow = false }: {
   target: string; href: string; className?: string; children: ReactNode; unavailable?: boolean; animatedArrow?: boolean;
 }) {
-  if (unavailable) return <button type="button" disabled className={`${className ?? ""} !cursor-not-allowed !border-line !bg-line !text-muted hover:!transform-none`}>Sold out</button>;
+  if (unavailable) return <button type="button" disabled className={`${className ?? ""} !cursor-not-allowed !border-line !bg-line !text-muted hover:!transform-none`}>Currently not available</button>;
   const parsed = paymentButtonSchema.safeParse(await getContent(paymentKey(target)));
   const settings = parsed.success ? parsed.data : null;
   if (!settings) return <Link href={href} className={className}>{children}{animatedArrow && <AnimatedButtonArrow />}</Link>;

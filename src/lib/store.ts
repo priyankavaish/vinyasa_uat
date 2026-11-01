@@ -14,6 +14,7 @@ export type Booking = {
   checkOut?: string;
   eventDate?: string;
   guests: number;
+  rooms: number;
   guestName: string;
   guestEmail: string;
   guestPhone: string;
@@ -21,6 +22,9 @@ export type Booking = {
   status: "pending" | "paid" | "failed";
   razorpayOrderId?: string;
   razorpayPaymentId?: string;
+  failureReason?: string;
+  termsAcceptedAt?: string;
+  termsVersion?: string;
   createdAt: string;
 };
 
@@ -46,6 +50,7 @@ function toBooking(r: BookingRow): Booking {
     checkOut: r.checkOut ?? undefined,
     eventDate: r.eventDate ?? undefined,
     guests: r.guests,
+    rooms: r.rooms ?? 1,
     guestName: r.guestName,
     guestEmail: r.guestEmail,
     guestPhone: r.guestPhone,
@@ -53,6 +58,9 @@ function toBooking(r: BookingRow): Booking {
     status: r.status as Booking["status"],
     razorpayOrderId: r.razorpayOrderId ?? undefined,
     razorpayPaymentId: r.razorpayPaymentId ?? undefined,
+    failureReason: r.failureReason ?? undefined,
+    termsAcceptedAt: r.termsAcceptedAt?.toISOString(),
+    termsVersion: r.termsVersion ?? undefined,
     createdAt: r.createdAt.toISOString(),
   };
 }
@@ -69,9 +77,40 @@ function toLead(r: LeadRow): Lead {
   };
 }
 
+/** How long an unpaid booking holds its stock before the unit is released. */
+export const BOOKING_HOLD_MINUTES = 20;
+
+// Older databases predate multi-unit stay bookings and failure reasons; add the
+// columns once per connection (idempotent) before any bookings query runs.
+const bookingColumns = new WeakMap<object, Promise<void>>();
+export async function ensureBookingColumns() {
+  const db = getDb();
+  let ready = bookingColumns.get(db);
+  if (!ready) {
+    ready = db.execute(sql.raw("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS rooms integer NOT NULL DEFAULT 1"))
+      .then(() => db.execute(sql.raw("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS failure_reason text")))
+      .then(() => db.execute(sql.raw("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS terms_accepted_at timestamptz")))
+      .then(() => db.execute(sql.raw("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS terms_version text")))
+      .then(() => {});
+    bookingColumns.set(db, ready);
+    ready.catch(() => bookingColumns.delete(db));
+  }
+  await ready;
+}
+
+/** Unpaid bookings past the hold window become "failed" so the dashboard shows them and stock frees up. */
+export async function expireStaleBookings() {
+  await ensureBookingColumns();
+  const cutoff = new Date(Date.now() - BOOKING_HOLD_MINUTES * 60_000);
+  await getDb().update(bookingsTable)
+    .set({ status: "failed", failureReason: "Payment was not completed" })
+    .where(and(eq(bookingsTable.status, "pending"), lt(bookingsTable.createdAt, cutoff)));
+}
+
 export async function createBooking(
-  input: Omit<Booking, "id" | "createdAt" | "status">
+  input: Omit<Booking, "id" | "createdAt" | "status" | "failureReason" | "termsAcceptedAt" | "termsVersion"> & { termsAcceptedAt?: Date; termsVersion?: string }
 ): Promise<Booking> {
+  await ensureBookingColumns();
   const db = getDb();
   const [row] = await db
     .insert(bookingsTable)
@@ -82,6 +121,7 @@ export async function createBooking(
       checkOut: input.checkOut,
       eventDate: input.eventDate,
       guests: input.guests,
+      rooms: input.rooms,
       guestName: input.guestName,
       guestEmail: input.guestEmail,
       guestPhone: input.guestPhone,
@@ -89,6 +129,8 @@ export async function createBooking(
       status: "pending",
       razorpayOrderId: input.razorpayOrderId,
       razorpayPaymentId: input.razorpayPaymentId,
+      termsAcceptedAt: input.termsAcceptedAt,
+      termsVersion: input.termsVersion,
     })
     .returning();
   return toBooking(row);
@@ -97,24 +139,27 @@ export async function createBooking(
 export async function updateBookingStatus(
   id: string,
   status: Booking["status"],
-  extra?: Partial<Pick<Booking, "razorpayOrderId" | "razorpayPaymentId">>
+  extra?: Partial<Pick<Booking, "razorpayOrderId" | "razorpayPaymentId" | "failureReason">>
 ): Promise<Booking | null> {
+  await ensureBookingColumns();
   const db = getDb();
   const [row] = await db
     .update(bookingsTable)
-    .set({ status, ...extra })
+    .set({ status, ...(status === "paid" ? { failureReason: null } : {}), ...extra })
     .where(eq(bookingsTable.id, id))
     .returning();
   return row ? toBooking(row) : null;
 }
 
 export async function getBooking(id: string): Promise<Booking | null> {
+  await ensureBookingColumns();
   const db = getDb();
   const [row] = await db.select().from(bookingsTable).where(eq(bookingsTable.id, id)).limit(1);
   return row ? toBooking(row) : null;
 }
 
 export async function listBookings(): Promise<Booking[]> {
+  await expireStaleBookings();
   const db = getDb();
   const rows = await db.select().from(bookingsTable).orderBy(desc(bookingsTable.createdAt));
   return rows.map(toBooking);
@@ -173,11 +218,13 @@ export async function ensureBookingCurrencyPrecision() {
 }
 
 export async function getBookingByOrderId(orderId: string): Promise<Booking | null> {
+  await ensureBookingColumns();
   const [row] = await getDb().select().from(bookingsTable).where(eq(bookingsTable.razorpayOrderId, orderId)).limit(1);
   return row ? toBooking(row) : null;
 }
 
 export async function getBookingByPaymentId(paymentId: string): Promise<Booking | null> {
+  await ensureBookingColumns();
   const [row] = await getDb().select().from(bookingsTable).where(and(eq(bookingsTable.razorpayPaymentId, paymentId),eq(bookingsTable.status,"paid"))).limit(1);
   return row ? toBooking(row) : null;
 }

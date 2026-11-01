@@ -4,18 +4,27 @@ import { farmDateValid, farmNights, farmToday } from "./work-from-farm";
 export const bookingRequestSchema = z.object({
   type: z.enum(["stay", "event"]),
   itemSlug: z.string().min(1).max(80),
-  checkIn: z.string().date().optional(),
-  checkOut: z.string().date().optional(),
+  checkIn: z.preprocess((value) => value === "" ? undefined : value, z.string().date().optional()),
+  checkOut: z.preprocess((value) => value === "" ? undefined : value, z.string().date().optional()),
   eventDate: z.string().date().optional(),
   guests: z.coerce.number().int().min(1).max(20),
   guestName: z.string().trim().min(2).max(100),
-  guestEmail: z.string().trim().email().max(150),
+  guestEmail: z.string({ required_error: "Email is required." }).trim().min(1, "Email is required.").email("Enter a valid email address.").max(150),
   guestPhone: z
-    .string()
+    .string({ required_error: "Phone number is required." })
     .trim()
-    .min(7)
+    .min(1, "Phone number is required.")
     .max(20)
-    .regex(/^[0-9+\-\s()]+$/, "Enter a valid phone number"),
+    .regex(/^[0-9+\-\s()]+$/, "Enter a valid phone number")
+    .refine(value => value.replace(/\D/g, "").length >= 10, "Enter a phone number with at least 10 digits."),
+  rooms: z.coerce.number().int().min(1, "Choose at least one.").max(10).default(1),
+}).superRefine((value, ctx) => {
+  if (value.type !== "stay") return;
+  const today = new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10);
+  if (!value.checkIn) ctx.addIssue({ code: "custom", path: ["checkIn"], message: "Choose your check-in date." });
+  else if (value.checkIn < today) ctx.addIssue({ code: "custom", path: ["checkIn"], message: "Check-in date cannot be in the past." });
+  if (!value.checkOut) ctx.addIssue({ code: "custom", path: ["checkOut"], message: "Choose your check-out date." });
+  else if (value.checkIn && value.checkOut <= value.checkIn) ctx.addIssue({ code: "custom", path: ["checkOut"], message: "Check-out must be after check-in." });
 });
 export type BookingRequest = z.infer<typeof bookingRequestSchema>;
 

@@ -7,7 +7,7 @@ export const defaults = {
 "text_3": "Home",
 "href_4": "/stays",
 "text_5": "Stays",
-"text_6": " &middot; ",
+"text_6": " · ",
 "text_7": " — Community stay",
 "text_8": " Mudhouse",
 "text_9": " Vinyasa Earth, Jaipur, Rajasthan",
@@ -20,9 +20,9 @@ export const defaults = {
 "text_16": "Stay at ",
 "text_17": "From",
 "text_18": "Enquire for pricing",
-"text_19": "Enquire about a bed",
-"text_20": "Check availability",
-"text_21": "Share your dates to confirm availability and the final rate.",
+"text_19": "Book a bed",
+"text_20": "Book now",
+"text_21": "Choose your dates and book online. Prices exclude 18% GST.",
 "text_22": "What this stay offers",
 "text_23": "Contact us for details about this stay."
 };

@@ -7,10 +7,10 @@ import { siteContent, leads } from "@/lib/db/schema";
 import { getBooking, type Booking, type Lead } from "@/lib/store";
 import { getNotificationRouting } from "@/lib/notification-routing-store";
 import { recipientsForSource, type NotificationRecipients } from "@/lib/notification-routing";
-import { paymentEmailContent, type PaymentReceipt } from "@/lib/payment-email-content";
+import { paymentEmailContent, failedBookingEmailContent, type PaymentReceipt } from "@/lib/payment-email-content";
 import { SITE_ORIGIN } from "@/lib/site";
 export const EMAIL_CONFIG_KEY = "email-notifications:config";
-export type EmailKind = "lead" | "booking" | "payment" | "payment-customer" | "payment-receipt" | "payment-receipt-customer";
+export type EmailKind = "lead" | "booking" | "booking-failed" | "booking-failed-customer" | "payment" | "payment-customer" | "payment-receipt" | "payment-receipt-customer";
 type EmailEntry = Lead | Booking | PaymentReceipt;
 export type EmailConfig = { provider: "gmail" | "smtp" | "resend"; sender: string; host: string; port: number; user: string; secret: string; siteUrl?: string };
 export type EmailState = { kind: EmailKind; entryId: string; state: "sending" | "sent" | "failed" | "unconfigured"; updatedAt: string; error?: string };
@@ -62,20 +62,25 @@ export async function sendNotificationEmail(config: EmailConfig, subject: string
  const routing = await getNotificationRouting();
  return sendEmail(config, recipientsForSource(routing, source), subject, text, replyTo, idempotencyKey);
 }
-function messageFor(kind: EmailKind, entry: EmailEntry, origin: string) {
- if (kind.startsWith("payment")) return { ...paymentEmailContent(entry as Booking | PaymentReceipt, kind.endsWith("customer")), replyTo: (entry as Booking | PaymentReceipt).guestEmail || undefined };
+function messageFor(kind: EmailKind, entry: EmailEntry, origin: string, itemName?: string) {
+ if (kind.startsWith("payment")) return { ...paymentEmailContent(entry as Booking | PaymentReceipt, kind.endsWith("customer"), itemName), replyTo: (entry as Booking | PaymentReceipt).guestEmail || undefined };
+ if (kind.startsWith("booking-failed")) return { ...failedBookingEmailContent(entry as Booking, kind.endsWith("customer"), itemName), replyTo: (entry as Booking).guestEmail || undefined };
  const url = new URL(kind === "lead" ? "/admin/contact" : "/admin/bookings", origin).toString();
  if (kind === "lead") {
   const lead = entry as Lead;
   return { subject: "Vinyasa Earth: new " + lead.source + " enquiry", replyTo: lead.email, text: ["New website enquiry", "Reference: " + lead.id, "Form: " + lead.source, "Name: " + lead.name, "Email: " + lead.email, "Phone: " + (lead.phone || "Not supplied"), "", lead.message || "No message", "", "View entry: " + url].join("\n") };
  }
  const booking = entry as Booking;
- return { subject: "Vinyasa Earth: " + (kind === "payment" ? "payment confirmed" : "new booking") + " (" + booking.type + ")", replyTo: booking.guestEmail, text: ["Reference: " + booking.id, "Type: " + booking.type, "Stay / event: " + booking.itemSlug, "Guest: " + booking.guestName, "Email: " + booking.guestEmail, "Phone: " + booking.guestPhone, "Guests: " + booking.guests, "Check-in: " + (booking.checkIn || "—"), "Check-out: " + (booking.checkOut || "—"), "Event date: " + (booking.eventDate || "—"), "Total including GST: INR " + booking.amount.toFixed(2), "Payment status: " + booking.status, "Order: " + (booking.razorpayOrderId || "—"), "", "View entry: " + url].join("\n") };
+ return { subject: "Vinyasa Earth: " + (kind === "payment" ? "payment confirmed" : "new booking") + " (" + booking.type + ")", replyTo: booking.guestEmail, text: ["Reference: " + booking.id, "Type: " + booking.type, "Stay / event: " + (itemName || booking.itemSlug), "Rooms / units: " + booking.rooms, "Guest: " + booking.guestName, "Email: " + booking.guestEmail, "Phone: " + booking.guestPhone, "Guests: " + booking.guests, "Check-in: " + (booking.checkIn || "—"), "Check-out: " + (booking.checkOut || "—"), "Event date: " + (booking.eventDate || "—"), "Total including GST: INR " + booking.amount.toFixed(2), "Payment status: " + booking.status, "Order: " + (booking.razorpayOrderId || "—"), "", "View entry: " + url].join("\n") };
 }
 export async function notifyEntry(kind: EmailKind, entry: EmailEntry) {
  if (kind.startsWith("payment") && "status" in entry && entry.status !== "paid") return;
- const kinds: EmailKind[] = kind === "payment" ? ["payment", "payment-customer"] : kind === "payment-receipt" ? ["payment-receipt", "payment-receipt-customer"] : [kind];
+ const kinds: EmailKind[] = kind === "booking-failed" ? ["booking-failed", "booking-failed-customer"] : kind === "payment" ? ["payment", "payment-customer"] : kind === "payment-receipt" ? ["payment-receipt", "payment-receipt-customer"] : [kind];
  await Promise.all(kinds.map(next => deliverNotification(next, entry)));
+}
+async function bookingItemName(entry: EmailEntry) {
+ if (!("itemSlug" in entry)) return undefined;
+ try { const { getCottages, getAllEvents } = await import("@/lib/cms"); return ((entry.type === "stay" ? await getCottages() : await getAllEvents()) as { slug: string; name: string }[]).find(item => item.slug === entry.itemSlug)?.name; } catch { return undefined; }
 }
 async function deliverNotification(kind: EmailKind, entry: EmailEntry) {
  const notificationKey = "notification:" + kind + ":" + entry.id;
@@ -91,7 +96,7 @@ async function deliverNotification(kind: EmailKind, entry: EmailEntry) {
   const config = await getEmailConfig();
   if (!config) { state.state = "unconfigured"; state.error = "Email setup is required in Settings."; }
   else {
-   const mail = messageFor(kind, entry, config.siteUrl || SITE_ORIGIN);
+   const mail = messageFor(kind, entry, config.siteUrl || SITE_ORIGIN, await bookingItemName(entry));
    try {
     if (kind.endsWith("customer")) {
       const email = (entry as Booking | PaymentReceipt).guestEmail;
