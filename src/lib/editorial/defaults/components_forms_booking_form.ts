@@ -41,7 +41,7 @@ export const defaults = {
 
 "policyTitle": "Booking terms & cancellation policy",
 "policyItems": [
-  ["Pricing", "Rates are shown excluding GST. 18% GST is added to the total at checkout."],
+  ["Pricing", "Rates are shown excluding GST. GST is added to the total at checkout (5% on stays, 18% on events)."],
   ["Confirmation", "Your booking is confirmed only after your online payment succeeds. A confirmation is emailed to the address you provide."],
   ["Payment window", "Your selected stay is held for 20 minutes while you pay. If payment is not completed, the booking is released."],
   ["Failed payments", "If a payment fails or is cancelled, no booking is made. If money was deducted, contact Vinyasa with your booking reference."]
