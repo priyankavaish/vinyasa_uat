@@ -4,17 +4,20 @@ import { Fragment, useMemo, useState } from "react";
 import EnquiryReplyForm from "@/components/admin/enquiry-reply-form";
 import type {EnquiryReply} from "@/lib/enquiry-replies";
 import type { Lead } from "@/lib/store";
+import Pager, { paginate } from "@/components/admin/pager";
 
 const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry", "work-from-farm"] as const;
 
 export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; replies?: EnquiryReply[] }) {
   const [filter, setFilter] = useState<(typeof SOURCES)[number]>("all");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
 
   const rows = useMemo(
     () => (filter === "all" ? leads : leads.filter((l) => l.source === filter)),
     [leads, filter]
   );
+  const { current, pageCount, offset, visible } = paginate(rows, page, 15);
 
   return (
     <div>
@@ -23,7 +26,7 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
           <button
             key={s}
             type="button"
-            onClick={() => setFilter(s)}
+            onClick={() => { setFilter(s); setPage(1); setOpenId(null); }}
             className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.1em] capitalize ${
               filter === s
                 ? "border-accent bg-accent text-white"
@@ -52,7 +55,7 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
               </tr>
             </thead>
             <tbody>
-              {rows.map((l) => {
+              {visible.map((l) => {
                 const open = openId === l.id;
                 return (
                   <Fragment key={l.id}>
@@ -99,6 +102,7 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
           </table>
         </div>
       )}
+      <Pager label="queries" total={rows.length} offset={offset} shown={visible.length} current={current} pageCount={pageCount} onPage={(next) => { setPage(next); setOpenId(null); }} />
     </div>
   );
 }
