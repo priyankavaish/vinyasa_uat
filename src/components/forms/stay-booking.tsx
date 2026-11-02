@@ -20,7 +20,7 @@ export type StayBookingContent = StayEnquiryContent & {
 const inputClass = "mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent";
 const labelClass = "block text-xs tracking-[0.08em] uppercase text-foreground-soft";
 const BOOK_TITLE = "Book your stay";
-const BOOK_TEXT = "Choose your dates and pay securely online to confirm. Prices exclude 18% GST, added at checkout.";
+const BOOK_TEXT = "Choose your dates and pay securely online to confirm. Prices exclude 5% GST, added at checkout.";
 
 function priceText(stay: Cottage) {
   if (!stay.pricePerNight) return "";
@@ -126,7 +126,7 @@ export default function StayBooking({ cottages, content, aside }: { cottages: Co
                 <p className="mt-1 text-xs text-foreground-soft">
                   <FormattedText value={stay.tagline} links={false} />{stay.maxGuests ? <> · {stay.maxGuests} {content.guestsUnit}</> : null}
                 </p>
-                {priceText(stay) && <p className="mt-2 text-sm font-semibold">{priceText(stay)} <span className="font-normal text-muted">+ 18% GST</span></p>}
+                {priceText(stay) && <p className="mt-2 text-sm font-semibold">{priceText(stay)} <span className="font-normal text-muted">+ 5% GST</span></p>}
                 <button type="button" disabled={soldOut} onClick={() => openForm(stay)} className="btn btn-accent mt-4 inline-flex! flex-row items-center gap-2 self-start disabled:opacity-50">
                   {soldOut ? "Currently not available" : "Book now"}<Icon name="arrow-forward-outline" size={16} />
                 </button>

@@ -1,6 +1,6 @@
 import { notifyEntry } from "@/lib/email-notifications";
 import { revalidatePath } from "next/cache";
-import { bookingPrice } from "@/lib/booking-pricing";
+import { bookingPrice, gstPercentFor } from "@/lib/booking-pricing";
 import { unitsLeft } from "@/lib/stay-availability";
 import { NextRequest, NextResponse } from "next/server";
 import { bookingRequestSchema } from "@/lib/schemas";
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Could not price that selection." }, { status: 400 });
   }
 
-  const pricing = bookingPrice(baseAmount);
+  const pricing = bookingPrice(baseAmount, gstPercentFor(values.type));
   const amount = pricing.totalAmount;
   try {
     await ensureBookingCurrencyPrecision();

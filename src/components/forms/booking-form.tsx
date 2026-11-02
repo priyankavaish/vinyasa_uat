@@ -20,7 +20,7 @@ import {
   type Cottage,
   type EventProgram,
 } from "@/lib/content";
-import { bookingPrice } from "@/lib/booking-pricing";
+import { bookingPrice, gstPercentFor } from "@/lib/booking-pricing";
 import { isStaySoldOut } from "@/lib/stay-stock";
 import { bookingRequestSchema, type BookingRequest } from "@/lib/schemas";
 
@@ -126,7 +126,8 @@ export default function BookingForm({
     return 0;
   }, [type, item, checkIn, checkOut, rooms]);
 
-  const pricing = bookingPrice(baseAmount);
+  const gstPercent = gstPercentFor(type);
+  const pricing = bookingPrice(baseAmount, gstPercent);
   const amount = pricing.totalAmount;
   const money = (value: number) => value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
 
@@ -439,9 +440,9 @@ export default function BookingForm({
           </section>
         </TermsDialog>
 
-        <div className="space-y-2 text-sm text-foreground-soft">{type === "stay" && item && "pricePerNight" in item && <div className="flex justify-between gap-4"><span>₹{item.pricePerNight.toLocaleString("en-IN")} × {nightsBetween(checkIn, checkOut) || 1} night{(nightsBetween(checkIn, checkOut) || 1) === 1 ? "" : "s"} × {rooms} {itemSlug === "dorm" ? "bed" : "unit"}{rooms === 1 ? "" : "s"}</span><span /></div>}<div className="flex justify-between gap-4"><span>Base price (excluding GST)</span><span>₹<FormattedText value={money(pricing.baseAmount)} /></span></div><div className="flex justify-between gap-4"><span>GST (18%)</span><span>₹<FormattedText value={money(pricing.gstAmount)} /></span></div></div>
+        <div className="space-y-2 text-sm text-foreground-soft">{type === "stay" && item && "pricePerNight" in item && <div className="flex justify-between gap-4"><span>₹{item.pricePerNight.toLocaleString("en-IN")} × {nightsBetween(checkIn, checkOut) || 1} night{(nightsBetween(checkIn, checkOut) || 1) === 1 ? "" : "s"} × {rooms} {itemSlug === "dorm" ? "bed" : "unit"}{rooms === 1 ? "" : "s"}</span><span /></div>}<div className="flex justify-between gap-4"><span>Base price (excluding GST)</span><span>₹<FormattedText value={money(pricing.baseAmount)} /></span></div><div className="flex justify-between gap-4"><span>GST ({gstPercent}%)</span><span>₹<FormattedText value={money(pricing.gstAmount)} /></span></div></div>
         <div className="flex items-center justify-between border border-line bg-surface px-4 py-3">
-          <span className="text-sm text-foreground-soft">Total including 18% GST</span>
+          <span className="text-sm text-foreground-soft">Total including {gstPercent}% GST</span>
           <span className="tabular-nums text-xl font-semibold text-foreground">₹<FormattedText value={amount.toLocaleString("en-IN")} /></span>
         </div>
 

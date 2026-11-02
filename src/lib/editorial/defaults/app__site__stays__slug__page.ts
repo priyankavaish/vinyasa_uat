@@ -22,7 +22,7 @@ export const defaults = {
 "text_18": "Enquire for pricing",
 "text_19": "Book a bed",
 "text_20": "Book now",
-"text_21": "Choose your dates and book online. Prices exclude 18% GST.",
+"text_21": "Choose your dates and book online. Prices exclude 5% GST.",
 "text_22": "What this stay offers",
 "text_23": "Contact us for details about this stay."
 };

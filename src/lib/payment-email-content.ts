@@ -1,5 +1,5 @@
 import type { Booking } from "./store";
-import { bookingPrice } from "./booking-pricing";
+import { bookingPrice, gstPercentFor } from "./booking-pricing";
 export type PaymentReceipt = { id: string; guestName: string; guestEmail: string; amount: number; currency: string; reference?: string; receivedAt: string; source: "razorpay" };
 const inr = (value: number, currency = "INR") => new Intl.NumberFormat("en-IN", { style: "currency", currency, maximumFractionDigits: 2 }).format(value);
 const nightsOf = (booking: Booking) => booking.checkIn && booking.checkOut ? Math.max(1, Math.round((Date.parse(booking.checkOut) - Date.parse(booking.checkIn)) / 86_400_000)) : 0;
@@ -12,9 +12,10 @@ function bookingLines(booking: Booking, itemName?: string) {
   return lines;
 }
 function amountLines(booking: Booking) {
-  const base = booking.amount / (1 + 0.18);
-  const split = bookingPrice(Math.round(base * 100) / 100);
-  return [`Room charges (excl. GST): ${inr(split.baseAmount)}`, `GST (18%): ${inr(booking.amount - split.baseAmount)}`, `Total: ${inr(booking.amount)}`];
+  const gstPercent = gstPercentFor(booking.type);
+  const base = booking.amount / (1 + gstPercent / 100);
+  const split = bookingPrice(Math.round(base * 100) / 100, gstPercent);
+  return [`Room charges (excl. GST): ${inr(split.baseAmount)}`, `GST (${gstPercent}%): ${inr(booking.amount - split.baseAmount)}`, `Total: ${inr(booking.amount)}`];
 }
 
 export function paymentEmailContent(entry: Booking | PaymentReceipt, customer: boolean, itemName?: string) {
