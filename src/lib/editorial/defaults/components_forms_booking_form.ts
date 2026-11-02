@@ -44,8 +44,7 @@ export const defaults = {
   ["Pricing", "Rates are shown excluding GST. 18% GST is added to the total at checkout."],
   ["Confirmation", "Your booking is confirmed only after your online payment succeeds. A confirmation is emailed to the address you provide."],
   ["Payment window", "Your selected stay is held for 20 minutes while you pay. If payment is not completed, the booking is released."],
-  ["Failed payments", "If a payment fails or is cancelled, no booking is made. If money was deducted, contact Vinyasa with your booking reference."],
-  ["Cancellation & refunds", "[Cancellation and refund terms to be added by Vinyasa Earth — edit this in Admin › Content › Booking form.]"]
+  ["Failed payments", "If a payment fails or is cancelled, no booking is made. If money was deducted, contact Vinyasa with your booking reference."]
 ],
 "policyCheckbox": "I have read and agree to the booking terms and cancellation policy.",
 "policyError": "Please accept the booking terms and cancellation policy to continue."

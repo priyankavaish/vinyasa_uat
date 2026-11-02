@@ -114,9 +114,9 @@ export default function FarmBooking({ offers, meals, taxNote }: { offers: FarmOf
         </> : <fieldset disabled={busy} className={styles.contact}>
           <legend className="sr-only">Your contact details</legend>
           <div className={styles.fields}>
-            <label className={styles.full}>Name<input name="name" required minLength={2} maxLength={121} autoComplete="name" value={contact.name} onChange={event => setContact({ ...contact, name: event.target.value })} /></label>
-            <label>Email<input name="email" type="email" required maxLength={150} autoComplete="email" value={contact.email} onChange={event => setContact({ ...contact, email: event.target.value })} /></label>
-            <label>WhatsApp / phone number<input name="phone" type="tel" required minLength={7} maxLength={20} autoComplete="tel" value={contact.phone} onChange={event => setContact({ ...contact, phone: event.target.value })} /></label>
+            <label className={styles.full}>Name<span className={styles.req} aria-hidden="true"> *</span><input name="name" required minLength={2} maxLength={121} autoComplete="name" value={contact.name} onChange={event => setContact({ ...contact, name: event.target.value })} /></label>
+            <label>Email<span className={styles.req} aria-hidden="true"> *</span><input name="email" type="email" required maxLength={150} autoComplete="email" value={contact.email} onChange={event => setContact({ ...contact, email: event.target.value })} /></label>
+            <label>WhatsApp / phone number<span className={styles.req} aria-hidden="true"> *</span><input name="phone" type="tel" required minLength={7} maxLength={20} autoComplete="tel" value={contact.phone} onChange={event => setContact({ ...contact, phone: event.target.value })} /></label>
           </div>
           <details className={styles.details} open={contact.message ? true : undefined}>
             <summary>Add a note (optional)</summary>

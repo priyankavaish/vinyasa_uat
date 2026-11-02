@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Script from "next/script";
 import { PAYMENT_MESSAGES } from "@/lib/payment-messages";
 import SuccessDialog from "./success-dialog";
+import TermsDialog from "./terms-dialog";
 import FormLoader from "./form-loader";
 import {
   cottages as seedCottages,
@@ -66,6 +67,7 @@ export default function BookingForm({
   const [acceptWay, setAcceptWay] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptAttempted, setAcceptAttempted] = useState(false);
+  const [openDialog, setOpenDialog] = useState<"way" | "policy" | null>(null);
   const [mockPayment, setMockPayment] = useState<{ resolve: (outcome: "success" | "failed" | "cancelled") => void } | null>(null);
 
   const {
@@ -267,7 +269,7 @@ export default function BookingForm({
     return (
       <>
       <SuccessDialog open={!dialogClosed} onClose={() => setDialogClosed(true)}>{summary}</SuccessDialog>
-      <div className="border border-line bg-surface p-8 text-center sm:p-10">{summary}</div>
+      <div data-booking-complete className="border border-line bg-surface p-8 text-center sm:p-10">{summary}</div>
       </>
     );
   }
@@ -405,8 +407,20 @@ export default function BookingForm({
           {errors.guestPhone && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.guestPhone.message} /></p>}
         </div>
 
-        <section aria-labelledby="way-title" className="border border-line bg-clay-surface p-4 sm:p-6">
-          <h3 id="way-title" className="font-display text-2xl italic text-clay-ink">{content.wayTitle}</h3>
+        <section aria-label="Agreements" className="space-y-4 border border-line bg-surface p-4 sm:p-6">
+          <p className="text-sm text-foreground-soft">Please read the <button type="button" onClick={() => setOpenDialog("way")} className="font-semibold text-accent underline">{content.wayTitle}</button> and the <button type="button" onClick={() => setOpenDialog("policy")} className="font-semibold text-accent underline">{content.policyTitle}</button> before you book.</p>
+          <label htmlFor="accept-way" className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-foreground">
+            <input id="accept-way" type="checkbox" checked={acceptWay} onChange={e => setAcceptWay(e.target.checked)} aria-required="true" className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]" />
+            <span>{content.wayCheckbox} <span className="text-accent" aria-hidden="true">*</span></span>
+          </label>
+          <label htmlFor="accept-terms" className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-foreground">
+            <input id="accept-terms" type="checkbox" checked={acceptTerms} onChange={e => setAcceptTerms(e.target.checked)} aria-required="true" className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]" />
+            <span>{content.policyCheckbox} <span className="text-accent" aria-hidden="true">*</span></span>
+          </label>
+        </section>
+        <TermsDialog open={openDialog === "way"} onClose={() => setOpenDialog(null)}>
+          <section aria-labelledby="way-title">
+            <h3 id="way-title" className="font-display text-2xl italic text-clay-ink">{content.wayTitle}</h3>
           <p className="mt-2 text-sm leading-relaxed text-foreground-soft">{content.wayIntro}</p>
           <ol className="mt-4 grid gap-x-8 gap-y-4 sm:grid-cols-2">
             {content.wayItems.map(([title, text], index) => <li key={title} className="flex gap-3">
@@ -414,24 +428,16 @@ export default function BookingForm({
               <div><p className="text-sm font-semibold text-foreground">{title}</p><p className="mt-1 text-sm leading-relaxed text-foreground-soft">{text}</p></div>
             </li>)}
           </ol>
-          <label htmlFor="accept-way" className="mt-5 flex cursor-pointer items-start gap-3 border-t border-line pt-4 text-sm leading-relaxed text-foreground">
-            <input id="accept-way" type="checkbox" checked={acceptWay} onChange={e => setAcceptWay(e.target.checked)} aria-required="true" aria-invalid={acceptAttempted && !acceptWay} className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]" />
-            <span>{content.wayCheckbox} <span className="text-accent" aria-hidden="true">*</span></span>
-          </label>
-          {acceptAttempted && !acceptWay && <p role="alert" className="mt-2 text-xs text-red-700">{content.wayError}</p>}
-        </section>
-
-        <section aria-labelledby="policy-title" className="border border-line bg-surface p-4 sm:p-6">
-          <h3 id="policy-title" className="font-display text-2xl italic text-clay-ink">{content.policyTitle}</h3>
+          </section>
+        </TermsDialog>
+        <TermsDialog open={openDialog === "policy"} onClose={() => setOpenDialog(null)}>
+          <section aria-labelledby="policy-title">
+            <h3 id="policy-title" className="font-display text-2xl italic text-clay-ink">{content.policyTitle}</h3>
           <dl className="mt-3 space-y-3">
             {content.policyItems.map(([title, text]) => <div key={title}><dt className="text-sm font-semibold text-foreground">{title}</dt><dd className="mt-0.5 text-sm leading-relaxed text-foreground-soft">{text}</dd></div>)}
           </dl>
-          <label htmlFor="accept-terms" className="mt-5 flex cursor-pointer items-start gap-3 border-t border-line pt-4 text-sm leading-relaxed text-foreground">
-            <input id="accept-terms" type="checkbox" checked={acceptTerms} onChange={e => setAcceptTerms(e.target.checked)} aria-required="true" aria-invalid={acceptAttempted && !acceptTerms} className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]" />
-            <span>{content.policyCheckbox} <span className="text-accent" aria-hidden="true">*</span></span>
-          </label>
-          {acceptAttempted && !acceptTerms && <p role="alert" className="mt-2 text-xs text-red-700">{content.policyError}</p>}
-        </section>
+          </section>
+        </TermsDialog>
 
         <div className="space-y-2 text-sm text-foreground-soft">{type === "stay" && item && "pricePerNight" in item && <div className="flex justify-between gap-4"><span>₹{item.pricePerNight.toLocaleString("en-IN")} × {nightsBetween(checkIn, checkOut) || 1} night{(nightsBetween(checkIn, checkOut) || 1) === 1 ? "" : "s"} × {rooms} {itemSlug === "dorm" ? "bed" : "unit"}{rooms === 1 ? "" : "s"}</span><span /></div>}<div className="flex justify-between gap-4"><span>Base price (excluding GST)</span><span>₹<FormattedText value={money(pricing.baseAmount)} /></span></div><div className="flex justify-between gap-4"><span>GST (18%)</span><span>₹<FormattedText value={money(pricing.gstAmount)} /></span></div></div>
         <div className="flex items-center justify-between border border-line bg-surface px-4 py-3">
@@ -447,7 +453,7 @@ export default function BookingForm({
 
         <button
           type="submit"
-          disabled={submitting || soldOut || notEnoughLeft || !item}
+          disabled={submitting || soldOut || notEnoughLeft || !item || !acceptWay || !acceptTerms}
           className="btn btn-accent w-full transition-opacity disabled:opacity-60"
         >
           <FormattedText value={soldOut ? "Currently not available" : !item ? "Unavailable" : submitting ? content.text_19 : `Pay ₹${amount.toLocaleString("en-IN")} & Confirm`} links={false} />
