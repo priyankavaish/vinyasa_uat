@@ -1,4 +1,4 @@
-import { bookingPrice } from "./booking-pricing";
+import { bookingPrice, FARM_GST_PERCENT } from "./booking-pricing";
 import { plainText } from "./editorial/text";
 
 export const WORK_FROM_FARM_BOOK_PATH = "/work-from-farm/book";
@@ -51,7 +51,7 @@ export function farmQuote(stay: FarmStay, nights: number, guests: number, cottag
   const units = unit === "person" ? guests : cottages;
   const base = tier.rate * nights * units;
   if (!Number.isSafeInteger(Math.round(base * 100))) return null;
-  return { ...tier, unit, units, nights, ...bookingPrice(base) };
+  return { ...tier, unit, units, nights, ...bookingPrice(base, FARM_GST_PERCENT) };
 }
 export function farmEnquiryMessage(stay: FarmOffer, details: { checkInDate: string; checkOutDate: string; guests: string; rooms: string; message?: string }) {
   const nights = farmNights(details.checkInDate, details.checkOutDate);
@@ -65,7 +65,7 @@ export function farmEnquiryMessage(stay: FarmOffer, details: { checkInDate: stri
     ...(quote ? [
       `Work from Farm rate: ${farmMoney(quote.rate)} / ${quote.unit} / night (${quote.label})`,
       "Accommodation subtotal: " + farmMoney(quote.baseAmount),
-      "GST (18%): " + farmMoney(quote.gstAmount),
+      "GST (5%): " + farmMoney(quote.gstAmount),
       "Estimated total: " + farmMoney(quote.totalAmount),
     ] : ["Published Work from Farm rates:", ...stay.rows.map(row => plainText(row.label) + ": " + plainText(row.price)), "Estimate: team to confirm."]),
     "Meals are optional and charged separately.",

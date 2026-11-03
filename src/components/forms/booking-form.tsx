@@ -6,6 +6,7 @@ import { useEditorial } from "@/components/editorial/provider";
 
 
 import { useEffect, useMemo, useState } from "react";
+import StayDateRange from "./stay-date-range";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -74,6 +75,7 @@ export default function BookingForm({
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<BookingRequest>({
     resolver: zodResolver(bookingRequestSchema),
@@ -113,6 +115,18 @@ export default function BookingForm({
       .catch(() => { if (!controller.signal.aborted) setLeft(undefined); });
     return () => controller.abort();
   }, [type, itemSlug, checkIn, checkOut]);
+  // Nights this stay cannot be booked, so the calendar can show them before the guest picks dates.
+  const [closedDates, setClosedDates] = useState<string[]>([]);
+  useEffect(() => {
+    if (type !== "stay" || !itemSlug) { setClosedDates([]); return; }
+    const controller = new AbortController();
+    fetch(`/api/stays/unavailable-dates?slug=${encodeURIComponent(itemSlug)}`, { signal: controller.signal, cache: "no-store" })
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => setClosedDates(Array.isArray(data.dates) ? data.dates : []))
+      .catch(() => { if (!controller.signal.aborted) setClosedDates([]); });
+    return () => controller.abort();
+  }, [type, itemSlug]);
+  const closedNights = useMemo(() => new Set(closedDates), [closedDates]);
   const soldOut = type === "stay" && (isStaySoldOut(cottages.find((c) => c.slug === itemSlug)) || left === 0);
   const notEnoughLeft = type === "stay" && typeof left === "number" && left > 0 && rooms > left;
 
@@ -126,8 +140,21 @@ export default function BookingForm({
     return 0;
   }, [type, item, checkIn, checkOut, rooms]);
 
+  // Coupon: the server re-checks and re-prices on submit; this only previews the discount.
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCode, setAppliedCode] = useState<string | null>(null);
+  const [discount, setDiscount] = useState(0);
+  const [couponMessage, setCouponMessage] = useState("");
+  useEffect(() => {
+    if (!appliedCode || type !== "stay" || baseAmount <= 0) { setDiscount(0); return; }
+    const controller = new AbortController();
+    fetch("/api/coupons/validate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: appliedCode, baseAmount }), signal: controller.signal })
+      .then(async res => { const body = await res.json().catch(() => ({})); if (!res.ok) throw new Error(body?.error ?? "Could not check the coupon."); setDiscount(body.discount); setCouponMessage(`Coupon ${body.code} applied.`); })
+      .catch(error => { if (controller.signal.aborted) return; setDiscount(0); setAppliedCode(null); setCouponMessage(error instanceof Error ? error.message : "Could not check the coupon."); });
+    return () => controller.abort();
+  }, [appliedCode, type, baseAmount]);
   const gstPercent = gstPercentFor(type);
-  const pricing = bookingPrice(baseAmount, gstPercent);
+  const pricing = bookingPrice(Math.max(0, baseAmount - discount), gstPercent);
   const amount = pricing.totalAmount;
   const money = (value: number) => value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
 
@@ -147,7 +174,7 @@ export default function BookingForm({
       const bookingRes = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, amount, acceptGuidelines: true, acceptTerms: true }),
+        body: JSON.stringify({ ...values, amount, couponCode: appliedCode ?? undefined, acceptGuidelines: true, acceptTerms: true }),
       });
       if (!bookingRes.ok) {
         const body = await bookingRes.json().catch(() => ({}));
@@ -320,28 +347,13 @@ export default function BookingForm({
         </div>
 
         {type === "stay" ? (
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_11} /></label>
-              <input
-                type="date"
-                min={todayIso}
-                className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
-                {...register("checkIn")}
-              />
-              {errors.checkIn && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.checkIn.message} /></p>}
-            </div>
-            <div>
-              <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_12} /></label>
-              <input
-                type="date"
-                min={checkIn || todayIso}
-                className="mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm"
-                {...register("checkOut")}
-              />
-              {errors.checkOut && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.checkOut.message} /></p>}
-            </div>
-          </div>
+          <StayDateRange
+            checkIn={checkIn ?? ""} checkOut={checkOut ?? ""} minDate={todayIso} unavailable={closedNights}
+            onChange={(inDate, outDate) => { setValue("checkIn", inDate, { shouldValidate: !!inDate }); setValue("checkOut", outDate, { shouldValidate: !!outDate }); }}
+            checkInLabel={<FormattedText value={content.text_11} />} checkOutLabel={<FormattedText value={content.text_12} />}
+            checkInError={errors.checkIn && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.checkIn.message} /></p>}
+            checkOutError={errors.checkOut && <p className="mt-1 text-xs text-red-700"><FormattedText value={errors.checkOut.message} /></p>}
+          />
         ) : (
           <div>
             <label className="block text-xs tracking-[0.08em] uppercase text-foreground-soft"><FormattedText value={content.text_13} /></label>
@@ -440,7 +452,18 @@ export default function BookingForm({
           </section>
         </TermsDialog>
 
-        <div className="space-y-2 text-sm text-foreground-soft">{type === "stay" && item && "pricePerNight" in item && <div className="flex justify-between gap-4"><span>₹{item.pricePerNight.toLocaleString("en-IN")} × {nightsBetween(checkIn, checkOut) || 1} night{(nightsBetween(checkIn, checkOut) || 1) === 1 ? "" : "s"} × {rooms} {itemSlug === "dorm" ? "bed" : "unit"}{rooms === 1 ? "" : "s"}</span><span /></div>}<div className="flex justify-between gap-4"><span>Base price (excluding GST)</span><span>₹<FormattedText value={money(pricing.baseAmount)} /></span></div><div className="flex justify-between gap-4"><span>GST ({gstPercent}%)</span><span>₹<FormattedText value={money(pricing.gstAmount)} /></span></div></div>
+        <div className="space-y-2 text-sm text-foreground-soft"><div className="flex justify-between gap-4"><span>Base price (excluding GST)</span><span>₹<FormattedText value={money(pricing.baseAmount)} /></span></div><div className="flex justify-between gap-4"><span>GST ({gstPercent}%)</span><span>₹<FormattedText value={money(pricing.gstAmount)} /></span></div></div>
+        {type === "stay" && <div>
+          <label htmlFor="coupon-code" className="block text-xs tracking-[0.08em] uppercase text-foreground-soft">Do you have a coupon code?</label>
+          <div className="mt-1 flex gap-2">
+            <input id="coupon-code" value={couponInput} onChange={e => setCouponInput(e.target.value.toUpperCase())} autoComplete="off" disabled={!!appliedCode}
+              className="min-w-0 flex-1 border border-line bg-background px-4 py-2.5 text-sm uppercase" />
+            {appliedCode
+              ? <button type="button" className="btn btn-sm" onClick={() => { setAppliedCode(null); setDiscount(0); setCouponInput(""); setCouponMessage(""); }}>Remove</button>
+              : <button type="button" className="btn btn-sm" disabled={!couponInput.trim() || baseAmount <= 0} onClick={() => { setCouponMessage(""); setAppliedCode(couponInput.trim()); }}>Apply</button>}
+          </div>
+          {couponMessage && <p role="status" className={`mt-1 text-xs ${appliedCode ? "text-secondary-ink" : "text-red-700"}`}>{couponMessage}{appliedCode && discount > 0 ? ` You save ₹${money(discount)} before GST.` : ""}</p>}
+        </div>}
         <div className="flex items-center justify-between border border-line bg-surface px-4 py-3">
           <span className="text-sm text-foreground-soft">Total including {gstPercent}% GST</span>
           <span className="tabular-nums text-xl font-semibold text-foreground">₹<FormattedText value={amount.toLocaleString("en-IN")} /></span>

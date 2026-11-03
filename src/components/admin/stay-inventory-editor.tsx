@@ -18,7 +18,6 @@ function QuantityForm({ stay }: { stay: { slug: string; name: string; quantity: 
     <input type="hidden" name="slug" value={stay.slug} />
     <label htmlFor={`stock-${stay.slug}`} className="block text-sm font-semibold">{stay.name}</label>
     <p className="mt-1 text-xs text-muted">{stay.slug === "dorm" ? "Total beds" : stay.slug === "tent" ? "Total tents" : "Total rooms"}</p>
-    {stay.quantity !== null && stay.bookedTonight !== undefined && <p className="mt-1 text-xs text-foreground-soft">Tonight: {stay.bookedTonight} booked · {Math.max(0, stay.quantity - stay.bookedTonight)} free</p>}
     <div className="mt-3 flex gap-2">
       <input id={`stock-${stay.slug}`} name="quantity" type="number" min={0} max={100000} step={1}
         defaultValue={stay.quantity ?? ""} placeholder="Not set" disabled={pending}

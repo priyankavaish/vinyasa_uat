@@ -131,14 +131,14 @@ export default function FarmBooking({ offers, meals, taxNote }: { offers: FarmOf
         {nights > 0 && <p className={styles.stayDates}>{displayDate(dates.checkIn)} – {displayDate(dates.checkOut)}<br />{nights} {nights === 1 ? "night" : "nights"} · {dates.guests} {dates.guests === "1" ? "guest" : "guests"}{unit === "cottage" ? " · " + dates.cottages + (dates.cottages === "1" ? " cottage" : " cottages") : ""}</p>}
         <div aria-live="polite" aria-atomic="true" data-farm-quote className={styles.quote}>
           {quote ? <>
-            <p className={styles.totalLabel}>Estimated total <span>including 18% GST</span></p>
+            <p className={styles.totalLabel}>Estimated total <span>including 5% GST</span></p>
             <p className={styles.amount}>{farmMoney(quote.totalAmount)}</p>
             <p className={styles.rate}>{farmMoney(quote.rate)} / {quote.unit} / night</p>
             <details className={styles.details}>
               <summary>Price breakdown</summary>
               <dl className={styles.rateList}>
                 <div><dt>{nights} nights × {quote.units} {quote.unit}{quote.units === 1 ? "" : "s"}</dt><dd>{farmMoney(quote.baseAmount)}</dd></div>
-                <div><dt>GST (18%)</dt><dd>{farmMoney(quote.gstAmount)}</dd></div>
+                <div><dt>GST (5%)</dt><dd>{farmMoney(quote.gstAmount)}</dd></div>
               </dl>
             </details>
           </> : <p className={styles.prompt}>{nights ? "Our team will confirm the rate for your selected stay." : "Add your dates to see your total."}</p>}

@@ -16,6 +16,7 @@ export default async function CottagesSection() {
     accent: c.accent,
     pricePerNight: c.pricePerNight,
     quantity: c.quantity,
+    soldOutNow: c.soldOutNow,
     image: c.image || FALLBACK,
     gallery: (c.gallery?.length ? c.gallery : [c.image]).filter(Boolean).slice(0, 6),
   }));

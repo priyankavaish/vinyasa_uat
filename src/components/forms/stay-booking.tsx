@@ -58,7 +58,7 @@ export default function StayBooking({ cottages, content, aside }: { cottages: Co
     .filter(stay => !searched || (stay.maxGuests || 99) * rooms >= guests)
     .map(stay => {
       const unitsLeft = left?.[stay.slug] ?? null;
-      return { stay, unitsLeft, soldOut: stay.quantity === 0 || unitsLeft === 0 };
+      return { stay, unitsLeft, soldOut: stay.quantity === 0 || unitsLeft === 0 || (!searched && !!stay.soldOutNow) };
     }), [cottages, searched, guests, rooms, left]);
 
   function set<K extends keyof typeof search>(key: K, value: string) { setSearch(current => ({ ...current, [key]: value })); }

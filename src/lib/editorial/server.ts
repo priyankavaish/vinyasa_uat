@@ -65,11 +65,15 @@ export async function getEditorial<T>(key: string, defaults: T): Promise<T> {
     if (oldHeading(fields.heroTitle) === "alittlelessrush") fields.heroTitle = "Stay, work and slow down";
     if (oldHeading(fields.heroTitleAccent) === "alittlemoreroom") fields.heroTitleAccent = "outside Jaipur";
   }
+  if (key === "app/(site)/book/page" && value && typeof value === "object") {
+    const fields = value as Record<string, unknown>;
+    if (typeof fields.intro === "string" && /pick your dates to check/i.test(plainText(fields.intro))) fields.intro = "Pick your dates, see what is available and book instantly.";
+  }
   // Saved stay-page buttons still say "Check availability"/"Enquire"; stays are booked directly now.
   if (key === "app/(site)/stays/[slug]/page" && value && typeof value === "object") {
     const fields = value as Record<string, unknown>;
     if (typeof fields.text_20 === "string" && /^check availability$/i.test(plainText(fields.text_20).trim())) fields.text_20 = "Book now";
-    if (typeof fields.text_21 === "string" && /^share your dates to confirm availability/i.test(plainText(fields.text_21).trim())) fields.text_21 = "Choose your dates and book online. Prices exclude 18% GST.";
+    if (typeof fields.text_21 === "string" && /^share your dates to confirm availability/i.test(plainText(fields.text_21).trim())) fields.text_21 = "Choose your dates and book online. Prices exclude 5% GST.";
     if (typeof fields.text_6 === "string") fields.text_6 = fields.text_6.replace(/&middot;/g, "·");
     if (typeof fields.text_19 === "string" && /^enquire about a bed$/i.test(plainText(fields.text_19).trim())) fields.text_19 = "Book a bed";
   }

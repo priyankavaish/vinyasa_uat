@@ -6,7 +6,6 @@ import { getDb, hasDb } from "@/lib/db";
 import { cottages } from "@/lib/db/schema";
 import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import { readStayInventory } from "@/lib/stay-inventory";
-import { bookedUnitsPerNight } from "@/lib/stay-availability";
 import StayInventoryEditor from "@/components/admin/stay-inventory-editor";
 
 export const dynamic = "force-dynamic";
@@ -45,8 +44,6 @@ export default async function AdminDashboard() {
   const inventory = await readStayInventory().catch(() => ({} as Record<string, number>));
   const night = new Date(Date.now() + 5.5 * 3600_000);
   const tonight = night.toISOString().slice(0, 10);
-  const tomorrow = new Date(night.getTime() + 86_400_000).toISOString().slice(0, 10);
-  const bookedTonight = await bookedUnitsPerNight(stayRows.map((room) => room.slug), tonight, tomorrow).catch(() => ({} as Record<string, number>));
 
   const maxPath = Math.max(1, ...stats.topPaths.map((p) => p.count));
   const recentLeads = leads.slice(0, 6);
@@ -177,8 +174,9 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="mt-4">
-        <StayInventoryEditor stays={stayRows.map((room) => ({ slug: room.slug, name: room.name, quantity: inventory[room.slug] ?? null, bookedTonight: bookedTonight[room.slug] }))} />
+        <StayInventoryEditor stays={stayRows.map((room) => ({ slug: room.slug, name: room.name, quantity: inventory[room.slug] ?? null}))} />
       </div>
+
     </div>
   );
 }
