@@ -15,8 +15,8 @@ test("duration thresholds use the published Work from Farm rates for the whole s
 });
 test("dorm pricing is per guest, cottages per unit, and GST excludes optional food", () => {
   assert.equal(farmQuote(dorm, 16, 2, 1)?.baseAmount, 16000);
-  assert.equal(farmQuote(dorm, 16, 2, 1)?.totalAmount, 18880);
-  assert.equal(farmQuote(cottage, 7, 2, 1)?.totalAmount, 23954);
+  assert.equal(farmQuote(dorm, 16, 2, 1)?.totalAmount, 16800);
+  assert.equal(farmQuote(cottage, 7, 2, 1)?.totalAmount, 21315);
   assert.equal(farmQuote(cottage, 7, 4, 2)?.baseAmount, 40600);
   assert.equal(farmQuote(cottage, 7, 3, 1), null);
 });
@@ -41,7 +41,7 @@ test("a Work from Farm enquiry requires dates and stores its own rate context", 
   assert.equal(leadSchema.safeParse({ ...payload, guests: "0" }).success, false);
   const message = farmEnquiryMessage(farmOffers([dorm])[0], { ...payload, message: "Quiet work space." });
   assert.match(message, /Work from Farm rate: ₹500/);
-  assert.match(message, /Estimated total: ₹18,880/);
+  assert.match(message, /Estimated total: ₹16,800/);
   assert.match(message, /Meals are optional/);
   assert.match(message, /Quiet work space/);
 });

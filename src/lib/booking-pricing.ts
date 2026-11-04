@@ -1,6 +1,7 @@
 /** All catalogue rates are base prices in INR, excluding GST. */
 export const BOOKING_GST_PERCENT = 18;
 export const STAY_GST_PERCENT = 5;
+export const FARM_GST_PERCENT = 5;
 export const gstPercentFor = (type: "stay" | "event") => (type === "stay" ? STAY_GST_PERCENT : BOOKING_GST_PERCENT);
 export function bookingPrice(baseAmount: number, gstPercent = BOOKING_GST_PERCENT) {
   if (!Number.isFinite(baseAmount) || baseAmount < 0) throw new Error("Invalid base price.");

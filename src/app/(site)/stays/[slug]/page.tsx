@@ -80,7 +80,7 @@ export default async function CottageDetailPage({ params }: { params: Promise<{ 
                 <span className="ml-2 text-sm text-foreground-soft"><FormattedText value={shared ? "/ bed / night + 5% GST" : "/ night + 5% GST"} /></span>
               </div>
             ) : <p className="mt-3 text-2xl font-semibold"><FormattedText value={content.text_18} /></p>}
-            <PaymentButton unavailable={cottage.quantity === 0} target={`stay:${cottage.slug}`} href={bookingUrl}  className="btn btn-accent mt-6 flex w-full items-center justify-center gap-2">
+            <PaymentButton unavailable={cottage.quantity === 0 || !!cottage.soldOutNow} target={`stay:${cottage.slug}`} href={bookingUrl}  className="btn btn-accent mt-6 flex w-full items-center justify-center gap-2">
                 <FormattedText value={shared ? content.text_19 : content.text_20} links={false} /> <span className="arrow-nudge relative top-px inline-flex items-center leading-none"><Icon name="arrow-forward-outline" size={16} /></span>
             </PaymentButton>
             <p className="mt-3 text-center text-xs leading-relaxed text-muted"><FormattedText value={content.text_21} /></p>

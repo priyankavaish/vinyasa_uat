@@ -20,6 +20,7 @@ export type RoomItem = {
   accent: string;
   pricePerNight: number;
   quantity?: number | null;
+  soldOutNow?: boolean;
   image: string;
   gallery: string[];
 };
@@ -127,7 +128,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                 </div>
                 <h3 className="mt-4 font-display text-3xl leading-tight text-clay-ink sm:text-4xl"><FormattedText value={current.name} /></h3>
                 <p className="mt-3 text-sm leading-relaxed text-foreground-soft"><FormattedText value={current.tagline} /></p>
-                {current.quantity === 0 && <p className="mt-3 text-sm font-semibold text-accent">Currently not available</p>}
+                {(current.quantity === 0 || current.soldOutNow) && <p className="mt-3 text-sm font-semibold text-accent">Currently not available</p>}
               </div>
               <p className="mt-6 max-w-[40ch] text-sm leading-relaxed text-foreground-soft"><FormattedText value={content.text_16} /></p>
               <div className="mt-7 flex justify-end">

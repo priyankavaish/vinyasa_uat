@@ -1,6 +1,7 @@
 import { notifyEntry } from "@/lib/email-notifications";
 import { revalidatePath } from "next/cache";
 import { bookingPrice, gstPercentFor } from "@/lib/booking-pricing";
+import { applyCoupon } from "@/lib/coupon-store";
 import { unitsLeft } from "@/lib/stay-availability";
 import { NextRequest, NextResponse } from "next/server";
 import { bookingRequestSchema } from "@/lib/schemas";
@@ -82,7 +83,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Could not price that selection." }, { status: 400 });
   }
 
-  const pricing = bookingPrice(baseAmount, gstPercentFor(values.type));
+  // Coupon comes off the pre-GST amount; GST is then charged on the discounted base.
+  let discountedBase = baseAmount;
+  if (values.type === "stay" && values.couponCode) {
+    const applied = await applyCoupon(values.couponCode, baseAmount).catch(() => null);
+    if (!applied) return NextResponse.json({ error: "Could not check the coupon. Please try again." }, { status: 503 });
+    if (!applied.ok) return NextResponse.json({ error: applied.error }, { status: 400 });
+    discountedBase = Math.round((baseAmount - applied.discount) * 100) / 100;
+  }
+  const pricing = bookingPrice(discountedBase, gstPercentFor(values.type));
   const amount = pricing.totalAmount;
   try {
     await ensureBookingCurrencyPrecision();

@@ -14,6 +14,7 @@ export type Cottage = {
   pricePerNight: number; // INR
   maxGuests: number;
   quantity?: number | null; // Manually managed availability; null means not set.
+  soldOutNow?: boolean; // No unit free tonight (fully booked or closed by the admin).
   amenities: string[];
   image: string;
   gallery: string[];

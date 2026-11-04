@@ -18,6 +18,7 @@ export const bookingRequestSchema = z.object({
     .regex(/^[0-9+\-\s()]+$/, "Enter a valid phone number")
     .refine(value => value.replace(/\D/g, "").length >= 10, "Enter a phone number with at least 10 digits."),
   rooms: z.coerce.number().int().min(1, "Choose at least one.").max(10).default(1),
+  couponCode: z.string().trim().max(40).optional(),
 }).superRefine((value, ctx) => {
   if (value.type !== "stay") return;
   const today = new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10);

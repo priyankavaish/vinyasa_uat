@@ -1,6 +1,7 @@
 import { ensureArtistResidencyEvent, ensureMuseEvent } from "@/lib/db/event-catalog";
 import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import { getStayInventory } from "@/lib/stay-inventory";
+import { unitsLeft } from "@/lib/stay-availability";
 import { unstable_cache, unstable_noStore } from "next/cache";
 import { isEventActive } from "@/lib/event-dates";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
@@ -121,7 +122,11 @@ const getCottageCatalog = unstable_cache(
 
 export async function getCottages(): Promise<Cottage[]> {
   const [rooms, stock] = await Promise.all([getCottageCatalog(), getStayInventory()]);
-  return rooms.map((room) => ({ ...room, quantity: stock[room.slug] ?? null }));
+  // Listings say "Currently not available" when nothing is free tonight; booking itself re-checks per date.
+  const tonight = new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10);
+  const tomorrow = new Date(Date.parse(tonight) + 86_400_000).toISOString().slice(0, 10);
+  const left = hasDb() ? await unitsLeft(rooms, tonight, tomorrow).catch(() => ({} as Record<string, number | null>)) : {};
+  return rooms.map((room) => ({ ...room, quantity: stock[room.slug] ?? null, soldOutNow: left[room.slug] === 0 }));
 }
 
 export async function getCottage(slug: string): Promise<Cottage | null> {

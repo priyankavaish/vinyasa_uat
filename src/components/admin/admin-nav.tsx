@@ -11,6 +11,8 @@ const LINKS = [
   { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/blog", label: "Blog" },
   { href: "/admin/stays", label: "Stays" },
+  { href: "/admin/availability", label: "Availability" },
+  { href: "/admin/offers", label: "Coupons" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/pages", label: "Manage Pages" },
   { href: "/admin/payment-buttons", label: "Payment buttons" },
