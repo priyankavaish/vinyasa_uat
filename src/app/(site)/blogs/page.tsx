@@ -68,6 +68,11 @@ const POSTS: Array<{ title: string; href: string; blurb: string }> = [
   },
 ];
 
+function BlogThumb({ src, alt }: { src?: string; alt: string }) {
+  if (src) return <div className="relative aspect-[16/10] w-full overflow-hidden"><Image src={src} alt={alt} fill sizes="400px" className="object-cover transition-transform duration-500 group-hover:scale-105" /></div>;
+  return <div className="relative flex aspect-[16/10] w-full items-center justify-center bg-clay-surface"><Image src="/images/logo-transparent.png" alt="" fill sizes="400px" className="object-contain p-16 transition-transform duration-500 group-hover:scale-105" /></div>;
+}
+
 export default async function BlogsPage() {
   const content = await getEditorial("app/(site)/blogs/page", editorialDefaults);
   const posts = await getPublishedBlogs();
@@ -94,11 +99,7 @@ export default async function BlogsPage() {
                   href={`/blogs/${post.slug}`}
                   className="group flex h-full flex-col overflow-hidden border border-line bg-surface transition-all hover:-translate-y-1 hover:border-accent hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)]"
                 >
-                  {post.coverUrl ? (
-                    <div className="relative aspect-[16/10] w-full overflow-hidden">
-                      <Image src={post.coverUrl} alt={post.title} fill sizes="400px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                    </div>
-                  ) : null}
+                  <BlogThumb src={post.coverUrl} alt={post.title} />
                   <div className="flex flex-1 flex-col p-6 sm:p-7">
                     <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent"><FormattedText value={content.text_5} links={false} /></span>
                     <h3 className="mt-3 font-display italic text-xl leading-snug text-clay-ink"><FormattedText value={post.title} links={false} /></h3>
@@ -107,7 +108,7 @@ export default async function BlogsPage() {
                     ) : null}
                     <span className="mt-5 inline-flex items-center gap-2 border-t border-line pt-4 text-xs font-bold uppercase tracking-[0.12em] text-accent">
                       <FormattedText value={content.text_6} links={false} />
-                      <Icon name="arrow-forward-outline" size={14} className="-rotate-45 transition-transform group-hover:translate-x-1" />
+                      <Icon name="arrow-forward-outline" size={14} className="transition-transform group-hover:translate-x-1" />
                     </span>
                   </div>
                 </Link>
@@ -128,8 +129,10 @@ export default async function BlogsPage() {
                 href={post.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-full flex-col border border-line bg-surface p-6 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)] sm:p-7"
+                className="group flex h-full flex-col overflow-hidden border border-line bg-surface transition-all hover:-translate-y-1 hover:border-accent hover:shadow-[0_24px_60px_-28px_rgba(45,35,25,0.4)]"
               >
+                <BlogThumb alt={post.title} />
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-accent"><FormattedText value={content.text_5} links={false} /></span>
                 <h3 className="mt-3 font-display italic text-xl leading-snug text-clay-ink">
                   <FormattedText value={post.title} links={false} />
@@ -140,9 +143,10 @@ export default async function BlogsPage() {
                 <span className="mt-5 inline-flex items-center gap-2 border-t border-line pt-4 text-xs font-bold uppercase tracking-[0.12em] text-accent"><FormattedText value={content.text_6} links={false} /><Icon
                     name="arrow-forward-outline"
                     size={14}
-                    className="-rotate-45 transition-transform group-hover:translate-x-1"
+                    className="transition-transform group-hover:translate-x-1"
                   />
                 </span>
+                </div>
               </a>
             </Reveal>
           ))}
