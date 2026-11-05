@@ -1,5 +1,4 @@
-import "./load-env";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { getDb } from "./index";
 import { blogs, siteContent } from "./schema";
 
@@ -112,8 +111,12 @@ const POSTS = [
   },
 ];
 
-async function main() {
+/** Inserts the journal posts once per database (flag in site_content), like the other default content. Existing rows are kept. */
+export async function ensureJournalPosts() {
   const db = getDb();
+  const flag = "journal-seed:v1";
+  const [seeded] = await db.select({ key: siteContent.key }).from(siteContent).where(eq(siteContent.key, flag)).limit(1);
+  if (seeded) return;
   for (const post of POSTS) {
     await db.insert(blogs).values({
       slug: post.slug,
@@ -126,8 +129,6 @@ async function main() {
     }).onConflictDoNothing({ target: blogs.slug });
     const [row] = await db.select({ id: blogs.id }).from(blogs).where(eq(blogs.slug, post.slug)).limit(1);
     if (row) await db.insert(siteContent).values({ key: `blog-settings:${row.id}`, value: { category: "", tags: "", seoTitle: "", seoDescription: "", seoKeywords: "", aliases: [] } }).onConflictDoNothing({ target: siteContent.key });
-    console.log("ok", post.slug);
   }
+  await db.insert(siteContent).values({ key: flag, value: true }).onConflictDoNothing({ target: siteContent.key });
 }
-
-main().then(() => process.exit(0)).catch((error) => { console.error(error); process.exit(1); });
