@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Icon } from "@/components/ui/icon";
 
 type Props = {
   checkIn: string; checkOut: string; unavailable: ReadonlySet<string>; minDate: string;
@@ -59,9 +60,9 @@ export default function StayDateRange({ checkIn, checkOut, unavailable, minDate,
     </div>
     {open && <div role="dialog" aria-label="Choose your dates" className="absolute left-0 z-30 mt-2 w-full max-w-sm border border-line bg-surface p-4 shadow-lg">
       <div className="flex items-center justify-between">
-        <button type="button" aria-label="Previous month" onClick={() => setMonth(new Date(year, index - 1, 1))} className="px-2 py-1">‹</button>
+        <button type="button" aria-label="Previous month" onClick={() => setMonth(new Date(year, index - 1, 1))} className="grid h-8 w-8 place-items-center text-foreground-soft hover:text-accent"><Icon name="arrow-forward-outline" size={16} className="rotate-180" /></button>
         <p className="text-sm font-semibold">{month.toLocaleDateString("en-IN", { month: "long", year: "numeric" })}</p>
-        <button type="button" aria-label="Next month" onClick={() => setMonth(new Date(year, index + 1, 1))} className="px-2 py-1">›</button>
+        <button type="button" aria-label="Next month" onClick={() => setMonth(new Date(year, index + 1, 1))} className="grid h-8 w-8 place-items-center text-foreground-soft hover:text-accent"><Icon name="arrow-forward-outline" size={16} /></button>
       </div>
       <p className="mt-1 text-center text-xs text-foreground-soft">{choosingOut ? "Now choose your check-out date" : "Choose your check-in date"}</p>
       <div className="mt-3 grid grid-cols-7 gap-1 text-center text-xs">

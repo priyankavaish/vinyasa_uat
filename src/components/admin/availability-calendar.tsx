@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Icon } from "@/components/ui/icon";
 
 type Stay = { slug: string; name: string };
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -27,9 +28,9 @@ export default function AvailabilityCalendar({ stays, days, startMonth, months }
         className={`rounded border px-3 py-1.5 text-sm ${slug === s.slug ? "border-accent bg-accent text-white" : "border-line bg-background"}`}>{s.name}</button>)}
     </div>
     <div className="mt-5 flex items-center justify-between">
-      <button type="button" disabled={offset === 0} onClick={() => setOffset(offset - 1)} className="rounded border border-line px-3 py-1 text-sm disabled:opacity-40">‹ Prev</button>
+      <button type="button" disabled={offset === 0} onClick={() => setOffset(offset - 1)} className="grid h-9 w-9 place-items-center rounded border border-line text-foreground-soft transition-colors hover:border-accent hover:text-accent disabled:opacity-40" aria-label="Previous month"><Icon name="arrow-forward-outline" size={16} className="rotate-180" /></button>
       <p className="font-semibold">{first.toLocaleString("en-IN", { month: "long", year: "numeric", timeZone: "UTC" })}</p>
-      <button type="button" disabled={offset >= months - 1} onClick={() => setOffset(offset + 1)} className="rounded border border-line px-3 py-1 text-sm disabled:opacity-40">Next ›</button>
+      <button type="button" disabled={offset >= months - 1} onClick={() => setOffset(offset + 1)} className="grid h-9 w-9 place-items-center rounded border border-line text-foreground-soft transition-colors hover:border-accent hover:text-accent disabled:opacity-40" aria-label="Next month"><Icon name="arrow-forward-outline" size={16} /></button>
     </div>
     <div className="mt-3 grid grid-cols-7 gap-1 text-center text-xs">
       {WEEKDAYS.map((d) => <div key={d} className="py-1 font-semibold uppercase text-muted">{d}</div>)}
