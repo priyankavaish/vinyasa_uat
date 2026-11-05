@@ -1,3 +1,4 @@
+import { ensureJournalPosts } from "@/lib/db/journal-posts";
 import { ensureArtistResidencyEvent, ensureMuseEvent } from "@/lib/db/event-catalog";
 import { ensureManagedTent } from "@/lib/db/stay-catalog";
 import { getStayInventory } from "@/lib/stay-inventory";
@@ -211,6 +212,7 @@ export const getPublishedBlogs = unstable_cache(
   async (): Promise<Blog[]> => {
     if (!hasDb()) return [];
     try {
+      await ensureJournalPosts();
       const rows = await getDb()
         .select({ post: t.blogs, settings: t.siteContent.value })
         .from(t.blogs)
@@ -230,7 +232,7 @@ export const getPublishedBlogs = unstable_cache(
       return [];
     }
   },
-  ["cms:blogs:plain-v4"],
+  ["cms:blogs:plain-v5"],
   { tags: ["blogs"] }
 );
 
