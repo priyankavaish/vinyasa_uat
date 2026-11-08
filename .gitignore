@@ -13,3 +13,7 @@ data/*.jsonl
 
 # locally uploaded media (served via /media/[name])
 /uploads/
+
+# Cloudflare build output
+.open-next/
+.wrangler/
