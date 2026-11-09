@@ -6,7 +6,11 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Default handling strips ".html" and redirects — breaks static verification
+    // files under public/ (e.g. Google Search Console) that must be served exactly
+    // at their literal path.
+    "html_handling": "none"
   },
   "r2_buckets": [
     { "binding": "UPLOADS", "bucket_name": "vinyasa-uploads" }
