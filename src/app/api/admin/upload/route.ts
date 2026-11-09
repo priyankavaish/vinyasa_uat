@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { mkdir, writeFile } from "node:fs/promises";
 import { requireAdminSession } from "@/lib/auth";
 import { UPLOAD_DIR } from "@/lib/uploads";
+import { uploadsBucket } from "@/lib/r2-uploads";
 import path from "node:path";
 
 export const runtime = "nodejs";
@@ -37,6 +38,20 @@ export async function POST(req: NextRequest) {
     .toLowerCase()
     .slice(0, 60);
   const name = `${Date.now()}-${stem}.${EXT[file.type]}`;
+
+  // Cloudflare R2 (bound as UPLOADS) when running on Cloudflare Workers.
+  const bucket = await uploadsBucket();
+  if (bucket) {
+    try {
+      await bucket.put(name, await file.arrayBuffer(), { httpMetadata: { contentType: file.type } });
+      return NextResponse.json({ url: `/media/${name}` });
+    } catch (e) {
+      return NextResponse.json(
+        { error: `Upload failed: ${e instanceof Error ? e.message : String(e)}` },
+        { status: 500 }
+      );
+    }
+  }
 
   // On a serverless host the filesystem is read-only / per-instance, so a file
   // written to disk vanishes and /media/[name] 404s on the next request. Use

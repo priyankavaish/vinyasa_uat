@@ -101,7 +101,15 @@ async function deliverNotification(kind: EmailKind, entry: EmailEntry) {
     if (kind.endsWith("customer")) {
       const email = (entry as Booking | PaymentReceipt).guestEmail;
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Customer email is missing.");
-      await sendAccountEmail(config, email, mail.subject, mail.text, config.sender, notificationKey);
+      // The sender address (config.sender, e.g. bookings@vinyasa.earth) has no inbox of its
+      // own — Resend can only send from a domain address, it can't receive. Route a guest's
+      // "Reply" to the mailbox the team actually reads, same as admin notifications for
+      // their booking type already go to.
+      const booked = entry as Booking | PaymentReceipt;
+      const isStay = "type" in booked && booked.type === "stay";
+      const routing = await getNotificationRouting();
+      const replyTo = (isStay ? routing.stays?.to[0] : undefined) ?? routing.defaults.to[0] ?? config.sender;
+      await sendAccountEmail(config, email, mail.subject, mail.text, replyTo, notificationKey);
     } else await sendNotificationEmail(config, mail.subject, mail.text, mail.replyTo, notificationKey, kind === "lead" ? (entry as Lead).source : undefined);
     state.state = "sent";
    }

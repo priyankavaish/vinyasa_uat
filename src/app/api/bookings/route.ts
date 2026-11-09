@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { bookingPrice, gstPercentFor } from "@/lib/booking-pricing";
 import { applyCoupon } from "@/lib/coupon-store";
 import { unitsLeft } from "@/lib/stay-availability";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { bookingRequestSchema } from "@/lib/schemas";
 import { getCottages, getEvents } from "@/lib/cms";
 import { createBooking, ensureBookingCurrencyPrecision } from "@/lib/store";
@@ -113,7 +113,10 @@ export async function POST(req: NextRequest) {
       razorpayOrderId: order.id,
     });
     revalidatePath("/admin/bookings");
-    await notifyEntry("booking", booking);
+    // Send the notification email after the response goes out: the guest is waiting on
+    // this reply to open the Razorpay checkout, and an email send (Resend/SMTP, a full
+    // network round trip) must never be what they're stuck watching a spinner for.
+    after(() => notifyEntry("booking", booking));
     return NextResponse.json({ booking, order, pricing });
   } catch (err) {
     console.error("[api/bookings] failed to create booking", err);

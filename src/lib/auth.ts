@@ -66,8 +66,14 @@ export async function readSessionToken(
   const [expStr, emailEnc, fingerprint] = payload.split("~");
   const expires = Number(expStr);
   if (!Number.isFinite(expires) || Date.now() >= expires) return null;
+  const email = decodeURIComponent(emailEnc ?? "");
+  // The signature and expiry above are already verified without the database. This DB
+  // check only catches an admin being deleted or their password changed since the token
+  // was issued (so an old token can't outlive a password reset) — it never establishes
+  // trust by itself. If the database is briefly unreachable (a cold Neon compute, a
+  // network blip, the same middleware check runs on every admin page load) we keep the
+  // already-verified session valid instead of bouncing the admin back to the login form.
   try {
-    const email = decodeURIComponent(emailEnc ?? "");
     const { findAdminByEmail } = await import("@/lib/db/users");
     const user = await findAdminByEmail(email);
     if (!user) return null;
@@ -81,7 +87,7 @@ export async function readSessionToken(
       if (changed.length) return null;
     }
     return {email:user.email,expires};
-  } catch { return null; }
+  } catch { return {email,expires}; }
 }
 
 export async function isValidSessionToken(token: string | undefined | null): Promise<boolean> {

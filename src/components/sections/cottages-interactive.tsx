@@ -8,6 +8,8 @@ import { useEditorial } from "@/components/editorial/provider";
 import { useEffect, useRef, useState } from "react";
 import Image from "@/components/editorial/image";
 import Link from "next/link";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 import { Icon, type IconName } from "../ui/icon";
 import SectionEyebrow from "../ui/section-eyebrow";
 
@@ -38,6 +40,10 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
   const hero = gallery[shot] ?? current?.image;
 
   const tabsRef = useRef<HTMLDivElement>(null);
+  // Clicking an image opens it full-screen instead of navigating away, so the auto-advance
+  // keeps running underneath; pause it only while that lightbox is open, so the room on
+  // display doesn't change out from under a photo the guest is looking at.
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
     setShot(0);
@@ -52,10 +58,11 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
   useEffect(() => {
     if (rooms.length < 2) return;
     const id = window.setInterval(() => {
+      if (lightboxOpen) return;
       setActive((i) => (i + 1) % rooms.length);
     }, 4500);
     return () => window.clearInterval(id);
-  }, [rooms.length]);
+  }, [rooms.length, lightboxOpen]);
 
   if (!current) return null;
 
@@ -73,7 +80,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
             <div className="relative mx-auto max-h-[32rem] transition-[aspect-ratio] duration-500 ease-out" style={{ aspectRatio: heroRatio }}>
               <div aria-hidden className="absolute -bottom-4 -right-4 h-full w-full border border-clay-ink/15 bg-clay-surface" />
               <div aria-hidden className="absolute -bottom-2 -right-2 h-full w-full bg-accent/10" />
-              <Link href={`/stays/${current.slug}`} aria-label={`Explore ${current.name} mudhouse`} className="group relative block h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
+              <button type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open ${current.name} photo ${shot + 1} of ${gallery.length}`} className="group relative block h-full w-full overflow-hidden shadow-[0_30px_60px_-28px_rgba(30,20,12,0.4)]">
                 <Image
                   src={hero}
                   alt={`Inside ${current.name}, a hand-built mudhouse at Vinyasa Earth`}
@@ -88,7 +95,7 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                     }
                   }}
                 />
-              </Link>
+              </button>
             </div>
             {gallery.length > 1 && (
               <div className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-5 sm:gap-3" aria-label={`${current.name} gallery`}>
@@ -97,8 +104,8 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                     key={src + index}
                     type="button"
                     aria-pressed={shot === index}
-                    aria-label={`${current.name} photo ${index + 1}`}
-                    onClick={() => setShot(index)}
+                    aria-label={`Open ${current.name} photo ${index + 1}`}
+                    onClick={() => { setShot(index); setLightboxOpen(true); }}
                     className={`relative aspect-square overflow-hidden border transition-colors ${shot === index ? "border-accent" : "border-clay-ink/15 hover:border-clay-ink/40"}`}
                   >
                     <Image src={src} alt="" fill sizes="110px" className={`object-cover transition-opacity ${shot === index ? "opacity-100" : "opacity-70 hover:opacity-100"}`} />
@@ -106,6 +113,9 @@ export default function CottagesInteractive({ rooms }: { rooms: RoomItem[] }) {
                 ))}
               </div>
             )}
+            <Lightbox open={lightboxOpen} index={shot} close={() => setLightboxOpen(false)}
+              on={{ view: ({ index }) => setShot(index) }}
+              slides={gallery.map((src, i) => ({ src, alt: `${current.name}, photo ${i + 1}` }))} />
           </div>
 
           <div className="min-w-0 border border-clay-ink/10 bg-clay-surface/50 p-6 sm:p-8">

@@ -15,3 +15,7 @@ data/*.jsonl
 /uploads/
 .vercel
 .env*
+
+# Cloudflare build output
+.open-next/
+.wrangler/
