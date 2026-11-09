@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { Icon } from "@/components/ui/icon";
 import FormattedText from "@/components/editorial/formatted-text";
@@ -35,12 +35,12 @@ export default function StayBooking({ cottages, content, aside }: { cottages: Co
   // Units still free per stay for the searched nights (null = no stock limit set).
   const [left, setLeft] = useState<Record<string, number | null> | null>(null);
   const [checking, setChecking] = useState(false);
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  // A plain overlay (not <dialog>): a native modal sits in the top layer and hides the Razorpay checkout that opens over it.
   useEffect(() => {
-    const dlg = dialogRef.current;
-    if (!dlg) return;
-    if (dialogOpen && !dlg.open) dlg.showModal();
-    if (!dialogOpen && dlg.open) dlg.close();
+    if (!dialogOpen) return;
+    const close = (event: KeyboardEvent) => { if (event.key === "Escape") setDialogOpen(false); };
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
   }, [dialogOpen]);
   const requestedSlug = useSearchParams().get("slug");
   const fromStay = cottages.find(stay => stay.slug === requestedSlug);
@@ -169,22 +169,23 @@ export default function StayBooking({ cottages, content, aside }: { cottages: Co
       {aside}
     </div>
 
-    <dialog
-      ref={dialogRef}
-      onClose={() => setDialogOpen(false)}
-      onClick={(e) => { if (e.target === dialogRef.current) setDialogOpen(false); }}
-      className="m-auto w-[min(94vw,46rem)] max-h-[92vh] border border-line bg-surface p-0 text-foreground shadow-[0_40px_100px_-30px_rgba(35,25,15,0.5)] backdrop:bg-black/55 backdrop:backdrop-blur-sm"
+    {dialogOpen && <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="stay-booking-dialog-title"
+      onClick={(e) => { if (e.target === e.currentTarget) setDialogOpen(false); }}
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/55 p-4 backdrop-blur-sm sm:items-center"
     >
-      {dialogOpen && <div className="max-h-[92vh] overflow-y-auto p-5 sm:p-8">
+      <div className="w-[min(94vw,46rem)] max-h-[92vh] overflow-y-auto border border-line bg-surface p-5 text-foreground shadow-[0_40px_100px_-30px_rgba(35,25,15,0.5)] sm:p-8">
         <div className="mb-5 flex items-start justify-between gap-4">
           <div>
-            <h2 className="font-display text-2xl">{BOOK_TITLE}</h2>
+            <h2 id="stay-booking-dialog-title" className="font-display text-2xl">{BOOK_TITLE}</h2>
             <p className="mt-2 text-sm text-foreground-soft">{BOOK_TEXT}</p>
           </div>
           <button type="button" onClick={() => setDialogOpen(false)} aria-label={content.closeLabel} className="grid h-9 w-9 shrink-0 place-items-center border border-line text-foreground-soft transition-colors hover:border-accent hover:text-accent">&times;</button>
         </div>
         {bookingFormFor(selected?.stay)}
-      </div>}
-    </dialog>
+      </div>
+    </div>}
   </>;
 }

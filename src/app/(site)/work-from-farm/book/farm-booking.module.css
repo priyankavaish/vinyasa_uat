@@ -95,8 +95,9 @@
   .selectedName { margin-top: 14px; }
   .quote { margin-top: 16px; padding-block: 16px; }
   .amount { font-size: 30px; }
-  .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
-  .contact .fields { grid-template-columns: minmax(0, 1fr); }
+  /* Stay 1-column from here down: a native <input type="date"> refuses to shrink below its
+     intrinsic width on iOS/Android, so forcing 2 columns on a phone pushes it off-screen. */
+  .fields { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .layout[data-step="2"] .summary { padding: 18px 20px; }
   .layout[data-step="2"] .summary h2 { font-size: 21px; }
   .layout[data-step="2"] .selectedName { margin-top: 8px; font-size: 16px; }

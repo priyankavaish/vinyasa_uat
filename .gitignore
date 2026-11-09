@@ -17,3 +17,9 @@ data/*.jsonl
 # Cloudflare build output
 .open-next/
 .wrangler/
+
+# Neon credentials used for one-off setup on this machine
+.env.neon
+
+# UAT database credentials, local setup only
+.env.uat

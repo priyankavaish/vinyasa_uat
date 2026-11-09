@@ -1,5 +1,6 @@
 import "server-only";
 import { eq } from "drizzle-orm";
+import { after } from "next/server";
 import { getDb } from "@/lib/db";
 import { siteContent } from "@/lib/db/schema";
 import { getBookingByOrderId, getBookingByPaymentId, updateBookingStatus } from "@/lib/store";
@@ -15,14 +16,16 @@ export async function confirmCapturedPayment(input: CapturedPayment) {
     if (booking.razorpayPaymentId && booking.razorpayPaymentId !== payment.id) throw new Error("Another payment already confirmed this booking.");
     const paid = booking.status === "paid" ? booking : await updateBookingStatus(booking.id,"paid",{razorpayPaymentId:payment.id});
     if (!paid) throw new Error("Booking no longer exists.");
-    await notifyEntry("payment",paid);
+    // Same reasoning as the booking-creation step: the guest's "confirming payment" screen
+    // is waiting on this response, so the confirmation/receipt email goes out afterwards.
+    after(() => notifyEntry("payment",paid));
     return paid;
   }
   const notes = payment.notes && !Array.isArray(payment.notes) ? payment.notes : {};
   const receipt: PaymentReceipt = { id:payment.id, guestName:typeof notes.name === "string" ? notes.name : typeof notes.guest_name === "string" ? notes.guest_name : "", guestEmail:payment.email || "", amount:payment.amount/100,currency:payment.currency,source:"razorpay",receivedAt:new Date((payment.created_at || Date.now()/1000)*1000).toISOString() };
   await getDb().insert(siteContent).values({key:"payment-receipt:"+payment.id,value:receipt}).onConflictDoNothing();
   const [saved] = await getDb().select().from(siteContent).where(eq(siteContent.key,"payment-receipt:"+payment.id)).limit(1);
-  await notifyEntry("payment-receipt",saved.value as PaymentReceipt);
+  after(() => notifyEntry("payment-receipt",saved.value as PaymentReceipt));
   return null;
 }
 

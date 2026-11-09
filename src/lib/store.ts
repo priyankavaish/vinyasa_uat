@@ -87,11 +87,15 @@ export async function ensureBookingColumns() {
   const db = getDb();
   let ready = bookingColumns.get(db);
   if (!ready) {
-    ready = db.execute(sql.raw("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS rooms integer NOT NULL DEFAULT 1"))
-      .then(() => db.execute(sql.raw("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS failure_reason text")))
-      .then(() => db.execute(sql.raw("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS terms_accepted_at timestamptz")))
-      .then(() => db.execute(sql.raw("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS terms_version text")))
-      .then(() => {});
+    // One statement, not four: each was its own network round trip to Neon, adding up
+    // on every cold start since every booking-touching request calls this first.
+    ready = db.execute(sql.raw(
+      "ALTER TABLE bookings " +
+      "ADD COLUMN IF NOT EXISTS rooms integer NOT NULL DEFAULT 1, " +
+      "ADD COLUMN IF NOT EXISTS failure_reason text, " +
+      "ADD COLUMN IF NOT EXISTS terms_accepted_at timestamptz, " +
+      "ADD COLUMN IF NOT EXISTS terms_version text"
+    )).then(() => {});
     bookingColumns.set(db, ready);
     ready.catch(() => bookingColumns.delete(db));
   }
