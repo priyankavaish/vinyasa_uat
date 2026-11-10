@@ -4,6 +4,7 @@ import { pageSeoMetadata } from "@/lib/editorial/seo";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__corporate_page";
 import { getEditorial } from "@/lib/editorial/server";
+import { gmailCompose } from "@/lib/gmail-compose";
 import Image from "@/components/editorial/image";
 import SectionWave from "@/components/ui/section-wave";
 import AnimateInView from "@/components/ui/animate-in-view";
@@ -16,14 +17,6 @@ import { volunteerTracks, volunteerInfo } from "@/lib/content";
 
 import communityImg from "@/app/assets/new/community-05.jpg";
 import styles from "./volunteer.module.css";
-
-// mailto: does nothing when no desktop mail app is set, so open Gmail compose instead.
-function gmailCompose(href: string) {
-  if (!href.startsWith("mailto:")) return href;
-  const [to, query = ""] = href.slice(7).split("?");
-  const subject = new URLSearchParams(query).get("subject") ?? "";
-  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}`;
-}
 
 export async function generateMetadata(): Promise<import("next").Metadata> {
   return pageSeoMetadata((await getEditorial("app/(site)/corporate/page", editorialDefaults)).seo, editorialDefaults.seo);

@@ -3,6 +3,7 @@ import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/app__site__artist_escape_page";
 import { getEditorial } from "@/lib/editorial/server";
+import { gmailCompose } from "@/lib/gmail-compose";
 import SectionWave from "@/components/ui/section-wave";
 import AnimateInView from "@/components/ui/animate-in-view";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
@@ -237,7 +238,7 @@ export default async function ArtistEscapePage() {
                 ))}
               </div>
               <div className="mt-6 space-y-2 text-sm">
-                <a href={`mailto:${content.cta_email}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
+                <a href={gmailCompose(`mailto:${content.cta_email}`)} target="_blank" rel="noopener noreferrer" className="flex w-fit items-center gap-2 text-accent hover:underline">
                   <FormattedText value={content.cta_email} links={false} />
                 </a>
                 <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
