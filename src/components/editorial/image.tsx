@@ -22,5 +22,8 @@ export default function EditorialImage(props: ImageProps) {
       return false;
     }
   })();
-  return <NextImage {...props} alt={plainText(props.alt)} unoptimized={props.unoptimized || (external && !optimizable)} />;
+  // /media/[name] is a dynamic route (serves an admin upload from R2 or local disk),
+  // not a static file — Next's image optimizer 404s trying to resolve it as one.
+  const uploaded = !external && src.startsWith("/media/");
+  return <NextImage {...props} alt={plainText(props.alt)} unoptimized={props.unoptimized || uploaded || (external && !optimizable)} />;
 }
