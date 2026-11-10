@@ -8,6 +8,7 @@ import { getBooking, type Booking, type Lead } from "@/lib/store";
 import { getNotificationRouting } from "@/lib/notification-routing-store";
 import { recipientsForSource, type NotificationRecipients } from "@/lib/notification-routing";
 import { paymentEmailContent, failedBookingEmailContent, type PaymentReceipt } from "@/lib/payment-email-content";
+import { sendGmail, gmailApiConfigured, type GmailAccount } from "@/lib/gmail-send";
 import { SITE_ORIGIN } from "@/lib/site";
 export const EMAIL_CONFIG_KEY = "email-notifications:config";
 export type EmailKind = "lead" | "booking" | "booking-failed" | "booking-failed-customer" | "payment" | "payment-customer" | "payment-receipt" | "payment-receipt-customer";
@@ -93,24 +94,41 @@ async function deliverNotification(kind: EmailKind, entry: EmailEntry) {
   const rows = Array.isArray(result) ? result : (result as { rows?: unknown[] }).rows || [];
   if (!rows.length) return;
   claimed = true;
-  const config = await getEmailConfig();
-  if (!config) { state.state = "unconfigured"; state.error = "Email setup is required in Settings."; }
+  const usingGmailApi = gmailApiConfigured();
+  const config = usingGmailApi ? null : await getEmailConfig();
+  if (!usingGmailApi && !config) { state.state = "unconfigured"; state.error = "Email setup is required in Settings."; }
   else {
-   const mail = messageFor(kind, entry, config.siteUrl || SITE_ORIGIN, await bookingItemName(entry));
+   const mail = messageFor(kind, entry, config?.siteUrl || SITE_ORIGIN, await bookingItemName(entry));
    try {
+    // Stay bookings and stay/Work from Farm enquiries send as bookings.vinyasaearth@gmail.com;
+    // everything else sends as vinyasa.ashram@gmail.com — each a real mailbox the team reads,
+    // via the Gmail API, so the sender is genuine and a guest's reply lands there directly.
+    const gmailAccount: GmailAccount = kind === "lead"
+      ? (["stay-enquiry", "work-from-farm"].includes((entry as Lead).source) ? "bookings" : "ashram")
+      : ("type" in entry && entry.type === "stay" ? "bookings" : "ashram");
     if (kind.endsWith("customer")) {
       const email = (entry as Booking | PaymentReceipt).guestEmail;
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Customer email is missing.");
-      // The sender address (config.sender, e.g. bookings@vinyasa.earth) has no inbox of its
-      // own — Resend can only send from a domain address, it can't receive. Route a guest's
-      // "Reply" to the mailbox the team actually reads, same as admin notifications for
-      // their booking type already go to.
-      const booked = entry as Booking | PaymentReceipt;
-      const isStay = "type" in booked && booked.type === "stay";
+      if (usingGmailApi) {
+        await sendGmail(gmailAccount, { to: [email], subject: mail.subject, text: mail.text });
+      } else if (config) {
+        // The sender address (config.sender, e.g. bookings@vinyasa.earth) has no inbox of its
+        // own — Resend can only send from a domain address, it can't receive. Route a guest's
+        // "Reply" to the mailbox the team actually reads, same as admin notifications for
+        // their booking type already go to.
+        const booked = entry as Booking | PaymentReceipt;
+        const isStay = "type" in booked && booked.type === "stay";
+        const routing = await getNotificationRouting();
+        const replyTo = (isStay ? routing.stays?.to[0] : undefined) ?? routing.defaults.to[0] ?? config.sender;
+        await sendAccountEmail(config, email, mail.subject, mail.text, replyTo, notificationKey);
+      }
+    } else if (usingGmailApi) {
       const routing = await getNotificationRouting();
-      const replyTo = (isStay ? routing.stays?.to[0] : undefined) ?? routing.defaults.to[0] ?? config.sender;
-      await sendAccountEmail(config, email, mail.subject, mail.text, replyTo, notificationKey);
-    } else await sendNotificationEmail(config, mail.subject, mail.text, mail.replyTo, notificationKey, kind === "lead" ? (entry as Lead).source : undefined);
+      const recipients = recipientsForSource(routing, kind === "lead" ? (entry as Lead).source : undefined);
+      await sendGmail(gmailAccount, { to: recipients.to, cc: recipients.cc, bcc: recipients.bcc, subject: mail.subject, text: mail.text, replyTo: mail.replyTo });
+    } else if (config) {
+      await sendNotificationEmail(config, mail.subject, mail.text, mail.replyTo, notificationKey, kind === "lead" ? (entry as Lead).source : undefined);
+    }
     state.state = "sent";
    }
    catch { state.state = "failed"; state.error = kind.endsWith("customer") && !(entry as Booking | PaymentReceipt).guestEmail ? "Customer email is missing from this payment. Admin delivery is tracked separately." : "Delivery failed. Check email settings and retry."; }
