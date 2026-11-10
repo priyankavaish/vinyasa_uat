@@ -1,6 +1,8 @@
 import Image from "@/components/editorial/image";
+import FormattedText from "@/components/editorial/formatted-text";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
+import ResidencyApplicationForm from "@/components/forms/residency-application-form";
 import { getEvent } from "@/lib/cms";
 import { getEditorial } from "@/lib/editorial/server";
 import { defaults as eventDefaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
@@ -27,7 +29,7 @@ export default async function ArtistInResidenceSection() {
             <p className="mt-5 border-y border-line py-4 text-xs font-semibold uppercase tracking-[0.13em] text-accent">{residency?.durationLabel ?? info.durationLabel} &middot; {info.placesValue}</p>
             <div className="mt-6 flex flex-wrap gap-3">
               {/* <a href="/events/artist-in-residence" className="btn btn-accent">Explore the residency</a> */}
-            <a href="/events/artist-in-residence#residency-application" className="btn btn-accent">{info.applyCta}</a></div>
+            <a href="#residency-application" className="btn btn-accent">{info.applyCta}</a></div>
           </Reveal>
           <Reveal variant="right" className="relative aspect-[4/3] overflow-hidden rounded-tl-[3rem] rounded-br-[3rem]">
             <Image src={livingImage} alt="Reading in Vinyasa's bamboo dorm accommodation" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
@@ -40,6 +42,14 @@ export default async function ArtistInResidenceSection() {
               <p className="mt-3 text-sm leading-7 text-foreground-soft">{detail.body}</p>
             </Reveal>
           ))}
+        </div>
+        <div id="residency-application" className="mt-12 grid scroll-mt-24 gap-8 border-y border-line py-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={info.applicationEyebrow} /></p>
+            <h2 className="mt-4 font-display text-4xl leading-tight"><FormattedText value={info.application.title} /></h2>
+            <p className="mt-5 leading-7 text-foreground-soft"><FormattedText value={info.applicationText} /> <a href={`mailto:${info.organizer.email}`} className="text-accent underline">{info.organizer.email}</a>.</p>
+          </div>
+          <ResidencyApplicationForm options={info.application} />
         </div>
         <div id="residency-enquiry" className="mt-12 grid scroll-mt-28 items-center gap-8 md:grid-cols-[0.85fr_1.15fr] lg:gap-14">
           <Reveal variant="left" className="relative aspect-[4/3] overflow-hidden">
