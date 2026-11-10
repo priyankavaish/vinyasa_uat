@@ -7,6 +7,7 @@ import EventOverview from "./event-overview";
 import FormattedText from "@/components/editorial/formatted-text";
 import RichContent from "@/components/ui/rich-content";
 import ResidencyApplicationForm from "@/components/forms/residency-application-form";
+import { gmailCompose } from "@/lib/gmail-compose";
 import type { artistInResidence } from "@/lib/editorial/defaults/artist-in-residence";
 
 type Props = { content: typeof artistInResidence };
@@ -35,20 +36,20 @@ export default function ArtistResidencyContent({ content }: Props) {
           <p className="mt-4 text-sm leading-7 text-foreground-soft"><FormattedText value={content.sidebarText} /></p>
           <p className="mt-5 border-y border-line py-4 text-sm leading-7 text-foreground-soft"><FormattedText value={content.sidebarNote} /></p>
           <Link href="#residency-application" className="btn btn-accent mt-6 flex justify-center text-center"><FormattedText value={content.applyCta} links={false} /> <AnimatedButtonArrow /></Link>
-          <p className="mt-5 text-xs leading-6 text-muted"><FormattedText value={content.proposalNote} /> <a href={`mailto:${content.organizer.email}`} className="break-words text-accent underline">{content.organizer.email}</a>.</p>
+          <p className="mt-5 text-xs leading-6 text-muted"><FormattedText value={content.proposalNote} /> <a href={gmailCompose(`mailto:${content.organizer.email}`)} target="_blank" rel="noopener noreferrer" className="break-words text-accent underline">{content.organizer.email}</a>.</p>
         </div>
         <div className="mt-5 border border-line p-6 text-sm leading-7 text-foreground-soft">
           <h3 className="font-semibold text-foreground"><FormattedText value={content.organizer.name} /></h3>
           <p className="mt-2"><FormattedText value={content.organizer.venue} /></p>
           <a href={`tel:${content.organizer.phone.replace(/[^+0-9]/g, "")}`} className="mt-3 block text-accent underline">{content.organizer.phone}</a>
-          <a href={`mailto:${content.organizer.email}`} className="block break-words text-accent underline">{content.organizer.email}</a>
+          <a href={gmailCompose(`mailto:${content.organizer.email}`)} target="_blank" rel="noopener noreferrer" className="block break-words text-accent underline">{content.organizer.email}</a>
           <a href={content.organizer.mapHref} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-4"><FormattedText value={content.directionsCta} links={false} /> <AnimatedButtonArrow /></a>
         </div>
       </aside>
     </section>
     <section id="residency-application" className="scroll-mt-24 border-t border-line bg-clay-surface px-5 py-12 sm:px-8 sm:py-16">
       <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={content.applicationEyebrow} /></p><h2 className="mt-4 font-display text-4xl leading-tight"><FormattedText value={content.application.title} /></h2><p className="mt-5 leading-7 text-foreground-soft"><FormattedText value={content.applicationText} /> <a href={`mailto:${content.organizer.email}`} className="text-accent underline">{content.organizer.email}</a>.</p></div>
+        <div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={content.applicationEyebrow} /></p><h2 className="mt-4 font-display text-4xl leading-tight"><FormattedText value={content.application.title} /></h2><p className="mt-5 leading-7 text-foreground-soft"><FormattedText value={content.applicationText} /> <a href={gmailCompose(`mailto:${content.organizer.email}`)} target="_blank" rel="noopener noreferrer" className="text-accent underline">{content.organizer.email}</a>.</p></div>
         <ResidencyApplicationForm options={content.application} />
       </div>
     </section>

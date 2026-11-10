@@ -3,6 +3,7 @@ import FormattedText from "@/components/editorial/formatted-text";
 import SectionEyebrow from "@/components/ui/section-eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import ResidencyApplicationForm from "@/components/forms/residency-application-form";
+import { gmailCompose } from "@/lib/gmail-compose";
 import { getEvent } from "@/lib/cms";
 import { getEditorial } from "@/lib/editorial/server";
 import { defaults as eventDefaults } from "@/lib/editorial/defaults/app__site__events__slug__page";
@@ -47,7 +48,7 @@ export default async function ArtistInResidenceSection() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={info.applicationEyebrow} /></p>
             <h2 className="mt-4 font-display text-4xl leading-tight"><FormattedText value={info.application.title} /></h2>
-            <p className="mt-5 leading-7 text-foreground-soft"><FormattedText value={info.applicationText} /> <a href={`mailto:${info.organizer.email}`} className="text-accent underline">{info.organizer.email}</a>.</p>
+            <p className="mt-5 leading-7 text-foreground-soft"><FormattedText value={info.applicationText} /> <a href={gmailCompose(`mailto:${info.organizer.email}`)} target="_blank" rel="noopener noreferrer" className="text-accent underline">{info.organizer.email}</a>.</p>
           </div>
           <ResidencyApplicationForm options={info.application} />
         </div>
@@ -59,7 +60,7 @@ export default async function ArtistInResidenceSection() {
             <SectionEyebrow icon="leaf-outline">Begin a conversation</SectionEyebrow>
             <h3 className="mt-3 font-display text-3xl italic">Bring your inquiry</h3>
             <p className="mt-4 text-sm leading-7 text-foreground-soft">Email your portfolio, artist statement and research proposal. Shortlisted artists discuss their practice and contributions with the team before agreeing on the residency.</p>
-            <a href="mailto:vinyasa.ashram@gmail.com?subject=Artist%20in%20Residence%20-%20Next%20intake%20enquiry" className="btn btn-accent mt-6">Enquire by email</a>
+            <a href={gmailCompose("mailto:vinyasa.ashram@gmail.com?subject=Artist%20in%20Residence%20-%20Next%20intake%20enquiry")} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-6">Enquire by email</a>
             <p className="mt-3 text-sm text-foreground-soft">Contact the team for the next intake dates and availability.</p>
             <a href="#offerings" className="mt-5 inline-block text-xs uppercase tracking-[0.12em] text-accent underline underline-offset-4">Find Your Path</a>
           </Reveal>

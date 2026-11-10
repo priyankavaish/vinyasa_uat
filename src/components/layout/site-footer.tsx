@@ -3,6 +3,7 @@ import FormattedText from "@/components/editorial/formatted-text";
 
 import { defaults as editorialDefaults } from "@/lib/editorial/defaults/components_layout_site_footer";
 import { getEditorial } from "@/lib/editorial/server";
+import { gmailCompose } from "@/lib/gmail-compose";
 import Link from "next/link";
 import SectionWave from "@/components/ui/section-wave";
 import { Icon } from "@/components/ui/icon";
@@ -72,7 +73,9 @@ export default async function SiteFooter() {
             <p className="mt-4 max-w-[32ch] text-sm leading-6 text-clay-ink/85"><FormattedText value={content.ADDRESS} /></p>
             <div className="mt-4 space-y-2.5 text-sm">
               <a
-                href={`mailto:${content.CONTACT_EMAIL}`}
+                href={gmailCompose(`mailto:${content.CONTACT_EMAIL}`)}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex w-fit items-center gap-3 text-clay-ink/85 transition-colors hover:text-accent"
               >
                 <Icon name="ribbon-outline" size={16} className="text-secondary" />
