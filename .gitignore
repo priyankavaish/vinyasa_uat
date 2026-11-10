@@ -23,3 +23,6 @@ data/*.jsonl
 
 # UAT database credentials, local setup only
 .env.uat
+
+# Gmail API OAuth client, local setup only
+.env.gmail-oauth
