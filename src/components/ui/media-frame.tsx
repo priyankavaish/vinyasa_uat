@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/editorial/image";
 
 /** A single, uncropped photograph on a quiet background, in either orientation. */
 export default function MediaFrame({
