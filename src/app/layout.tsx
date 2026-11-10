@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Mrs_Saint_Delafield, Bellefair } from "next/font/google";
+import Script from "next/script";
 import { SITE_ORIGIN } from "@/lib/site";
 import PageViewTracker from "@/components/layout/page-view-tracker";
 
@@ -99,6 +100,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${displaySerif.variable} ${archivo.variable} ${script.variable} ${samarkan.variable} ${bellefair.variable}`}>
       <head>
+        <Script src="https://www.googletagmanager.com/gtm.js?id=GTM-NXLPCNVD" strategy="afterInteractive" />
+        <Script id="gtm-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());`}
+        </Script>
         <link rel="preconnect" href="https://www.youtube-nocookie.com" />
         <link rel="preconnect" href="https://i.ytimg.com" />
         <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
