@@ -9,9 +9,9 @@ export const bookingRequestSchema = z.object({
   eventDate: z.string().date().optional(),
   guests: z.coerce.number().int().min(1).max(20),
   guestName: z.string().trim().min(2).max(100),
-  guestEmail: z.string({ required_error: "Email is required." }).trim().min(1, "Email is required.").email("Enter a valid email address.").max(150),
+  guestEmail: z.string({ error: "Email is required." }).trim().min(1, "Email is required.").email("Enter a valid email address.").max(150),
   guestPhone: z
-    .string({ required_error: "Phone number is required." })
+    .string({ error: "Phone number is required." })
     .trim()
     .min(1, "Phone number is required.")
     .max(20)
@@ -31,8 +31,8 @@ export type BookingRequest = z.infer<typeof bookingRequestSchema>;
 
 export const leadSchema = z.object({
   source: z.enum(["contact", "corporate", "newsletter", "volunteer", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry", "work-from-farm"]),
-  name: z.string({ required_error: "Please enter your name.", invalid_type_error: "Please enter your name." }).trim().max(121, "Please keep your name under 122 characters."),
-  email: z.string({ required_error: "Please enter your email address.", invalid_type_error: "Please enter a valid email address." }).trim().min(1, "Please enter your email address.").email("Please enter a valid email address, like name@example.com.").max(150, "Please keep your email address under 151 characters."),
+  name: z.string({ error: "Please enter your name." }).trim().max(121, "Please keep your name under 122 characters."),
+  email: z.string({ error: "Please enter your email address." }).trim().min(1, "Please enter your email address.").email("Please enter a valid email address, like name@example.com.").max(150, "Please keep your email address under 151 characters."),
   phone: z
     .string()
     .trim()
