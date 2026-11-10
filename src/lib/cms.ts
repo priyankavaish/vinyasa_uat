@@ -121,12 +121,25 @@ const getCottageCatalog = unstable_cache(
   { tags: ["cottages"] }
 );
 
+// "Currently not available tonight" for every cottage, shared by every page that lists
+// cottages (home, stays, cottage detail, booking amount lookup). This is a display badge,
+// not the booking safety check — the booking API re-checks the chosen dates live right
+// before creating a reservation — so a short cache here is safe and avoids re-running the
+// full free-units query (several sequential DB round trips) on every single page render.
+const getTonightAvailability = unstable_cache(
+  async (slugs: string[], tonight: string, tomorrow: string) => {
+    try { return await unitsLeft(slugs.map((slug) => ({ slug })), tonight, tomorrow); }
+    catch { return {} as Record<string, number | null>; }
+  },
+  ["cms:cottages:tonight-availability:v1"],
+  { revalidate: 60, tags: ["cottages", "stay-inventory"] }
+);
+
 export async function getCottages(): Promise<Cottage[]> {
   const [rooms, stock] = await Promise.all([getCottageCatalog(), getStayInventory()]);
-  // Listings say "Currently not available" when nothing is free tonight; booking itself re-checks per date.
   const tonight = new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10);
   const tomorrow = new Date(Date.parse(tonight) + 86_400_000).toISOString().slice(0, 10);
-  const left = hasDb() ? await unitsLeft(rooms, tonight, tomorrow).catch(() => ({} as Record<string, number | null>)) : {};
+  const left = hasDb() ? await getTonightAvailability(rooms.map((r) => r.slug), tonight, tomorrow) : {};
   return rooms.map((room) => ({ ...room, quantity: stock[room.slug] ?? null, soldOutNow: left[room.slug] === 0 }));
 }
 
