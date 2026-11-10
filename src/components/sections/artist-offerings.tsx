@@ -11,7 +11,7 @@ export default async function ArtistOfferings({ escapeImage }: { escapeImage: st
   const [residency, eventContent] = await Promise.all([getEvent("artist-in-residence"), getEditorial("app/(site)/events/[slug]/page", eventDefaults)]);
   const offerings = [
     {
-      name: "Artist in Residence", href: "#artist-in-residence", link: "/events/artist-in-residence",
+      name: "Artist in Residence", href: "#artist-in-residence",
       image: residenceImage, alt: "An artist playing guitar in an earthen space at Vinyasa",
       label: "A focused residency", detail: residency?.durationLabel ?? eventContent.ARTIST_IN_RESIDENCE.durationLabel, companion: eventContent.ARTIST_IN_RESIDENCE.placesValue,
       description: residency?.description ?? eventContent.ARTIST_IN_RESIDENCE.introduction[0],
@@ -51,7 +51,7 @@ export default async function ArtistOfferings({ escapeImage }: { escapeImage: st
                   <h3 className={styles.title}>{offering.name}</h3>
                   <p className={styles.description}>{offering.description}</p>
                   <div className={styles.details}><span>{offering.detail}</span><span>{offering.companion}</span></div>
-                  <a href={offering.link ?? offering.href} className={`btn btn-accent ${styles.action}`}>{offering.action}<span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span></a>
+                  <a href={offering.href} className={`btn btn-accent ${styles.action}`}>{offering.action}<span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span></a>
                 </div>
               </article>
             </Reveal>
