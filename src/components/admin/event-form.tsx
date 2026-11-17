@@ -1,3 +1,5 @@
+import { loadEventRegistration } from "@/lib/admin/event-registration-store";
+import { eventRegistrationSettings } from "@/lib/event-registration";
 import BookingButtonFields from "./booking-button-fields";
 import { loadBookingButton } from "@/lib/admin/booking-button-store";
 import EventContentFields from "./event-content-fields";
@@ -21,6 +23,7 @@ export default async function EventForm({ event }: { event?: EventRow }) {
   const template = event ? eventDetailValue(defaults, event.slug) : null;
   const hostSettings = event ? await loadEventHosts(event.slug, details) : { hosts: [], heading: "Host" as const };
   const gallery = event ? await loadEventGallery(event.slug) : { enabled: true, images: [] };
+  const registration = event ? await loadEventRegistration(event.slug) : eventRegistrationSettings(null);
   const payment = event ? await loadBookingButton(`event:${event.slug}`) : undefined;
   return (
     <form action={saveEvent} className="min-w-0 max-w-4xl space-y-5">
@@ -86,6 +89,13 @@ export default async function EventForm({ event }: { event?: EventRow }) {
         <p className="text-sm leading-6 text-muted">Upload photos for this event, then drag to reorder. They show as a swipeable 2×4 grid (8 photos per slide) that auto-scrolls, same as the Volunteer page. With no event photos, the page shows original photos of the Vinyasa grounds. Untick the option above to hide the gallery.</p>
       </section>
       <EventHostFields initial={hostSettings.hosts} heading={hostSettings.heading} />
+      <section className="space-y-3 border-t border-line pt-5" aria-label="Event registration visibility">
+        <h2 className="font-display text-xl">Booking &amp; registration sections</h2>
+        <input type="hidden" name="eventRegistrationSettings" value="1" />
+        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="eventShowBooking" defaultChecked={registration.showBooking} />Show price and booking button (desktop and mobile)</label>
+        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="eventShowRegistration" defaultChecked={registration.showRegistration} />Show registration details section</label>
+        <p className="text-sm text-muted">Choose separately for each event. Turn these off when registration happens through your event content or another process. Save event to apply.</p>
+      </section>
       <BookingButtonFields initial={payment} />
 
       <div className="flex gap-3">

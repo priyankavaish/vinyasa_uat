@@ -12,9 +12,10 @@ type Props = {
   content: EventContent;
   fallback?: { heading: string; paragraphs: string[]; highlights: string[] };
   priceLabel: string;
+  showRegistration?: boolean;
 };
 
-export default function EventDetailsContent({ event, content, fallback, priceLabel }: Props) {
+export default function EventDetailsContent({ event, content, fallback, priceLabel, showRegistration = false }: Props) {
   return <main><section>
     <article>
       <h2 className={styles.aboutTitle}>About the event</h2>
@@ -29,13 +30,13 @@ export default function EventDetailsContent({ event, content, fallback, priceLab
         <ul className={styles.highlightList}>{fallback.highlights.map(item => <li key={item}><FormattedText value={item} /></li>)}</ul>
       </EventSection>}
     </article>
-    <aside id="event-registration">
+    {showRegistration && <aside id="event-registration">
       <div>
         <p className={styles.bookingEyebrow}>Registration</p>
         <h2 className={styles.registrationTitle}>Join the experience</h2>
         <p className={styles.registrationPrice}><FormattedText value={priceLabel} /></p>
         <PaymentButton target={"event:" + event.slug} href={"/events/" + event.slug + "/book"} animatedArrow className="btn btn-accent mt-5">Reserve your place</PaymentButton>
       </div>
-    </aside>
+    </aside>}
   </section></main>;
 }

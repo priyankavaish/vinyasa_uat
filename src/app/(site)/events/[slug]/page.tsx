@@ -1,3 +1,4 @@
+import { eventRegistrationKey, eventRegistrationSettings } from "@/lib/event-registration";
 import AnimatedButtonArrow from "@/components/ui/animated-button-arrow";
 import SeasonalEventContent from "@/components/events/seasonal-event-content";
 
@@ -93,10 +94,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
   const genericContent = splitEventContent(event.bodyHtml || "");
   const priceLabel = event.priceFrom === 0 ? "By donation" : `₹${event.priceFrom.toLocaleString("en-IN")} + 18% GST`;
   const seasonalEvent = content.SEASONAL_EVENTS[event.slug as keyof typeof content.SEASONAL_EVENTS];
-  const [savedHosts, savedGallery] = await Promise.all([
+  const [savedHosts, savedGallery, savedRegistration] = await Promise.all([
     getContent(eventHostsKey(event.slug)),
     getContent(eventGalleryKey(event.slug)),
+    getContent(eventRegistrationKey(event.slug)),
   ]);
+  const registration = eventRegistrationSettings(savedRegistration);
   const gallery = eventGallerySettings(savedGallery);
   const galleryPhotos = eventGalleryPhotos(gallery, event.name, eventVenuePhotos);
   const { hosts, heading: hostHeading } = eventHostSettings(savedHosts, legacyEventHosts(seasonalEvent));
@@ -109,22 +112,22 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
   return (
     <div className={styles.page}>
-      <EventDetailHero hostSection={hosts.length ? <EventHosts hosts={hosts} heading={hostHeading} /> : undefined} name={event.name} kind={event.kind} description={event.description} image={image} bookingLabel={bookingLabel} time={seasonalEvent?.timeLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.timeLabel : isArtistUnite ? content.ARTIST_UNITE.timeLabel : undefined)} date={event.dateLabel || seasonalEvent?.dateLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.dateLabel : isArtistUnite ? content.ARTIST_UNITE.dateLabel : undefined)} duration={event.durationLabel} facilitator={event.facilitator}>
+      <EventDetailHero showBooking={registration.showBooking} showRegistration={registration.showRegistration} hostSection={hosts.length ? <EventHosts hosts={hosts} heading={hostHeading} /> : undefined} name={event.name} kind={event.kind} description={event.description} image={image} bookingLabel={bookingLabel} time={seasonalEvent?.timeLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.timeLabel : isArtistUnite ? content.ARTIST_UNITE.timeLabel : undefined)} date={event.dateLabel || seasonalEvent?.dateLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.dateLabel : isArtistUnite ? content.ARTIST_UNITE.dateLabel : undefined)} duration={event.durationLabel} facilitator={event.facilitator}>
         {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent"><FormattedText value={content.ARTIST_IN_RESIDENCE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent"><FormattedText value={content.ARTIST_UNITE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> </PaymentButton>}
       </EventDetailHero>
-      <nav aria-label="Event page sections" className={styles.sectionNav}><div><a href="#event-overview">Overview</a>{galleryPhotos.length > 0 && <a href="#event-gallery">Gallery</a>}{(seasonalEvent || isArtistResidency || isArtistUnite || genericContent.sections.length > 0 || (!event.bodyHtml && details?.highlights.length)) && <a href="#event-programme">Programme</a>}{!!hosts.length && <a href="#event-hosts">{hostHeading}</a>}<a href="#event-registration">How to join <Icon name="arrow-forward-outline" size={14} /></a></div></nav>
+      <nav aria-label="Event page sections" className={styles.sectionNav}><div><a href="#event-overview">Overview</a>{galleryPhotos.length > 0 && <a href="#event-gallery">Gallery</a>}{(seasonalEvent || isArtistResidency || isArtistUnite || genericContent.sections.length > 0 || (!event.bodyHtml && details?.highlights.length)) && <a href="#event-programme">Programme</a>}{!!hosts.length && <a href="#event-hosts">{hostHeading}</a>}{registration.showRegistration && <a href="#event-registration">How to join <Icon name="arrow-forward-outline" size={14} /></a>}</div></nav>
       <div id="event-overview" className={styles.details}>
       <EventGallery photos={galleryPhotos} eventPhotos={gallery.images.length > 0} />
 
       {seasonalEvent ? (
-        <SeasonalEventContent content={seasonalEvent} />
+        <SeasonalEventContent showRegistration={registration.showRegistration} content={seasonalEvent} />
       ) : isArtistResidency ? (
-        <ArtistResidencyContent content={content.ARTIST_IN_RESIDENCE} />
+        <ArtistResidencyContent showRegistration={registration.showRegistration} content={content.ARTIST_IN_RESIDENCE} />
       ) : isArtistUnite ? (
-        <ArtistUniteContent content={content.ARTIST_UNITE} />
+        <ArtistUniteContent showRegistration={registration.showRegistration} content={content.ARTIST_UNITE} />
       ) : isPauseWithin ? (
         <main className="bg-background">
-          <section className="mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:pb-24 lg:pt-8">
+          <section className={`mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-6 sm:px-8 ${registration.showRegistration ? "lg:grid-cols-[minmax(0,1fr)_300px]" : ""} lg:gap-20 lg:pb-24 lg:pt-8`}>
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">18-20 September 2026</p>
               <h2 className="mt-5 max-w-[16ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl">A little space to listen inward.</h2>
@@ -161,7 +164,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               </div>
             </div>
 
-            <aside id="event-registration" className="self-start lg:sticky lg:top-28">
+            {registration.showRegistration && <aside id="event-registration" className="self-start lg:sticky lg:top-28">
               <div className="border border-line bg-surface p-6 sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Choose your pass</p>
                 <p className="mt-3 text-sm leading-6 text-foreground-soft">Come with curiosity. There is nothing to fix and nowhere particular to arrive.</p>
@@ -171,12 +174,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center">Reserve your place </PaymentButton>
               </div>
               <p className="mt-4 text-center text-xs leading-5 text-muted">Part of The Collective Body, Vinyasa Earth's Artist-in-Residence programme.</p>
-            </aside>
+            </aside>}
           </section>
         </main>
       ) : editorialEvent ? (
         <main className="bg-background">
-          <section className="mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-20 lg:pb-24 lg:pt-8">
+          <section className={`mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-6 sm:px-8 ${registration.showRegistration ? "lg:grid-cols-[minmax(0,1fr)_300px]" : ""} lg:gap-20 lg:pb-24 lg:pt-8`}>
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={event.dateLabel || "Vinyasa Earth, Jaipur"} /></p>
               <h2 className="mt-5 max-w-[18ch] font-display text-4xl leading-[1.08] text-foreground sm:text-5xl"><FormattedText value={editorialEvent.introTitle} /></h2>
@@ -213,7 +216,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
               </div>
             </div>
 
-            <aside id="event-registration" className="self-start lg:sticky lg:top-28">
+            {registration.showRegistration && <aside id="event-registration" className="self-start lg:sticky lg:top-28">
               <div className="border border-line bg-surface p-6 sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={editorialEvent.passes ? "Ways to join" : "Make space for it"} /></p>
                 <p className="mt-3 text-sm leading-6 text-foreground-soft"><FormattedText value={event.description} /></p>
@@ -221,11 +224,11 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center"><FormattedText value={editorialEvent.cta} links={false} /> </PaymentButton>
               </div>
               <p className="mt-4 text-center text-xs leading-5 text-muted">Vinyasa Earth, Jaipur</p>
-            </aside>
+            </aside>}
           </section>
         </main>
       ) : (
-        <EventDetailsContent event={event} content={genericContent} fallback={details} priceLabel={priceLabel} />
+        <EventDetailsContent showRegistration={registration.showRegistration} event={event} content={genericContent} fallback={details} priceLabel={priceLabel} />
       )}
       </div>
     </div>

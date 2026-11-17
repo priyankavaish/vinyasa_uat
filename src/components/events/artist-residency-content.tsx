@@ -10,10 +10,10 @@ import ResidencyApplicationForm from "@/components/forms/residency-application-f
 import { gmailCompose } from "@/lib/gmail-compose";
 import type { artistInResidence } from "@/lib/editorial/defaults/artist-in-residence";
 
-type Props = { content: typeof artistInResidence };
-export default function ArtistResidencyContent({ content }: Props) {
+type Props = { content: typeof artistInResidence; showRegistration?: boolean };
+export default function ArtistResidencyContent({ content, showRegistration = false }: Props) {
   return <main className="bg-background"><HashScroll />
-    <section className="mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16 lg:pt-8">
+    <section className={`mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-6 sm:px-8 ${showRegistration ? "lg:grid-cols-[minmax(0,1fr)_300px]" : ""} lg:gap-16 lg:pt-8`}>
       <article className="min-w-0">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent"><FormattedText value={content.dateLabel} /></p>
         <p className="mt-2 text-sm leading-6 text-muted"><FormattedText value={content.timeLabel} /></p>
@@ -29,7 +29,7 @@ export default function ArtistResidencyContent({ content }: Props) {
           <RichContent eventActions html={section.bodyHtml} className="mt-6 text-foreground-soft [&_h3]:text-foreground [&_strong]:text-foreground" />
         </EventSection>)}
       </article>
-      <aside id="event-registration" className="self-start lg:sticky lg:top-28">
+      {showRegistration && <aside id="event-registration" className="self-start lg:sticky lg:top-28">
         <div className="border border-line bg-surface p-6 sm:p-7">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={content.sidebarEyebrow} /></p>
           <h2 className="mt-4 font-display text-3xl leading-tight"><FormattedText value={content.sidebarTitle} /></h2>
@@ -45,7 +45,7 @@ export default function ArtistResidencyContent({ content }: Props) {
           <a href={gmailCompose(`mailto:${content.organizer.email}`)} target="_blank" rel="noopener noreferrer" className="block break-words text-accent underline">{content.organizer.email}</a>
           <a href={content.organizer.mapHref} target="_blank" rel="noopener noreferrer" className="btn btn-accent mt-4"><FormattedText value={content.directionsCta} links={false} /> <AnimatedButtonArrow /></a>
         </div>
-      </aside>
+      </aside>}
     </section>
     <section id="residency-application" className="scroll-mt-24 border-t border-line bg-clay-surface px-5 py-12 sm:px-8 sm:py-16">
       <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">

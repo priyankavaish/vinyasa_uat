@@ -11,9 +11,9 @@ import type { seasonalEvents } from "@/lib/editorial/defaults/seasonal-events";
 
 type Content = typeof seasonalEvents[keyof typeof seasonalEvents];
 
-export default function SeasonalEventContent({ content }: { content: Content }) {
+export default function SeasonalEventContent({ content, showRegistration = false }: { content: Content; showRegistration?: boolean }) {
   return <main className="bg-background">
-    <section className="mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-16 lg:pt-8">
+    <section className={`mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-6 sm:px-8 ${showRegistration ? "lg:grid-cols-[minmax(0,1fr)_300px]" : ""} lg:gap-16 lg:pt-8`}>
       <article className="min-w-0">
         <h2 className={styles.aboutTitle}>About the event</h2>
         <h3 className={styles.introTitle}><FormattedText value={content.heading} /></h3>
@@ -24,7 +24,7 @@ export default function SeasonalEventContent({ content }: { content: Content }) 
           <RichContent eventActions html={section.bodyHtml} className="mt-6 text-foreground-soft [&_strong]:text-foreground" />
         </EventSection>)}
       </article>
-      <aside id="event-registration" className="self-start lg:sticky lg:top-28">
+      {showRegistration && <aside id="event-registration" className="self-start lg:sticky lg:top-28">
         <div className="border border-line bg-surface p-6 sm:p-7">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={content.sidebarEyebrow} /></p>
           <h2 className="mt-4 font-display text-3xl leading-tight"><FormattedText value={content.title} /></h2>
@@ -33,7 +33,7 @@ export default function SeasonalEventContent({ content }: { content: Content }) 
           <p className="mt-4 text-sm leading-7 text-muted"><FormattedText value={content.venueText} /></p>
           <Link href={content.href} className="btn btn-accent mt-6 flex justify-center text-center"><FormattedText value={content.cta} links={false} /> <AnimatedButtonArrow /></Link>
         </div>
-      </aside>
+      </aside>}
     </section>
   </main>;
 }

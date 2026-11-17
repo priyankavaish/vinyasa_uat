@@ -14,6 +14,8 @@ import { eventHostsFromForm, eventHostsKey, eventHostHeadingSchema } from "@/lib
 import { storeEventHosts } from "./event-hosts-store";
 import { eventGalleryFromForm, eventGalleryKey } from "@/lib/event-gallery";
 import { storeEventGallery } from "./event-gallery-store";
+import { eventRegistrationFromForm, eventRegistrationKey } from "@/lib/event-registration";
+import { storeEventRegistration } from "./event-registration-store";
 import { SESSION_COOKIE, isValidSessionToken } from "@/lib/auth";
 
 async function assertAdmin() {
@@ -154,6 +156,7 @@ export async function saveEvent(form: FormData) {
   const data = eventSchema.parse(Object.fromEntries(form));
   const hosts = eventHostsFromForm(form);
   const gallery = eventGalleryFromForm(form);
+  const registration = eventRegistrationFromForm(form);
   const hostHeading = form.has("eventHostHeading") ? eventHostHeadingSchema.parse(form.get("eventHostHeading")) : null;
   const payment = paymentSettingsFromForm(form);
   const db = getDb();
@@ -187,6 +190,7 @@ export async function saveEvent(form: FormData) {
   await storeBookingButton("event", values.slug, original?.slug, payment);
   await storeEventHosts(values.slug, original?.slug, hosts, hostHeading);
   await storeEventGallery(values.slug, original?.slug, gallery);
+  await storeEventRegistration(values.slug, original?.slug, registration);
   revalidateTag("content");
   revalidatePath("/admin/payment-buttons");
   if (original) revalidatePath(`/events/${original.slug}`);
@@ -204,6 +208,7 @@ export async function deleteEvent(id: string) {
   if (event) {
     await db.delete(t.siteContent).where(eq(t.siteContent.key, eventHostsKey(event.slug)));
     await db.delete(t.siteContent).where(eq(t.siteContent.key, eventGalleryKey(event.slug)));
+    await db.delete(t.siteContent).where(eq(t.siteContent.key, eventRegistrationKey(event.slug)));
   }
   revalidateTag("content");
   revalidateTag("events");
