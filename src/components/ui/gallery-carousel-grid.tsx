@@ -17,8 +17,11 @@ export default function GalleryCarouselGrid({
   masonry = false,
   rounded = false,
   square = false,
+  portrait = false,
   threeCol = false,
   fourCol = false,
+  adaptiveColumns = false,
+  imageFit = "cover",
 }: {
   images: string[];
   alt?: string;
@@ -26,8 +29,11 @@ export default function GalleryCarouselGrid({
   masonry?: boolean;
   rounded?: boolean;
   square?: boolean;
+  portrait?: boolean;
   threeCol?: boolean;
   fourCol?: boolean;
+  adaptiveColumns?: boolean;
+  imageFit?: "cover" | "contain";
 }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [selected, setSelected] = useState(0);
@@ -61,7 +67,7 @@ export default function GalleryCarouselGrid({
         <div className="flex touch-pan-y">
           {slides.map((slide, si) => (
             <div key={si} className="min-w-0 shrink-0 grow-0 basis-full">
-              <div className={masonry ? "grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3" : `grid grid-cols-2 gap-2 sm:gap-3${fourCol ? " sm:grid-cols-4" : threeCol ? " md:grid-cols-3" : ""}`}>
+              <div className={adaptiveColumns ? `grid items-start gap-3 sm:gap-4 ${slide.length === 1 ? "grid-cols-1" : slide.length === 2 ? "grid-cols-1 min-[400px]:grid-cols-2" : slide.length === 3 ? "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3" : "grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4"}` : masonry ? "grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3" : `grid grid-cols-2 gap-2 sm:gap-3${fourCol ? " sm:grid-cols-4" : threeCol ? " md:grid-cols-3" : ""}`}>
                 {slide.map((src, ii) => {
                   const globalIndex = si * perSlide + ii;
                   return (
@@ -69,14 +75,16 @@ export default function GalleryCarouselGrid({
                       key={`${src}-${globalIndex}`}
                       type="button"
                       onClick={() => setLightboxIndex(globalIndex)}
-                      className={`group relative overflow-hidden border border-line ${rounded ? "rounded-tl-[2rem] rounded-br-[2rem]" : ""} ${square ? "aspect-square" : masonry && (ii === 0 || ii === 5) ? "aspect-[3/4] md:row-span-2 md:aspect-auto md:h-full" : "aspect-[4/3]"}`}
+                      className={`group relative overflow-hidden border border-line ${rounded ? "rounded-tl-[2rem] rounded-br-[2rem]" : ""} ${imageFit === "contain" ? "" : portrait ? "aspect-[3/4]" : square ? "aspect-square" : masonry && (ii === 0 || ii === 5) ? "aspect-[3/4] md:row-span-2 md:aspect-auto md:h-full" : "aspect-[4/3]"}`}
                     >
                       <Image
                         src={src}
                         alt={alt}
-                        fill
-                        sizes="(min-width: 768px) 30vw, 45vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        fill={imageFit !== "contain"}
+                        width={imageFit === "contain" ? 1200 : undefined}
+                        height={imageFit === "contain" ? 1600 : undefined}
+                        sizes={adaptiveColumns ? (slide.length === 1 ? "(min-width: 1024px) 60vw, 100vw" : slide.length === 2 ? "(min-width: 1024px) 30vw, (min-width: 400px) 50vw, 100vw" : "(min-width: 1024px) 25vw, (min-width: 400px) 50vw, 100vw") : "(min-width: 768px) 30vw, 45vw"}
+                        className={imageFit === "contain" ? "block h-auto w-full" : `object-cover ${portrait ? "object-top" : ""} transition-transform duration-500 group-hover:scale-105`}
                       />
                       <span className="absolute bottom-2 right-2 grid h-7 w-7 place-items-center rounded-full bg-black/45 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
                         <Icon name="expand-outline" size={13} />
