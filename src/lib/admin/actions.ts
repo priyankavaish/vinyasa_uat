@@ -1,5 +1,8 @@
 "use server";
 
+import { eventPaymentSettingsSchema } from "@/lib/event-payment-settings";
+import { saveEventPaymentSettings } from "@/lib/admin/event-payment-store";
+
 import { eventDescriptionText } from "@/lib/event-description";
 
 import { revalidateTag, revalidatePath } from "next/cache";
@@ -156,6 +159,7 @@ const eventSchema = z.object({
 export async function saveEvent(form: FormData) {
   await assertAdmin();
   const data = eventSchema.parse(Object.fromEntries(form));
+  const eventPayment = form.has("eventPaymentSettings") ? eventPaymentSettingsSchema.parse(JSON.parse(String(form.get("eventPaymentSettings")))) : null;
   const hosts = eventHostsFromForm(form);
   const gallery = eventGalleryFromForm(form);
   const registration = eventRegistrationFromForm(form);
@@ -193,6 +197,7 @@ export async function saveEvent(form: FormData) {
   await storeBookingButton("event", values.slug, original?.slug, payment);
   await storeEventHosts(values.slug, original?.slug, hosts, hostHeading);
   await storeEventGallery(values.slug, original?.slug, gallery);
+  if (eventPayment) await saveEventPaymentSettings(values.slug, eventPayment);
   await storeEventRegistration(values.slug, original?.slug, registration);
   revalidateTag("content");
   revalidatePath("/admin/payment-buttons");

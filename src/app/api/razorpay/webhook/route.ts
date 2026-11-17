@@ -1,3 +1,5 @@
+import { notifyFailedEventPayment } from "@/lib/event-payment-failure";
+import { eventForPaymentLink, eventForPaymentOrder } from "@/lib/admin/event-payment-store";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { capturedPaymentSchema, validWebhookSignature } from "@/lib/razorpay-events";
@@ -15,12 +17,22 @@ export async function POST(req: NextRequest) {
     // A failed attempt only fails the booking if it is still unpaid; the customer may retry inside the same order.
     const entity = event.payload?.payment?.entity;
     try {
+      const checkoutEvent=await eventForPaymentOrder(entity?.order_id||"");
+      if(checkoutEvent) {
+        await notifyFailedEventPayment({...entity,notes:{...(entity?.notes&&!Array.isArray(entity.notes)?entity.notes:{}),vinyasa_event:checkoutEvent}});
+        revalidatePath("/admin/bookings");
+        return NextResponse.json({received:true});
+      }
       const booking = typeof entity?.order_id === "string" ? await getBookingByOrderId(entity.order_id) : null;
       if (booking?.status === "pending") {
         const detail = [entity.error_description, entity.error_reason].filter((part: unknown) => typeof part === "string" && part).join(" — ").slice(0, 280);
         const failed = await updateBookingStatus(booking.id, "failed", { failureReason: "Payment failed" + (detail ? ": " + detail : "") });
         revalidatePath("/admin/bookings");
         if (failed) await notifyEntry("booking-failed", failed).catch(() => {});
+      }
+      if (!booking) {
+        const eventSlug=await eventForPaymentOrder(entity?.order_id||"");
+        await notifyFailedEventPayment(eventSlug?{...entity,notes:{...(entity?.notes&&!Array.isArray(entity.notes)?entity.notes:{}),vinyasa_event:eventSlug}}:entity);
       }
       return NextResponse.json({received:true});
     } catch { return NextResponse.json({error:"Could not record the failed payment."},{status:500}); }
@@ -29,7 +41,8 @@ export async function POST(req: NextRequest) {
   const parsed = capturedPaymentSchema.safeParse(event.payload?.payment?.entity);
   if (!parsed.success) return NextResponse.json({error:"Payment is not captured or has invalid details."},{status:400});
   try {
-    await confirmCapturedPayment(parsed.data);
+    const eventSlug = await eventForPaymentLink(event.payload?.payment_link?.entity?.id || "") || await eventForPaymentOrder(parsed.data.order_id || "");
+    await confirmCapturedPayment(parsed.data, eventSlug ? {eventSlug} : undefined);
     revalidatePath("/admin/bookings");
     return NextResponse.json({received:true});
   } catch { return NextResponse.json({error:"Could not process payment confirmation."},{status:500}); }

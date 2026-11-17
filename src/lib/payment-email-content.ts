@@ -1,6 +1,6 @@
 import type { Booking } from "./store";
 import { bookingPrice, gstPercentFor } from "./booking-pricing";
-export type PaymentReceipt = { id: string; guestName: string; guestEmail: string; amount: number; currency: string; reference?: string; receivedAt: string; source: "razorpay" };
+export type PaymentReceipt = { id: string; guestName: string; guestEmail: string; amount: number; currency: string; reference?: string; receivedAt: string; source: "razorpay"; eventSlug?: string };
 const inr = (value: number, currency = "INR") => new Intl.NumberFormat("en-IN", { style: "currency", currency, maximumFractionDigits: 2 }).format(value);
 const nightsOf = (booking: Booking) => booking.checkIn && booking.checkOut ? Math.max(1, Math.round((Date.parse(booking.checkOut) - Date.parse(booking.checkIn)) / 86_400_000)) : 0;
 

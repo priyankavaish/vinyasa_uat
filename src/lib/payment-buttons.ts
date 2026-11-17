@@ -18,7 +18,7 @@ export function isRazorpayLink(value: string) {
   try {
     const url = new URL(value);
     return url.protocol === "https:" && !url.username && !url.password && !url.port &&
-      ["rzp.io", "rzp.to", "razorpay.me", "pages.razorpay.com", "payments.razorpay.com"].includes(url.hostname) &&
+      (["rzp.io", "rzp.to", "razorpay.me", "pages.razorpay.com", "payments.razorpay.com"].includes(url.hostname) || (url.hostname === "razorpay.com" && /^\/payment-link\/plink_[a-zA-Z0-9]+\/?$/.test(url.pathname))) &&
       url.pathname !== "/";
   } catch { return false; }
 }

@@ -17,7 +17,7 @@ function hasRealKeys(): boolean {
  * Creates a Razorpay order. Falls back to a mock order (clearly marked)
  * when no keys are configured, so the demo booking flow still completes.
  */
-export async function createOrder(amountInPaise: number, receipt: string): Promise<RazorpayOrder> {
+export async function createOrder(amountInPaise: number, receipt: string, notes?: Record<string,string>): Promise<RazorpayOrder> {
   if (!hasRealKeys()) {
     if (process.env.NODE_ENV === "production") throw new Error("Payment service is not configured.");
     return {
@@ -38,7 +38,7 @@ export async function createOrder(amountInPaise: number, receipt: string): Promi
       Authorization: `Basic ${auth}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ amount: amountInPaise, currency: "INR", receipt }),
+    body: JSON.stringify({ amount: amountInPaise, currency: "INR", receipt, ...(notes?{notes}:{}) }),
   });
 
   if (!res.ok) {

@@ -76,3 +76,12 @@ export async function sendGmail(account: GmailAccount, options: { to: string[]; 
   });
   if (!res.ok) throw new Error("Gmail send failed: " + res.status + " " + (await res.text().catch(() => "")).slice(0, 300));
 }
+
+/** Check the sender connection without sending an email or exposing its access token. */
+export async function gmailSenderReady(account: GmailAccount): Promise<boolean> {
+  try { await accessTokenFor(account); return true; } catch { return false; }
+}
+
+export function gmailAccountConfigured(account: GmailAccount): boolean {
+  return !!(process.env.GMAIL_OAUTH_CLIENT_ID && process.env.GMAIL_OAUTH_CLIENT_SECRET && (account === "ashram" ? process.env.GMAIL_ASHRAM_REFRESH_TOKEN : process.env.GMAIL_BOOKINGS_REFRESH_TOKEN));
+}

@@ -1,3 +1,4 @@
+import EventPaymentFields from "./event-payment-fields";
 import { loadEventRegistration } from "@/lib/admin/event-registration-store";
 import { eventRegistrationSettings } from "@/lib/event-registration";
 import BookingButtonFields from "./booking-button-fields";
@@ -99,6 +100,7 @@ export default async function EventForm({ event }: { event?: EventRow }) {
         <p className="text-sm text-muted">Add headings, prices, descriptions and as many payment links as this event needs. Use Button in the editor toolbar to add each payment option. The same content appears on the right on desktop and in an expandable fixed panel on mobile. Leave empty to use the existing event booking card.</p>
       </section>
       <BookingButtonFields initial={payment} />
+      <EventPaymentFields event={{slug:event?.slug || ""}}/>
 
       <div className="flex gap-3">
         <button type="submit" className="btn btn-accent">Save event</button>

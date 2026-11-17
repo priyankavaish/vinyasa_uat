@@ -1,3 +1,4 @@
+import EventPaymentFlow from "@/components/events/event-payment-flow";
 import { eventDescriptionText } from "@/lib/event-description";
 import EventDescription from "@/components/events/event-description";
 import RichContent from "@/components/ui/rich-content";
@@ -115,6 +116,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
   return (
     <div className={styles.page}>
+      <EventPaymentFlow eventSlug={event.slug}/>
       <EventDetailHero bookingContent={hasBookingContent(registration.bookingHtml) ? <RichContent html={registration.bookingHtml} eventActions className={styles.bookingEditorContent} /> : undefined} showBooking={registration.showBooking} showRegistration={registration.showRegistration} hostSection={hosts.length ? <EventHosts hosts={hosts} heading={hostHeading} /> : undefined} name={event.name} kind={event.kind} description={event.description} image={image} bookingLabel={bookingLabel} time={seasonalEvent?.timeLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.timeLabel : isArtistUnite ? content.ARTIST_UNITE.timeLabel : undefined)} date={event.dateLabel || seasonalEvent?.dateLabel || (isArtistResidency ? content.ARTIST_IN_RESIDENCE.dateLabel : isArtistUnite ? content.ARTIST_UNITE.dateLabel : undefined)} duration={event.durationLabel} facilitator={event.facilitator}>
         {seasonalEvent ? <Link href={seasonalEvent.href} className="btn btn-accent"><FormattedText value={seasonalEvent.cta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistResidency ? <Link href="#residency-application" className="btn btn-accent"><FormattedText value={content.ARTIST_IN_RESIDENCE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : isArtistUnite ? <Link href="#artist-unite-application" className="btn btn-accent"><FormattedText value={content.ARTIST_UNITE.applyCta} links={false} /> <AnimatedButtonArrow /></Link> : <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent"><FormattedText value={editorialEvent?.cta ?? "Reserve your place"} links={false} /> </PaymentButton>}
       </EventDetailHero>

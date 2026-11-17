@@ -1,4 +1,6 @@
 import "server-only";
+import { loadEventPaymentSettings } from "@/lib/admin/event-payment-store";
+import { eventPaymentEmail, EVENT_PAYMENT_SENDER } from "@/lib/event-payment-settings";
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from "node:crypto";
 import nodemailer from "nodemailer";
 import { eq, like, sql } from "drizzle-orm";
@@ -8,7 +10,7 @@ import { getBooking, type Booking, type Lead } from "@/lib/store";
 import { getNotificationRouting } from "@/lib/notification-routing-store";
 import { recipientsForSource, type NotificationRecipients } from "@/lib/notification-routing";
 import { paymentEmailContent, failedBookingEmailContent, type PaymentReceipt } from "@/lib/payment-email-content";
-import { sendGmail, gmailApiConfigured, type GmailAccount } from "@/lib/gmail-send";
+import { sendGmail, gmailAccountConfigured, type GmailAccount } from "@/lib/gmail-send";
 import { SITE_ORIGIN } from "@/lib/site";
 export const EMAIL_CONFIG_KEY = "email-notifications:config";
 export type EmailKind = "lead" | "booking" | "booking-failed" | "booking-failed-customer" | "payment" | "payment-customer" | "payment-receipt" | "payment-receipt-customer";
@@ -87,6 +89,9 @@ async function deliverNotification(kind: EmailKind, entry: EmailEntry) {
  const notificationKey = "notification:" + kind + ":" + entry.id;
  let claimed = false;
  try {
+ const eventSlug = "type" in entry && entry.type === "event" ? entry.itemSlug : "eventSlug" in entry ? entry.eventSlug : undefined;
+ const eventSettings = eventSlug && kind.endsWith("customer") ? await loadEventPaymentSettings(eventSlug) : null;
+ if (eventSettings && !eventSettings.emailEnabled) return;
   const state: EmailState = { kind, entryId: entry.id, state: "sending", updatedAt: new Date().toISOString() };
   const result = await getDb().execute(sql`INSERT INTO site_content (key, value) VALUES (${notificationKey}, ${JSON.stringify(state)}::jsonb)
    ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now()
@@ -94,18 +99,25 @@ async function deliverNotification(kind: EmailKind, entry: EmailEntry) {
   const rows = Array.isArray(result) ? result : (result as { rows?: unknown[] }).rows || [];
   if (!rows.length) return;
   claimed = true;
-  const usingGmailApi = gmailApiConfigured();
-  const config = usingGmailApi ? null : await getEmailConfig();
-  if (!usingGmailApi && !config) { state.state = "unconfigured"; state.error = "Email setup is required in Settings."; }
-  else {
-   const mail = messageFor(kind, entry, config?.siteUrl || SITE_ORIGIN, await bookingItemName(entry));
-   try {
-    // Stay bookings and stay/Work from Farm enquiries send as bookings.vinyasaearth@gmail.com;
-    // everything else sends as vinyasa.ashram@gmail.com — each a real mailbox the team reads,
-    // via the Gmail API, so the sender is genuine and a guest's reply lands there directly.
     const gmailAccount: GmailAccount = kind === "lead"
       ? (["stay-enquiry", "work-from-farm"].includes((entry as Lead).source) ? "bookings" : "ashram")
-      : ("type" in entry && entry.type === "stay" ? "bookings" : "ashram");
+      : (eventSlug || ("type" in entry && entry.type === "stay") ? "bookings" : "ashram");
+  const usingGmailApi = gmailAccountConfigured(gmailAccount);
+  const fallback = usingGmailApi ? null : await getEmailConfig();
+  const config = eventSlug && fallback?.sender.trim().toLowerCase() !== EVENT_PAYMENT_SENDER ? null : fallback;
+  if (!usingGmailApi && !config) { state.state = "unconfigured"; state.error = "Email setup is required in Settings."; }
+  else {
+   let mail = messageFor(kind, entry, config?.siteUrl || SITE_ORIGIN, await bookingItemName(entry));
+   if(eventSettings) {
+     const item = await bookingItemName(entry) || eventSlug || "Vinyasa event";
+     const details = entry as Booking | PaymentReceipt;
+     mail = {...eventPaymentEmail(eventSettings, kind.startsWith("booking-failed") ? "failed" : "success", item, {reference:details.id,amount:details.amount}),replyTo:details.guestEmail || undefined};
+   }
+   try {
+    // Stay/event bookings and stay/Work from Farm enquiries send as bookings.vinyasaearth@gmail.com;
+    // other enquiries send as vinyasa.ashram@gmail.com — each a real mailbox the team reads,
+    // via the Gmail API, so the sender is genuine and a guest's reply lands there directly.
+
     if (kind.endsWith("customer")) {
       const email = (entry as Booking | PaymentReceipt).guestEmail;
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Customer email is missing.");
