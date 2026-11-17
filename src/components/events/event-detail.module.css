@@ -94,7 +94,9 @@
   .mobileBooking p { margin-top: 4px; font-size: 16px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
   .mobileBooking .actions { margin-top: 0; }
   .mobileBooking .actions > a, .mobileBooking .actions > button { padding: 12px 14px; min-height: 48px; font-size: 12px; }
-  :global(body):has(.page) { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
+  :global(body):has(.page) { padding-bottom: 0; }
+  :global(body):has(.mobileBooking) :global(footer) { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+  :global(body):has(.mobileBookingPanel) :global(footer) { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
   :global(body):has(.page) :global([data-whatsapp-button]) { bottom: calc(124px + env(safe-area-inset-bottom)); }
 }
 @media (max-width: 639px) {
