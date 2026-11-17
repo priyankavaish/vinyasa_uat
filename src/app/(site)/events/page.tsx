@@ -1,3 +1,4 @@
+import { eventDescriptionText } from "@/lib/event-description";
 
 import FormattedText from "@/components/editorial/formatted-text";
 import { pageSeoMetadata } from "@/lib/editorial/seo";
@@ -187,7 +188,7 @@ export default async function EventsPage() {
                     <div className="flex shrink-0 flex-wrap items-center gap-2">
                       {start && end && (
                         <a
-                          href={gcalUrl(display.name, start, end, display.description)}
+                          href={gcalUrl(display.name, start, end, eventDescriptionText(display.description))}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 border border-line bg-surface px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-clay-ink transition-colors hover:border-accent hover:text-accent"

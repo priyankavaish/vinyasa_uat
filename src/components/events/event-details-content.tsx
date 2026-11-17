@@ -1,3 +1,4 @@
+import EventDescription from "@/components/events/event-description";
 import type { EventProgram } from "@/lib/content";
 import type { EventContent } from "@/lib/event-content";
 import FormattedText from "@/components/editorial/formatted-text";
@@ -22,7 +23,7 @@ export default function EventDetailsContent({ event, content, fallback, priceLab
       {content.introductionHtml ? <EventOverview><RichContent eventActions html={content.introductionHtml} className={styles.overviewCopy} /></EventOverview> : !event.bodyHtml && fallback ? <>
         <h3 className={styles.introTitle}><FormattedText value={fallback.heading} /></h3>
         {fallback.paragraphs.map(paragraph => <p key={paragraph} className={styles.overviewCopy}><FormattedText value={paragraph} /></p>)}
-      </> : !content.sections.length && <p className={styles.overviewCopy}><FormattedText value={event.description} /></p>}
+      </> : !content.sections.length && <p className={styles.overviewCopy}><EventDescription value={event.description} /></p>}
       {content.sections.map((section, index) => <EventSection key={index} id={index === 0 ? "event-programme" : "event-section-" + (index + 1)} title={section.title}>
         <RichContent eventActions html={section.bodyHtml} />
       </EventSection>)}

@@ -73,9 +73,9 @@ export default async function EventForm({ event }: { event?: EventRow }) {
         </label>
       </div>
 
-      <div>
-        <label className={label}>Short description</label>
-        <textarea name="description" rows={3} defaultValue={event?.description} className={field} />
+      <div className="space-y-2">
+        <RichEditorField name="description" label="Short description" defaultValue={event?.description ?? ""} />
+        <p className="text-xs text-muted">Use bold, text colours and Enter for new lines. This formatting appears in the event short description. Maximum 4,000 characters of text.</p>
       </div>
 
       <ImageField name="imageUrl" label="Image" defaultValue={event?.imageUrl ?? ""} />

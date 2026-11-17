@@ -1,3 +1,5 @@
+import { eventDescriptionText } from "@/lib/event-description";
+import EventDescription from "@/components/events/event-description";
 import RichContent from "@/components/ui/rich-content";
 import { eventRegistrationKey, eventRegistrationSettings, hasBookingContent } from "@/lib/event-registration";
 import AnimatedButtonArrow from "@/components/ui/animated-button-arrow";
@@ -81,7 +83,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const event = await getEvent(slug);
   if (!event) return {};
-  return { title: event.name, description: event.description, alternates: { canonical: `/events/${event.slug}` } };
+  return { title: event.name, description: eventDescriptionText(event.description), alternates: { canonical: `/events/${event.slug}` } };
 }
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -220,7 +222,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             {registration.showRegistration && <aside id="event-registration" className="self-start lg:sticky lg:top-28">
               <div className="border border-line bg-surface p-6 sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"><FormattedText value={editorialEvent.passes ? "Ways to join" : "Make space for it"} /></p>
-                <p className="mt-3 text-sm leading-6 text-foreground-soft"><FormattedText value={event.description} /></p>
+                <p className="mt-3 text-sm leading-6 text-foreground-soft"><EventDescription value={event.description} /></p>
                 {editorialEvent.passes ? <div className="mt-7 divide-y divide-line">{editorialEvent.passes.map((pass) => <div key={pass.name} className="py-5 first:pt-0 last:pb-0"><div className="flex items-baseline justify-between gap-3"><h3 className="font-semibold"><FormattedText value={pass.name} /></h3><span className="shrink-0 text-sm font-semibold text-accent"><FormattedText value={pass.price.replace(/\s*\+\s*GST$/i, "")} /> + 18% GST</span></div><p className="mt-2 text-sm leading-6 text-foreground-soft"><FormattedText value={pass.detail} /></p></div>)}</div> : <p className="mt-7 border-y border-line py-5 text-2xl font-semibold"><FormattedText value={priceLabel} /></p>}
                 <PaymentButton animatedArrow target={`event:${event.slug}`} href={`/events/${event.slug}/book`}  className="btn btn-accent mt-7 block text-center"><FormattedText value={editorialEvent.cta} links={false} /> </PaymentButton>
               </div>

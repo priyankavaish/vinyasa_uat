@@ -1,5 +1,7 @@
 "use server";
 
+import { eventDescriptionText } from "@/lib/event-description";
+
 import { revalidateTag, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
@@ -146,7 +148,7 @@ const eventSchema = z.object({
   dateLabel: z.string().max(120).default(""),
   facilitator: z.string().max(120).default(""),
   priceFrom: z.coerce.number().int().min(0).max(10_000_000),
-  description: z.string().max(4000).default(""),
+  description: z.string().max(20000).default("").refine(value => eventDescriptionText(value).length <= 4000, "Short description must be at most 4,000 characters."),
   imageUrl: z.string().max(600).default(""),
   sort: z.coerce.number().int().default(0),
 });
@@ -171,7 +173,7 @@ export async function saveEvent(form: FormData) {
     dateLabel: data.dateLabel,
     facilitator: data.facilitator,
     priceFrom: data.priceFrom,
-    description: data.description,
+    description: await cleanHtml(data.description),
     imageUrl: data.imageUrl,
     bodyHtml: await cleanHtml(String(form.get("bodyHtml") ?? "")),
     sort: data.sort,

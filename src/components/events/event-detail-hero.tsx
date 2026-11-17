@@ -1,3 +1,4 @@
+import EventDescription from "@/components/events/event-description";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import Image from "@/components/editorial/image";
@@ -49,7 +50,7 @@ export default function EventDetailHero({ name, kind, description, image, date, 
           <p><Icon name="location-outline" size={17} /><span>Vinyasa Earth, Jaipur</span></p>
           {time && <p><Icon name="sunny-outline" size={17} /><span><FormattedText value={time} /></span></p>}
         </div>
-        <p className={styles.description}><FormattedText value={description} /></p>
+        <p className={styles.description}><EventDescription value={description} /></p>
         {facilitator && <p className={styles.host}><Icon name="people-outline" size={16} /> Hosted by <strong><FormattedText value={facilitator} /></strong></p>}
       </header>
 
