@@ -287,7 +287,7 @@
   .mobileBookingPanel > summary:hover .mobileBookingToggle { background: #793027; }
   .mobileBookingChevron { flex-shrink: 0; transition: transform .2s ease; }
   .mobileBookingPanel[open] .mobileBookingChevron { transform: rotate(180deg); }
-  .mobileBookingPanel[open] .mobileBookingToggle { background: transparent; color: #8f3b31; }
+  .mobileBookingPanel[open] > summary .mobileBookingToggle { background: #8f3b31; color: #ffffff; }
   .mobileBookingPanelBody { max-height: calc(80dvh - 116px - env(safe-area-inset-bottom)); }
 }
 @media (prefers-reduced-motion: reduce) { .mobileBookingChevron, .mobileBookingToggle { transition: none; } }
