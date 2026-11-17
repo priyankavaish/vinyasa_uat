@@ -76,7 +76,10 @@ export default function EventDetailHero({ name, kind, description, image, date, 
       </aside>
 
       {showBooking && bookingContent ? <details className={styles.mobileBookingPanel}>
-        <summary><span>Booking &amp; registration</span><strong><span className={styles.mobileOpenLabel}>View booking options</span><span className={styles.mobileCloseLabel}>Close booking options</span> <span aria-hidden="true">&#8597;</span></strong></summary>
+        <summary>
+          <span className={styles.mobileBookingHeading}><strong>Join the experience</strong><span>Booking &amp; registration</span></span>
+          <span className={styles.mobileBookingToggle}><span className={styles.mobileOpenLabel}>View options</span><span className={styles.mobileCloseLabel}>Close</span><svg className={styles.mobileBookingChevron} viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="m6 14 6-6 6 6" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
+        </summary>
         <div className={styles.mobileBookingPanelBody}>{bookingContent}</div>
       </details> : showBooking && <div className={styles.mobileBooking} role="region" aria-label="Quick event booking">
         <div><span>Join the experience</span><p><FormattedText value={bookingLabel} /></p></div>
