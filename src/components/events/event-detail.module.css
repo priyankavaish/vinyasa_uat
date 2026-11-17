@@ -291,3 +291,5 @@
   .mobileBookingPanelBody { max-height: calc(80dvh - 116px - env(safe-area-inset-bottom)); }
 }
 @media (prefers-reduced-motion: reduce) { .mobileBookingChevron, .mobileBookingToggle { transition: none; } }
+
+.facts + .bookingEditorContent { border-top: 1px dashed #d6c8b4; }

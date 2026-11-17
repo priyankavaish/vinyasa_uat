@@ -55,7 +55,6 @@ export default function EventDetailHero({ name, kind, description, image, date, 
 
       <aside className={`${styles.bookingRail} ${hostSection ? styles.bookingRailWithHosts : ""}`} aria-label="Event booking details">
         <div className={styles.bookingCard}>
-          {showBooking && bookingContent ? bookingContent : <>
           <p className={styles.bookingEyebrow}>At Vinyasa Earth</p>
           <h2>Plan your experience</h2>
           <dl className={styles.facts}>
@@ -64,12 +63,11 @@ export default function EventDetailHero({ name, kind, description, image, date, 
             {duration && duration !== date && !time && <div><Icon name="sunny-outline" size={21} /><div><dt>Duration</dt><dd><FormattedText value={duration} /></dd></div></div>}
             <div><Icon name="location-outline" size={21} /><div><dt>Venue</dt><dd>Vinyasa Earth<span>Jaipur, Rajasthan</span></dd></div></div>
           </dl>
-          {showBooking && <div className={styles.bookingFooter}>
+          {showBooking && (bookingContent || <div className={styles.bookingFooter}>
             <p className={styles.bookingPrice}><FormattedText value={bookingLabel} /></p>
             <div className={styles.actions}>{children}</div>
             {showRegistration && <a href="#event-registration" className={styles.bookingMore}>View registration details <span aria-hidden="true">&rarr;</span></a>}
-          </div>}
-          </>}
+          </div>)}
         </div>
         {hostSection}
         <p className={styles.railNote}><Icon name="leaf-outline" size={16} /> A little closer to art, nature & community.</p>
