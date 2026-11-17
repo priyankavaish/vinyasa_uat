@@ -20,9 +20,10 @@ type Props = {
   time?: string | null;
   children: ReactNode;
   hostSection?: ReactNode;
+  bookingContent?: ReactNode;
 };
 
-export default function EventDetailHero({ name, kind, description, image, date, duration, facilitator, bookingLabel, time, children, hostSection, showBooking = true, showRegistration = false }: Props) {
+export default function EventDetailHero({ name, kind, description, image, date, duration, facilitator, bookingLabel, time, children, hostSection, showBooking = true, showRegistration = false, bookingContent }: Props) {
   return (
     <>
       <header className={styles.header}>
@@ -54,6 +55,7 @@ export default function EventDetailHero({ name, kind, description, image, date, 
 
       <aside className={`${styles.bookingRail} ${hostSection ? styles.bookingRailWithHosts : ""}`} aria-label="Event booking details">
         <div className={styles.bookingCard}>
+          {showBooking && bookingContent ? bookingContent : <>
           <p className={styles.bookingEyebrow}>At Vinyasa Earth</p>
           <h2>Plan your experience</h2>
           <dl className={styles.facts}>
@@ -67,12 +69,16 @@ export default function EventDetailHero({ name, kind, description, image, date, 
             <div className={styles.actions}>{children}</div>
             {showRegistration && <a href="#event-registration" className={styles.bookingMore}>View registration details <span aria-hidden="true">&rarr;</span></a>}
           </div>}
+          </>}
         </div>
         {hostSection}
         <p className={styles.railNote}><Icon name="leaf-outline" size={16} /> A little closer to art, nature & community.</p>
       </aside>
 
-      {showBooking && <div className={styles.mobileBooking} role="region" aria-label="Quick event booking">
+      {showBooking && bookingContent ? <details className={styles.mobileBookingPanel}>
+        <summary><span>Booking &amp; registration</span><strong><span className={styles.mobileOpenLabel}>View booking options</span><span className={styles.mobileCloseLabel}>Close booking options</span> <span aria-hidden="true">&#8597;</span></strong></summary>
+        <div className={styles.mobileBookingPanelBody}>{bookingContent}</div>
+      </details> : showBooking && <div className={styles.mobileBooking} role="region" aria-label="Quick event booking">
         <div><span>Join the experience</span><p><FormattedText value={bookingLabel} /></p></div>
         <div className={styles.actions}>{children}</div>
       </div>}

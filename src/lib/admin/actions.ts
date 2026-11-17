@@ -157,6 +157,7 @@ export async function saveEvent(form: FormData) {
   const hosts = eventHostsFromForm(form);
   const gallery = eventGalleryFromForm(form);
   const registration = eventRegistrationFromForm(form);
+  if (registration?.bookingHtml !== undefined) registration.bookingHtml = await cleanHtml(registration.bookingHtml);
   const hostHeading = form.has("eventHostHeading") ? eventHostHeadingSchema.parse(form.get("eventHostHeading")) : null;
   const payment = paymentSettingsFromForm(form);
   const db = getDb();

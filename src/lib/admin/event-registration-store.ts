@@ -8,13 +8,13 @@ export async function loadEventRegistration(slug: string) {
   const [row] = await getDb().select({ value: siteContent.value }).from(siteContent).where(eq(siteContent.key, eventRegistrationKey(slug))).limit(1);
   return eventRegistrationSettings(row?.value);
 }
-export async function storeEventRegistration(slug: string, previousSlug: string | undefined, settings: EventRegistrationSettings | null) {
+export async function storeEventRegistration(slug: string, previousSlug: string | undefined, settings: (Omit<EventRegistrationSettings, "bookingHtml"> & { bookingHtml?: string }) | null) {
   const db = getDb();
   const previousKey = eventRegistrationKey(previousSlug || slug);
   const key = eventRegistrationKey(slug);
   const [existing] = await db.select().from(siteContent).where(eq(siteContent.key, previousKey)).limit(1);
   if (settings === null && !existing) return;
-  const value = settings ?? eventRegistrationSettings(existing?.value);
+  const value = { ...eventRegistrationSettings(existing?.value), ...settings };
   await db.insert(siteContent).values({ key, value, updatedAt: new Date() })
     .onConflictDoUpdate({ target: siteContent.key, set: { value, updatedAt: new Date() } });
   if (previousKey !== key) await db.delete(siteContent).where(eq(siteContent.key, previousKey));

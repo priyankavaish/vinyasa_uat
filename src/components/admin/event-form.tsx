@@ -92,9 +92,11 @@ export default async function EventForm({ event }: { event?: EventRow }) {
       <section className="space-y-3 border-t border-line pt-5" aria-label="Event registration visibility">
         <h2 className="font-display text-xl">Booking &amp; registration sections</h2>
         <input type="hidden" name="eventRegistrationSettings" value="1" />
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="eventShowBooking" defaultChecked={registration.showBooking} />Show price and booking button (desktop and mobile)</label>
+        <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="eventShowBooking" defaultChecked={registration.showBooking} />Show right-side booking content and fixed mobile booking panel</label>
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="eventShowRegistration" defaultChecked={registration.showRegistration} />Show registration details section</label>
         <p className="text-sm text-muted">Choose separately for each event. Turn these off when registration happens through your event content or another process. Save event to apply.</p>
+        <RichEditorField name="eventBookingHtml" label="Right-side booking content" defaultValue={registration.bookingHtml} />
+        <p className="text-sm text-muted">Add headings, prices, descriptions and as many payment links as this event needs. Use Button in the editor toolbar to add each payment option. The same content appears on the right on desktop and in an expandable fixed panel on mobile. Leave empty to use the existing event booking card.</p>
       </section>
       <BookingButtonFields initial={payment} />
 
