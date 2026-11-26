@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ArtistEscapeApplicationTrigger } from "@/components/forms/artist-escape-application-form";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
 import { useYoutubeMuteToggle } from "@/lib/hooks/use-youtube-mute-toggle";
@@ -53,9 +54,9 @@ export default function ArtistEscapeVideoHero({
           <h1 className="mt-4 font-display italic text-5xl leading-[1.05] sm:text-7xl">{title}</h1>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-background/90 sm:text-lg">{description}</p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-            <Link href="#apply" className="btn btn-accent">
+            <ArtistEscapeApplicationTrigger className="btn btn-accent">
               Apply Now
-            </Link>
+            </ArtistEscapeApplicationTrigger>
             <Link href="#artists" className="btn btn-outline-light">
               Our Past Artists
             </Link>

@@ -1,3 +1,4 @@
+import { ArtistEscapeApplicationTrigger } from "@/components/forms/artist-escape-application-form";
 import Image from "@/components/editorial/image";
 import styles from "./artist-offerings.module.css";
 import { Reveal } from "@/components/ui/reveal";
@@ -54,10 +55,10 @@ export default async function ArtistOfferings({ escapeImage }: { escapeImage: st
                   <div className={styles.actions}>
                     <a href={offering.href} className={`btn btn-accent ${styles.action}`}>{offering.action}<span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span></a>
                     {offering.href === "#artist-escape" && (
-                      <a href="#apply" className={"btn btn-outline " + styles.action}>
+                      <ArtistEscapeApplicationTrigger className={"btn btn-outline " + styles.action}>
                         Start your process now
                         <span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span>
-                      </a>
+                      </ArtistEscapeApplicationTrigger>
                     )}
                   </div>
                 </div>

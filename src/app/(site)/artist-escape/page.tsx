@@ -15,7 +15,7 @@ import Image from "@/components/editorial/image";
 import PrincipleRow from "@/components/sections/principle-row";
 import ArtistEscapeVideoHero from "@/components/sections/artist-escape-video-hero";
 import ArtistEscapeShort from "@/components/sections/artist-escape-short";
-import ArtistEscapeApplicationForm from "@/components/forms/artist-escape-application-form";
+import ArtistEscapeApplicationForm, { ArtistEscapeApplicationTrigger } from "@/components/forms/artist-escape-application-form";
 
 import ArtistOfferings from "@/components/sections/artist-offerings";
 import ArtistInResidenceSection from "@/components/sections/artist-in-residence-section";
@@ -44,32 +44,22 @@ export default async function ArtistEscapePage() {
 
       <ArtistOfferings escapeImage={content.vision_image} />
 
-      <AnimateInView delay={0}>
-        <section id="apply" className="scroll-mt-24 bg-clay-surface py-14 sm:py-16">
-          <div className="mx-auto grid max-w-7xl gap-8 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-12">
-            <Reveal variant="left">
-              <p className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">Apply for Artist Escape</p>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.cta_title} /></h2>
-              <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
-                <p>Choose a 1-, 2- or 4-week stay to work on your art at Vinyasa Earth. A shared dorm bed and three meals a day are included.</p>
-              </div>
-              <div className="mt-6 space-y-2 text-sm">
-                <a href={gmailCompose(`mailto:${content.cta_email}`)} target="_blank" rel="noopener noreferrer" className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  <FormattedText value={content.cta_email} links={false} />
-                </a>
-                <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  <FormattedText value={content.cta_phone} links={false} />
-                </a>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80"><FormattedText value={content.cta_location} /></p>
-              </div>
-            </Reveal>
-
-            <Reveal variant="right" delay={100}>
-              <ArtistEscapeApplicationForm />
-            </Reveal>
-          </div>
-        </section>
-      </AnimateInView>
+      <ArtistEscapeApplicationForm>
+        <p className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">Apply for Artist Escape</p>
+        <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.cta_title} /></h2>
+        <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
+          <p>Choose a 1-, 2- or 4-week stay to work on your art at Vinyasa Earth. A shared dorm bed and three meals a day are included.</p>
+        </div>
+        <div className="mt-6 space-y-2 text-sm">
+          <a href={gmailCompose(`mailto:${content.cta_email}`)} target="_blank" rel="noopener noreferrer" className="flex w-fit items-center gap-2 text-accent hover:underline">
+            <FormattedText value={content.cta_email} links={false} />
+          </a>
+          <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
+            <FormattedText value={content.cta_phone} links={false} />
+          </a>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80"><FormattedText value={content.cta_location} /></p>
+        </div>
+      </ArtistEscapeApplicationForm>
 
       {/* Vision — with the vertical short as its visual */}
       <AnimateInView delay={60}>
@@ -180,7 +170,7 @@ export default async function ArtistEscapePage() {
                       <a href="https://www.instagram.com/vinyasa.earth/" target="_blank" rel="noopener noreferrer" className="relative mt-3 inline-block text-sm font-semibold text-accent underline">Open Instagram</a>
                     )}
                     {i === 1 && (
-                      <a href="#apply" className="relative mt-3 inline-block text-sm font-semibold text-accent underline">Open application form</a>
+                      <ArtistEscapeApplicationTrigger className="relative mt-3 inline-block text-sm font-semibold text-accent underline">Open application form</ArtistEscapeApplicationTrigger>
                     )}
                   </div>
                 </Reveal>
