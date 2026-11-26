@@ -1,3 +1,4 @@
+import AdminSaveLoader from "@/components/admin/admin-save-loader";
 import BookingButtonFields from "./booking-button-fields";
 import { loadBookingButton } from "@/lib/admin/booking-button-store";
 import { saveCottage } from "@/lib/admin/actions";
@@ -18,6 +19,7 @@ export default async function CottageForm({ cottage }: { cottage?: CottageRow })
   const payment = cottage ? await loadBookingButton(`stay:${cottage.slug}`) : undefined;
   return (
     <form action={saveCottage} className="max-w-2xl space-y-5">
+      <AdminSaveLoader />
       {cottage && <input type="hidden" name="id" value={cottage.id} />}
 
       <div className="grid gap-4 sm:grid-cols-2">

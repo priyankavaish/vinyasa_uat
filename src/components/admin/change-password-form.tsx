@@ -1,5 +1,6 @@
 "use client";
 
+import FormLoader from "@/components/forms/form-loader";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -46,6 +47,7 @@ export default function ChangePasswordForm() {
 
   return (
     <form onSubmit={onSubmit} className="mt-4 space-y-4" noValidate>
+      <FormLoader active={status === "saving"} label="Updating password..." />
       <div>
         <label className={label} htmlFor="cur">Current password</label>
         <input id="cur" type="password" className={input} value={currentPassword} onChange={(e) => setCurrent(e.target.value)} autoComplete="current-password" />

@@ -1,3 +1,4 @@
+import AdminSaveLoader from "@/components/admin/admin-save-loader";
 import { saveVisitOption, deleteVisitOption } from "@/lib/admin/actions";
 import ImageField from "@/components/admin/image-field";
 import DeleteButton from "@/components/admin/delete-button";
@@ -9,6 +10,7 @@ const label = "block text-[11px] font-semibold uppercase tracking-[0.1em] text-f
 function Row({ item }: { item?: VisitOptionRow }) {
   return (
     <form action={saveVisitOption} className="rounded-lg border border-line bg-white p-4">
+      <AdminSaveLoader />
       {item && <input type="hidden" name="id" value={item.id} />}
       <div className="grid gap-3 sm:grid-cols-2">
         <div>

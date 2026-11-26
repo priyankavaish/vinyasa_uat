@@ -21,6 +21,10 @@ export async function POST(req: NextRequest) {
   const { bookingId, razorpay_order_id, razorpay_payment_id, razorpay_signature } = parsed.data;
 
   const booking = await getBooking(bookingId);
+  if (booking && process.env.NODE_ENV === "development") {
+    const { getArtistBookingMeta } = await import("@/lib/artist-escape-booking");
+    if (await getArtistBookingMeta(booking.id)) return NextResponse.json({ error: "Complete payment through the Artist Escape booking link." }, { status: 400 });
+  }
   if (!booking) {
     return NextResponse.json({ error: "Booking not found." }, { status: 404 });
   }

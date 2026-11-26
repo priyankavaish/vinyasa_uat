@@ -1,4 +1,5 @@
 "use client";
+import FormLoader from "@/components/forms/form-loader";
 import {useRef,useState} from "react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
@@ -24,6 +25,7 @@ export default function EnquiryReplyForm({lead,replies}:{lead:Lead;replies:Enqui
   }catch{setFailed(true);setStatus("Could not confirm sending. Keep this message and retry without changing it to avoid sending a duplicate.");}
   finally{setBusy(false);}
  }}>
+      <FormLoader active={busy} label="Sending reply..." />
  <fieldset disabled={busy} className="space-y-4">
  <label className="block text-sm" htmlFor={"reply-to-"+lead.id}>To<input id={"reply-to-"+lead.id} type="email" readOnly value={lead.email} className={field}/></label>
  <label className="block text-sm" htmlFor={"reply-subject-"+lead.id}>Subject<input id={"reply-subject-"+lead.id} required maxLength={200} value={subject} onChange={event=>{setSubject(event.target.value);requestId.current=null;}} className={field}/></label>

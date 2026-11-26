@@ -1,3 +1,4 @@
+import { withStayBookingLock } from "@/lib/stay-booking-lock";
 import { notifyEntry } from "@/lib/email-notifications";
 import { revalidatePath } from "next/cache";
 import { bookingPrice, gstPercentFor } from "@/lib/booking-pricing";
@@ -42,6 +43,10 @@ async function computeAmount(
 }
 
 export async function POST(req: NextRequest) {
+  return withStayBookingLock(() => handleBooking(req));
+}
+
+async function handleBooking(req: NextRequest) {
   let body: unknown;
   try {
     body = await req.json();

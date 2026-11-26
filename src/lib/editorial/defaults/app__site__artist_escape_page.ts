@@ -44,7 +44,7 @@ const ELIGIBILITY: { icon: IconName; title: string; body: string; image: string;
 
 const PROCESS_STEPS = [
   { title: "Express interest", body: "Reach out with your portfolio and a note about your practice." },
-  { title: "1:1 call", body: "We get on a call to understand your intent and answer your questions." },
+  { title: "Application review", body: "Once we receive your application, our team will review it and get back to you." },
   { title: "Become eligible", body: "Once confirmed, we lock your dates and welcome you home." },
 ];
 

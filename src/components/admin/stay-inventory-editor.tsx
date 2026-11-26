@@ -1,5 +1,6 @@
 "use client";
 
+import AdminSaveLoader from "@/components/admin/admin-save-loader";
 import { useActionState } from "react";
 import { saveStayQuantity } from "@/lib/admin/stay-stock-actions";
 
@@ -15,6 +16,7 @@ export default function StayInventoryEditor({ stays }: { stays: { slug: string; 
 function QuantityForm({ stay }: { stay: { slug: string; name: string; quantity: number | null; bookedTonight?: number } }) {
   const [state, action, pending] = useActionState(saveStayQuantity, {});
   return <form action={action} data-stay-stock={stay.slug} className="rounded-md border border-line bg-background p-4">
+    <AdminSaveLoader />
     <input type="hidden" name="slug" value={stay.slug} />
     <label htmlFor={`stock-${stay.slug}`} className="block text-sm font-semibold">{stay.name}</label>
     <p className="mt-1 text-xs text-muted">{stay.slug === "dorm" ? "Total beds" : stay.slug === "tent" ? "Total tents" : "Total rooms"}</p>

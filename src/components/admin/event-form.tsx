@@ -1,3 +1,4 @@
+import AdminSaveLoader from "@/components/admin/admin-save-loader";
 import EventPaymentFields from "./event-payment-fields";
 import { loadEventRegistration } from "@/lib/admin/event-registration-store";
 import { eventRegistrationSettings } from "@/lib/event-registration";
@@ -28,6 +29,7 @@ export default async function EventForm({ event }: { event?: EventRow }) {
   const payment = event ? await loadBookingButton(`event:${event.slug}`) : undefined;
   return (
     <form action={saveEvent} className="min-w-0 max-w-4xl space-y-5">
+      <AdminSaveLoader />
       {event && <input type="hidden" name="id" value={event.id} />}
 
       <div className="grid gap-4 sm:grid-cols-2">

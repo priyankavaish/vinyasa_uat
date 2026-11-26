@@ -1,5 +1,6 @@
 "use client";
 
+import FormLoader from "@/components/forms/form-loader";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveContent } from "@/lib/admin/actions";
@@ -78,6 +79,7 @@ export default function ContentForm({
 
   return (
     <form onSubmit={submit} className="rounded-lg border border-line bg-white p-5">
+      <FormLoader active={status === "saving"} label="Saving content..." />
       <div className="flex items-center justify-between">
         <h3 className="font-display text-lg italic">{group.title}</h3>
         <code className="text-[11px] text-muted">{group.key}</code>

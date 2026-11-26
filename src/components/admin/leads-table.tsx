@@ -1,16 +1,19 @@
 "use client";
 
 import { Fragment, useMemo, useState } from "react";
+import ArtistEscapeReview from "@/components/admin/artist-escape-review";
 import EnquiryReplyForm from "@/components/admin/enquiry-reply-form";
 import type {EnquiryReply} from "@/lib/enquiry-replies";
+import type { ArtistReviewStatus } from "@/lib/artist-escape-booking";
 import type { Lead } from "@/lib/store";
 import Pager, { paginate } from "@/components/admin/pager";
 
 const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry", "work-from-farm"] as const;
 
-export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; replies?: EnquiryReply[] }) {
+export default function LeadsTable({ leads, replies = [], artistReviewStatuses = {} }: { leads: Lead[]; replies?: EnquiryReply[]; artistReviewStatuses?: Record<string, ArtistReviewStatus> }) {
   const [filter, setFilter] = useState<(typeof SOURCES)[number]>("all");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [updatedStatuses, setUpdatedStatuses] = useState<Record<string, ArtistReviewStatus>>({});
   const [page, setPage] = useState(1);
 
   const rows = useMemo(
@@ -57,6 +60,7 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
             <tbody>
               {visible.map((l) => {
                 const open = openId === l.id;
+                const status = updatedStatuses[l.id] ?? artistReviewStatuses[l.id] ?? "Pending review";
                 return (
                   <Fragment key={l.id}>
                     <tr
@@ -64,7 +68,14 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
                       onClick={() => setOpenId(open ? null : l.id)}
                     >
                       <td className="px-4 py-3 font-medium">{l.name}</td>
-                      <td className="px-4 py-3 capitalize">{l.source === "work-from-farm" ? "Work from Farm" : l.source}</td>
+                      <td className="px-4 py-3 capitalize">
+                        {l.source === "work-from-farm" ? "Work from Farm" : l.source}
+                        {l.source === "artist-escape" && (
+                          <span className="mt-1 block w-fit rounded-full border border-line px-2 py-0.5 text-xs font-semibold text-foreground">
+                            {status}
+                          </span>
+                        )}
+                      </td>
                       <td className="hidden px-4 py-3 text-foreground-soft sm:table-cell">{l.email}</td>
                       <td className="hidden px-4 py-3 text-xs text-muted md:table-cell">
                         {new Date(l.createdAt).toLocaleString("en-IN")}
@@ -88,9 +99,10 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
                               Message
                             </p>
                             <p className="mt-1 whitespace-pre-wrap text-sm text-foreground">
-                              {l.message || "— no message —"}
+                              {(l.source === "artist-escape" && l.message ? linkArtistPortfolio(l.message) : l.message) || "— no message —"}
                             </p>
                           </div>
+                          {l.source === "artist-escape" && <ArtistEscapeReview leadId={l.id} onStatusChange={(status) => setUpdatedStatuses((current) => ({ ...current, [l.id]: status }))} />}
                           <EnquiryReplyForm lead={l} replies={replies.filter(reply=>reply.leadId===l.id)} />
                         </td>
                       </tr>
@@ -104,6 +116,25 @@ export default function LeadsTable({ leads, replies = [] }: { leads: Lead[]; rep
       )}
       <Pager label="queries" total={rows.length} offset={offset} shown={visible.length} current={current} pageCount={pageCount} onPage={(next) => { setPage(next); setOpenId(null); }} />
     </div>
+  );
+}
+
+function linkArtistPortfolio(message: string) {
+  const match = /^Portfolio: (https?:\/\/\S+)[ \t]*$/im.exec(message);
+  if (!match) return message;
+
+  const url = match[1];
+  if (!URL.canParse(url)) return message;
+
+  const start = match.index + "Portfolio: ".length;
+  return (
+    <>
+      {message.slice(0, start)}
+      <a href={url} target="_blank" rel="noopener noreferrer" className="break-all text-accent underline">
+        {url}
+      </a>
+      {message.slice(start + url.length)}
+    </>
   );
 }
 

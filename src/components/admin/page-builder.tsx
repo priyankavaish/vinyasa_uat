@@ -1,5 +1,6 @@
 "use client";
 
+import AdminSaveLoader from "@/components/admin/admin-save-loader";
 import { useMemo, useState } from "react";
 import { savePage } from "@/lib/admin/actions";
 import {
@@ -76,6 +77,7 @@ export default function PageBuilder({ page }: { page?: BuilderPage }) {
 
   return (
     <form action={savePage} className="max-w-4xl space-y-6 pb-24">
+      <AdminSaveLoader />
       {page && <input type="hidden" name="id" value={page.id} />}
       <input type="hidden" name="blocks" value={blocksJson} />
 

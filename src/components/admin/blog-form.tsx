@@ -1,4 +1,5 @@
 "use client";
+import FormLoader from "@/components/forms/form-loader";
 import { useEffect, useId, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -64,6 +65,7 @@ export default function BlogForm({ blog, settings = emptyBlogSettings }: { blog?
     finally { setPreviewing(false); }
   }
   return <form ref={formRef} className="pb-16" onSubmit={e => { e.preventDefault(); const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null; void submit(submitter?.value === "draft" ? "draft" : "published"); }}>
+      <FormLoader active={saving} label="Saving post..." />
     <input type="hidden" name="id" value={id} /><input type="hidden" name="bodyHtml" value={body} /><input type="hidden" name="status" value={status} />
     <div className="sticky top-0 z-10 mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-line bg-[#f4efe6] py-4">
       <Link href="/admin/blog" onClick={e => { if (dirty && !window.confirm("Leave this editor and discard unsaved changes?")) e.preventDefault(); }} className="text-sm text-accent underline">All posts</Link>

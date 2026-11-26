@@ -1,4 +1,5 @@
 "use client";
+import AdminSaveLoader from "@/components/admin/admin-save-loader";
 import PaymentReturnHelp from "./payment-return-help";
 
 import ThemeColorControl from "@/components/admin/theme-color-control";
@@ -47,6 +48,7 @@ function ButtonForm({ target, initial, onDirty, onSaved }: {
     setValue((previous) => ({ ...previous, [key]: next })); setEdited(true); onDirty();
   }
   return <form action={action} className="mt-5 rounded-lg border border-line bg-surface p-5 sm:p-7">
+    <AdminSaveLoader />
     <input type="hidden" name="target" value={target.value} />
     <fieldset disabled={pending} className="space-y-6 disabled:opacity-60">
       <div>

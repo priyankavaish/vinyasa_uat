@@ -5,6 +5,7 @@ import { listEmailStates } from "@/lib/email-notifications";
 import EmailDelivery from "@/components/admin/email-delivery";
 import { listLeads } from "@/lib/store";
 import { hasDb } from "@/lib/db";
+import { listArtistReviewStatuses } from "@/lib/artist-escape-booking";
 import LeadsTable from "@/components/admin/leads-table";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ export default async function AdminContactPage() {
   if (!hasDb()) {
     return <p className="text-sm text-foreground-soft">Database not configured.</p>;
   }
-  const [leads, states, replies] = await Promise.all([listLeads(), listEmailStates(["lead"]),listEnquiryReplies()]);
+  const [leads, states, replies, artistReviewStatuses] = await Promise.all([listLeads(), listEmailStates(["lead"]),listEnquiryReplies(), listArtistReviewStatuses()]);
 
   return (
     <div>
@@ -24,7 +25,7 @@ export default async function AdminContactPage() {
       </p>
       <EmailDelivery states={states} />
       <div className="mt-6">
-        <LeadsTable leads={leads} replies={replies} />
+        <LeadsTable leads={leads} replies={replies} artistReviewStatuses={artistReviewStatuses} />
       </div>
     </div>
   );

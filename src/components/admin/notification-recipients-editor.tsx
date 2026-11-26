@@ -1,4 +1,5 @@
 "use client";
+import FormLoader from "@/components/forms/form-loader";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {saveNotificationRouting,testEmailSettings} from "@/lib/email-actions";
@@ -39,6 +40,7 @@ export default function NotificationRecipientsEditor({routing}:{routing:Notifica
   const result=await saveNotificationRouting({defaults:parsed(addresses),stays:parsed(stays)});
   setMessage(result.message);if(result.ok){setDirty(false);router.refresh();}
  }catch{setMessage("Could not save. Please retry.");}finally{setBusy("");}}}>
+      <FormLoader active={busy === "save"} label="Saving recipients..." />
  <fieldset disabled={!!busy} className="space-y-5">
   <div className="space-y-3"><h3 className="text-base font-semibold">General notifications</h3><p className="text-sm text-foreground-soft">Contact, volunteer, artist, corporate, newsletter and booking notifications.</p>{recipientFields("defaults",addresses)}
    <button className="btn btn-outline" type="button" disabled={dirty} onClick={()=>test("defaults")}>{busy==="defaults"?"Sending...":"Send general test email"}</button>

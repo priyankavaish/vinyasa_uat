@@ -1,5 +1,6 @@
 "use client";
 
+import AdminSaveLoader from "@/components/admin/admin-save-loader";
 import { useActionState, useTransition } from "react";
 import { blockStayDates, createCoupon, removeCoupon, setCouponActive, unblockStayDates } from "@/lib/admin/offer-actions";
 import type { Coupon } from "@/lib/coupons";
@@ -16,6 +17,7 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
     <h2 className="font-display text-2xl italic">Coupon codes</h2>
     <p className="mt-2 text-sm text-foreground-soft">Guests enter the code while booking a stay. The discount comes off the room charge before 5% GST is added.</p>
     <form action={action} className="mt-5 grid gap-4 sm:grid-cols-4">
+      <AdminSaveLoader />
       <div><label htmlFor="coupon-code" className={label}>Code</label><input id="coupon-code" name="code" required placeholder="WELCOME10" className={`${input} uppercase`} /></div>
       <div><label htmlFor="coupon-type" className={label}>Type</label>
         <select id="coupon-type" name="type" className={input}><option value="percent">Percent (%)</option><option value="flat">Flat (₹)</option></select></div>
@@ -48,6 +50,7 @@ export function StayBlockManager({ stays, blocks }: { stays: { slug: string; nam
     <h2 className="font-display text-2xl italic">Close a stay for some days</h2>
     <p className="mt-2 text-sm text-foreground-soft">Guests cannot book the stay on any night from the first to the last date (both included). Existing bookings are not cancelled.</p>
     <form action={action} className="mt-5 grid gap-4 sm:grid-cols-4">
+      <AdminSaveLoader />
       <div><label htmlFor="block-stay" className={label}>Stay</label>
         <select id="block-stay" name="slug" required className={input}>{stays.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)}</select></div>
       <div><label htmlFor="block-from" className={label}>From</label><input id="block-from" name="from" type="date" required className={input} /></div>

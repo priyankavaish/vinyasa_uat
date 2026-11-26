@@ -1,5 +1,6 @@
 "use client";
 
+import FormLoader from "@/components/forms/form-loader";
 import { useEffect, useState } from "react";
 import { saveEmailSettings, testEmailSettings } from "@/lib/email-actions";
 
@@ -49,6 +50,7 @@ export default function EmailSettings({ summary }: { summary: Summary }) {
    } catch { setFailed(true); setMessage("Could not complete setup. Please try again."); }
    finally { setBusy(false); }
   }}>
+      <FormLoader active={busy} label="Updating email settings..." />
    <fieldset disabled={busy} className="space-y-4">
     <label className="block text-sm" htmlFor="notification-sender">{provider === "gmail" ? "Gmail address to connect" : "Sender email"}
      <input id="notification-sender" name="sender" type="email" required placeholder="sender@example.com" value={sender} onChange={event => { setSender(event.target.value); setMessage(""); }} className={field}/>

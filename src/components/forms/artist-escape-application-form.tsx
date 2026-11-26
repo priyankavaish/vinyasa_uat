@@ -89,8 +89,8 @@ export default function ArtistEscapeApplicationForm() {
   return (
     <>
     <SuccessDialog open={status === "success"} onClose={() => setStatus("idle")}>
-      <p className="font-display italic text-2xl">Application sent</p>
-      <p className="mt-2 text-sm text-foreground-soft">We'll be in touch to set up a 1:1 call.</p>
+      <p className="font-display italic text-2xl">We have received your application.</p>
+      <p className="mt-2 text-sm text-foreground-soft">Our team will review your application and get back to you soon.</p>
     </SuccessDialog>
     <FormLoader active={status === "submitting"} />
     <form onSubmit={handleSubmit(onSubmit)} className="border border-line bg-surface p-6 sm:p-9" noValidate>
