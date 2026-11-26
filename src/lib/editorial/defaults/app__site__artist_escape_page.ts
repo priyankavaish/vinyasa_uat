@@ -43,9 +43,9 @@ const ELIGIBILITY: { icon: IconName; title: string; body: string; image: string;
 ];
 
 const PROCESS_STEPS = [
-  { title: "Express interest", body: "Reach out with your portfolio and a note about your practice." },
-  { title: "Application review", body: "Once we receive your application, our team will review it and get back to you." },
-  { title: "Become eligible", body: "Once confirmed, we lock your dates and welcome you home." },
+  { title: "Request your invite", body: 'DM “ARTIST” to @vinyasa.earth on Instagram by 10 December 2026.' },
+  { title: "Send your application", body: "Choose an available Monday for a 1-, 2- or 4-week stay. Share your portfolio and what you’d like to work on. Our team will review your application." },
+  { title: "Confirm your stay", body: "If approved, we’ll email a booking link for your selected dates. Pay for one day online to confirm. The balance is due on arrival." },
 ];
 
 const PRICING_TIERS = [
