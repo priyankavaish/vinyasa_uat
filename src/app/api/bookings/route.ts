@@ -1,4 +1,4 @@
-import { withStayBookingLock } from "@/lib/stay-booking-lock";
+import { StayBookingBusyError, withStayBookingLock } from "@/lib/stay-booking-lock";
 import { notifyEntry } from "@/lib/email-notifications";
 import { revalidatePath } from "next/cache";
 import { bookingPrice, gstPercentFor } from "@/lib/booking-pricing";
@@ -10,6 +10,8 @@ import { getCottages, getEvents } from "@/lib/cms";
 import { createBooking, ensureBookingCurrencyPrecision } from "@/lib/store";
 import { createOrder } from "@/lib/razorpay";
 import { requireAdminSession } from "@/lib/auth";
+
+export const maxDuration = 60;
 
 // Bump when the Way of Living or booking terms text changes materially, so old acceptances stay traceable.
 const TERMS_VERSION = "2026-11-v1";
@@ -43,10 +45,6 @@ async function computeAmount(
 }
 
 export async function POST(req: NextRequest) {
-  return withStayBookingLock(() => handleBooking(req));
-}
-
-async function handleBooking(req: NextRequest) {
   let body: unknown;
   try {
     body = await req.json();
@@ -65,6 +63,16 @@ async function handleBooking(req: NextRequest) {
   // Guests must accept the Way of Living and the booking terms before paying; the acceptance is stored with the booking.
   const accepted = body && typeof body === "object" && (body as Record<string, unknown>).acceptGuidelines === true && (body as Record<string, unknown>).acceptTerms === true;
   if (!accepted) return NextResponse.json({ error: "Please accept the Vinyasa Way of Living and the booking terms and cancellation policy to continue." }, { status: 400 });
+  if (values.type !== "stay" || values.itemSlug !== "dorm") return handleBooking(values);
+  try {
+    return await withStayBookingLock(() => handleBooking(values));
+  } catch (error) {
+    if (error instanceof StayBookingBusyError) return NextResponse.json({ error: error.message }, { status: 503 });
+    throw error;
+  }
+}
+
+async function handleBooking(values: typeof bookingRequestSchema._output) {
   const rooms = values.type === "stay" ? values.rooms : 1;
   if (values.type === "stay") {
     try {

@@ -100,5 +100,36 @@ test('integrated Artist Escape approval, plan, GST, inventory, payment and admin
   await confirmCapturedPayment({id:'pay_regression',order_id:'order_regression',status:'captured',amount:105000,currency:'INR'});
   for(const fn of afterTasks.splice(0))await fn();assert.equal((await getBooking(normal.id)).status,'paid');assert.equal(sent.length-before,2);
  });
+ await t.test('Vercel enables the workflow only for the hosted UAT project',()=>{
+  const {isHostedArtistEscapeUat}=require('../src/lib/artist-escape-environment');
+  const keys=['VERCEL_ENV','VERCEL_PROJECT_PRODUCTION_URL','VERCEL_GIT_REPO_OWNER','VERCEL_GIT_REPO_SLUG','SITE_ORIGIN'];
+  const saved=Object.fromEntries(keys.map(key=>[key,process.env[key]]));
+  try {
+   for(const key of keys)delete process.env[key];
+   process.env.VERCEL_ENV='production';
+   process.env.VERCEL_PROJECT_PRODUCTION_URL='vinyasa.earth';
+   assert.equal(isHostedArtistEscapeUat(),false);
+   process.env.VERCEL_GIT_REPO_OWNER='priyankavaish';
+   process.env.VERCEL_GIT_REPO_SLUG='vinyasa_uat';
+   assert.equal(isHostedArtistEscapeUat(),true);
+   process.env.VERCEL_ENV='preview';
+   assert.equal(isHostedArtistEscapeUat(),false);
+  } finally {
+   for(const key of keys){if(saved[key]===undefined)delete process.env[key];else process.env[key]=saved[key];}
+  }
+ });
+ await t.test('shared database lease serializes invocations and releases on error',async()=>{
+  const {withDatabaseStayBookingLock}=require('../src/lib/stay-booking-lock');
+  let inLock=0;
+  const write=()=>withDatabaseStayBookingLock(async()=>{
+   assert.equal(++inLock,1);
+   await new Promise(resolve=>setTimeout(resolve,30));
+   assert.equal(--inLock,0);
+  });
+  await Promise.all([write(),write()]);
+  await assert.rejects(withDatabaseStayBookingLock(async()=>{throw Error('test write failure');}),/test write failure/);
+  const rows=await db.select().from(siteContent).where(eq(siteContent.key,'stay-booking:write-lock'));
+  assert.equal(rows.length,0);
+ });
  await t.test('production guard prevents activation',async()=>{process.env.NODE_ENV='production';await assert.rejects(flow.approveArtist(a.lead.id,'admin@example.test','http://localhost:3000'));process.env.NODE_ENV='development';});
 });

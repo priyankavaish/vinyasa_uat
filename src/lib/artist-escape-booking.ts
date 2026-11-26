@@ -1,7 +1,7 @@
 import "server-only";
 import { createHmac,randomBytes,timingSafeEqual } from "node:crypto";
 import { eq,like,or } from "drizzle-orm";
-import { getDb,isLocalDb } from "@/lib/db";
+import { getDb,hasDb,isLocalDb } from "@/lib/db";
 import { leads,siteContent } from "@/lib/db/schema";
 import { getBooking,createBooking,updateBookingStatus,ensureBookingCurrencyPrecision,BOOKING_HOLD_MINUTES,type Booking } from "@/lib/store";
 import { getCottages } from "@/lib/cms";
@@ -10,17 +10,24 @@ import { createOrder } from "@/lib/razorpay";
 import { getEmailConfig,sendAccountEmail } from "@/lib/email-notifications";
 import { gmailAccountConfigured,sendGmail } from "@/lib/gmail-send";
 import { artistEscapeQuote,ARTIST_ESCAPE_PLANS,type ArtistEscapeQuote } from "./artist-escape-plans";
+import { ARTIST_ESCAPE_UAT_ORIGIN, isHostedArtistEscapeUat } from "./artist-escape-environment";
+
 export type ArtistApproval={leadId:string;issuedAt:number;expiresAt:number;approvedAt:string;approvedBy:string;bookingId?:string;emailState?:"preview"|"sent"|"failed";error?:string};
 export type ArtistBookingMeta=ArtistEscapeQuote & {applicationId:string;dormName:string};
 export type ArtistMail={id:string;to:string;subject:string;body:string;state:"preview"|"sent"|"failed";error?:string;updatedAt:string};
 const approvalKey=(id:string)=>"artist-escape:approval:"+id;
-export function assertArtistEscapeLocal(){if(process.env.NODE_ENV!=="development"||!isLocalDb())throw new Error("Artist Escape booking is currently available only with the local development database.");}
+function assertArtistEscapeAvailable() {
+  if (process.env.NODE_ENV === "development" && isLocalDb()) return;
+  if (isHostedArtistEscapeUat() && hasDb() && !isLocalDb()) return;
+  throw new Error("Artist Escape booking is available in local development and hosted UAT.");
+}
 async function read<T>(key:string):Promise<T|null>{const [r]=await getDb().select().from(siteContent).where(eq(siteContent.key,key)).limit(1);return r?(r.value as T):null;}
 async function save(key:string,value:unknown){await getDb().insert(siteContent).values({key,value}).onConflictDoUpdate({target:siteContent.key,set:{value,updatedAt:new Date()}});}
-function signature(a:ArtistApproval){const secret=process.env.SESSION_SECRET;if(!secret)throw new Error("Local SESSION_SECRET is required.");return createHmac("sha256",secret).update(`artist-escape:${a.leadId}:${a.issuedAt}:${a.expiresAt}`).digest("hex");}
+function signature(a:ArtistApproval){const secret=process.env.SESSION_SECRET;if(!secret)throw new Error("SESSION_SECRET is required.");return createHmac("sha256",secret).update(`artist-escape:${a.leadId}:${a.issuedAt}:${a.expiresAt}`).digest("hex");}
 function token(a:ArtistApproval){return a.leadId+"."+signature(a);}
 function artistBookingLink(approval: ArtistApproval, origin: string) {
-  const url = new URL("/artist-escape/book", process.env.ARTIST_ESCAPE_BOOKING_ORIGIN || origin);
+  const bookingOrigin = isHostedArtistEscapeUat() ? ARTIST_ESCAPE_UAT_ORIGIN : process.env.ARTIST_ESCAPE_BOOKING_ORIGIN || origin;
+  const url = new URL("/artist-escape/book", bookingOrigin);
   url.searchParams.set("token", token(approval));
   return url.toString();
 }
@@ -37,7 +44,7 @@ async function mail(id:string,to:string,subject:string,body:string){
 }
 export async function getArtistBookingMeta(id:string){return read<ArtistBookingMeta>("artist-escape:booking:"+id);}
 export async function listArtistBookingMetadata(){const rows=await getDb().select().from(siteContent).where(like(siteContent.key,"artist-escape:booking:%"));return Object.fromEntries(rows.map(r=>[r.key.slice("artist-escape:booking:".length),r.value as ArtistBookingMeta]));}
-export async function approvalDetails(id:string,origin:string){assertArtistEscapeLocal();const a=await read<ArtistApproval>(approvalKey(id));if(!a)return null;return {...a,link:artistBookingLink(a, origin),email:await read<ArtistMail>("artist-escape:mail:approval:"+id+":"+a.issuedAt)};}
+export async function approvalDetails(id:string,origin:string){assertArtistEscapeAvailable();const a=await read<ArtistApproval>(approvalKey(id));if(!a)return null;return {...a,link:artistBookingLink(a, origin),email:await read<ArtistMail>("artist-escape:mail:approval:"+id+":"+a.issuedAt)};}
 export type ArtistRejection = { remark: string; rejectedAt: string; rejectedBy: string; emailState?: ArtistMail["state"]; emailError?: string };
 const rejectionKey = (id: string) => "artist-escape:rejection:" + id;
 
@@ -56,12 +63,12 @@ export async function listArtistReviewStatuses(): Promise<Record<string, ArtistR
 }
 
 export async function getArtistRejection(id: string) {
-  assertArtistEscapeLocal();
+  assertArtistEscapeAvailable();
   return read<ArtistRejection>(rejectionKey(id));
 }
 
 export async function rejectArtist(id: string, admin: string, remark: string) {
-  assertArtistEscapeLocal();
+  assertArtistEscapeAvailable();
   const [lead] = await getDb().select().from(leads).where(eq(leads.id, id)).limit(1);
   if (!lead || lead.source !== "artist-escape") throw new Error("Artist Escape application not found.");
   if (await read<ArtistApproval>(approvalKey(id))) throw new Error("This application has already been approved.");
@@ -79,7 +86,7 @@ export async function rejectArtist(id: string, admin: string, remark: string) {
 }
 
 export async function approveArtist(id:string,admin:string,origin:string){
- assertArtistEscapeLocal();const [lead]=await getDb().select().from(leads).where(eq(leads.id,id)).limit(1);if(!lead||lead.source!=="artist-escape")throw new Error("Artist Escape application not found.");
+ assertArtistEscapeAvailable();const [lead]=await getDb().select().from(leads).where(eq(leads.id,id)).limit(1);if(!lead||lead.source!=="artist-escape")throw new Error("Artist Escape application not found.");
  if (await getArtistRejection(id)) throw new Error("This application has been rejected.");
  let a=await read<ArtistApproval>(approvalKey(id));if(a?.bookingId){const b=await getBooking(a.bookingId);if(b?.status==="paid")throw new Error("This application already has a confirmed booking.");}
  if(!a||a.expiresAt<=Date.now())a={leadId:id,issuedAt:Date.now(),expiresAt:Date.now()+7*86400000,approvedAt:new Date().toISOString(),approvedBy:admin,...(a?.bookingId?{bookingId:a.bookingId}:{})};
@@ -89,7 +96,7 @@ export async function approveArtist(id:string,admin:string,origin:string){
  a.emailState=delivered.state;a.error=delivered.error;await save(approvalKey(id),a);return approvalDetails(id,origin);
 }
 export async function authorizedArtist(value:string){
- assertArtistEscapeLocal();const match=/^([a-f0-9-]{36})\.([a-f0-9]{64})$/.exec(value);if(!match)throw new Error("This booking link is invalid.");
+ assertArtistEscapeAvailable();const match=/^([a-f0-9-]{36})\.([a-f0-9]{64})$/.exec(value);if(!match)throw new Error("This booking link is invalid.");
  const a=await read<ArtistApproval>(approvalKey(match[1]));if(!a||!timingSafeEqual(Buffer.from(signature(a),"hex"),Buffer.from(match[2],"hex")))throw new Error("This booking link is invalid or has been replaced.");
  const [lead]=await getDb().select().from(leads).where(eq(leads.id,a.leadId)).limit(1);if(!lead||lead.source!=="artist-escape")throw new Error("Application no longer exists.");
  const booking=a.bookingId?await getBooking(a.bookingId):null;
@@ -124,7 +131,7 @@ export async function createArtistReservation(value:string,input:{planId:string;
 }
 export async function artistConfirmation(booking:Booking){
  const meta=await getArtistBookingMeta(booking.id);if(!meta||booking.status!=="paid")return null;
- return mail("confirmed:"+booking.id,booking.guestEmail,"Thank you - your Artist Escape booking is confirmed",`Hello ${booking.guestName},\n\nThank you! Your Artist Escape booking is confirmed.\n\nBooking reference: ${booking.id}\nDorm: ${meta.dormName} - 1 bed\nPlan: ${meta.planName}\nCheck-in: ${booking.checkIn}\nCheck-out: ${booking.checkOut}\nNights: ${meta.nights}\nBase contribution: INR ${meta.baseAmount.toFixed(2)}\nGST (5%): INR ${meta.gstAmount.toFixed(2)}\nTotal paid: INR ${booking.amount.toFixed(2)}\nPayment reference: ${booking.razorpayPaymentId||"Local test payment"}\n\nThree meals daily included. We look forward to welcoming you to Vinyasa Earth.\nFor arrival information, reply to this email.\n\n${booking.razorpayOrderId?.startsWith("order_mock")?"LOCAL TEST - no money was charged.":"Razorpay test mode - no live charge."}`);
+ return mail("confirmed:"+booking.id,booking.guestEmail,"Thank you - your Artist Escape booking is confirmed",`Hello ${booking.guestName},\n\nThank you! Your Artist Escape booking is confirmed.\n\nBooking reference: ${booking.id}\nDorm: ${meta.dormName} - 1 bed\nPlan: ${meta.planName}\nCheck-in: ${booking.checkIn}\nCheck-out: ${booking.checkOut}\nNights: ${meta.nights}\nBase contribution: INR ${meta.baseAmount.toFixed(2)}\nGST (5%): INR ${meta.gstAmount.toFixed(2)}\nTotal paid: INR ${booking.amount.toFixed(2)}\nPayment reference: ${booking.razorpayPaymentId||"Simulated test payment"}\n\nThree meals daily included. We look forward to welcoming you to Vinyasa Earth.\nFor arrival information, reply to this email.\n\n${booking.razorpayOrderId?.startsWith("order_mock")?"TEST BOOKING - no money was charged.":"Razorpay test mode - no live charge."}`);
 }
 export async function getArtistMail(bookingId:string){return read<ArtistMail>("artist-escape:mail:confirmed:"+bookingId);}
 export async function cancelArtistHold(value:string,id:string){const {booking}=await authorizedArtist(value);if(!booking||booking.id!==id||booking.status!=="pending")throw new Error("Active reservation not found.");await updateBookingStatus(id,"failed",{failureReason:"Artist cancelled payment; bed released"});}

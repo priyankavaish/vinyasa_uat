@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { SESSION_COOKIE, readSessionToken } from "@/lib/auth";
 import { approvalDetails, approveArtist, getArtistRejection, rejectArtist } from "@/lib/artist-escape-booking";
-import { withStayBookingLock } from "@/lib/stay-booking-lock";
+import { StayBookingBusyError, withStayBookingLock } from "@/lib/stay-booking-lock";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 type Context = { params: Promise<{ id: string }> };
 const reviewSchema = z.discriminatedUnion("action", [
@@ -46,6 +47,6 @@ export async function POST(req: NextRequest, { params }: Context) {
       return NextResponse.json({ approval, rejection: null });
     });
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Could not save application review." }, { status: 400 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Could not save application review." }, { status: error instanceof StayBookingBusyError ? 503 : 400 });
   }
 }

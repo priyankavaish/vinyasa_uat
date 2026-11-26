@@ -1,3 +1,4 @@
+import { isHostedArtistEscapeUat } from "@/lib/artist-escape-environment";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { razorpayVerifySchema } from "@/lib/schemas";
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest) {
   const { bookingId, razorpay_order_id, razorpay_payment_id, razorpay_signature } = parsed.data;
 
   const booking = await getBooking(bookingId);
-  if (booking && process.env.NODE_ENV === "development") {
+  if (booking && (process.env.NODE_ENV === "development" || isHostedArtistEscapeUat())) {
     const { getArtistBookingMeta } = await import("@/lib/artist-escape-booking");
     if (await getArtistBookingMeta(booking.id)) return NextResponse.json({ error: "Complete payment through the Artist Escape booking link." }, { status: 400 });
   }
