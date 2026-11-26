@@ -109,14 +109,14 @@ export default function ArtistEscapeApplicationForm() {
             </select>
           </label>
           <label className="block text-sm">
-            What would you like to work on or explore at Vinyasa?
-            <textarea name="intent" className={field} rows={3} required maxLength={2000} />
-            <span className="mt-1 block text-xs text-foreground-soft">A line or two is enough. A rough idea is welcome.</span>
-          </label>
-          <label className="block text-sm">
             Portfolio
             <input name="portfolio" type="url" className={field} required maxLength={500} placeholder="https://" />
             <span className="mt-1 block text-xs text-foreground-soft">An Instagram profile, website, showreel, writing sample or Google Drive link is fine.</span>
+          </label>
+          <label className="block text-sm md:col-span-2">
+            What would you like to work on or explore at Vinyasa?
+            <textarea name="intent" className={field} rows={3} required maxLength={2000} />
+            <span className="mt-1 block text-xs text-foreground-soft">A line or two is enough. A rough idea is welcome.</span>
           </label>
           <button type="submit" className="btn btn-accent justify-self-start disabled:opacity-50 md:col-span-2" disabled={!arrival}>Submit application</button>
         </fieldset>

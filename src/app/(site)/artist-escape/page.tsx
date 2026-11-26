@@ -42,6 +42,8 @@ export default async function ArtistEscapePage() {
         description={content.hero_description}
       />
 
+      <ArtistOfferings escapeImage={content.vision_image} />
+
       <AnimateInView delay={0}>
         <section id="apply" className="scroll-mt-24 bg-clay-surface py-14 sm:py-16">
           <div className="mx-auto grid max-w-7xl gap-8 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-12">
@@ -68,8 +70,6 @@ export default async function ArtistEscapePage() {
           </div>
         </section>
       </AnimateInView>
-
-      <ArtistOfferings escapeImage={content.vision_image} />
 
       {/* Vision — with the vertical short as its visual */}
       <AnimateInView delay={60}>
