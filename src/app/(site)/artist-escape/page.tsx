@@ -44,9 +44,9 @@ export default async function ArtistEscapePage() {
 
       <AnimateInView delay={0}>
         <section id="apply" className="scroll-mt-24 bg-clay-surface py-14 sm:py-16">
-          <div className="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+          <div className="mx-auto grid max-w-7xl gap-8 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-12">
             <Reveal variant="left">
-              <SectionEyebrow icon="sparkles-outline">Apply for Artist Escape</SectionEyebrow>
+              <p className="text-[0.8125rem] font-semibold uppercase tracking-[0.18em] text-accent">Apply for Artist Escape</p>
               <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.cta_title} /></h2>
               <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
                 <p>Choose a 1-, 2- or 4-week stay to work on your art at Vinyasa Earth. A shared dorm bed and three meals a day are included.</p>

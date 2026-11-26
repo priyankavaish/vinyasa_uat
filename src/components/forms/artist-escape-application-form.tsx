@@ -80,7 +80,7 @@ export default function ArtistEscapeApplicationForm() {
         <h3 className="font-display italic text-2xl">Artist Escape application</h3>
         {schedule && <p className="text-sm text-foreground-soft">{formatArtistDate(schedule.programme.start)} – {formatArtistDate(schedule.programme.lastNight)} · {schedule.programme.capacity} artists per week · Stay and meals included</p>}
         {closed && <p role="status">There are no available arrivals for this intake.</p>}
-        <fieldset className="space-y-5" disabled={busy || !schedule || !!closed}>
+        <fieldset className="grid min-w-0 grid-cols-1 items-start gap-x-6 gap-y-5 md:grid-cols-2" disabled={busy || !schedule || !!closed}>
           <label className="block text-sm">
             What’s your full name?
             <input name="name" autoComplete="name" className={field} required maxLength={120} />
@@ -94,22 +94,20 @@ export default function ArtistEscapeApplicationForm() {
             What’s your email address?
             <input name="email" type="email" autoComplete="email" className={field} required maxLength={150} />
           </label>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <label className="block text-sm">
-              How long would you like to stay?
-              <select className={field} required value={weeks} onChange={event => { setWeeks(event.target.value ? Number(event.target.value) as ArtistStay["weeks"] : ""); setArrival(""); }}>
-                <option value="">Select stay length</option>
-                {STAY_WEEKS.map(length => <option key={length} value={length}>{length} {length === 1 ? "week" : "weeks"}</option>)}
-              </select>
-            </label>
-            <label className="block text-sm">
-              Which Monday would you like to arrive?
-              <select className={field} required disabled={!arrivals.length} value={arrival} onChange={event => setArrival(event.target.value)}>
-                <option value="">{!weeks ? "Select stay length first" : arrivals.length ? "Select arrival Monday" : "No arrivals for this stay length"}</option>
-                {arrivals.map(date => <option value={date} key={date}>{formatArtistDate(date)}</option>)}
-              </select>
-            </label>
-          </div>
+          <label className="block text-sm">
+            How long would you like to stay?
+            <select className={field} required value={weeks} onChange={event => { setWeeks(event.target.value ? Number(event.target.value) as ArtistStay["weeks"] : ""); setArrival(""); }}>
+              <option value="">Select stay length</option>
+              {STAY_WEEKS.map(length => <option key={length} value={length}>{length} {length === 1 ? "week" : "weeks"}</option>)}
+            </select>
+          </label>
+          <label className="block text-sm">
+            Which Monday would you like to arrive?
+            <select className={field} required disabled={!arrivals.length} value={arrival} onChange={event => setArrival(event.target.value)}>
+              <option value="">{!weeks ? "Select stay length first" : arrivals.length ? "Select arrival Monday" : "No arrivals for this stay length"}</option>
+              {arrivals.map(date => <option value={date} key={date}>{formatArtistDate(date)}</option>)}
+            </select>
+          </label>
           <label className="block text-sm">
             What would you like to work on or explore at Vinyasa?
             <textarea name="intent" className={field} rows={3} required maxLength={2000} />
@@ -120,7 +118,7 @@ export default function ArtistEscapeApplicationForm() {
             <input name="portfolio" type="url" className={field} required maxLength={500} placeholder="https://" />
             <span className="mt-1 block text-xs text-foreground-soft">An Instagram profile, website, showreel, writing sample or Google Drive link is fine.</span>
           </label>
-          <button type="submit" className="btn btn-accent disabled:opacity-50" disabled={!arrival}>Submit application</button>
+          <button type="submit" className="btn btn-accent justify-self-start disabled:opacity-50 md:col-span-2" disabled={!arrival}>Submit application</button>
         </fieldset>
         {!schedule && !error && <p role="status">Loading available weeks...</p>}
         {error && <p role="alert" className="text-sm text-red-700">{error}</p>}

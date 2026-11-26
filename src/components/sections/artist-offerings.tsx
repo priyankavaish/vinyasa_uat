@@ -51,7 +51,15 @@ export default async function ArtistOfferings({ escapeImage }: { escapeImage: st
                   <h3 className={styles.title}>{offering.name}</h3>
                   <p className={styles.description}>{offering.description}</p>
                   <div className={styles.details}><span>{offering.detail}</span><span>{offering.companion}</span></div>
-                  <a href={offering.href} className={`btn btn-accent ${styles.action}`}>{offering.action}<span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span></a>
+                  <div className={styles.actions}>
+                    <a href={offering.href} className={`btn btn-accent ${styles.action}`}>{offering.action}<span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span></a>
+                    {offering.href === "#artist-escape" && (
+                      <a href="#apply" className={"btn btn-outline " + styles.action}>
+                        Start your process now
+                        <span className={styles.arrow} aria-hidden="true"><Icon name="arrow-forward-outline" size={18} /></span>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </article>
             </Reveal>

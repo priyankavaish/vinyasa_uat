@@ -20,10 +20,12 @@
 .details { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--card-accent); font-size: 11px; font-weight: 500; line-height: 1.6; }
 .details > span { display: flex; align-items: center; gap: 7px; }
 .details > span::before { content: ""; width: 4px; height: 4px; background: currentColor; border-radius: 50%; }
-.action:global(.btn) { display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 100%; margin-top: 27px; white-space: normal; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 27px; }
+.action:global(.btn) { display: inline-flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 100%; white-space: normal; }
 .arrow { display: flex; flex-shrink: 0; transition: transform .2s; }
-.action:hover .arrow { transform: translateX(3px); }
+.action:is(:hover, :focus-visible) .arrow { transform: translateX(3px); }
 .action:focus-visible { outline: 2px solid var(--card-accent); outline-offset: 4px; }
+@media (min-width: 1024px) { .card[data-tone="clay"] .actions { flex-wrap: nowrap; } .card[data-tone="clay"] .action:global(.btn) { min-width: 0; gap: 8px; padding-inline: 12px; } }
 @media (min-width: 768px) and (max-width: 1023px) { .body { padding: 28px; } }
 @media (max-width: 767px) {
   .section { padding: 48px 0; }
@@ -37,6 +39,6 @@
   .card[data-tone="olive"] .media, .card[data-tone="olive"] .body { grid-column: auto; grid-row: auto; }
   .body { padding: 28px 24px; }
   .title { font-size: 32px; }
-  .action:global(.btn) { margin-top: 24px; }
+  .actions { margin-top: 24px; }
 }
-@media (prefers-reduced-motion: reduce) { .action, .arrow { transition: none; } .action:hover .arrow { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .action, .arrow { transition: none; } .action:is(:hover, :focus-visible) .arrow { transform: none; } }
