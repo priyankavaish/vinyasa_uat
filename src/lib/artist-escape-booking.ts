@@ -12,10 +12,13 @@ import { gmailAccountConfigured,sendGmail } from "@/lib/gmail-send";
 import { artistEscapeQuote,ARTIST_ESCAPE_PLANS,type ArtistEscapeQuote } from "./artist-escape-plans";
 import { ARTIST_ESCAPE_UAT_ORIGIN, isHostedArtistEscapeUat } from "./artist-escape-environment";
 
-export type ArtistApproval={leadId:string;issuedAt:number;expiresAt:number;approvedAt:string;approvedBy:string;bookingId?:string;emailState?:"preview"|"sent"|"failed";error?:string};
-export type ArtistBookingMeta=ArtistEscapeQuote & {applicationId:string;dormName:string};
+import { addArtistDays, programmeQuote, requestedArtistStay, type ArtistStay } from "./artist-escape-programme";
+import { ARTIST_APPROVAL_PREFIX, getArtistProgramme } from "./artist-escape-programme-store";
+
+export type ArtistApproval={leadId:string;issuedAt:number;expiresAt:number;approvedAt:string;approvedBy:string;stay?: ArtistStay;bookingId?:string;emailState?:"preview"|"sent"|"failed";error?:string};
+export type ArtistBookingMeta=(ArtistEscapeQuote | ReturnType<typeof programmeQuote>) & {applicationId:string;dormName:string;dueOnArrival?:number};
 export type ArtistMail={id:string;to:string;subject:string;body:string;state:"preview"|"sent"|"failed";error?:string;updatedAt:string};
-const approvalKey=(id:string)=>"artist-escape:approval:"+id;
+const approvalKey=(id:string)=>ARTIST_APPROVAL_PREFIX+id;
 function assertArtistEscapeAvailable() {
   if (process.env.NODE_ENV === "development" && isLocalDb()) return;
   if (isHostedArtistEscapeUat() && hasDb() && !isLocalDb()) return;
@@ -89,10 +92,26 @@ export async function approveArtist(id:string,admin:string,origin:string){
  assertArtistEscapeAvailable();const [lead]=await getDb().select().from(leads).where(eq(leads.id,id)).limit(1);if(!lead||lead.source!=="artist-escape")throw new Error("Artist Escape application not found.");
  if (await getArtistRejection(id)) throw new Error("This application has been rejected.");
  let a=await read<ArtistApproval>(approvalKey(id));if(a?.bookingId){const b=await getBooking(a.bookingId);if(b?.status==="paid")throw new Error("This application already has a confirmed booking.");}
- if(!a||a.expiresAt<=Date.now())a={leadId:id,issuedAt:Date.now(),expiresAt:Date.now()+7*86400000,approvedAt:new Date().toISOString(),approvedBy:admin,...(a?.bookingId?{bookingId:a.bookingId}:{})};
+ const stay = a?.stay ?? requestedArtistStay(lead.message);
+ if (!a || a.expiresAt <= Date.now()) {
+   if (!stay && isHostedArtistEscapeUat()) throw new Error("This application predates the programme schedule. Ask the artist to submit their preferred arrival and stay length.");
+   if (stay) {
+     const { arrivals } = await getArtistProgramme(id);
+     if (!arrivals[stay.weeks].includes(stay.arrival)) throw new Error("The requested stay falls outside the programme or includes a full week.");
+     const left = await unitsLeft([{ slug: "dorm" }], stay.arrival, addArtistDays(stay.arrival, stay.weeks * 7), id);
+     if (!left.dorm) throw new Error("No dorm bed is available for the full requested stay.");
+   }
+   const issuedAt = Date.now();
+   const arrivalTime = stay ? Date.parse(stay.arrival + "T00:00:00+05:30") : Infinity;
+   a = { leadId: id, issuedAt, expiresAt: Math.min(issuedAt + 7 * 86400000, arrivalTime), approvedAt: new Date(issuedAt).toISOString(), approvedBy: admin, ...(stay ? { stay } : {}), ...(a?.bookingId ? { bookingId: a.bookingId } : {}) };
+ }
  await save(approvalKey(id),a);
  const link=artistBookingLink(a, origin);
- const delivered=await mail("approval:"+id+":"+a.issuedAt,lead.email,"Your Artist Escape application is approved",`Hello ${lead.name},\n\nYour Artist Escape application has been approved!\nChoose your dorm, available dates and stay plan, then complete payment here:\n${link}\n\nOne approved artist / one dorm bed. INR 900/night for 1-14 nights or INR 750/night for 15+ nights, plus 5% GST. Three meals daily included.\nLink expires ${new Date(a.expiresAt).toLocaleString("en-IN",{timeZone:"Asia/Kolkata"})} IST. Approval does not reserve a bed.\n\nVinyasa Earth`);
+ const price = stay ? programmeQuote(stay) : null;
+ const details = stay && price
+   ? "Your dorm stay is held from " + stay.arrival + " to " + addArtistDays(stay.arrival, stay.weeks * 7) + " (checkout). Pay INR " + price.deposit.totalAmount.toFixed(2) + " online to confirm. The remaining INR " + price.dueOnArrival.toFixed(2) + " is due on arrival."
+   : "Choose your dorm, available dates and stay plan, then complete payment. Approval does not reserve a bed.";
+ const delivered=await mail("approval:"+id+":"+a.issuedAt,lead.email,"Your Artist Escape application is approved",`Hello ${lead.name},\n\nYour Artist Escape application has been approved!\n${details}\n\n${link}\n\nThree meals daily included.\nLink expires ${new Date(a.expiresAt).toLocaleString("en-IN",{timeZone:"Asia/Kolkata"})} IST.\n\nVinyasa Earth`);
  a.emailState=delivered.state;a.error=delivered.error;await save(approvalKey(id),a);return approvalDetails(id,origin);
 }
 export async function authorizedArtist(value:string){
@@ -100,38 +119,46 @@ export async function authorizedArtist(value:string){
  const a=await read<ArtistApproval>(approvalKey(match[1]));if(!a||!timingSafeEqual(Buffer.from(signature(a),"hex"),Buffer.from(match[2],"hex")))throw new Error("This booking link is invalid or has been replaced.");
  const [lead]=await getDb().select().from(leads).where(eq(leads.id,a.leadId)).limit(1);if(!lead||lead.source!=="artist-escape")throw new Error("Application no longer exists.");
  const booking=a.bookingId?await getBooking(a.bookingId):null;
- if(a.expiresAt<=Date.now()&&booking?.status!=="paid")throw new Error("This booking link has expired. Ask our team to resend approval.");
+ const activePayment = booking?.status === "pending" && Date.parse(booking.createdAt) + BOOKING_HOLD_MINUTES * 60_000 > Date.now();
+ if(a.expiresAt<=Date.now()&&booking?.status!=="paid"&&!activePayment)throw new Error("This booking link has expired. Ask our team to resend approval.");
  return {approval:a,lead,booking};
 }
 export async function artistBookingView(value:string){
  const {approval,lead,booking}=await authorizedArtist(value);const dorms=(await getCottages()).filter(c=>c.slug==="dorm");
  const today=new Date(Date.now()+19800000).toISOString().slice(0,10);const end=new Date(Date.parse(today)+366*86400000).toISOString().slice(0,10);
- const availability=await nightlyAvailability(dorms.map(d=>d.slug),today,end);
+ const availability=approval.stay ? {} : await nightlyAvailability(dorms.map(d=>d.slug),today,end);
  // Refresh after stale-hold expiry has run in nightlyAvailability.
- const current=booking?await getBooking(booking.id):null;
- return {name:lead.name,email:lead.email,phone:lead.phone||"",expiresAt:approval.expiresAt,dorms:dorms.map(d=>({slug:d.slug,name:d.name})),plans:ARTIST_ESCAPE_PLANS,availability,today,booking:current,quote:current?await getArtistBookingMeta(current.id):null,paymentKey:process.env.RAZORPAY_KEY_ID?.startsWith("rzp_test_")?process.env.RAZORPAY_KEY_ID:null};
+ const current=booking && (booking.status !== "pending" || Date.parse(booking.createdAt)+BOOKING_HOLD_MINUTES*60000>Date.now()) ? await getBooking(booking.id) : null;
+ return {programmeStay: approval.stay ? { ...approval.stay, checkout: addArtistDays(approval.stay.arrival, approval.stay.weeks * 7), price: programmeQuote(approval.stay) } : null,name:lead.name,email:lead.email,phone:lead.phone||"",expiresAt:approval.expiresAt,dorms:dorms.map(d=>({slug:d.slug,name:d.name})),plans:ARTIST_ESCAPE_PLANS,availability,today,booking:current,quote:current?await getArtistBookingMeta(current.id):null,paymentKey:process.env.RAZORPAY_KEY_ID?.startsWith("rzp_test_")?process.env.RAZORPAY_KEY_ID:null};
 }
 export async function createArtistReservation(value:string,input:{planId:string;checkIn:string;checkOut:string;dormSlug:string;accepted:boolean}){
  const {approval,lead,booking}=await authorizedArtist(value);if(!input.accepted)throw new Error("Accept the community guidelines and booking terms before payment.");if(booking?.status==="paid")throw new Error("Your Artist Escape stay is already confirmed.");
- const quote=artistEscapeQuote(input.planId,input.checkIn,input.checkOut);
+ const fixed = approval.stay;
+ if (approval.expiresAt <= Date.now() && booking?.status !== "pending") throw new Error("This booking link has expired.");
+ if (fixed) {
+   input = { ...input, checkIn: fixed.arrival, checkOut: addArtistDays(fixed.arrival, fixed.weeks * 7), dormSlug: "dorm", planId: "programme" };
+ }
+ const programmePrice = fixed ? programmeQuote(fixed) : null;
+ const quote = programmePrice ?? artistEscapeQuote(input.planId,input.checkIn,input.checkOut);
+ const payNow = programmePrice?.deposit ?? quote;
  if(booking?.status==="pending"&&Date.parse(booking.createdAt)+BOOKING_HOLD_MINUTES*60000>Date.now()){
   const meta=await getArtistBookingMeta(booking.id);if(booking.checkIn!==input.checkIn||booking.checkOut!==input.checkOut||meta?.planId!==input.planId)throw new Error("You already have a bed hold. Cancel it before changing dates or plan.");if(!booking.razorpayOrderId)throw new Error("Payment setup is pending. Cancel this hold and try again.");
   return {booking,pricing:meta,order:{id:booking.razorpayOrderId,amount:Math.round(booking.amount*100),currency:"INR",mock:booking.razorpayOrderId.startsWith("order_mock")}};
  }
  const dorm=(await getCottages()).find(c=>c.slug==="dorm"&&c.slug===input.dormSlug);if(!dorm)throw new Error("Please choose the Artist Escape dorm.");
- const left=(await unitsLeft([dorm],input.checkIn,input.checkOut))[dorm.slug];if(left===null||left===undefined)throw new Error("Set the dorm bed capacity in Admin > Stays before accepting bookings.");if(left<1)throw new Error("These dates are no longer available. Please choose other dates.");
- await ensureBookingCurrencyPrecision();let b=await createBooking({type:"stay",itemSlug:dorm.slug,checkIn:input.checkIn,checkOut:input.checkOut,guests:1,rooms:1,guestName:lead.name,guestEmail:lead.email,guestPhone:lead.phone||"",amount:quote.totalAmount,termsAcceptedAt:new Date(),termsVersion:"artist-escape-2026-11-v1"});
- const meta:ArtistBookingMeta={...quote,applicationId:lead.id,dormName:dorm.name};
+ const left=(await unitsLeft([dorm],input.checkIn,input.checkOut,fixed ? lead.id : undefined))[dorm.slug];if(left===null||left===undefined)throw new Error("Set the dorm bed capacity in Admin > Stays before accepting bookings.");if(left<1)throw new Error("These dates are no longer available. Please choose other dates.");
+ await ensureBookingCurrencyPrecision();let b=await createBooking({type:"stay",itemSlug:dorm.slug,checkIn:input.checkIn,checkOut:input.checkOut,guests:1,rooms:1,guestName:lead.name,guestEmail:lead.email,guestPhone:lead.phone||"",amount:payNow.totalAmount,termsAcceptedAt:new Date(),termsVersion:fixed?"artist-escape-programme-v1":"artist-escape-2026-11-v1"});
+ const meta:ArtistBookingMeta={...quote,applicationId:lead.id,dormName:dorm.name,...(programmePrice ? { dueOnArrival: programmePrice.dueOnArrival } : {})};
  try{
   await save("artist-escape:booking:"+b.id,meta);approval.bookingId=b.id;await save(approvalKey(lead.id),approval);
   const realTest=process.env.RAZORPAY_KEY_ID?.startsWith("rzp_test_")&&process.env.RAZORPAY_KEY_SECRET;
-  const order=realTest?await createOrder(quote.totalPaise,"artist-"+b.id.slice(0,30)):{id:"order_mock_artist_"+randomBytes(12).toString("hex"),amount:quote.totalPaise,currency:"INR",mock:true};
+  const order=realTest?await createOrder(payNow.totalPaise,"artist-"+b.id.slice(0,30)):{id:"order_mock_artist_"+randomBytes(12).toString("hex"),amount:payNow.totalPaise,currency:"INR",mock:true};
   b=(await updateBookingStatus(b.id,"pending",{razorpayOrderId:order.id}))!;return {booking:b,pricing:meta,order};
  }catch(e){await updateBookingStatus(b.id,"failed",{failureReason:"Payment setup failed; bed released"});throw e;}
 }
 export async function artistConfirmation(booking:Booking){
  const meta=await getArtistBookingMeta(booking.id);if(!meta||booking.status!=="paid")return null;
- return mail("confirmed:"+booking.id,booking.guestEmail,"Thank you - your Artist Escape booking is confirmed",`Hello ${booking.guestName},\n\nThank you! Your Artist Escape booking is confirmed.\n\nBooking reference: ${booking.id}\nDorm: ${meta.dormName} - 1 bed\nPlan: ${meta.planName}\nCheck-in: ${booking.checkIn}\nCheck-out: ${booking.checkOut}\nNights: ${meta.nights}\nBase contribution: INR ${meta.baseAmount.toFixed(2)}\nGST (5%): INR ${meta.gstAmount.toFixed(2)}\nTotal paid: INR ${booking.amount.toFixed(2)}\nPayment reference: ${booking.razorpayPaymentId||"Simulated test payment"}\n\nThree meals daily included. We look forward to welcoming you to Vinyasa Earth.\nFor arrival information, reply to this email.\n\n${booking.razorpayOrderId?.startsWith("order_mock")?"TEST BOOKING - no money was charged.":"Razorpay test mode - no live charge."}`);
+ return mail("confirmed:"+booking.id,booking.guestEmail,"Thank you - your Artist Escape booking is confirmed",`Hello ${booking.guestName},\n\nThank you! Your Artist Escape booking is confirmed.\n\nBooking reference: ${booking.id}\nDorm: ${meta.dormName} - 1 bed\nPlan: ${meta.planName}\nCheck-in: ${booking.checkIn}\nCheck-out: ${booking.checkOut}\nNights: ${meta.nights}\nBase contribution: INR ${meta.baseAmount.toFixed(2)}\nGST (5%): INR ${meta.gstAmount.toFixed(2)}\nPaid online: INR ${booking.amount.toFixed(2)}${meta.dueOnArrival === undefined ? "" : "\nBalance due on arrival: INR " + meta.dueOnArrival.toFixed(2)}\nPayment reference: ${booking.razorpayPaymentId||"Simulated test payment"}\n\nThree meals daily included. We look forward to welcoming you to Vinyasa Earth.\nFor arrival information, reply to this email.\n\n${booking.razorpayOrderId?.startsWith("order_mock")?"TEST BOOKING - no money was charged.":"Razorpay test mode - no live charge."}`);
 }
 export async function getArtistMail(bookingId:string){return read<ArtistMail>("artist-escape:mail:confirmed:"+bookingId);}
 export async function cancelArtistHold(value:string,id:string){const {booking}=await authorizedArtist(value);if(!booking||booking.id!==id||booking.status!=="pending")throw new Error("Active reservation not found.");await updateBookingStatus(id,"failed",{failureReason:"Artist cancelled payment; bed released"});}
@@ -143,5 +170,18 @@ export async function verifyArtistPayment(value:string,input:{bookingId:string;o
   const {verifySignature,fetchRazorpayPayment}=await import("@/lib/razorpay");const {capturedPaymentSchema}=await import("@/lib/razorpay-events");if(!verifySignature(input.orderId,input.paymentId,input.signature))throw new Error("Payment signature could not be verified.");
   const p=capturedPaymentSchema.parse(await fetchRazorpayPayment(input.paymentId));if(p.order_id!==input.orderId||p.amount!==Math.round(booking.amount*100))throw new Error("Captured payment does not match the booking.");
  }
- const paid=await updateBookingStatus(booking.id,"paid",{razorpayPaymentId:input.paymentId});if(!paid)throw new Error("Booking not found.");await artistConfirmation(paid);return paid;
+ return confirmArtistBookingPayment(booking, input.paymentId);
+}
+
+export async function confirmArtistBookingPayment(booking: Booking, paymentId: string) {
+  if (booking.razorpayPaymentId && booking.razorpayPaymentId !== paymentId) {
+    throw new Error("Another payment already confirmed this booking.");
+  }
+  if (booking.status !== "paid" && (booking.status !== "pending" || Date.parse(booking.createdAt) + BOOKING_HOLD_MINUTES * 60_000 <= Date.now())) {
+    throw new Error("The payment hold expired. Contact the team if payment was deducted.");
+  }
+  const paid = booking.status === "paid" ? booking : await updateBookingStatus(booking.id, "paid", { razorpayPaymentId: paymentId });
+  if (!paid) throw new Error("Booking not found.");
+  await artistConfirmation(paid);
+  return paid;
 }

@@ -1,163 +1,130 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import SuccessDialog from "./success-dialog";
+import { useEffect, useState, type FormEvent } from "react";
+import { artistApplicationSchema, formatArtistDate, STAY_WEEKS, type ArtistProgramme, type ArtistStay } from "@/lib/artist-escape-programme";
 import FormLoader from "./form-loader";
+import SuccessDialog from "./success-dialog";
 
-const COUNTRIES = [
-  "India", "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
-  "Italy", "Spain", "Netherlands", "Switzerland", "Israel", "South Africa", "Brazil",
-  "Argentina", "Mexico", "Japan", "Singapore", "United Arab Emirates", "Other",
-];
-
-const applicationSchema = z.object({
-  firstName: z.string().trim().min(1, "Required").max(60),
-  lastName: z.string().trim().min(1, "Required").max(60),
-  email: z.string().trim().email().max(150),
-  phone: z
-    .string()
-    .trim()
-    .min(7, "Required")
-    .max(20)
-    .regex(/^[0-9+\-\s()]+$/, "Enter a valid phone number"),
-  country: z.string().min(1, "Please select a country"),
-  portfolio: z.string().trim().min(1, "Required").max(300),
-  intent: z.string().trim().max(2000).optional().or(z.literal("")),
-  lookForward: z.string().trim().max(2000).optional().or(z.literal("")),
-});
-
-type ApplicationValues = z.infer<typeof applicationSchema>;
-
-type Status = "idle" | "submitting" | "success" | "error";
-
-const field = "mt-1 w-full border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent";
-const label = "block text-xs tracking-[0.08em] uppercase text-foreground-soft";
+type Schedule = { programme: ArtistProgramme; arrivals: Record<ArtistStay["weeks"], string[]> };
+const field = "mt-2 w-full border border-line bg-background px-4 py-2.5 text-sm";
 
 export default function ArtistEscapeApplicationForm() {
-  const [status, setStatus] = useState<Status>("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [schedule, setSchedule] = useState<Schedule | null>(null);
+  const [weeks, setWeeks] = useState<ArtistStay["weeks"] | "">("");
+  const [arrival, setArrival] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const arrivals = weeks ? schedule?.arrivals[weeks] ?? [] : [];
+  const closed = schedule && !Object.values(schedule.arrivals).some(dates => dates.length);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ApplicationValues>({
-    resolver: zodResolver(applicationSchema),
-    defaultValues: {
-      firstName: "", lastName: "", email: "", phone: "", country: "", portfolio: "", intent: "", lookForward: "",
-    },
-  });
+  useEffect(() => {
+    const controller = new AbortController();
+    async function load() {
+      try {
+        const response = await fetch("/api/artist-escape/application", { cache: "no-store", signal: controller.signal });
+        if (!response.ok) throw new Error("Could not load availability. Please refresh and try again.");
+        const data = await response.json();
+        if (!controller.signal.aborted) setSchedule(data);
+      } catch (error) {
+        if (!controller.signal.aborted) setError(error instanceof Error ? error.message : "Could not load availability.");
+      }
+    }
+    void load();
+    return () => controller.abort();
+  }, []);
 
-  async function onSubmit(values: ApplicationValues) {
-    setStatus("submitting");
-    setErrorMessage(null);
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setError("");
+    const result = artistApplicationSchema.safeParse({ ...Object.fromEntries(new FormData(form)), weeks, arrival });
+    if (!result.success) {
+      setError(result.error.issues[0].message);
+      return;
+    }
+    setBusy(true);
     try {
-      const message = [
-        `Country: ${values.country}`,
-        `Portfolio: ${values.portfolio}`,
-        values.intent ? `\nIntent of application:\n${values.intent}` : "",
-        values.lookForward ? `\nWhat they look forward to at Vinyasa:\n${values.lookForward}` : "",
-      ].filter(Boolean).join("\n");
-
-      const res = await fetch("/api/leads", {
+      const response = await fetch("/api/artist-escape/application", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          source: "artist-escape",
-          name: `${values.firstName} ${values.lastName}`,
-          email: values.email,
-          phone: values.phone,
-          message,
-        }),
+        body: JSON.stringify(result.data),
       });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.error ?? "Something went wrong. Please try again.");
+      const data = await response.json();
+      if (!response.ok) {
+        if (data.arrivals && schedule) {
+          setSchedule({ ...schedule, arrivals: data.arrivals });
+          setArrival("");
+        }
+        throw new Error(data.error || "Could not submit your application.");
       }
-      setStatus("success");
-      reset();
-    } catch (err) {
-      setStatus("error");
-      setErrorMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      form.reset();
+      setWeeks("");
+      setArrival("");
+      setSuccess(true);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Could not submit your application.");
+    } finally {
+      setBusy(false);
     }
   }
 
   return (
     <>
-    <SuccessDialog open={status === "success"} onClose={() => setStatus("idle")}>
-      <p className="font-display italic text-2xl">We have received your application.</p>
-      <p className="mt-2 text-sm text-foreground-soft">Our team will review your application and get back to you soon.</p>
-    </SuccessDialog>
-    <FormLoader active={status === "submitting"} />
-    <form onSubmit={handleSubmit(onSubmit)} className="border border-line bg-surface p-6 sm:p-9" noValidate>
-      <h3 className="font-display italic text-2xl">Artist Escape Application</h3>
-
-      <div className="mt-6 grid gap-5 sm:grid-cols-2">
-        <div>
-          <label className={label} htmlFor="ae-first-name">First Name *</label>
-          <input id="ae-first-name" className={field} {...register("firstName")} />
-          {errors.firstName && <p className="mt-1 text-xs text-red-700">{errors.firstName.message}</p>}
-        </div>
-        <div>
-          <label className={label} htmlFor="ae-last-name">Last Name *</label>
-          <input id="ae-last-name" className={field} {...register("lastName")} />
-          {errors.lastName && <p className="mt-1 text-xs text-red-700">{errors.lastName.message}</p>}
-        </div>
-
-        <div>
-          <label className={label} htmlFor="ae-email">Email *</label>
-          <input id="ae-email" type="email" className={field} {...register("email")} />
-          {errors.email && <p className="mt-1 text-xs text-red-700">{errors.email.message}</p>}
-        </div>
-        <div>
-          <label className={label} htmlFor="ae-phone">Phone Number *</label>
-          <input id="ae-phone" className={field} {...register("phone")} />
-          {errors.phone && <p className="mt-1 text-xs text-red-700">{errors.phone.message}</p>}
-        </div>
-
-        <div>
-          <label className={label} htmlFor="ae-country">Country *</label>
-          <select id="ae-country" className={field} defaultValue="" {...register("country")}>
-            <option value="" disabled>— Select a country —</option>
-            {COUNTRIES.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-          {errors.country && <p className="mt-1 text-xs text-red-700">{errors.country.message}</p>}
-        </div>
-        <div>
-          <label className={label} htmlFor="ae-portfolio">Portfolio *</label>
-          <input id="ae-portfolio" className={field} placeholder="Google Drive / Behance / Instagram" {...register("portfolio")} />
-          {errors.portfolio && <p className="mt-1 text-xs text-red-700">{errors.portfolio.message}</p>}
-        </div>
-      </div>
-
-      <div className="mt-5">
-        <label className={label} htmlFor="ae-intent">Intent of application</label>
-        <textarea id="ae-intent" rows={4} maxLength={2000} className={field} {...register("intent")} />
-      </div>
-
-      <div className="mt-5">
-        <label className={label} htmlFor="ae-look-forward">What do you look forward to do at your stay at Vinyasa?</label>
-        <textarea id="ae-look-forward" rows={4} maxLength={2000} className={field} {...register("lookForward")} />
-      </div>
-
-      {status === "error" && errorMessage && (
-        <p role="alert" className="mt-4 text-sm text-red-700">{errorMessage}</p>
-      )}
-
-      <button
-        type="submit"
-        disabled={status === "submitting"}
-        className="btn btn-accent mt-6 w-full transition-opacity disabled:opacity-60"
-      >
-        {status === "submitting" ? "Submitting…" : "Submit"}
-      </button>
-    </form>
+      <SuccessDialog open={success} onClose={() => setSuccess(false)}>
+        <p className="font-display italic text-2xl">We have received your application.</p>
+        <p className="mt-2 text-sm text-foreground-soft">Our team will review your application and get back to you soon.</p>
+      </SuccessDialog>
+      <FormLoader active={busy} label="Submitting application..." />
+      <form onSubmit={submit} className="space-y-5 border border-line bg-surface p-6 sm:p-9">
+        <h3 className="font-display italic text-2xl">Artist Escape application</h3>
+        {schedule && <p className="text-sm text-foreground-soft">{formatArtistDate(schedule.programme.start)} – {formatArtistDate(schedule.programme.lastNight)} · {schedule.programme.capacity} artists per week · Stay and meals included</p>}
+        {closed && <p role="status">There are no available arrivals for this intake.</p>}
+        <fieldset className="space-y-5" disabled={busy || !schedule || !!closed}>
+          <label className="block text-sm">
+            What’s your full name?
+            <input name="name" autoComplete="name" className={field} required maxLength={120} />
+          </label>
+          <label className="block text-sm">
+            What’s your WhatsApp number?
+            <input name="phone" type="tel" autoComplete="tel" placeholder="+91 98765 43210" className={field} required maxLength={25} />
+            <span className="mt-1 block text-xs text-foreground-soft">Include your country code.</span>
+          </label>
+          <label className="block text-sm">
+            What’s your email address?
+            <input name="email" type="email" autoComplete="email" className={field} required maxLength={150} />
+          </label>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="block text-sm">
+              How long would you like to stay?
+              <select className={field} required value={weeks} onChange={event => { setWeeks(event.target.value ? Number(event.target.value) as ArtistStay["weeks"] : ""); setArrival(""); }}>
+                <option value="">Select stay length</option>
+                {STAY_WEEKS.map(length => <option key={length} value={length}>{length} {length === 1 ? "week" : "weeks"}</option>)}
+              </select>
+            </label>
+            <label className="block text-sm">
+              Which Monday would you like to arrive?
+              <select className={field} required disabled={!arrivals.length} value={arrival} onChange={event => setArrival(event.target.value)}>
+                <option value="">{!weeks ? "Select stay length first" : arrivals.length ? "Select arrival Monday" : "No arrivals for this stay length"}</option>
+                {arrivals.map(date => <option value={date} key={date}>{formatArtistDate(date)}</option>)}
+              </select>
+            </label>
+          </div>
+          <label className="block text-sm">
+            What would you like to work on or explore at Vinyasa?
+            <textarea name="intent" className={field} rows={3} required maxLength={2000} />
+            <span className="mt-1 block text-xs text-foreground-soft">A line or two is enough. A rough idea is welcome.</span>
+          </label>
+          <label className="block text-sm">
+            Portfolio
+            <input name="portfolio" type="url" className={field} required maxLength={500} placeholder="https://" />
+            <span className="mt-1 block text-xs text-foreground-soft">An Instagram profile, website, showreel, writing sample or Google Drive link is fine.</span>
+          </label>
+          <button type="submit" className="btn btn-accent disabled:opacity-50" disabled={!arrival}>Submit application</button>
+        </fieldset>
+        {!schedule && !error && <p role="status">Loading available weeks...</p>}
+        {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
+      </form>
     </>
   );
 }

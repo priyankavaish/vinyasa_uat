@@ -42,6 +42,33 @@ export default async function ArtistEscapePage() {
         description={content.hero_description}
       />
 
+      <AnimateInView delay={0}>
+        <section id="apply" className="scroll-mt-24 bg-clay-surface py-14 sm:py-16">
+          <div className="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+            <Reveal variant="left">
+              <SectionEyebrow icon="sparkles-outline">Apply for Artist Escape</SectionEyebrow>
+              <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.cta_title} /></h2>
+              <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
+                <p>Choose a 1-, 2- or 4-week stay to work on your art at Vinyasa Earth. A shared dorm bed and three meals a day are included.</p>
+              </div>
+              <div className="mt-6 space-y-2 text-sm">
+                <a href={gmailCompose(`mailto:${content.cta_email}`)} target="_blank" rel="noopener noreferrer" className="flex w-fit items-center gap-2 text-accent hover:underline">
+                  <FormattedText value={content.cta_email} links={false} />
+                </a>
+                <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
+                  <FormattedText value={content.cta_phone} links={false} />
+                </a>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80"><FormattedText value={content.cta_location} /></p>
+              </div>
+            </Reveal>
+
+            <Reveal variant="right" delay={100}>
+              <ArtistEscapeApplicationForm />
+            </Reveal>
+          </div>
+        </section>
+      </AnimateInView>
+
       <ArtistOfferings escapeImage={content.vision_image} />
 
       {/* Vision — with the vertical short as its visual */}
@@ -162,18 +189,8 @@ export default async function ArtistEscapePage() {
                 <h3 className="font-display italic text-2xl"><FormattedText value={content.pricing_title} /></h3>
               </div>
               <div className="p-4 sm:p-5">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {content.pricing_tiers.map((tier, i) => (
-                    <div
-                      key={tier.label}
-                      className={`rounded-tl-xl rounded-br-xl border p-3 ${i === 0 ? "border-accent/30 bg-accent/5" : "border-line"}`}
-                    >
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent"><FormattedText value={tier.label} /></p>
-                      <p className="mt-2 font-display italic text-3xl"><FormattedText value={tier.price} /></p>
-                    </div>
-                  ))}
-                </div>
-                <p className="mt-3 text-sm text-foreground-soft"><FormattedText value={content.pricing_note} /></p>
+                <p className="font-display italic text-3xl">₹900 / day</p>
+                <p className="mt-3 text-sm text-foreground-soft">Stay and three meals daily included. GST applies. Pay for one day online to confirm and settle the balance on arrival.</p>
               </div>
             </Reveal>
           </div>
@@ -224,36 +241,6 @@ export default async function ArtistEscapePage() {
       </AnimateInView>
 
       <SectionWave from="#f3f1ea" to="#f3e6d8" variant="hill" className="h-8 sm:h-12" />
-
-      {/* Apply — intro + application form */}
-      <AnimateInView delay={80}>
-        <section id="apply" className="scroll-mt-24 bg-clay-surface py-14 sm:py-16">
-          <div className="mx-auto grid max-w-5xl gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-            <Reveal variant="left">
-              <SectionEyebrow icon="sparkles-outline">Apply for Artist Escape</SectionEyebrow>
-              <h2 className="mt-3 font-display italic text-4xl leading-tight"><FormattedText value={content.cta_title} /></h2>
-              <div className="mt-5 space-y-4 text-sm leading-relaxed text-foreground-soft">
-                {content.cta_paragraphs.map((p, i) => (
-                  <p key={i}><FormattedText value={p} /></p>
-                ))}
-              </div>
-              <div className="mt-6 space-y-2 text-sm">
-                <a href={gmailCompose(`mailto:${content.cta_email}`)} target="_blank" rel="noopener noreferrer" className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  <FormattedText value={content.cta_email} links={false} />
-                </a>
-                <a href={`tel:${content.cta_phone}`} className="flex w-fit items-center gap-2 text-accent hover:underline">
-                  <FormattedText value={content.cta_phone} links={false} />
-                </a>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground-soft/80"><FormattedText value={content.cta_location} /></p>
-              </div>
-            </Reveal>
-
-            <Reveal variant="right" delay={100}>
-              <ArtistEscapeApplicationForm />
-            </Reveal>
-          </div>
-        </section>
-      </AnimateInView>
 
       <style>{`:root { --wave-lead: #f3e6d8; }`}</style>
     </div>

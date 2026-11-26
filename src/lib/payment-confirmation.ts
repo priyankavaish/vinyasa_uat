@@ -5,7 +5,9 @@ import { eq } from "drizzle-orm";
 import { after } from "next/server";
 import { getDb } from "@/lib/db";
 import { siteContent } from "@/lib/db/schema";
-import { getBookingByOrderId, getBookingByPaymentId, updateBookingStatus } from "@/lib/store";
+import { getBooking, getBookingByOrderId, getBookingByPaymentId, updateBookingStatus } from "@/lib/store";
+import { confirmArtistBookingPayment } from "@/lib/artist-escape-booking";
+import { withStayBookingLock } from "@/lib/stay-booking-lock";
 import { notifyEntry } from "@/lib/email-notifications";
 import { capturedPaymentSchema, type CapturedPayment } from "@/lib/razorpay-events";
 import type { PaymentReceipt } from "@/lib/payment-email-content";
@@ -21,6 +23,13 @@ export async function confirmCapturedPayment(input: CapturedPayment, context?: {
   }
   if (booking) {
     if (Math.round(booking.amount * 100) !== payment.amount) throw new Error("Payment amount does not match the booking.");
+    if (booking.termsVersion === "artist-escape-programme-v1") {
+      return withStayBookingLock(async () => {
+        const current = await getBooking(booking.id);
+        if (!current) throw new Error("Booking no longer exists.");
+        return confirmArtistBookingPayment(current, payment.id);
+      });
+    }
     if (booking.razorpayPaymentId && booking.razorpayPaymentId !== payment.id) throw new Error("Another payment already confirmed this booking.");
     const paid = booking.status === "paid" ? booking : await updateBookingStatus(booking.id,"paid",{razorpayPaymentId:payment.id});
     if (!paid) throw new Error("Booking no longer exists.");

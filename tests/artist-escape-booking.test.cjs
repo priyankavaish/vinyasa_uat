@@ -131,5 +131,51 @@ test('integrated Artist Escape approval, plan, GST, inventory, payment and admin
   const rows=await db.select().from(siteContent).where(eq(siteContent.key,'stay-booking:write-lock'));
   assert.equal(rows.length,0);
  });
+ await t.test('programme form, multi-week hold and one-day payment use approved dates and weekly capacity',async()=>{
+  process.env.ARTIST_ESCAPE_EMAIL_MODE='preview';
+  process.env.RAZORPAY_KEY_ID='';
+  process.env.RAZORPAY_KEY_SECRET='';
+  const {saveArtistProgramme,getArtistProgramme}=require('../src/lib/artist-escape-programme-store');
+  const {addArtistDays}=require('../src/lib/artist-escape-programme');
+  const application=require('../src/app/api/artist-escape/application/route');
+  const future=date(210);
+  const start=addArtistDays(future,(8-new Date(future).getUTCDay())%7);
+  const second=addArtistDays(start,7);
+  await saveArtistProgramme({start,lastNight:addArtistDays(start,34),capacity:1});
+  const available=await (await application.GET()).json();
+  assert.deepEqual(available.arrivals[4],[start,second]);
+  const applicant={
+   name:'Programme Artist',email:'programme@example.test',phone:'+91 99999 99999',
+   intent:'Develop a series of prints.',portfolio:'https://example.test/prints',weeks:2,arrival:start
+  };
+  const apply=(body)=>application.POST(new NextRequest('http://localhost:3000/api/artist-escape/application',{method:'POST',body:JSON.stringify(body)}));
+  assert.equal((await apply({...applicant,arrival:addArtistDays(start,1)})).status,409);
+  assert.equal((await apply(applicant)).status,201);
+  const {listLeads}=require('../src/lib/store');
+  const lead=(await listLeads()).find(item=>item.email===applicant.email);
+  const response=await approve(lead);
+  assert.equal(response.status,200);
+  const {approval}=await response.json();
+  assert.match(approval.email.body,/945\.00/);
+  assert.equal((await getArtistProgramme()).weeks[1].held,1);
+  assert.equal((await unitsLeft([{slug:'dorm'}],second,addArtistDays(second,1))).dorm,0);
+  assert.equal((await apply({...applicant,email:'other-programme@example.test'})).status,409);
+  await assert.rejects(saveArtistProgramme({start:second,lastNight:addArtistDays(start,34),capacity:1}),/held or confirmed/);
+  const token=new URL(approval.link).searchParams.get('token');
+  const checkout=await publicPost({action:'reserve',token,planId:'short',dormSlug:'dorm',checkIn:date(1),checkOut:date(2),accepted:true});
+  assert.equal(checkout.status,200);
+  const {booking,order,pricing}=await checkout.json();
+  assert.equal(booking.checkIn,start);
+  assert.equal(booking.checkOut,addArtistDays(start,14));
+  assert.equal(booking.amount,945);
+  assert.equal(order.amount,94500);
+  assert.equal(pricing.dueOnArrival,12285);
+  assert.equal((await pay({token},booking)).status,200);
+  const state=await getArtistProgramme();
+  assert.equal(state.weeks[0].confirmed,1);
+  assert.equal(state.weeks[1].confirmed,1);
+  assert.equal(state.weeks[0].held,0);
+  assert.match((await flow.getArtistMail(booking.id)).body,/Balance due on arrival: INR 12285\.00/);
+ });
  await t.test('production guard prevents activation',async()=>{process.env.NODE_ENV='production';await assert.rejects(flow.approveArtist(a.lead.id,'admin@example.test','http://localhost:3000'));process.env.NODE_ENV='development';});
 });

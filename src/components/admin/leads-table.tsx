@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Fragment, useMemo, useState } from "react";
 import ArtistEscapeReview from "@/components/admin/artist-escape-review";
 import EnquiryReplyForm from "@/components/admin/enquiry-reply-form";
@@ -11,6 +12,7 @@ import Pager, { paginate } from "@/components/admin/pager";
 const SOURCES = ["all", "contact", "volunteer", "corporate", "newsletter", "artist-escape", "artist-residence", "artist-unite", "organizer", "stay-enquiry", "work-from-farm"] as const;
 
 export default function LeadsTable({ leads, replies = [], artistReviewStatuses = {} }: { leads: Lead[]; replies?: EnquiryReply[]; artistReviewStatuses?: Record<string, ArtistReviewStatus> }) {
+  const router = useRouter();
   const [filter, setFilter] = useState<(typeof SOURCES)[number]>("all");
   const [openId, setOpenId] = useState<string | null>(null);
   const [updatedStatuses, setUpdatedStatuses] = useState<Record<string, ArtistReviewStatus>>({});
@@ -102,7 +104,7 @@ export default function LeadsTable({ leads, replies = [], artistReviewStatuses =
                               {(l.source === "artist-escape" && l.message ? linkArtistPortfolio(l.message) : l.message) || "— no message —"}
                             </p>
                           </div>
-                          {l.source === "artist-escape" && <ArtistEscapeReview leadId={l.id} onStatusChange={(status) => setUpdatedStatuses((current) => ({ ...current, [l.id]: status }))} />}
+                          {l.source === "artist-escape" && <ArtistEscapeReview leadId={l.id} onStatusChange={(status) => { setUpdatedStatuses((current) => ({ ...current, [l.id]: status })); router.refresh(); }} />}
                           <EnquiryReplyForm lead={l} replies={replies.filter(reply=>reply.leadId===l.id)} />
                         </td>
                       </tr>

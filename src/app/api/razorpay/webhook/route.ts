@@ -7,6 +7,7 @@ import { confirmCapturedPayment } from "@/lib/payment-confirmation";
 import { getBookingByOrderId, updateBookingStatus } from "@/lib/store";
 import { notifyEntry } from "@/lib/email-notifications";
 export const runtime = "nodejs";
+export const maxDuration = 60;
 export async function POST(req: NextRequest) {
   if (!process.env.RAZORPAY_WEBHOOK_SECRET) return NextResponse.json({error:"Payment webhook is not configured."},{status:503});
   const body = await req.text();

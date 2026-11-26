@@ -6,6 +6,9 @@ import { readStayInventory } from "@/lib/stay-inventory";
 import { blockedSlugs, listStayBlocks } from "@/lib/stay-blocks";
 import { BOOKING_HOLD_MINUTES, ensureBookingColumns, expireStaleBookings } from "@/lib/store";
 
+import { addArtistDays } from "@/lib/artist-escape-programme";
+import { listProgrammeApprovals } from "@/lib/artist-escape-programme-store";
+
 const DAY = 86_400_000;
 const nightsOf = (checkIn: string, checkOut: string) => {
   const nights: string[] = [];
@@ -13,8 +16,18 @@ const nightsOf = (checkIn: string, checkOut: string) => {
   return nights;
 };
 
+async function artistHolds(slugs: string[], counted: { id: string }[], excludeLeadId?: string) {
+  if (!slugs.includes("dorm")) return [];
+  const bookingIds = new Set(counted.map(row => row.id));
+  return (await listProgrammeApprovals()).flatMap(approval => {
+    if (!approval.stay || approval.leadId === excludeLeadId || approval.expiresAt <= Date.now()) return [];
+    if (approval.bookingId && bookingIds.has(approval.bookingId)) return [];
+    return [{ start: approval.stay.arrival, end: addArtistDays(approval.stay.arrival, approval.stay.weeks * 7) }];
+  });
+}
+
 /** Units of each stay already taken on every night of the range: paid bookings plus unpaid ones still inside the hold window. */
-export async function bookedUnitsPerNight(slugs: string[], checkIn: string, checkOut: string) {
+export async function bookedUnitsPerNight(slugs: string[], checkIn: string, checkOut: string, excludeLeadId?: string) {
   await expireStaleBookings();
   await ensureBookingColumns();
   const holdCutoff = new Date(Date.now() - BOOKING_HOLD_MINUTES * 60_000);
@@ -23,21 +36,22 @@ export async function bookedUnitsPerNight(slugs: string[], checkIn: string, chec
     lt(bookings.checkIn, checkOut), gt(bookings.checkOut, checkIn),
     or(eq(bookings.status, "paid"), and(eq(bookings.status, "pending"), gt(bookings.createdAt, holdCutoff))),
   )) : [];
+  const holds = await artistHolds(slugs, rows, excludeLeadId);
   const nights = nightsOf(checkIn, checkOut);
   const result: Record<string, number> = {};
   for (const slug of slugs) {
     const mine = rows.filter(row => row.itemSlug === slug);
-    result[slug] = Math.max(0, ...nights.map(night => mine.filter(row => row.checkIn! <= night && night < row.checkOut!).reduce((sum, row) => sum + (row.rooms ?? 1), 0)));
+    result[slug] = Math.max(0, ...nights.map(night => mine.filter(row => row.checkIn! <= night && night < row.checkOut!).reduce((sum, row) => sum + (row.rooms ?? 1), 0) + (slug === "dorm" ? holds.filter(hold => hold.start <= night && night < hold.end).length : 0)));
   }
   return result;
 }
 
 /** Units still free for the whole stay; null means the stay has no stock limit configured.
  *  Stock is read uncached so a stale page can never oversell. */
-export async function unitsLeft(stays: { slug: string }[], checkIn: string, checkOut: string) {
+export async function unitsLeft(stays: { slug: string }[], checkIn: string, checkOut: string, excludeLeadId?: string) {
   const inventory = await readStayInventory();
   const limited = stays.filter(stay => typeof inventory[stay.slug] === "number");
-  const booked = await bookedUnitsPerNight(limited.map(stay => stay.slug), checkIn, checkOut);
+  const booked = await bookedUnitsPerNight(limited.map(stay => stay.slug), checkIn, checkOut, excludeLeadId);
   const closed = await blockedSlugs(checkIn, checkOut);
   return Object.fromEntries(stays.map(stay => {
     if (closed.has(stay.slug)) return [stay.slug, 0];
@@ -61,6 +75,7 @@ export async function nightlyAvailability(slugs: string[], from: string, to: str
       or(eq(bookings.status, "paid"), and(eq(bookings.status, "pending"), gt(bookings.createdAt, holdCutoff))),
     )) : [],
   ]);
+  const holds = await artistHolds(slugs, rows);
   const result: Record<string, Record<string, number | null>> = {};
   for (const slug of slugs) {
     const days: Record<string, number | null> = {};
@@ -68,7 +83,7 @@ export async function nightlyAvailability(slugs: string[], from: string, to: str
       const total = inventory[slug];
       const closed = blocks.some(b => b.slug === slug && b.from <= night && night <= b.to);
       const booked = rows.filter(row => row.itemSlug === slug && row.checkIn! <= night && night < row.checkOut!).reduce((sum, row) => sum + (row.rooms ?? 1), 0);
-      days[night] = closed ? 0 : typeof total === "number" ? Math.max(0, total - booked) : null;
+      days[night] = closed ? 0 : typeof total === "number" ? Math.max(0, total - booked - (slug === "dorm" ? holds.filter(hold => hold.start <= night && night < hold.end).length : 0)) : null;
     }
     result[slug] = days;
   }

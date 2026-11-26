@@ -1,3 +1,5 @@
+import ArtistEscapeProgrammeSettings from "@/components/admin/artist-escape-programme-settings";
+import { getArtistProgramme } from "@/lib/artist-escape-programme-store";
 import {redirect} from "next/navigation";
 import {getSessionUser} from "@/lib/auth-server";
 import {listEnquiryReplies} from "@/lib/enquiry-replies";
@@ -15,7 +17,7 @@ export default async function AdminContactPage() {
   if (!hasDb()) {
     return <p className="text-sm text-foreground-soft">Database not configured.</p>;
   }
-  const [leads, states, replies, artistReviewStatuses] = await Promise.all([listLeads(), listEmailStates(["lead"]),listEnquiryReplies(), listArtistReviewStatuses()]);
+  const [leads, states, replies, artistReviewStatuses, artistProgramme] = await Promise.all([listLeads(), listEmailStates(["lead"]),listEnquiryReplies(), listArtistReviewStatuses(), getArtistProgramme()]);
 
   return (
     <div>
@@ -23,6 +25,7 @@ export default async function AdminContactPage() {
       <p className="mt-1 text-sm text-foreground-soft">
         {leads.length} total · all contact enquiries, volunteer requests and artist applications.
       </p>
+      <ArtistEscapeProgrammeSettings initial={artistProgramme} />
       <EmailDelivery states={states} />
       <div className="mt-6">
         <LeadsTable leads={leads} replies={replies} artistReviewStatuses={artistReviewStatuses} />
