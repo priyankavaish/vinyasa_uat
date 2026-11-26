@@ -79,42 +79,43 @@ export default function ArtistEscapeApplicationForm() {
       <form onSubmit={submit} className="space-y-5 border border-line bg-surface p-6 sm:p-9">
         <h3 className="font-display italic text-2xl">Artist Escape application</h3>
         {schedule && <p className="text-sm text-foreground-soft">{formatArtistDate(schedule.programme.start)} – {formatArtistDate(schedule.programme.lastNight)} · {schedule.programme.capacity} artists per week · Stay and meals included</p>}
+        <p className="text-xs text-foreground-soft">All fields are required.</p>
         {closed && <p role="status">There are no available arrivals for this intake.</p>}
         <fieldset className="grid min-w-0 grid-cols-1 items-start gap-x-6 gap-y-5 md:grid-cols-2" disabled={busy || !schedule || !!closed}>
           <label className="block text-sm">
-            What’s your full name?
+            What’s your full name? <span aria-hidden="true" className="text-accent">*</span>
             <input name="name" autoComplete="name" className={field} required maxLength={120} />
           </label>
           <label className="block text-sm">
-            What’s your WhatsApp number?
+            What’s your WhatsApp number? <span aria-hidden="true" className="text-accent">*</span>
             <input name="phone" type="tel" autoComplete="tel" placeholder="+91 98765 43210" className={field} required maxLength={25} />
             <span className="mt-1 block text-xs text-foreground-soft">Include your country code.</span>
           </label>
           <label className="block text-sm">
-            What’s your email address?
+            What’s your email address? <span aria-hidden="true" className="text-accent">*</span>
             <input name="email" type="email" autoComplete="email" className={field} required maxLength={150} />
           </label>
           <label className="block text-sm">
-            How long would you like to stay?
+            How long would you like to stay? <span aria-hidden="true" className="text-accent">*</span>
             <select className={field} required value={weeks} onChange={event => { setWeeks(event.target.value ? Number(event.target.value) as ArtistStay["weeks"] : ""); setArrival(""); }}>
               <option value="">Select stay length</option>
               {STAY_WEEKS.map(length => <option key={length} value={length}>{length} {length === 1 ? "week" : "weeks"}</option>)}
             </select>
           </label>
           <label className="block text-sm">
-            Which Monday would you like to arrive?
+            Which Monday would you like to arrive? <span aria-hidden="true" className="text-accent">*</span>
             <select className={field} required disabled={!arrivals.length} value={arrival} onChange={event => setArrival(event.target.value)}>
               <option value="">{!weeks ? "Select stay length first" : arrivals.length ? "Select arrival Monday" : "No arrivals for this stay length"}</option>
               {arrivals.map(date => <option value={date} key={date}>{formatArtistDate(date)}</option>)}
             </select>
           </label>
           <label className="block text-sm">
-            Portfolio
+            Portfolio <span aria-hidden="true" className="text-accent">*</span>
             <input name="portfolio" type="url" className={field} required maxLength={500} placeholder="https://" />
             <span className="mt-1 block text-xs text-foreground-soft">An Instagram profile, website, showreel, writing sample or Google Drive link is fine.</span>
           </label>
           <label className="block text-sm md:col-span-2">
-            What would you like to work on or explore at Vinyasa?
+            What would you like to work on or explore at Vinyasa? <span aria-hidden="true" className="text-accent">*</span>
             <textarea name="intent" className={field} rows={3} required maxLength={2000} />
             <span className="mt-1 block text-xs text-foreground-soft">A line or two is enough. A rough idea is welcome.</span>
           </label>
